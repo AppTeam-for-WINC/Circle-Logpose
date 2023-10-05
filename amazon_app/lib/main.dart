@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async {
+  // Flutterアプリを初期化
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Firebaseを初期化
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-void main() {
+  // アプリのウィジェットツリーを生成し、実行
   runApp(const MyApp());
 }
 
