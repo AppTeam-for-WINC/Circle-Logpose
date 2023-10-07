@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StartPage extends ConsumerWidget {
-  const StartPage({super.key});
+//担当：　ichiro
+
+class LoginPage extends ConsumerWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -10,10 +12,10 @@ class StartPage extends ConsumerWidget {
       home: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           //タイトル
-          middle: Text('StartPage Title'),
+          middle: Text('Hello World'),
         ),
         child: Center(
-          child: Text('StartPage'),
+          child: Text('iPhone15 pro 欲しいです。誰か買って下さい。連絡待ってます'),
         ),
       ),
     );
