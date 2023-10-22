@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //担当：　ichiro
 
 class StartPage extends ConsumerWidget {
   const StartPage({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CupertinoApp(
+    return CupertinoApp(
       home: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           //タイトル
