@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //担当：　ichiro
 
 class StartPage extends ConsumerWidget {
-  const StartPage({Key? key});
+  const StartPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
