@@ -8,23 +8,20 @@ import 'firebase_options.dart';
 //Riverpodをインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amazon_app.dart';
-import 'database/database.dart';
 
 void main() async {
   // Flutterアプリを初期化
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Firebaseを初期化
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   debugPrint('HELLO WORLD');
-  
 
   //Riverpodの適用範囲を設定
-  const app = DatabasePage();
-  // const app = AmazonApp();
+  const app = AmazonApp();
   const scope = ProviderScope(child: app);
 
   // アプリのウィジェットツリーを生成し、実行
