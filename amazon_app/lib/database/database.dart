@@ -23,11 +23,11 @@ Future<bool> updateLoginData(String primaryKey, String foreignKey,
     };
 
     await userDoc.update(updateData);
-    print('Data was updated successfully');
-    return true; // Data updated successfully
+    print('データのアップデート成功しました');
+    return true;
   } catch (error) {
-    print('An error occurred while updating data: $error');
-    return false; // Error occurred during data update
+    print('データのアップデート中にエラーが発生しました: $error');
+    return false;
   }
 }
 
@@ -70,10 +70,10 @@ Future<bool> updateSignUpData(String primaryId, String foreignKey,
     };
 
     await userDoc.update(updateData);
-    print('Data was updated successfully');
+    print('データのアップデート成功しました');
     return true; // Data updated successfully
   } catch (error) {
-    print('An error occurred while updating data: $error');
+    print('データのアップデート中にエラーが発生しました: $error');
     return false; // Error occurred during data update
   }
 }
