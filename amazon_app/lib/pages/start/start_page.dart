@@ -11,17 +11,29 @@ class StartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String _username;
+    String _password;
     return CupertinoApp(
       home: CupertinoPageScaffold(
         child: Container(
-          color: Color.fromRGBO(80, 49, 238, 0.9),
-          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            begin: FractionalOffset.topCenter,
+            end: FractionalOffset.bottomCenter,
+            colors: [
+              Color.fromRGBO(80, 49, 238, 1),
+              Color.fromRGBO(123, 97, 255, 1),
+              Color.fromRGBO(123, 97, 255, 0.29),
+            ],
+            stops: [0, 0.2, 1],
+          )),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               //アイコン
-              Icon(
+              const Icon(
                 CupertinoIcons.calendar_today,
                 color: Colors.white,
                 size: 103,
@@ -29,7 +41,7 @@ class StartPage extends ConsumerWidget {
 
               //文字
               const Text(
-                'AMAZON',
+                'Amazon',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
@@ -48,7 +60,7 @@ class StartPage extends ConsumerWidget {
                 width: 234,
                 height: 60,
                 child: Container(
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.white),
                     borderRadius: BorderRadius.circular(30.0),
@@ -60,8 +72,8 @@ class StartPage extends ConsumerWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
+                          CupertinoPageRoute(
+                              builder: (context) => const SignupPage()));
                     },
                     child: const Text(
                       "Sign Up",
@@ -79,20 +91,22 @@ class StartPage extends ConsumerWidget {
                 width: 234,
                 height: 60,
                 child: Container(
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   child: CupertinoButton(
                     padding: const EdgeInsets.all(8.0),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30.0),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const LoginPage()));
                     },
                     child: const Text(
-                      "login",
+                      'login',
                       style: TextStyle(
-                        fontSize: 18.0,
-                        color: Color.fromRGBO(80, 49, 238, 0.9),
+                        color: Color.fromRGBO(80, 49, 238, 1),
+                        fontSize: 18,
                       ),
                     ),
                   ),
