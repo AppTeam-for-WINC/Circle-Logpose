@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:amazon_app/database/database.dart';
 //担当：　ichiro
 
 class SignupPage extends StatelessWidget {
@@ -22,11 +23,15 @@ class SignupScreen extends ConsumerStatefulWidget {
 }
 
 class _SignupScreenState extends ConsumerState<SignupScreen> {
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    String email = '';
-    String password = '';
-    String username = '';
+    String username = userNameController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
 
     return CupertinoApp(
       home: CupertinoPageScaffold(
@@ -247,26 +252,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 child: CupertinoButton(
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
                     borderRadius: BorderRadius.circular(30.0),
-                    onPressed: () async {
-                      try {
-                        final User? user = (await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: email, password: password))
-                            .user;
-                        if (user != null) {
-                          print("ログインしました ${user.email} , ${user.uid}");
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const LoginPage()));
-                        }
-                      } catch (e) {
-                        print(e);
-                        if (e.toString() ==
-                            '[firebase_auth/invalid-email] The email address is badly formatted.') {}
-                      }
-                    },
+                    onPressed: updateSignUpData,
                     child: const Text('Sign up')),
               ),
             ],
