@@ -11,8 +11,6 @@ class StartPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String _username;
-    String _password;
     return CupertinoApp(
       home: CupertinoPageScaffold(
         child: Container(
