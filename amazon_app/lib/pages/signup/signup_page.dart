@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:amazon_app/database/database.dart';
-//担当：　ichiro
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -29,6 +28,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    getSignUpData();
+    String primaryId = 'primary_id';
+    String foreignKey = 'foreign_key';
     String username = userNameController.text;
     String email = emailController.text;
     String password = passwordController.text;
@@ -92,6 +94,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
+                  controller: emailController,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -123,12 +126,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         )),
                     //borderRadius: BorderRadius.all(30.0),
                   ),
-                  onChanged: (String value) {
-                    setState(() {
-                      email = value;
-                    });
-                    print('${email}');
-                  },
                 ),
               ),
 
@@ -145,11 +142,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
               ),
 
-              //mailaddres form
+              //username form
               SizedBox(
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
+                  controller: userNameController,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -181,11 +179,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         )),
                     //borderRadius: BorderRadius.all(30.0),
                   ),
-                  onChanged: (String value) {
-                    setState(() {
-                      username = value;
-                    });
-                  },
                 ),
               ),
 
@@ -207,15 +200,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
+                  controller: passwordController,
+                  obscureText: true,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                   ),
-                  onChanged: (String value) {
-                    setState(() {
-                      password = value;
-                    });
-                  },
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(9),
@@ -252,7 +242,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 child: CupertinoButton(
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
                     borderRadius: BorderRadius.circular(30.0),
-                    onPressed: updateSignUpData,
+                    onPressed: () async {
+                      bool a = await updateSignUpData(
+                          primaryId, foreignKey, username, email, password);
+                      if (a) {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const LoginPage()));
+                      } else {
+                        
+                      }
+                    },
+                    
                     child: const Text('Sign up')),
               ),
             ],

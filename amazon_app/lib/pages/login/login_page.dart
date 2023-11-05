@@ -1,3 +1,4 @@
+import 'package:amazon_app/database/database.dart';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String email ='';
-    String password='';
+    getLoginData();
+    String username = userNameController.text;
+    String password = passwordController.text;
 
     return CupertinoApp(
       home: CupertinoPageScaffold(
@@ -86,6 +91,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
+                  controller: userNameController,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -117,15 +123,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         )),
                     //borderRadius: BorderRadius.all(30.0),
                   ),
-                  onChanged: (String value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
                 ),
               ),
 
-              
               Container(
                 width: 346,
                 margin: const EdgeInsets.all(13.5),
@@ -144,13 +144,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
+                  controller: passwordController,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                   ),
-                  onChanged: (String value) {
-                    password = value;
-                  },
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(9),
@@ -188,19 +186,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
                     borderRadius: BorderRadius.circular(30.0),
                     onPressed: () async {
-                      try {
-                        final User? user = (await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                    email: email, password: password))
-                            .user;
-                        if (user != null) {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const HomePage()));
+                      bool a = await getSignUpData();
+                      if (a) {
+                        String confirmusername = 'user_name';
+                        String confirmpassword = 'password';
+                        if (confirmusername == username) {
+                          if (confirmpassword == password) {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => const HomePage()));
+                          } else {
+                            print('password failed');
+                          }
+                        } else {
+                          print('username failed');
                         }
-                      } catch (e) {
-                        print(e);
+                      } else {
+                        print('get miss');
                       }
                     },
                     child: const Text('login')),
