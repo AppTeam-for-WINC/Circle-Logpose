@@ -6,7 +6,6 @@ import 'pages/home/home_page.dart';
 import 'pages/group/create/group_create_page.dart';
 import 'pages/group/list/group_list_page.dart';
 import 'pages/group/setting/group_setting_page.dart';
-
 class AmazonApp extends StatelessWidget {
   const AmazonApp({Key? key}) : super(key: key);
 
