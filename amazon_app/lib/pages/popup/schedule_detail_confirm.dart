@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Popup extends ConsumerWidget {
-  const Popup({super.key});
+class ScheduleDetailConfirm extends ConsumerWidget {
+  const ScheduleDetailConfirm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -14,7 +14,7 @@ class Popup extends ConsumerWidget {
           onPressed: () {
             showCupertinoModalPopup(
               context: context,
-              builder: (context) {
+              builder: (BuildContext context) {
                 return Padding(
                   padding: EdgeInsets.only(
                     left: 32,
@@ -32,7 +32,8 @@ class Popup extends ConsumerWidget {
                             Container(
                               width: double.infinity,
                               height: 500,
-                              decoration: BoxDecoration(color: Colors.white),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
                             ),
                             // ポップアップ下部の白色↑
                             //ポップアップ上部の黄緑色↓
@@ -44,16 +45,12 @@ class Popup extends ConsumerWidget {
                             ),
                             // ポップアップ上部の黄緑色↑
                             // 団体アイコン↓
-                            Positioned(
+                            const Positioned(
                               top: 70,
-                              left: 20,
-                              child: Container(
-                                width: 60,
-                                height: 50,
-                                child: Image(
-                                  image:
-                                      AssetImage('assets/images/hotPepper.png'),
-                                ),
+                              left: 30,
+                              child: Icon(
+                                Icons.groups,
+                                size: 60,
                               ),
                             ),
                             // 団体アイコン↑
@@ -62,20 +59,21 @@ class Popup extends ConsumerWidget {
                               top: 120,
                               left: 250,
                               child: Icon(
-                                Icons.outlet,
+                                Icons.sentiment_satisfied,
                                 size: 70,
+                                color: Colors.pink[300],
                               ),
                             ),
                             // 出席アイコン↑
                             Container(
-                              margin: EdgeInsets.only(left: 30),
+                              margin: const EdgeInsets.only(left: 30),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // 団体名↓
                                   Container(
-                                    margin: EdgeInsets.only(top: 120),
-                                    child: Text(
+                                    margin: const EdgeInsets.only(top: 120),
+                                    child: const Text(
                                       'TeamName',
                                       style: TextStyle(fontSize: 30),
                                     ),
@@ -83,27 +81,27 @@ class Popup extends ConsumerWidget {
                                   // 団体名↑
                                   // 活動日時↓
                                   Container(
-                                    margin: EdgeInsets.only(top: 15),
-                                    child: Text('2023/9/20 13:00-14:00'),
+                                    margin: const EdgeInsets.only(top: 15),
+                                    child: const Text('2023/9/20 13:00-14:00'),
                                   ),
                                   // 活動日時↑
                                   // 参加メンバーのコンテナ↓
                                   Container(
-                                    margin: EdgeInsets.only(top: 15),
+                                    margin: const EdgeInsets.only(top: 15),
                                     child: Row(
                                       children: [
                                         // 参加メンバー左部のアイコン↓
-                                        Image(
-                                          image: AssetImage(
-                                              'assets/images/user-01.png'),
-                                          width: 25,
-                                          height: 25,
+                                        const Icon(
+                                          Icons.group,
+                                          size: 25,
+                                          color: Colors.grey,
                                         ),
                                         // 参加メンバー左部のアイコン↑
                                         // 参加メンバーテキスト↓
                                         Container(
-                                          margin: EdgeInsets.only(left: 8),
-                                          child: Text(
+                                          margin:
+                                              const EdgeInsets.only(left: 8),
+                                          child: const Text(
                                             '参加メンバー |',
                                             style: TextStyle(
                                               color: Colors.grey,
@@ -111,14 +109,14 @@ class Popup extends ConsumerWidget {
                                           ),
                                         ),
                                         // 参加メンバーテキスト↑
-                                        PresentMember(),
+                                        const PresentMember(),
                                       ],
                                     ),
                                   ),
                                   // 参加メンバーのコンテナ↑
                                   // 詳細のコンテナ↓
                                   Container(
-                                    margin: EdgeInsets.only(top: 15),
+                                    margin: const EdgeInsets.only(top: 15),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -126,17 +124,17 @@ class Popup extends ConsumerWidget {
                                         Row(
                                           children: [
                                             // 詳細左部のアイコン↓
-                                            Image(
-                                              image: AssetImage(
-                                                  'assets/images/edit.png'),
-                                              width: 25,
-                                              height: 25,
+                                            const Icon(
+                                              Icons.edit_square,
+                                              size: 25,
+                                              color: Colors.grey,
                                             ),
                                             // 詳細左部のアイコン↑
                                             // 詳細テキスト↓
                                             Container(
-                                              margin: EdgeInsets.only(left: 8),
-                                              child: Text(
+                                              margin: const EdgeInsets.only(
+                                                  left: 8),
+                                              child: const Text(
                                                 '詳細',
                                                 style: TextStyle(
                                                   color: Colors.grey,
@@ -148,9 +146,11 @@ class Popup extends ConsumerWidget {
                                         ),
                                         // 詳細内容↓
                                         Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          padding: EdgeInsets.only(right: 30),
-                                          child: Text(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          padding:
+                                              const EdgeInsets.only(right: 30),
+                                          child: const Text(
                                             '詳細内容ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
                                             style: TextStyle(
                                               color: Colors.grey,
@@ -193,7 +193,8 @@ class Popup extends ConsumerWidget {
 
 // 参加メンバーのアイコン↓
 class PresentMember extends StatelessWidget {
-  final String memberIcon = 'assets/images/user-01.png';
+  // 参加メンバーのアイコンを取得するように変更してください
+  final memberIcon = Icons.perm_identity;
   final int maxIcons = 5;
 
   const PresentMember({super.key});
@@ -206,11 +207,10 @@ class PresentMember extends StatelessWidget {
     while (iconCount < maxIcons) {
       iconWidgets.add(
         Container(
-          width: 20,
-          height: 20,
-          margin: EdgeInsets.only(right: 5),
-          child: Image(
-            image: AssetImage(memberIcon),
+          margin: const EdgeInsets.only(right: 5),
+          child: Icon(
+            memberIcon,
+            size: 20,
           ),
         ),
       );
@@ -219,7 +219,7 @@ class PresentMember extends StatelessWidget {
 
     if (iconCount >= maxIcons) {
       iconWidgets.add(
-        Text(
+        const Text(
           '…',
           style: TextStyle(color: Colors.grey),
         ),
