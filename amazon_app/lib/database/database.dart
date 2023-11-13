@@ -100,7 +100,7 @@ class DatabasesPage extends ConsumerWidget {
 
     return CupertinoApp(
       home: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text('Firebase 操作ページ'),
         ),
         child: Center(
