@@ -28,9 +28,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    getLoginData();
-    String username = userNameController.text;
-    String password = passwordController.text;
+    // getLoginData();
+    // String username = userNameController.text;
+    // String password = passwordController.text;
 
     return CupertinoApp(
       home: CupertinoPageScaffold(
@@ -77,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 346,
                 margin: const EdgeInsets.all(13.5),
                 child: const Text(
-                  'ユーザーネーム',
+                  'メールアドレス',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Colors.white,
@@ -91,7 +91,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 346,
                 height: 46,
                 child: CupertinoTextField(
-                  controller: userNameController,
+                  controller: emailController,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -186,22 +186,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
                     borderRadius: BorderRadius.circular(30.0),
                     onPressed: () async {
-                      bool a = await getSignUpData();
+                      bool a = await loginUser(
+                          emailController.text, passwordController.text);
                       if (a) {
-                        String confirmusername = 'user_name';
-                        String confirmpassword = 'password';
-                        if (confirmusername == username) {
-                          if (confirmpassword == password) {
-                            Navigator.push(
+                        // String confirmusername = 'user_name';
+                        // String confirmpassword = 'password';
+                        Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                     builder: (context) => const HomePage()));
-                          } else {
-                            print('password failed');
-                          }
-                        } else {
-                          print('username failed');
-                        }
+                        // if (confirmusername == username) {
+                        //   if (confirmpassword == password) {
+                        //     // Navigator.push(
+                        //     //     context,
+                        //     //     CupertinoPageRoute(
+                        //     //         builder: (context) => const HomePage()));
+                        //   } else {
+                        //     print('password failed');
+                        //   }
+                        // } else {
+                        //   print('username failed');
+                        // }
                       } else {
                         print('get miss');
                       }

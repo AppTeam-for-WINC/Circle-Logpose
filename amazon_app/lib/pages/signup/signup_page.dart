@@ -28,12 +28,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getSignUpData();
-    String primaryId = 'primary_id';
-    String foreignKey = 'foreign_key';
-    String username = userNameController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
+    // getSignUpData();
+    // String primaryId = 'primary_id';
+    // String foreignKey = 'foreign_key';
+    // String username = userNameController.text;
+    // String email = emailController.text;
+    // String password = passwordController.text;
 
     return CupertinoApp(
       home: CupertinoPageScaffold(
@@ -129,58 +129,58 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
               ),
 
-              Container(
-                width: 346,
-                margin: const EdgeInsets.all(13.5),
-                child: const Text(
-                  'ユーザーネーム登録',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
+              // Container(
+              //   width: 346,
+              //   margin: const EdgeInsets.all(13.5),
+              //   child: const Text(
+              //     'ユーザーネーム登録',
+              //     textAlign: TextAlign.left,
+              //     style: TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 15,
+              //     ),
+              //   ),
+              // ),
 
-              //username form
-              SizedBox(
-                width: 346,
-                height: 46,
-                child: CupertinoTextField(
-                  controller: userNameController,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(9),
-                      topRight: Radius.circular(9),
-                      bottomLeft: Radius.circular(9),
-                      bottomRight: Radius.circular(9),
-                    ),
-                    color: Colors.transparent,
-                    border: Border(
-                        left: BorderSide(
-                          color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        ),
-                        top: BorderSide(
-                          color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        ),
-                        right: BorderSide(
-                          color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        ),
-                        bottom: BorderSide(
-                          color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        )),
-                    //borderRadius: BorderRadius.all(30.0),
-                  ),
-                ),
-              ),
+              // //username form
+              // SizedBox(
+              //   width: 346,
+              //   height: 46,
+              //   child: CupertinoTextField(
+              //     controller: userNameController,
+              //     style: const TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 20,
+              //     ),
+              //     decoration: const BoxDecoration(
+              //       borderRadius: BorderRadius.only(
+              //         topLeft: Radius.circular(9),
+              //         topRight: Radius.circular(9),
+              //         bottomLeft: Radius.circular(9),
+              //         bottomRight: Radius.circular(9),
+              //       ),
+              //       color: Colors.transparent,
+              //       border: Border(
+              //           left: BorderSide(
+              //             color: Color.fromRGBO(123, 97, 255, 1),
+              //             width: 1,
+              //           ),
+              //           top: BorderSide(
+              //             color: Color.fromRGBO(123, 97, 255, 1),
+              //             width: 1,
+              //           ),
+              //           right: BorderSide(
+              //             color: Color.fromRGBO(123, 97, 255, 1),
+              //             width: 1,
+              //           ),
+              //           bottom: BorderSide(
+              //             color: Color.fromRGBO(123, 97, 255, 1),
+              //             width: 1,
+              //           )),
+              //       //borderRadius: BorderRadius.all(30.0),
+              //     ),
+              //   ),
+              // ),
 
               Container(
                 width: 346,
@@ -243,18 +243,17 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
                     borderRadius: BorderRadius.circular(30.0),
                     onPressed: () async {
-                      bool a = await updateSignUpData(
-                          primaryId, foreignKey, username, email, password);
+                      // 以下でauthenticationにユーザ登録
+                     bool a = await createAccount(emailController.text, passwordController.text);
+                      // bool a = await updateSignUpData(
+                      //     primaryId, foreignKey, username, email, password);
                       if (a) {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => const LoginPage()));
-                      } else {
-                        
-                      }
+                      } else {}
                     },
-                    
                     child: const Text('Sign up')),
               ),
             ],
