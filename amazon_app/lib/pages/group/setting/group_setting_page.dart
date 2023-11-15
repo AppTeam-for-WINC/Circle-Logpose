@@ -1,19 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../popup/member_add_popup.dart';
 
 class GroupSettingPage extends ConsumerWidget {
   const GroupSettingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CupertinoApp(
+    return CupertinoApp(
       home: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           //タイトル
           middle: Text('Hello World'),
         ),
         child: Center(
-          child: Text('iPhone15 pro 欲しいです。誰か買って下さい。連絡待ってます'),
+          child: CupertinoButton(
+              onPressed: () {
+                showMemberAddPopup(context);
+              },
+              child: const Text('メンバー追加ポップアップ')),
         ),
       ),
     );
