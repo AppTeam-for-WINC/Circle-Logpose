@@ -95,13 +95,12 @@ class StartPage extends ConsumerWidget {
                     padding: const EdgeInsets.all(8.0),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30.0),
-                    onPressed: ()async{return detailpopupController(context, ref);},
-                    // onPressed: () {
-                    //   Navigator.push(
-                    //       context,
-                    //       CupertinoPageRoute(
-                    //           builder: (context) => const LoginPage()));
-                    // },
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const LoginPage()));
+                    },
                     child: const Text(
                       'login',
                       style: TextStyle(
