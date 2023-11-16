@@ -1,4 +1,5 @@
 import 'package:amazon_app/pages/login/login_page.dart';
+import 'package:amazon_app/pages/popup/detail_setting_popup.dart';
 import 'package:amazon_app/pages/signup/signup_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,12 +95,13 @@ class StartPage extends ConsumerWidget {
                     padding: const EdgeInsets.all(8.0),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30.0),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const LoginPage()));
-                    },
+                    onPressed: ()async{return detailpopupController(context, ref);},
+                    // onPressed: () {
+                    //   Navigator.push(
+                    //       context,
+                    //       CupertinoPageRoute(
+                    //           builder: (context) => const LoginPage()));
+                    // },
                     child: const Text(
                       'login',
                       style: TextStyle(
