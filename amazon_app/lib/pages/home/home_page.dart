@@ -1,12 +1,13 @@
 import 'package:animated_segmented_tab_control/animated_segmented_tab_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CupertinoApp(
       home: Scaffold(
         body: Container(
@@ -217,13 +218,13 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ScheduleCard extends StatelessWidget {
+class ScheduleCard extends ConsumerWidget {
   const ScheduleCard({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 375,
       height: 215,
@@ -449,14 +450,4 @@ class ScheduleCard extends StatelessWidget {
       ),
     );
   }
-}
-
-List<Widget> scheduleList() {
-  List<Widget> cards = [];
-
-  for (int i = 0; i < 10; i++) {
-    cards.add(const ScheduleCard());
-  }
-
-  return cards;
 }
