@@ -1,7 +1,7 @@
-import 'package:animated_segmented_tab_control/animated_segmented_tab_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../function/slide_segmented_tab_control.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
