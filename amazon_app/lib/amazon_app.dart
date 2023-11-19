@@ -25,7 +25,7 @@ class AmazonApp extends StatelessWidget {
         '/group_create': (context) => const GroupCreatePage(),
         '/group_list': (context) => const GroupListPage(),
         '/group_setting': (context) => const GroupSettingPage(),
-        'schedule_detail_confirm': (context) => const ScheduleDetailConfirm(),
+        '/schedule_detail_confirm': (context) => const ScheduleDetailConfirm(),
       },
     );
   }

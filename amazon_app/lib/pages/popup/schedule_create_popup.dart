@@ -1,471 +1,257 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:amazon_app/database/database.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:amazon_app/database/database.dart';
+import '/pages/home/home_page.dart';
 
-// class HomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoPageScaffold(
-//       navigationBar: CupertinoNavigationBar(
-//         middle: Text('予約アプリ'),
-//       ),
-//       child: Center(
-//         child: CupertinoButton(
-//           onPressed: () {
-//             showCupertinoModalPopup(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return Center(
-//                   child: ReservationForm(),
-//                 );
-//               },
-//             );
-//           },
-//           child: Text('予約を作成'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+class ScheduleCreatePopup extends ConsumerStatefulWidget {
+  const ScheduleCreatePopup({super.key});
 
-// class ReservationForm extends StatefulWidget {
-//   @override
-//   _ReservationFormState createState() => _ReservationFormState();
-// }
+  @override
+  // ignore: library_private_types_in_public_api
+  ConsumerState createState() => ScheduleCreatePopupState();
+}
 
-// class _ReservationFormState extends State<ReservationForm> {
-//   TextEditingController titleController = TextEditingController();
-//   DateTime selectedDate = DateTime.now();
-//   TimeOfDay selectedTime = TimeOfDay.now();
-//   TextEditingController placeController = TextEditingController();
-//   TextEditingController detailController = TextEditingController();
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoActionSheet(
-//       title: Text('予約を作成'),
-//       message: Text('情報を入力してください'),
-//       actions: <Widget>[
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedDate = await showCupertinoModalPopup<DateTime>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationDateSelector(selectedDate);
-//               },
-//             );
-//             if (pickedDate != null) {
-//               setState(() {
-//                 selectedDate = pickedDate;
-//               });
-//             }
-//           },
-//           child: Text('日付を選択'),
-//         ),
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedTime = await showCupertinoModalPopup<TimeOfDay>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationTimeSelector(selectedTime);
-//               },
-//             );
-//             if (pickedTime != null) {
-//               setState(() {
-//                 selectedTime = pickedTime;
-//               });
-//             }
-//           },
-//           child: Text('時間を選択'),
-//         ),
-//         CupertinoTextField(
-//           controller: titleController,
-//           placeholder: 'タイトル',
-//         ),
-//         CupertinoTextField(
-//           controller: placeController,
-//           placeholder: '場所',
-//         ),
-//         CupertinoTextField(
-//           controller: detailController,
-//           placeholder: '詳細',
-//           maxLines: 5,
-//         ),
-//         CupertinoButton(
-//           onPressed: () {
-//             String title = titleController.text;
-//             DateTime dateTime = DateTime(
-//               selectedDate.year,
-//               selectedDate.month,
-//               selectedDate.day,
-//               selectedTime.hour,
-//               selectedTime.minute,
-//             );
-//             String place = placeController.text;
-//             String detail = detailController.text;
+class ScheduleCreatePopupState extends ConsumerState {
+  TextEditingController titleController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+  TextEditingController placeController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
+  String selectedTeam = 'Team1';
+  List<String> teams = ['Team1', 'Team2', 'Team3', 'Team4'];
+void _showTeamPicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 200,
+          child: CupertinoPicker(
+            itemExtent: 40,
+            onSelectedItemChanged: (int index) {
+              setState(() {
+                selectedTeam = teams[index];
+              });
+            },
+            children: List.generate(
+              teams.length,
+              (index) => Center(
+                child: Text(teams[index]),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-//             updateScheduleInfoData(
-//                 "primary_id", title, "", dateTime, "", place, detail, 0);
-//           },
-//           child: Text('予約する'),
-//         ),
-//       ],
-//       cancelButton: CupertinoActionSheetAction(
-//         onPressed: () {
-//           Navigator.of(context).pop();
-//         },
-//         child: Text('キャンセル'),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPopupSurface(
+      child: SizedBox(
+        width: 360,
+        height: 500,
+        child: Stack(
+          children: [
+            // ポップアップ下部の白色↓
+            Container(
+              width: double.infinity,
+              height: 500,
+              decoration: const BoxDecoration(color: Colors.white),
+            ),
+            // ポップアップ下部の白色↑
+            CupertinoButton(
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFF7B61FF),
+              )
+            ),
+            // カラー選択↓
+            const Positioned(
+              top: 50,
+              left: 30,
+              child: Icon(
+                Icons.color_lens,
+                size: 50,
+                color: Colors.grey,
+              ),
+            ),
+            // カラー選択↑
 
-// class ReservationDateSelector extends StatelessWidget {
-//   final DateTime selectedDate;
+            // タイトル追加↓
+            Container(
+              margin: const EdgeInsets.only(top: 110, left: 40),
+              width: 270, // 横幅を指定
+              child: CupertinoTextField(
+                placeholder: 'タイトルを追加',
+                placeholderStyle: const TextStyle(color: Colors.grey),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: CupertinoColors.black,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                style: const TextStyle(fontSize: 16),
+                onChanged: (title) async {
+                  // タイトルをデータベースに保存
+                  Map<String, dynamic> titleData = {"schedule_title": title};
+                  updateDocumentData('schedule_info', 'primary_id', titleData);
+                },
+              ),
+            ),
+            // タイトル追加↑
+            Container(
+              margin: const EdgeInsets.only(left: 40,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 団体選択↓
+                  Container(
+                    margin: const EdgeInsets.only(top: 160),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.expand_more,
+                          color: Colors.grey,
 
-//   ReservationDateSelector(this.selectedDate);
+                        ),
+                        CupertinoButton(
+                        onPressed: () {
+                          _showTeamPicker(context); // 団体選択の処理
+                        },
+                        child: Text(
+                          selectedTeam,
+                          style: const TextStyle(fontSize: 18,color: Color(0xFF7B61FF),),
+                        ),
+                  ),
+                      ],
+                    ),
+                  ),
+                  // 団体選択↑
+                  // 活動日時↓
+                  Container(
+                    margin: const EdgeInsets.only(),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.schedule,
+                          size: 25,
+                          color: Colors.grey,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          child: const Text(
+                            '2023/10/19   13:00-14:00',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+                  ),
+                  // 活動日時↑
+                  // 場所↓
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      children: [
+                        
+                        const Icon(
+                          Icons.place,
+                          size: 25,
+                          color: Colors.grey,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          child: const Text(
+                            '場所を追加',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // 場所↑
+                  // 詳細のコンテナ↓
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            // 詳細左部のアイコン↓
+                            const Icon(
+                              Icons.edit_square,
+                              size: 25,
+                              color: Colors.grey,
+                            ),
+                            // 詳細左部のアイコン↑
+                            // 詳細テキスト↓
+                            Container(
+                              margin: const EdgeInsets.only(left: 8),
+                              child: const Text(
+                                '詳細を追加',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            // 詳細テキスト↑
+                          ],
+                        ),
+                        // 詳細内容↑
+                      ],
+                    ),
+                  ),
+                  // 詳細のコンテナ↑
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoDatePicker(
-//       mode: CupertinoDatePickerMode.date,
-//       initialDateTime: selectedDate,
-//       onDateTimeChanged: (newDate) {
-//         Navigator.of(context).pop(newDate);
-//       },
-//     );
-//   }
-// }
 
-// class ReservationTimeSelector extends StatelessWidget {
-//   final TimeOfDay selectedTime;
+//DateTime pickerです。(未完成)
+class ReservationTimeSelector extends StatelessWidget {
+  final TimeOfDay selectedTime;
 
-//   ReservationTimeSelector(this.selectedTime);
+  const ReservationTimeSelector(this.selectedTime, {super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoDatePicker(
-//       mode: CupertinoDatePickerMode.time,
-//       initialDateTime: DateTime(
-//         DateTime.now().year,
-//         DateTime.now().month,
-//         DateTime.now().day,
-//         selectedTime.hour,
-//         selectedTime.minute,
-//       ),
-//       onDateTimeChanged: (newDateTime) {
-//         Navigator.of(context).pop(TimeOfDay(
-//           hour: newDateTime.hour,
-//           minute: newDateTime.minute,
-//         ));
-//       },
-//     );
-//   }
-// }
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:amazon_app/database/database.dart';
-
-// void main() {
-//   runApp(CupertinoApp(
-//     home: HomeScreen(),
-//   ));
-// }
-
-// class HomeScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoPageScaffold(
-//       navigationBar: CupertinoNavigationBar(
-//         middle: Text('予約アプリ'),
-//       ),
-//       child: Center(
-//         child: CupertinoButton(
-//           onPressed: () {
-//             showCupertinoModalPopup(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return Center(
-//                   child: ReservationForm(),
-//                 );
-//               },
-//             );
-//           },
-//           child: Text('予約を作成'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class ReservationForm extends StatefulWidget {
-//   @override
-//   _ReservationFormState createState() => _ReservationFormState();
-// }
-
-// class _ReservationFormState extends State<ReservationForm> {
-//   TextEditingController titleController = TextEditingController();
-//   DateTime selectedStartDate = DateTime.now();
-//   TimeOfDay selectedStartTime = TimeOfDay.now();
-//   DateTime selectedEndDate = DateTime.now();
-//   TimeOfDay selectedEndTime = TimeOfDay.now();
-//   TextEditingController placeController = TextEditingController();
-//   TextEditingController detailController = TextEditingController();
-//   String selectedColor = "Red";
-//   String selectedOrganization = "";
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoPopupSurface(
-//       child: Column(
-//         children: [
-//           Container(
-//             child: Text('予約を作成') ,
-//           ),
-//           Container(
-//             child: Text('情報を入力してください'),
-//           ),
-//           Container(
-//             child: ,
-//           ),
-//           CupertinoButton(
-//             child: Text("開始日付を選択"),
-//             onPressed: () async{
-//               final pickedStartDate = await showCupertinoModalPopup<TimeOfDay>(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                  return ReservationTimeSelector(selectedStartTime);
-//                 },
-//               );
-//               if (pickedStartDate != null) {
-//                 setState(() {
-//                   selectedStartDate = pickedStartDate;
-//                 });
-//               }
-//             },
-            
-//           ),
-//           CupertinoButton(
-//             child: Text('開始時間を選択'),
-//             onPressed: () async{
-//               final pickedStartTime = await showCupertinoModalPopup<TimeOfDay>(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return ReservationTimeSelector(selectedStartTime);
-//                 },
-//               );
-//               if (pickedStartTime != null) {
-//                 setState(() {
-//                   selectedStartTime = pickedStartTime;
-//                 });
-//               }
-//             },
-//           ),
-//           CupertinoButton(
-//             child: Text('終了日付を選択'),
-//             onPressed: () async{
-//               final pickedEndDate = await showCupertinoModalPopup<DateTime>(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return ReservationDateSelector(selectedEndDate);
-//                 },
-//               );
-//               if (pickedEndDate != null) {
-//                 setState(() {
-//                   selectedEndDate = pickedEndDate;
-//                 });
-//               }
-//             },
-//           ),
-//         ],
-//       ),
-//       title: Text('予約を作成'),
-//       message: Text('情報を入力してください'),
-//       actions: <Widget>[
-//         //CupertinoPopupSurface
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedStartDate = await showCupertinoModalPopup<DateTime>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationDateSelector(selectedStartDate);
-//               },
-//             );
-//             if (pickedStartDate != null) {
-//               setState(() {
-//                 selectedStartDate = pickedStartDate;
-//               });
-//             }
-//           },
-//           child: Text('開始日付を選択'),
-//         ),
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedStartTime = await showCupertinoModalPopup<TimeOfDay>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationTimeSelector(selectedStartTime);
-//               },
-//             );
-//             if (pickedStartTime != null) {
-//               setState(() {
-//                 selectedStartTime = pickedStartTime;
-//               });
-//             }
-//           },
-//           child: Text('開始時間を選択'),
-//         ),
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedEndDate = await showCupertinoModalPopup<DateTime>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationDateSelector(selectedEndDate);
-//               },
-//             );
-//             if (pickedEndDate != null) {
-//               setState(() {
-//                 selectedEndDate = pickedEndDate;
-//               });
-//             }
-//           },
-//           child: Text('終了日付を選択'),
-//         ),
-//         CupertinoActionSheetAction(
-//           onPressed: () async {
-//             final pickedEndTime = await showCupertinoModalPopup<TimeOfDay>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return ReservationTimeSelector(selectedEndTime);
-//               },
-//             );
-//             if (pickedEndTime != null) {
-//               setState(() {
-//                 selectedEndTime = pickedEndTime;
-//               });
-//             }
-//           },
-//           child: Text('終了時間を選択'),
-//         ),
-//         CupertinoTextField(
-//           controller: titleController,
-//           placeholder: 'タイトル',
-//         ),
-//         CupertinoTextField(
-//           controller: placeController,
-//           placeholder: '場所',
-//         ),
-//         CupertinoTextField(
-//           controller: detailController,
-//           placeholder: '詳細',
-//           maxLines: 5,
-//         ),
-//         CupertinoFormRow(
-//           prefix: Text('団体を選択: '),
-//           child: CupertinoTextField(
-//             placeholder: '団体',
-//             onChanged: (value) {
-//               selectedOrganization = value;
-//             },
-//           ),
-//         ),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text('カラーを選択: '),
-//             CupertinoSegmentedControl(
-//               children: {
-//                 'Red': Text('Red'),
-//                 'Green': Text('Green'),
-//                 'Blue': Text('Blue'),
-//               },
-//               groupValue: selectedColor,
-//               onValueChanged: (value) {
-//                 setState(() {
-//                   selectedColor = value;
-//                 });
-//               },
-//             ),
-//           ],
-//         ),
-//         CupertinoButton(
-//           onPressed: () {
-//             String title = titleController.text;
-//             DateTime dateStartTime = DateTime(
-//               selectedStartDate.year,
-//               selectedStartDate.month,
-//               selectedStartDate.day,
-//               selectedStartTime.hour,
-//               selectedStartTime.minute,
-//             );
-//             DateTime dateEndTime = DateTime(
-//               selectedEndDate.year,
-//               selectedEndDate.month,
-//               selectedEndDate.day,
-//               selectedEndTime.hour,
-//               selectedEndTime.minute,
-//             );
-//             String place = placeController.text;
-//             String detail = detailController.text;
-//             String color = selectedColor;
-//             updateScheduleInfoData("primary_id", title, color , dateStartTime,
-//                 dateEndTime, place, detail, 0);
-//             Navigator.of(context).pop();
-//           },
-//           child: Text('予約する'),
-//         ),
-//       ],
-//       cancelButton: CupertinoActionSheetAction(
-//         onPressed: () {
-//           Navigator.of(context).pop();
-//         },
-//         child: Text('キャンセル'),
-//       ),
-//     );
-//   }
-// }
-
-// class ReservationDateSelector extends StatelessWidget {
-//   final DateTime selectedDate;
-
-//   ReservationDateSelector(this.selectedDate);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoDatePicker(
-//       mode: CupertinoDatePickerMode.date,
-//       initialDateTime: selectedDate,
-//       onDateTimeChanged: (newDate) {
-//         Navigator.of(context).pop(newDate);
-//       },
-//     );
-//   }
-// }
-
-// class ReservationTimeSelector extends StatelessWidget {
-//   final TimeOfDay selectedTime;
-
-//   ReservationTimeSelector(this.selectedTime);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CupertinoDatePicker(
-//       mode: CupertinoDatePickerMode.time,
-//       initialDateTime: DateTime(
-//         DateTime.now().year,
-//         DateTime.now().month,
-//         DateTime.now().day,
-//         selectedTime.hour,
-//         selectedTime.minute,
-//       ),
-//       onDateTimeChanged: (newDateTime) {
-//         Navigator.of(context).pop(TimeOfDay(
-//           hour: newDateTime.hour,
-//           minute: newDateTime.minute,
-//         ));
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoDatePicker(
+      mode: CupertinoDatePickerMode.time,
+      initialDateTime: DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        selectedTime.hour,
+        selectedTime.minute,
+      ),
+      onDateTimeChanged: (newDateTime) {
+        Navigator.of(context).pop(TimeOfDay(
+          hour: newDateTime.hour,
+          minute: newDateTime.minute,
+        ));
+      },
+    );
+  }
+}

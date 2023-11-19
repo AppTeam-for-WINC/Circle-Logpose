@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/pages/popup/schedule_create_popup.dart';
 import '../function/slide_segmented_tab_control.dart';
 
 class HomePage extends ConsumerWidget {
@@ -64,8 +65,7 @@ class HomePage extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         color: const Color.fromRGBO(
                                             255, 255, 255, 0.20),
-                                        borderRadius:
-                                            BorderRadius.circular(33),
+                                        borderRadius: BorderRadius.circular(33),
                                       ),
                                       child: const Center(
                                         child: Text(
@@ -184,7 +184,16 @@ class HomePage extends ConsumerWidget {
                   height: 55,
                   child: FloatingActionButton.extended(
                     backgroundColor: const Color(0xFF7B61FF),
-                    onPressed: () {},
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: ScheduleCreatePopup(),
+                          );
+                        },
+                      );
+                    },
                     label: const Text(
                       '予定を作成',
                       style: TextStyle(
