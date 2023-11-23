@@ -1,4 +1,3 @@
-import 'package:amazon_app/pages/popup/group_filtering_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,6 +53,10 @@ class HomePage extends ConsumerWidget {
                             squeezeIntensity: 2,
                             height: 55,
                             tabs: [
+                              // GestureDetector(
+                              //   onTap: () {},
+                              //   child: SegmentTab(),
+                              // ),
                               SegmentTab(
                                 textColor: Colors.black,
                                 label: Row(
@@ -66,7 +69,8 @@ class HomePage extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         color: const Color.fromRGBO(
                                             255, 255, 255, 0.20),
-                                        borderRadius: BorderRadius.circular(33),
+                                        borderRadius:
+                                            BorderRadius.circular(33),
                                       ),
                                       child: const Center(
                                         child: Text(
