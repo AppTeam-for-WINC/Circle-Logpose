@@ -129,7 +129,7 @@ class GroupListPage extends ConsumerWidget {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 130),
+                    padding: const EdgeInsets.only(top: 130),
                     child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +143,7 @@ class GroupListPage extends ConsumerWidget {
                       crossAxisCount: 2,
                       children: <Widget>[
                         for (int i = 0; i < 10; i++) 
-                          GroupBox(),
+                          const GroupBox(),
                       ],
                     ),
                   ],
@@ -185,7 +185,7 @@ class GroupListPage extends ConsumerWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GroupCreatePage()),
+                        MaterialPageRoute(builder: (context) => const GroupCreatePage()),
                       );
                     },
                     label: const Text(
@@ -228,7 +228,7 @@ class GroupBox extends ConsumerWidget{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GroupCreatePage()),
+          MaterialPageRoute(builder: (context) => const GroupCreatePage()),
         );
       },
       child: Container(
@@ -237,16 +237,16 @@ class GroupBox extends ConsumerWidget{
         borderRadius: BorderRadius.circular(28),
         color: Colors.white,
         ),
-        child:Column(
+        child:const Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Icon(Icons.rocket),
-          const Text("団体名",
-                 style: TextStyle(
-                 fontSize: 20,
-                 ),
-                ),
+          Icon(Icons.rocket),
+          Text("団体名",
+            style: TextStyle(
+            fontSize: 20,
+            ),
+          ),
         ],
         ),
       ),
