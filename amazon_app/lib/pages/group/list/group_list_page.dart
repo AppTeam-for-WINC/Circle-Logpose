@@ -93,43 +93,41 @@ class GroupListPage extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                                // For example, this overrides [indicatorColor] from [SegmentedTabControl]
                                 color: const Color(0xFF7B61FF),
                               ),
                               SegmentTab(
-                                  label: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.group,
-                                        size: 30,
-                                        color: Colors.white,
+                                label: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.group,
+                                      size: 30,
+                                      color: Colors.white,
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          left: 5,
-                                        ),
-                                        child: const Text(
-                                          '団体',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                        left: 5,
                                       ),
-                                    ],
-                                  ),
-                                  // backgroundColor: Color(0xFF7B61FF),
-                                  selectedTextColor: Colors.white,
-                                  textColor: Colors.black,
-                                  color: const Color(0xFF7B61FF)),
+                                      child: const Text(
+                                        '団体',
+                                        style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        ),
+                                     ),
+                                   ),
+                                  ],
+                                ),
+                                selectedTextColor: Colors.white,
+                                textColor: Colors.black,
+                                color: const Color(0xFF7B61FF)
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
-                  // Sample pages
                   Padding(
                     padding: EdgeInsets.only(top: 130),
                     child: SingleChildScrollView(
@@ -144,15 +142,8 @@ class GroupListPage extends ConsumerWidget {
                       mainAxisSpacing: 20,
                       crossAxisCount: 2,
                       children: <Widget>[
-                        //後でデータベースと繋げます
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
-                        GroupBox(),
+                        for (int i = 0; i < 10; i++) 
+                          GroupBox(),
                       ],
                     ),
                   ],
@@ -235,10 +226,10 @@ class GroupBox extends ConsumerWidget{
   Widget build (BuildContext context, WidgetRef ref){
     return GestureDetector(
       onTap: (){
-         Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => GroupCreatePage()),
-                      );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GroupCreatePage()),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(24),
@@ -252,10 +243,12 @@ class GroupBox extends ConsumerWidget{
         children: [
            Icon(Icons.rocket),
           const Text("団体名",
-                style: TextStyle(
+                 style: TextStyle(
                  fontSize: 20,
-                   ),),
-          ],),
+                 ),
+                ),
+        ],
+        ),
       ),
     );
   }
