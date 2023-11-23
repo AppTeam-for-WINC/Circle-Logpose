@@ -1,26 +1,498 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/member_add_popup.dart';
+
+enum GroupOption { edit, list }
 
 class GroupSettingPage extends ConsumerWidget {
   const GroupSettingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CupertinoApp(
-      home: CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          //タイトル
-          middle: Text('Hello World'),
-        ),
-        child: Center(
-          child: CupertinoButton(
+    return const CupertinoApp(
+      debugShowCheckedModeBanner: false,
+      theme: CupertinoThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Color.fromARGB(255, 113, 130, 143),
+        primaryColor: Color.fromARGB(255, 18, 81, 162),
+      ),
+      home: GroupSettingHome(),
+    );
+  }
+}
+
+class GroupSettingHome extends StatefulWidget {
+  const GroupSettingHome({super.key});
+
+  @override
+  State<GroupSettingHome> createState() {
+    return _GroupSettingHome();
+  }
+}
+
+class _GroupSettingHome extends State<GroupSettingHome> {
+  GroupOption _selectedSegment = GroupOption.edit;
+
+  @override
+  Widget build(context) {
+    return CupertinoPageScaffold(
+      backgroundColor: const Color.fromARGB(255, 233, 233, 246),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          CupertinoIcons.back,
+                          size: 25,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 3),
+                          child: const Text(
+                            '戻る',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        '団体編集',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 60,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                    offset: Offset(0, 3),
+                    blurRadius: 3,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              width: 375,
+              height: 203,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 40,
+                      bottom: 20,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.groups,
+                          size: 70,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.east,
+                                size: 15,
+                                color: Color(0xFF6D6D6D),
+                              ),
+                              Icon(
+                                Icons.east,
+                                size: 25,
+                                color: Color(0xFF6D6D6D),
+                              )
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            print('tapped icon');
+                          },
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFD9D9D9),
+                              borderRadius: BorderRadius.circular(80),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.add_a_photo,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 272,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD8EB61),
+                      borderRadius: BorderRadius.circular(80),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 2),
+                          blurRadius: 2,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                      child: CupertinoTextField(
+                        prefix: Icon(
+                          Icons.edit_note,
+                          color: Color(0xFF6D6D6D),
+                          size: 30,
+                        ),
+                        style: TextStyle(fontSize: 16),
+                        placeholder: '団体名',
+                        decoration: BoxDecoration(
+                          color: Color(0xFFD8EB61),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 95,
+              width: 383,
+              child: Stack(
+                children: [
+                  Container(
+                    width: 371,
+                    height: 77,
+                    margin: const EdgeInsets.only(top: 10, left: 6),
+                    padding: const EdgeInsets.only(top: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(40),
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 4,
+                          spreadRadius: 3,
+                          offset: Offset(0, 3),
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 20),
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'メンバー',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF9A9A9A),
+                            ),
+                          ),
+                          GroupMemberIcons(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: -15,
+                    right: -15,
+                    child: CupertinoButton(
+                      onPressed: () {
+                        print('pressed addMemberButton');
+                      },
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD8EB61),
+                          borderRadius: BorderRadius.circular(44),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            CupertinoIcons.person_add,
+                            size: 25,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: SizedBox(
+                width: 390,
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.25),
+                            offset: Offset(0, 3),
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      width: 374,
+                      height: 220,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(left: 15, top: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '予定一覧',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Container(
+                              width: 354,
+                              height: 180,
+                              padding: const EdgeInsets.only(
+                                  top: 10, right: 5, left: 5, bottom: 5),
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 3,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 20,
+                                ),
+                                itemCount: 20,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return const ScheduleCard();
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('tapped calendarPlus');
+                        },
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFD8EB61),
+                            borderRadius: BorderRadius.circular(44),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              CupertinoIcons.calendar_badge_plus,
+                              size: 25,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 60,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('tapped calendarMinus');
+                        },
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEB6161),
+                            borderRadius: BorderRadius.circular(44),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              CupertinoIcons.calendar_badge_minus,
+                              size: 25,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CupertinoButton(
               onPressed: () {
-                showMemberAddPopup(context);
+                print('saving');
               },
-              child: const Text('メンバー追加ポップアップ')),
+              color: const Color(0xFF7B61FF),
+              borderRadius: BorderRadius.circular(30),
+              child: SizedBox(
+                width: 117,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white,
+                      ),
+                      child: const Icon(
+                        Icons.download,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text('変更を保存'),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class ScheduleCard extends ConsumerWidget {
+  const ScheduleCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () {
+        print('pressed scheduleCard');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(216, 235, 97, 0.29),
+          borderRadius: BorderRadius.circular(80),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: Row(
+            children: [
+              Icon(CupertinoIcons.group_solid, size: 25),
+              Text(
+                '12:00~20:00/',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF9A9A9A),
+                ),
+              ),
+              Text(
+                '12人',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF9A9A9A),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GroupMemberIcons extends ConsumerWidget {
+  // 参加メンバーのアイコンを取得するように変更してください
+  final memberIcon = Icons.perm_identity;
+  final int maxIcons = 8;
+
+  const GroupMemberIcons({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Widget> iconWidgets = [];
+
+    int iconCount = 0;
+    while (iconCount < maxIcons) {
+      iconWidgets.add(
+        Container(
+          margin: const EdgeInsets.only(right: 5),
+          child: Icon(
+            memberIcon,
+            size: 30,
+          ),
+        ),
+      );
+      iconCount++;
+    }
+
+    if (iconCount >= maxIcons) {
+      iconWidgets.add(
+        const Text(
+          '…',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 30,
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: iconWidgets,
     );
   }
 }
