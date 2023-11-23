@@ -144,33 +144,21 @@ class GroupListPage extends ConsumerWidget {
                       mainAxisSpacing: 20,
                       crossAxisCount: 2,
                       children: <Widget>[
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
-                        GroupeBox(),
+                        //後でデータベースと繋げます
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
+                        GroupBox(),
                       ],
                     ),
                   ],
                 ),
-              
             ),
                     ),
-                    // child: TabBarView(
-                    //   physics: BouncingScrollPhysics(),
-                    //   children: [
-                    //     SingleChildScrollView(
-                    //       child: Column(
-                            
-                            
-                    //       ),
-                          
-                    //     ),
-                    //   ],
-                    // ),
                 ],
               ),
             ),
@@ -241,26 +229,34 @@ class GroupListPage extends ConsumerWidget {
     );
   }
 }
-class GroupeBox extends ConsumerWidget{
-  const GroupeBox({Key?key,}) : super(key:key);
+class GroupBox extends ConsumerWidget{
+  const GroupBox({Key?key,}) : super(key:key);
   @override
   Widget build (BuildContext context, WidgetRef ref){
-    return Container(
-      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28),
-                        color: Colors.white,
-                      ),
-                      child:Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      Icon(Icons.rocket),
-                      const Text("団体名",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),),
-                      ],),
+    return GestureDetector(
+      onTap: (){
+         Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GroupCreatePage()),
+                      );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        color: Colors.white,
+        ),
+        child:Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+           Icon(Icons.rocket),
+          const Text("団体名",
+                style: TextStyle(
+                 fontSize: 20,
+                   ),),
+          ],),
+      ),
     );
   }
 }
