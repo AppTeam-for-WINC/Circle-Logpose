@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/pages/popup/schedule_create_popup.dart';
 import '../function/slide_segmented_tab_control.dart';
+import '../group/create/group_create_page.dart';
+import '../popup/schedule_detail_confirm.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -20,6 +22,15 @@ class HomePage extends ConsumerWidget {
             child: SafeArea(
               child: Stack(
                 children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 0),
+                    child: TabBarView(
+                      children: [
+                        AttendanceRecord(),
+                        Group(),
+                      ],
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -53,10 +64,6 @@ class HomePage extends ConsumerWidget {
                             squeezeIntensity: 2,
                             height: 55,
                             tabs: [
-                              // GestureDetector(
-                              //   onTap: () {},
-                              //   child: SegmentTab(),
-                              // ),
                               SegmentTab(
                                 textColor: Colors.black,
                                 label: Row(
@@ -69,8 +76,7 @@ class HomePage extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         color: const Color.fromRGBO(
                                             255, 255, 255, 0.20),
-                                        borderRadius:
-                                            BorderRadius.circular(33),
+                                        borderRadius: BorderRadius.circular(33),
                                       ),
                                       child: const Center(
                                         child: Text(
@@ -98,7 +104,6 @@ class HomePage extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                                // For example, this overrides [indicatorColor] from [SegmentedTabControl]
                                 color: const Color(0xFF7B61FF),
                               ),
                               SegmentTab(
@@ -124,7 +129,6 @@ class HomePage extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                  // backgroundColor: Color(0xFF7B61FF),
                                   selectedTextColor: Colors.white,
                                   textColor: Colors.black,
                                   color: const Color(0xFF7B61FF)),
@@ -133,29 +137,6 @@ class HomePage extends ConsumerWidget {
                         ),
                       ),
                     ],
-                  ),
-                  // Sample pages
-                  const Padding(
-                    padding: EdgeInsets.only(top: 130),
-                    child: TabBarView(
-                      physics: BouncingScrollPhysics(),
-                      children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                              ScheduleCard(),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -286,7 +267,13 @@ class ScheduleCard extends ConsumerWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ScheduleDetailConfirm();
+                                });
+                          },
                           child: const SizedBox(
                             width: 117,
                             child: Row(
@@ -461,6 +448,102 @@ class ScheduleCard extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AttendanceRecord extends ConsumerWidget {
+  const AttendanceRecord({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const Padding(
+      padding: EdgeInsets.only(top: 130),
+      child: TabBarView(
+        physics: BouncingScrollPhysics(),
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+                ScheduleCard(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GroupBox extends ConsumerWidget {
+  const GroupBox({
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const GroupCreatePage()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          color: Colors.white,
+        ),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.rocket),
+            Text(
+              "団体名",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Group extends ConsumerWidget {
+  const Group({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 130),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GridView.count(
+              primary: false,
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(20),
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              crossAxisCount: 2,
+              children: <Widget>[
+                for (int i = 0; i < 10; i++) const GroupBox(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

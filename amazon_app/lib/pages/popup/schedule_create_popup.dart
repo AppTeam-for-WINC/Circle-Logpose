@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amazon_app/database/database.dart';
 import '/pages/home/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? user = FirebaseAuth.instance.currentUser;
+
 
 class ScheduleCreatePopup extends ConsumerStatefulWidget {
   const ScheduleCreatePopup({super.key});
@@ -20,7 +24,7 @@ class ScheduleCreatePopupState extends ConsumerState {
   TextEditingController detailController = TextEditingController();
   String selectedTeam = 'Team1';
   List<String> teams = ['Team1', 'Team2', 'Team3', 'Team4'];
-void _showTeamPicker(BuildContext context) {
+  void _showTeamPicker(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -61,19 +65,18 @@ void _showTeamPicker(BuildContext context) {
             ),
             // ポップアップ下部の白色↑
             CupertinoButton(
-              onPressed: () {
-                Navigator.pop(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xFF7B61FF),
-              )
-            ),
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Color(0xFF7B61FF),
+                )),
             // カラー選択↓
             const Positioned(
               top: 50,
@@ -101,17 +104,29 @@ void _showTeamPicker(BuildContext context) {
                     ),
                   ),
                 ),
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
                 onChanged: (title) async {
                   // タイトルをデータベースに保存
-                  Map<String, dynamic> titleData = {"schedule_title": title};
-                  updateDocumentData('schedule_info', 'primary_id', titleData);
+                  if (user != null) {
+                    String uid = user!.uid;
+                    Map<String, dynamic> titleData = {"schedule_title": title};
+                    // uidをdocIdとして使って関数を呼び出す
+                    updateDocumentData('schedule_info', uid, titleData);
+                  } else {
+                    // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
+                    print('ユーザーがサインインしていません');
+                  }
                 },
               ),
             ),
             // タイトル追加↑
             Container(
-              margin: const EdgeInsets.only(left: 40,),
+              margin: const EdgeInsets.only(
+                left: 40,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -123,17 +138,19 @@ void _showTeamPicker(BuildContext context) {
                         const Icon(
                           Icons.expand_more,
                           color: Colors.grey,
-
                         ),
                         CupertinoButton(
-                        onPressed: () {
-                          _showTeamPicker(context); // 団体選択の処理
-                        },
-                        child: Text(
-                          selectedTeam,
-                          style: const TextStyle(fontSize: 18,color: Color(0xFF7B61FF),),
+                          onPressed: () {
+                            _showTeamPicker(context); // 団体選択の処理
+                          },
+                          child: Text(
+                            selectedTeam,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF7B61FF),
+                            ),
+                          ),
                         ),
-                  ),
                       ],
                     ),
                   ),
@@ -141,24 +158,22 @@ void _showTeamPicker(BuildContext context) {
                   // 活動日時↓
                   Container(
                     margin: const EdgeInsets.only(),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.schedule,
-                          size: 25,
-                          color: Colors.grey,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          child: const Text(
-                            '2023/10/19   13:00-14:00',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
+                    child: Row(children: [
+                      const Icon(
+                        Icons.schedule,
+                        size: 25,
+                        color: Colors.grey,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 8),
+                        child: const Text(
+                          '2023/10/19   13:00-14:00',
+                          style: TextStyle(
+                            color: Colors.black,
                           ),
                         ),
-                      ]
-                    ),
+                      ),
+                    ]),
                   ),
                   // 活動日時↑
                   // 場所↓
@@ -166,7 +181,6 @@ void _showTeamPicker(BuildContext context) {
                     margin: const EdgeInsets.only(top: 20),
                     child: Row(
                       children: [
-                        
                         const Icon(
                           Icons.place,
                           size: 25,
@@ -174,11 +188,34 @@ void _showTeamPicker(BuildContext context) {
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 8),
-                          child: const Text(
-                            '場所を追加',
-                            style: TextStyle(
-                              color: Colors.grey,
+                          width: 100,
+                          child: CupertinoTextField(
+                            placeholder: '場所を追加',
+                            placeholderStyle:
+                                const TextStyle(color: Colors.grey),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  style: BorderStyle.none,
+                                ),
+                              ),
                             ),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            onChanged: (place) async {
+                              // タイトルをデータベースに保存
+                              if (user != null) {
+                                String uid = user!.uid;
+                                Map<String, dynamic> placeData = {"schedule_place": place};
+                                // uidをdocIdとして使って関数を呼び出す
+                                updateDocumentData('schedule_info', uid, placeData);
+                              } else {
+                                // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
+                                print('ユーザーがサインインしていません');
+                              }
+                            },
                           ),
                         ),
                       ],
@@ -203,11 +240,30 @@ void _showTeamPicker(BuildContext context) {
                             // 詳細テキスト↓
                             Container(
                               margin: const EdgeInsets.only(left: 8),
-                              child: const Text(
-                                '詳細を追加',
-                                style: TextStyle(
-                                  color: Colors.grey,
+                              width: 100,
+                              child: CupertinoTextField(
+                                placeholder: '詳細を追加',
+                                placeholderStyle:
+                                    const TextStyle(color: Colors.grey),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
                                 ),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                                onChanged: (content) async {
+                                  // タイトルをデータベースに保存
+                                  String uid = user!.uid;
+                                  Map<String, dynamic> detailData = {"schedule_content": content};
+                                  // uidをdocIdとして使って関数を呼び出す
+                                  updateDocumentData('schedule_info', uid, detailData);
+                                  
+                                },
                               ),
                             ),
                             // 詳細テキスト↑
@@ -227,7 +283,6 @@ void _showTeamPicker(BuildContext context) {
     );
   }
 }
-
 
 //DateTime pickerです。(未完成)
 class ReservationTimeSelector extends StatelessWidget {
