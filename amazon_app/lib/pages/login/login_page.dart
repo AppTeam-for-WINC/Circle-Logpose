@@ -3,7 +3,6 @@ import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 //担当：　ichiro
 class LoginPage extends StatelessWidget {
@@ -208,7 +207,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         //   print('username failed');
                         // }
                       } else {
-                        print('get miss');
+                        debugPrint('get miss');
                       }
                     },
                     child: const Text('login')),

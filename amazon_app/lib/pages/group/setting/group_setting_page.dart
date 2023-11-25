@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../home/home_page.dart';
+import '../../popup/member_add_popup.dart';
+import '../../popup/schedule_create_popup.dart';
 
 enum GroupOption { edit, list }
 
@@ -31,7 +34,6 @@ class GroupSettingHome extends StatefulWidget {
 }
 
 class _GroupSettingHome extends State<GroupSettingHome> {
-  GroupOption _selectedSegment = GroupOption.edit;
 
   @override
   Widget build(context) {
@@ -49,7 +51,11 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                      );
                     },
                     child: Row(
                       children: [
@@ -137,7 +143,6 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            print('tapped icon');
                           },
                           child: Container(
                             width: 80,
@@ -240,7 +245,14 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                     right: -15,
                     child: CupertinoButton(
                       onPressed: () {
-                        print('pressed addMemberButton');
+                        showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: ShowMemberAddPopup(),
+                          );
+                        },
+                      );
                       },
                       child: Container(
                         width: 44,
@@ -327,7 +339,14 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                       right: 0,
                       child: GestureDetector(
                         onTap: () {
-                          print('tapped calendarPlus');
+                          showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: ScheduleCreatePopup(),
+                          );
+                        },
+                      );
                         },
                         child: Container(
                           width: 44,
@@ -351,7 +370,6 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                       right: 0,
                       child: GestureDetector(
                         onTap: () {
-                          print('tapped calendarMinus');
                         },
                         child: Container(
                           width: 44,
@@ -379,7 +397,6 @@ class _GroupSettingHome extends State<GroupSettingHome> {
             ),
             CupertinoButton(
               onPressed: () {
-                print('saving');
               },
               color: const Color(0xFF7B61FF),
               borderRadius: BorderRadius.circular(30),
@@ -418,7 +435,6 @@ class ScheduleCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        print('pressed scheduleCard');
       },
       child: Container(
         decoration: BoxDecoration(

@@ -59,4 +59,5 @@ class SegmentTab {
 
   /// Overrides [splashHighlightColor] from [SegmentedTabControl].
   final Color? splashHighlightColor;
+
 }
