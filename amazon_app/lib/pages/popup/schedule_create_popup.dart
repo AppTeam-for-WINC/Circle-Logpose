@@ -117,7 +117,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                     updateDocumentData('schedule_info', uid, titleData);
                   } else {
                     // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
-                    print('ユーザーがサインインしていません');
+                    debugPrint('ユーザーがサインインしていません');
                   }
                 },
               ),
@@ -213,7 +213,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                                 updateDocumentData('schedule_info', uid, placeData);
                               } else {
                                 // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
-                                print('ユーザーがサインインしていません');
+                                debugPrint('ユーザーがサインインしていません');
                               }
                             },
                           ),
