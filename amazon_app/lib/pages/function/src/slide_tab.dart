@@ -14,6 +14,8 @@ class SegmentTab {
     this.splashColor,
     this.splashHighlightColor,
     this.flex = 1,
+    //yugo
+    this.onPressed,
   });
 
   /// This text will be displayed on tab.
@@ -59,4 +61,7 @@ class SegmentTab {
 
   /// Overrides [splashHighlightColor] from [SegmentedTabControl].
   final Color? splashHighlightColor;
+
+  //yugo
+  final VoidCallback? onPressed;
 }

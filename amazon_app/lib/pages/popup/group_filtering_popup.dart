@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'dart:ui';
-import 'dart:io';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,17 +8,17 @@ Future filteringPopupController(BuildContext context, WidgetRef ref) async {
   showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
-        return groupFilteringPopup();
+        return const GroupFilteringPopup();
       });
 }
 
-class groupFilteringPopup extends ConsumerStatefulWidget {
-  const groupFilteringPopup({super.key});
+class GroupFilteringPopup extends ConsumerStatefulWidget {
+  const GroupFilteringPopup({super.key});
   @override
-  ConsumerState<groupFilteringPopup> createState() => _FilteringScreenState();
+  ConsumerState<GroupFilteringPopup> createState() => _FilteringScreenState();
 }
 
-class _FilteringScreenState extends ConsumerState<groupFilteringPopup> {
+class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
   @override
   Widget build(BuildContext context) {
     final double deviceH = MediaQuery.of(context).size.height;
@@ -372,10 +370,9 @@ class _FilteringScreenState extends ConsumerState<groupFilteringPopup> {
   }
 }
 
-class groupSerectButton extends ConsumerState<groupFilteringPopup> {
+class GroupSerectButton extends ConsumerState<GroupFilteringPopup> {
   @override
   Widget build(BuildContext context) {
-    final double deviceH = MediaQuery.of(context).size.height;
     final double deviceW = MediaQuery.of(context).size.width;
     return Container(
       width: deviceW * 0.81,

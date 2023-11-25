@@ -7,7 +7,6 @@ import 'pages/group/create/group_create_page.dart';
 import 'pages/group/list/group_list_page.dart';
 import 'pages/group/setting/group_setting_page.dart';
 import 'pages/popup/schedule_detail_confirm.dart';
-import 'pages/popup/schedule_create_popup.dart';
 class AmazonApp extends StatelessWidget {
   const AmazonApp({Key? key}) : super(key: key);
 
@@ -15,8 +14,7 @@ class AmazonApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       //ホームを指定、とりあえずアプリを起動時、スタート画面を表示させる設定にしています。
-      // home: const StartPage(),
-      home: const HomePage(),
+      home: const StartPage(),
 
       // パスを指定  例）　/home:　onPressed: () => Navigator.pushNamed(context, '/home'),　で押された際に指定されたパスに移動する。
       routes: {

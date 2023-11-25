@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-import 'dart:io';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,27 +8,27 @@ Future detailpopupController(BuildContext context, WidgetRef ref) async {
   showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
-        return detailSettingPopup();
+        return const DetailSettingPopup();
       });
 }
 
-class detailSettingPopup extends ConsumerStatefulWidget {
-  const detailSettingPopup({super.key});
+class DetailSettingPopup extends ConsumerStatefulWidget {
+  const DetailSettingPopup({super.key});
   @override
-  ConsumerState<detailSettingPopup> createState() => _SignupScreenState();
+  ConsumerState<DetailSettingPopup> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends ConsumerState<detailSettingPopup> {
+class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
   final picker = ImagePicker();
-  File? _image;
+  // File? _image;
   String userName = '';
   Future _getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _image = File(pickedFile.path);
+    //   }
+    // });
   }
 
   @override
@@ -47,10 +44,10 @@ class _SignupScreenState extends ConsumerState<detailSettingPopup> {
       ),
       child: Container(
         margin: EdgeInsets.only(
-          top:deviceH*0.05,
-          bottom: deviceH*0.05,
-          right: deviceW*0.03,
-          left: deviceW*0.03,
+          top: deviceH * 0.05,
+          bottom: deviceH * 0.05,
+          right: deviceW * 0.03,
+          left: deviceW * 0.03,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(60),
@@ -233,7 +230,7 @@ class _SignupScreenState extends ConsumerState<detailSettingPopup> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(22),
                     color: const Color.fromRGBO(216, 235, 97, 1),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(3, 3),
