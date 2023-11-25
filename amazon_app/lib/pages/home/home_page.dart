@@ -64,9 +64,6 @@ class HomePage extends ConsumerWidget {
                           tabs: [
                             SegmentTab(
                               textColor: const Color.fromRGBO(0, 0, 0, 1),
-                              onPressed: () {
-                                print('yugo');
-                              },
                               label: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
