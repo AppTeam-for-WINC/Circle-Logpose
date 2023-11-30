@@ -89,6 +89,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               ),
 
               //mailaddres form
+              //ここのSizedBox切り出す
               SizedBox(
                 width: 346,
                 height: 46,
@@ -195,6 +196,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               ),
 
               //password form
+              //ここのSizedBox切り出す
               SizedBox(
                 width: 346,
                 height: 46,

@@ -90,6 +90,7 @@ class ScheduleCreatePopupState extends ConsumerState {
             // カラー選択↑
 
             // タイトル追加↓
+            //ここのContainer切り出す
             Container(
               margin: const EdgeInsets.only(top: 110, left: 40),
               width: 270, // 横幅を指定
@@ -131,6 +132,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 団体選択↓
+                  //ここのContainer切り出す
                   Container(
                     margin: const EdgeInsets.only(top: 160),
                     child: Row(
@@ -156,6 +158,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                   ),
                   // 団体選択↑
                   // 活動日時↓
+                  //ここのContainer切り出す
                   Container(
                     margin: const EdgeInsets.only(),
                     child: Row(children: [
@@ -177,6 +180,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                   ),
                   // 活動日時↑
                   // 場所↓
+                  //ここのContainer切り出す
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Row(
@@ -223,6 +227,7 @@ class ScheduleCreatePopupState extends ConsumerState {
                   ),
                   // 場所↑
                   // 詳細のコンテナ↓
+                  //ここのContainer切り出す
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Column(

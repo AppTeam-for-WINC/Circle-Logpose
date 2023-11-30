@@ -98,6 +98,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //”すべて”ボタン
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,
@@ -142,6 +143,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //仮団体1
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,
@@ -186,6 +188,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //仮団体2
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,
@@ -230,6 +233,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //仮団体3
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,
@@ -274,6 +278,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //仮団体4
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,
@@ -318,6 +323,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                 ),
                 //仮団体5
+                //ここのContainer切り出す
                 Container(
                   width: deviceW * 0.81,
                   height: 92,

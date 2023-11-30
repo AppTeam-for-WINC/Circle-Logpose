@@ -1,11 +1,10 @@
 // import 'dart:html';
 import 'package:amazon_app/pages/popup/schedule_detail_confirm.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Behind_and_early_setting extends ConsumerWidget {
-  const Behind_and_early_setting({super.key});
+class BehindAndEarlySetting extends ConsumerWidget {
+  const BehindAndEarlySetting({super.key});
 
   @override
   //絶対書く
@@ -20,9 +19,9 @@ class Behind_and_early_setting extends ConsumerWidget {
     return Padding(
       padding: EdgeInsets.only(left: 32, right: 32, bottom: deviceHight * 0.02),
       child: Center(
-          child: ClipRRect(
-        borderRadius: BorderRadius.circular(34),
-        child: SizedBox(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(34),
+          child: SizedBox(
             width: 360,
             height: 500,
             child: Stack(
@@ -35,7 +34,8 @@ class Behind_and_early_setting extends ConsumerWidget {
                 Container(
                   width: double.infinity,
                   height: 100,
-                  decoration: BoxDecoration(color: Color(0xFFD8EB61)), //上の黄緑
+                  decoration:
+                      const BoxDecoration(color: Color(0xFFD8EB61)), //上の黄緑
                 ),
                 const Positioned(
                   top: 70,
@@ -62,26 +62,28 @@ class Behind_and_early_setting extends ConsumerWidget {
                         child: const Text('2023/9/20 13:00-14:00'),
                       ),
                       Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.group,
-                                size: 25,
-                                color: Colors.grey,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 8),
-                                child: const Text(
-                                  "参加メンバー |",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
+                        margin: const EdgeInsets.only(top: 15),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.group,
+                              size: 25,
+                              color: Colors.grey,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 8),
+                              child: const Text(
+                                "参加メンバー |",
+                                style: TextStyle(
+                                  color: Colors.grey,
                                 ),
                               ),
-                              const PresentMember(),
-                            ],
-                          )),
+                            ),
+                            const PresentMember(),
+                          ],
+                        ),
+                      ),
+                      //ここのContainer切り出す
                       Container(
                         margin: const EdgeInsets.only(top: 70, right: 30),
                         child: Row(
@@ -90,77 +92,73 @@ class Behind_and_early_setting extends ConsumerWidget {
                           children: [
                             GestureDetector(
                               onTap: () {},
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Icon(productsList[0]),
-                                    Text("出席"),
-                                  ],
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(productsList[0]),
+                                  const Text("出席"),
+                                ],
                               ),
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Icon(productsList[1]),
-                                    Text("早退"),
-                                  ],
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(productsList[1]),
+                                  const Text("早退"),
+                                ],
                               ),
                             ),
                             GestureDetector(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Icon(productsList[2]),
-                                    Text("遅刻"),
-                                  ],
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(productsList[2]),
+                                  const Text("遅刻"),
+                                ],
                               ),
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Icon(productsList[3]),
-                                    Text("欠席"),
-                                  ],
-                                ),
+                              child: Column(
+                                children: [
+                                  Icon(productsList[3]),
+                                  const Text("欠席"),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Row(children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Icon(Icons.schedule),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 80, top: 20),
-                          child: const Text(
-                            "参加時間",
-                            style: TextStyle(
-                              color: Colors.grey,
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: const Icon(Icons.schedule),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 80, top: 20),
+                            child: const Text(
+                              "参加時間",
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 30, top: 20),
-                          child: const Text(
-                            '13:30-14:00',
+                          Container(
+                            margin: const EdgeInsets.only(right: 30, top: 20),
+                            child: const Text(
+                              '13:30-14:00',
+                            ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ],
-            )),
-      )),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

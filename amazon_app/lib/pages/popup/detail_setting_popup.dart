@@ -51,7 +51,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(60),
-          color: Color.fromRGBO(245, 243, 254, 1),
+          color: const Color.fromRGBO(245, 243, 254, 1),
         ),
         width: 337,
         height: 672,
@@ -59,6 +59,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
           child: Column(
             children: <Widget>[
               //ユーザー接待
+              //ここのContainer切り出す
               Container(
                 margin: const EdgeInsets.only(
                   top: 18,
@@ -122,6 +123,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 ),
               ),
               //アイコンなど
+              //ここのContainer切り出す
               Container(
                 height: 197,
                 width: 323,
@@ -208,7 +210,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                         },
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(22),
-                            color: Color.fromARGB(255, 223, 230, 188),
+                            color: const Color.fromARGB(255, 223, 230, 188),
                             boxShadow: const [
                               BoxShadow(
                                 color: Colors.grey,
@@ -222,6 +224,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 ),
               ),
               //所属団体
+              //ここのContainer切り出す
               Container(
                 padding: const EdgeInsets.all(0),
                 margin: const EdgeInsets.all(18),
@@ -288,6 +291,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 ),
               ),
               //団体一覧
+              //ここのContainer切り出す
               Container(
                 margin: const EdgeInsets.only(
                   top: 8,
@@ -300,7 +304,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(3, 3),
@@ -345,6 +349,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                               builder: (context) => const HomePage()));
                     }),
               ),
+              //ここのContainer切り出す
               Container(
                 margin: const EdgeInsets.only(
                   top: 8,
@@ -357,7 +362,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(3, 3),
@@ -402,6 +407,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                               builder: (context) => const HomePage()));
                     }),
               ),
+              //ここのContainer切り出す
               Container(
                 margin: const EdgeInsets.only(
                   top: 8,
@@ -414,7 +420,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(3, 3),
