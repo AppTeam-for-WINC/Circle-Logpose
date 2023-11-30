@@ -29,6 +29,7 @@ class HomePage extends ConsumerWidget {
                     ],
                   ),
                 ),
+                //ここのRow切り出す
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -161,6 +162,7 @@ class ScheduleCard extends ConsumerWidget {
       ),
       child: Stack(
         children: [
+          //ここのCenter切り出す
           Center(
             child: Container(
               margin: const EdgeInsets.only(
@@ -239,7 +241,7 @@ class ScheduleCard extends ConsumerWidget {
                         InkWell(
                           highlightColor: const Color(0xFFFBCEFF),
                           onTap: () {
-                            print('aa');
+                            debugPrint('aa');
                           },
                           child: Container(
                             width: 80,
@@ -274,7 +276,7 @@ class ScheduleCard extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return const Center(
-                                  child: Behind_and_early_setting(),
+                                  child: BehindAndEarlySetting(),
                                 );
                               },
                             );
@@ -311,7 +313,7 @@ class ScheduleCard extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return const Center(
-                                  child: Behind_and_early_setting(),
+                                  child: BehindAndEarlySetting(),
                                 );
                               },
                             );

@@ -22,6 +22,7 @@ class ShowMemberAddPopup extends ConsumerWidget {
             ),
             child: Column(
               children: [
+                //ここのContainerを切り出す
                 Container(
                   width: 275,
                   height: 174,
@@ -88,6 +89,7 @@ class ShowMemberAddPopup extends ConsumerWidget {
                     ],
                   ),
                 ),
+                //ここのContainer切り出す
                 Container(
                   width: 300,
                   height: 220,

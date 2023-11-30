@@ -62,6 +62,7 @@ class _GroupSettingHome extends State<GroupSettingHome> {
                         const Icon(
                           CupertinoIcons.back,
                           size: 25,
+                          color: Colors.black,
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 3),
@@ -94,6 +95,7 @@ class _GroupSettingHome extends State<GroupSettingHome> {
               ),
             ),
             const SizedBox(height: 20),
+            //ここのContainer切り出す
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
@@ -201,6 +203,7 @@ class _GroupSettingHome extends State<GroupSettingHome> {
             const SizedBox(
               height: 10,
             ),
+            //ここのSizedBox切り出す
             SizedBox(
               height: 95,
               width: 383,
@@ -275,6 +278,7 @@ class _GroupSettingHome extends State<GroupSettingHome> {
               ),
             ),
             const SizedBox(height: 15),
+            //ここのPadding切り出す
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
