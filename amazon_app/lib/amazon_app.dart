@@ -4,9 +4,8 @@ import 'pages/signup/signup_page.dart';
 import 'pages/login/login_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/group/create/group_create_page.dart';
-import 'pages/group/list/group_list_page.dart';
 import 'pages/group/setting/group_setting_page.dart';
-import 'pages/popup/schedule_detail_confirm.dart';
+import 'pages/popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 class AmazonApp extends StatelessWidget {
   const AmazonApp({Key? key}) : super(key: key);
 
@@ -23,7 +22,6 @@ class AmazonApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(),
         '/login': (context) => const LoginPage(),
         '/group_create': (context) => const GroupCreatePage(),
-        '/group_list': (context) => const GroupListPage(),
         '/group_setting': (context) => const GroupSettingPage(),
         '/schedule_detail_confirm': (context) => const ScheduleDetailConfirm(),
       },

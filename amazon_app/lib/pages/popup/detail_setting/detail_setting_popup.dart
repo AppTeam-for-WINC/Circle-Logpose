@@ -6,10 +6,10 @@ import 'package:image_picker/image_picker.dart';
 
 Future detailpopupController(BuildContext context, WidgetRef ref) async {
   showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) {
-        return const DetailSettingPopup();
-      });
+    context: context,
+    builder: (BuildContext context) {
+      return const DetailSettingPopup();
+    });
 }
 
 class DetailSettingPopup extends ConsumerStatefulWidget {
@@ -68,21 +68,22 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 height: 44,
                 width: 200,
                 decoration: const BoxDecoration(
-                    color: Color.fromRGBO(80, 49, 238, 1),
-                    //なぜかcircurateできなかった。
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(22),
-                      bottomRight: Radius.circular(22),
-                      topRight: Radius.circular(22),
-                      topLeft: Radius.circular(22),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  color: Color.fromRGBO(80, 49, 238, 1),
+                  //なぜかcircurateできなかった。
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(22),
+                    bottomRight: Radius.circular(22),
+                    topRight: Radius.circular(22),
+                    topLeft: Radius.circular(22),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    )
+                  ],
+                ),
                 child: Row(
                   children: <Widget>[
                     //アイコン
@@ -132,15 +133,16 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                   right: 27,
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(22),
-                    color: const Color.fromRGBO(255, 255, 255, 0.8),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  borderRadius: BorderRadius.circular(22),
+                  color: const Color.fromRGBO(255, 255, 255, 0.8),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
                 child: Column(
                   children: <Widget>[
                     //アイコン変更
@@ -186,12 +188,13 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                             color: Colors.grey,
                           ),
                           child: CupertinoButton(
-                              onPressed: _getImage,
-                              child: const Icon(
-                                Icons.camera_alt_sharp,
-                                color: Colors.white,
-                                size: 24,
-                              )),
+                            onPressed: _getImage,
+                            child: const Icon(
+                              Icons.camera_alt_sharp,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -209,15 +212,16 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                           //変更を適応する関数を書く
                         },
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(22),
-                            color: const Color.fromARGB(255, 223, 230, 188),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(3, 3),
-                                blurRadius: 10,
-                              )
-                            ]),
+                          borderRadius: BorderRadius.circular(22),
+                          color: const Color.fromARGB(255, 223, 230, 188),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(3, 3),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -231,15 +235,16 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 height: 44,
                 width: 200,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(22),
-                    color: const Color.fromRGBO(216, 235, 97, 1),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  borderRadius: BorderRadius.circular(22),
+                  color: const Color.fromRGBO(216, 235, 97, 1),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
                 child: Row(
                   children: <Widget>[
                     //アイコン
@@ -302,52 +307,56 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 height: 57,
                 width: 318,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
                 child: CupertinoButton(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          height: 48,
-                          width: 48,
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                          ),
-                          child: const Icon(
-                            Icons.face,
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 48,
+                        width: 48,
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                        ),
+                        child: const Icon(
+                          Icons.face,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        width: 183,
+                        height: 22,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '仮のグループ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
                             color: Colors.black,
                           ),
                         ),
-                        Container(
-                          width: 183,
-                          height: 22,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '仮のグループ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const HomePage()));
-                    }),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                ),
               ),
               //ここのContainer切り出す
               Container(
@@ -360,52 +369,56 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 height: 57,
                 width: 318,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
                 child: CupertinoButton(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          height: 48,
-                          width: 48,
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                          ),
-                          child: const Icon(
-                            Icons.face,
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 48,
+                        width: 48,
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                        ),
+                        child: const Icon(
+                          Icons.face,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        width: 183,
+                        height: 22,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '仮のグループ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
                             color: Colors.black,
                           ),
                         ),
-                        Container(
-                          width: 183,
-                          height: 22,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '仮のグループ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const HomePage()));
-                    }),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                ),
               ),
               //ここのContainer切り出す
               Container(
@@ -418,52 +431,56 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                 height: 57,
                 width: 318,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(3, 3),
-                        blurRadius: 10,
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
                 child: CupertinoButton(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          height: 48,
-                          width: 48,
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                          ),
-                          child: const Icon(
-                            Icons.face,
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 48,
+                        width: 48,
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                        ),
+                        child: const Icon(
+                          Icons.face,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        width: 183,
+                        height: 22,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '仮のグループ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
                             color: Colors.black,
                           ),
                         ),
-                        Container(
-                          width: 183,
-                          height: 22,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '仮のグループ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const HomePage()));
-                    }),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

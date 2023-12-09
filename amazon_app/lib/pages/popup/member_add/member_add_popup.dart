@@ -58,16 +58,17 @@ class ShowMemberAddPopup extends ConsumerWidget {
                         width: 178,
                         height: 38,
                         decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xFFD9D9D9),
-                                offset: Offset(0, 2),
-                                blurRadius: 2,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                            color: const Color(0xFFD8EB61),
-                            borderRadius: BorderRadius.circular(80)),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xFFD9D9D9),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                          color: const Color(0xFFD8EB61),
+                          borderRadius: BorderRadius.circular(80),
+                        ),
                         child: Container(
                           margin: const EdgeInsets.only(
                             left: 10,
