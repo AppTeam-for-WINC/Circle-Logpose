@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:amazon_app/database/database.dart';
 import '/pages/home/home_page.dart';
+import '../../../database/schedule.dart';
 // import 'schedule_create_popup.dart';
 
 class ScheduleCreatePopup extends ConsumerStatefulWidget {
@@ -116,7 +116,7 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                     String uid = user!.uid;
                     Map<String, dynamic> titleData = {"schedule_title": title};
                     // uidをdocIdとして使って関数を呼び出す
-                    updateDocumentData('schedule_info', uid, titleData);
+                    updateDocumentData('schedule_info', uid, titleData, ref);
                   } else {
                     // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
                     debugPrint('ユーザーがサインインしていません');
@@ -215,7 +215,7 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                                 String uid = user!.uid;
                                 Map<String, dynamic> placeData = {"schedule_place": place};
                                 // uidをdocIdとして使って関数を呼び出す
-                                updateDocumentData('schedule_info', uid, placeData);
+                                updateDocumentData('schedule_info', uid, placeData, ref);
                               } else {
                                 // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
                                 debugPrint('ユーザーがサインインしていません');
@@ -267,7 +267,7 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                                   String uid = user!.uid;
                                   Map<String, dynamic> detailData = {"schedule_content": content};
                                   // uidをdocIdとして使って関数を呼び出す
-                                  updateDocumentData('schedule_info', uid, detailData);
+                                  updateDocumentData('schedule_info', uid, detailData, ref);
                                   
                                 },
                               ),
