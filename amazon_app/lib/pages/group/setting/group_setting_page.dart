@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/home_page.dart';
-import '../../popup/member_add_popup.dart';
-import '../../popup/schedule_create_popup.dart';
+import '../../popup/member_add/member_add_popup.dart';
+import '../../popup/schedule_create/schedule_create_popup.dart';
+import 'parts/group_member_icons.dart';
+import 'parts/schedule_card.dart';
 
 enum GroupOption { edit, list }
 
@@ -24,17 +26,16 @@ class GroupSettingPage extends ConsumerWidget {
   }
 }
 
-class GroupSettingHome extends StatefulWidget {
+class GroupSettingHome extends ConsumerStatefulWidget {
   const GroupSettingHome({super.key});
 
   @override
-  State<GroupSettingHome> createState() {
+  ConsumerState<GroupSettingHome> createState() {
     return _GroupSettingHome();
   }
 }
 
-class _GroupSettingHome extends State<GroupSettingHome> {
-
+class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
   @override
   Widget build(context) {
     return CupertinoPageScaffold(
@@ -428,91 +429,6 @@ class _GroupSettingHome extends State<GroupSettingHome> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ScheduleCard extends ConsumerWidget {
-  const ScheduleCard({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () {
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(216, 235, 97, 0.29),
-          borderRadius: BorderRadius.circular(80),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: Row(
-            children: [
-              Icon(CupertinoIcons.group_solid, size: 25),
-              Text(
-                '12:00~20:00/',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF9A9A9A),
-                ),
-              ),
-              Text(
-                '12人',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF9A9A9A),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GroupMemberIcons extends ConsumerWidget {
-  // 参加メンバーのアイコンを取得するように変更してください
-  final memberIcon = Icons.perm_identity;
-  final int maxIcons = 8;
-
-  const GroupMemberIcons({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<Widget> iconWidgets = [];
-
-    int iconCount = 0;
-    while (iconCount < maxIcons) {
-      iconWidgets.add(
-        Container(
-          margin: const EdgeInsets.only(right: 5),
-          child: Icon(
-            memberIcon,
-            size: 30,
-          ),
-        ),
-      );
-      iconCount++;
-    }
-
-    if (iconCount >= maxIcons) {
-      iconWidgets.add(
-        const Text(
-          '…',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 30,
-          ),
-        ),
-      );
-    }
-
-    return Row(
-      children: iconWidgets,
     );
   }
 }

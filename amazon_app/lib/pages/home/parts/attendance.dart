@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/schedule_create_popup.dart';
+import '../../popup/schedule_create/schedule_create_popup.dart';
 import 'schedules.dart';
 
 class AttendanceRecord extends ConsumerWidget {

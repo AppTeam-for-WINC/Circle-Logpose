@@ -1,7 +1,7 @@
-// import 'dart:html';
-import 'package:amazon_app/pages/popup/schedule_detail_confirm.dart';
+import 'package:amazon_app/pages/popup/schedule_detail_confirm/parts/present_member.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'behind_and_early_setting_controller.dart';
 
 class BehindAndEarlySetting extends ConsumerWidget {
   const BehindAndEarlySetting({super.key});
@@ -10,12 +10,8 @@ class BehindAndEarlySetting extends ConsumerWidget {
   //絶対書く
   Widget build(BuildContext context, WidgetRef ref) {
     final double deviceHight = MediaQuery.of(context).size.height;
-    final List productsList = [
-      Icons.sentiment_satisfied_alt_rounded,
-      Icons.sentiment_satisfied,
-      Icons.sentiment_neutral,
-      Icons.sentiment_dissatisfied,
-    ];
+    final List productList = ProductList().productList;
+
     return Padding(
       padding: EdgeInsets.only(left: 32, right: 32, bottom: deviceHight * 0.02),
       child: Center(
@@ -94,7 +90,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                               onTap: () {},
                               child: Column(
                                 children: [
-                                  Icon(productsList[0]),
+                                  Icon(productList[0]),
                                   const Text("出席"),
                                 ],
                               ),
@@ -103,7 +99,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                               onTap: () {},
                               child: Column(
                                 children: [
-                                  Icon(productsList[1]),
+                                  Icon(productList[1]),
                                   const Text("早退"),
                                 ],
                               ),
@@ -111,7 +107,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                             GestureDetector(
                               child: Column(
                                 children: [
-                                  Icon(productsList[2]),
+                                  Icon(productList[2]),
                                   const Text("遅刻"),
                                 ],
                               ),
@@ -120,7 +116,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                               onTap: () {},
                               child: Column(
                                 children: [
-                                  Icon(productsList[3]),
+                                  Icon(productList[3]),
                                   const Text("欠席"),
                                 ],
                               ),
