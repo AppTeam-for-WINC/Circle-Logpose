@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/pages/home/home_page.dart';
-import '../../../database/schedule.dart';
+import '../../../database/schedule/schedule_controller.dart';
 // import 'schedule_create_popup.dart';
 
 class ScheduleCreatePopup extends ConsumerStatefulWidget {
@@ -26,7 +26,7 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
 
   //schedule_create_controllerにて後ほど、管理する。
   void showTeamPicker(BuildContext context) {
-    showCupertinoModalPopup(
+    showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
@@ -69,7 +69,7 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                 onPressed: () {
                   Navigator.pop(
                     context,
-                    CupertinoPageRoute(
+                    CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                       builder: (context) => const HomePage(),
                     ),
                   );
@@ -113,8 +113,8 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                 onChanged: (title) async {
                   // タイトルをデータベースに保存
                   if (user != null) {
-                    String uid = user!.uid;
-                    Map<String, dynamic> titleData = {"schedule_title": title};
+                    final uid = user!.uid;
+                    final titleData = {'schedule_title': title};
                     // uidをdocIdとして使って関数を呼び出す
                     updateDocumentData('schedule_info', uid, titleData, ref);
                   } else {

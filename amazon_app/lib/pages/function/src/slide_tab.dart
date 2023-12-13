@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Selection option for [SegmentedTabControl]
 @immutable
 class SegmentTab {
   const SegmentTab({
@@ -23,19 +22,13 @@ class SegmentTab {
   final int flex;
 
   /// Indicator color when this option is selected.
-  ///
-  /// Overrides [indicatorColor] from [SegmentedTabControl].
   final Color? color;
 
   /// Indicator gradient when this option is selected.
-  ///
-  /// Overrides [indicatorGradient] from [SegmentedTabControl].
   /// If this is specified, [color] has no effect.
   final Gradient? gradient;
 
   /// Text color when this option is selected.
-  ///
-  /// Overrides [selectedTabTextColor] from [SegmentedTabControl].
   final Color? selectedTextColor;
 
   /// [SegmentedTabControl] color when this option is selected.
