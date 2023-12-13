@@ -9,8 +9,8 @@ class BehindAndEarlySetting extends ConsumerWidget {
   @override
   //絶対書く
   Widget build(BuildContext context, WidgetRef ref) {
-    final double deviceHight = MediaQuery.of(context).size.height;
-    final List productList = ProductList().productList;
+    final deviceHight = MediaQuery.of(context).size.height;
+    final productList = ProductList().productList;
 
     return Padding(
       padding: EdgeInsets.only(left: 32, right: 32, bottom: deviceHight * 0.02),
