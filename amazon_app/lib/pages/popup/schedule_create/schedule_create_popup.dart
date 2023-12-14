@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/pages/home/home_page.dart';
-import '../../../database/schedule/schedule_controller.dart';
+import '../../../database/schedule/schedule/schedule_controller.dart';
 // import 'schedule_create_popup.dart';
 
 class ScheduleCreatePopup extends ConsumerStatefulWidget {
