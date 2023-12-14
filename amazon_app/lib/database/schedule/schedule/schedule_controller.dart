@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../riverpod.dart';
+import '../../riverpod.dart';
 import '/database/authentication.dart';
 import 'schedule.dart';
 
@@ -59,14 +59,9 @@ class ScheduleController {
   }
 
   ///Get all schedule database.
-  Future<List<Schedule>> readAll(String groupId) async {
+  static Future<List<Schedule>> readAll(String groupId) async {
     final QuerySnapshot snapshot = await db.collection(collectionPath)
-      .where(
-        {
-          'group_id',
-        },
-        isEqualTo: groupId,
-      ).get();
+      .where('group_id',isEqualTo: groupId,).get();
 
     final schedules = snapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>?;
@@ -108,11 +103,11 @@ class ScheduleController {
   }
 
   //Get selected schedule database.
-  Future<Schedule> read(String documentId) async {
+  static Future<Schedule> read(String documentId) async {
     final snapshot = await db.collection(collectionPath).doc(documentId).get();
     final data = snapshot.data();
     if (data == null) {
-      throw Exception('documentId not founded.');
+      throw Exception('documentId not found.');
     }
 
     //型が正しいかどうかチェック。
@@ -173,56 +168,30 @@ class ScheduleController {
 
   ///Update scheule database.
   ///Group ID can't be changed.
-  Future<void> update({
+  static Future<void> update({
     required String groupId,
     required String documentId,
-    String? title,
-    String? place,
-    Color? color,
-    String? detail,
-    DateTime? startAt,
-    DateTime? endAt,
+    required String title,
+    required String? place,
+    required Color color,
+    required String? detail,
+    required DateTime startAt,
+    required DateTime endAt,
   }
   ) async {
-
-    final updateData = <String, dynamic>{};
-
-    if (title != null) {
-      updateData['title'] = title;
-    }
-
-    if (place != null) {
-      updateData['place'] = place;
-    }
-
-    if (color != null) {
-      updateData['color'] = color.toString();
-    }
-
-    if (detail != null) {
-      updateData['detail'] = detail;
-    }
-
-    if (startAt != null) {
-      updateData['start_at'] = Timestamp.fromDate(startAt);
-    }
-
-    if (endAt != null) {
-      updateData['end_at'] = Timestamp.fromDate(endAt);
-    }
+    final updateData = <String, dynamic>{
+      'title': title,
+      'place': place,
+      'color': color.toString(),
+      'detail': detail,
+      'start_at': Timestamp.fromDate(startAt),
+      'end_at': Timestamp.fromDate(endAt),
+    };
 
     await db.collection(collectionPath).doc(documentId).update(updateData);
   }
 
-  ///Update all schedule database.
-  Future<void> updateAll(String documentId) async {
-    await db.collection(collectionPath).doc(documentId).update({
-      //Update data.
-    });
-  }
-
-  ///Delete all schedule database
-  Future<void> deleteAll(String documentId) async {
+  static Future<void> delete(String documentId) async {
     await db.collection(collectionPath).doc(documentId).delete();
   }
 
