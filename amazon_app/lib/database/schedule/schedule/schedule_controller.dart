@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../riverpod.dart';
-import '/database/authentication.dart';
+// import '/database/authentication.dart';
 import 'schedule.dart';
 
 
@@ -18,6 +18,11 @@ class ScheduleController {
 
   ///schedule path
   static const collectionPath = 'schedules';
+
+  /// FirestoreのTimestampからDateTimeに変換
+  static DateTime? convertTimestampToDateTime(dynamic timestamp) {
+    return timestamp is Timestamp ? timestamp.toDate() : null;
+  }
 
   ///Create schudule database.
   ///Return created schedule document ID.
@@ -42,18 +47,14 @@ class ScheduleController {
     ///Get created server time.
     final createdAt = FieldValue.serverTimestamp();
 
-    ///Exchanged DateTime to Timestamp.
-    final startTimestamp = Timestamp.fromDate(startAt);
-    final endTimestamp = Timestamp.fromDate(endAt);
-
     await doc.set({
       'group_id': groupId,
       'title': title,
       'color': colorToString,
       'place': place,
       'detail': detail,
-      'start_at': startTimestamp,
-      'end_at': endTimestamp,
+      'start_at': startAt,
+      'end_at': endAt,
       'created_at': createdAt,
     });
   }
@@ -79,12 +80,12 @@ class ScheduleController {
 
       final documentId = doc.id;
       final title = data['title'] as String;
-      final color = data['color'] as String;
+      final color = data['color'] as Color;
       final place = data['place'] as String?;
       final detail = data['detail'] as String?;
-      final startAt = data['start_at'] as Timestamp;
-      final endAt = data['end_at'] as Timestamp;
-      final createdAt = data['created_at'] as Timestamp;
+      final startAt = data['start_at'] as DateTime;
+      final endAt = data['end_at'] as DateTime;
+      final createdAt = data['created_at'] as DateTime?;
       
       return Schedule(
         groupId: groupId,
@@ -127,8 +128,8 @@ class ScheduleController {
     }
 
     var color = data['color'];
-    if (color is! String) {
-      color = color.toString();
+    if (color is! Color) {
+      color as Color;
     }
 
     var detail = data['detail'];
@@ -136,25 +137,22 @@ class ScheduleController {
       detail = detail.toString();
     }
 
-    var startAt = data['start_at'];
-    if (startAt is! Timestamp) {
+    var startAt = convertTimestampToDateTime(data['start_at']);
+    if (startAt is! DateTime) {
       startAt = null;
-      throw Exception('Error: start_at is not exist.');
+      throw Exception('Error: start_at is not valid.');
     }
 
-    var endAt = data['end_at'];
-    if (endAt is! Timestamp) {
+    var endAt = convertTimestampToDateTime(data['end_at']);
+    if (endAt is! DateTime) {
       endAt = null;
-      throw Exception('Error: end_at is not exist.');
+      throw Exception('Error: start_at is not valid.');
     }
 
-    var createdAt = data['created_at'];
-    if (createdAt is! Timestamp) {
-      createdAt = null;
-      throw Exception('Error: created_at is not exist.');
-    }
+    final createdAt = convertTimestampToDateTime(data['created_at']);
 
     return Schedule(
+      documentId: documentId,
       groupId: groupId,
       title: title,
       place: place,
@@ -200,146 +198,9 @@ class ScheduleController {
 
   }
 
-  
 }
 
 //StreamProvider #######################
-
-
-
-// class Sample extends ConsumerWidget{
-//   const Sample({super.key});
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final service = FirestoreService().create();
-//     return Text('');
-//   }
-// }
-
-
-///関数の説明　三本
-// Future createSchedule(
-//   String groupId,
-//   String title,
-//   String color,
-//   String? place,
-//   String? detail,
-//   DateTime startAt,
-//   DateTime endAt,
-//   WidgetRef ref,
-// ) async {
-//   try {
-//     //uuidを生成。
-//     const uuid = Uuid();
-//     final docId = (uuid.v4).toString();
-
-//     //指定したコレクション（schedules データベース）を取得し、idを設定。
-//     DocumentReference documentReference =
-//         FirebaseFirestore.instance.collection('schedules').doc(docId);
-
-//     //追加するデータを指定。
-//     Map<String?, dynamic> addData = {
-//       'group_id': groupId,
-//       'title': title,
-//       'color': color,
-//       'place': place,
-//       'detail': detail,
-//       'start_at': startAt,
-//       'end_at': endAt,
-//     };
-
-//     //データを追加。
-//     await documentReference.set(addData);
-//     FirebaseFirestore.instance.collection('schedules').add();
-    
-//     debugPrint('予定を作成しました。');
-//   } catch (error) {
-//     debugPrint('予定の作成に失敗しました。 $error');
-//   }
-// }
-
-
-// Future <Map<String?, dynamic>> getSchedule(
-//   String id,
-//   WidgetRef ref,
-// ) async {
-//   try {
-//     DocumentSnapshot scheduleInfo =
-//         await FirebaseFirestore.instance.collection('schedules').doc(id).get();
-
-//     String groupId = scheduleInfo['group_id'];
-//     String title = scheduleInfo['title'];
-//     Color color = scheduleInfo['color'];
-//     String? place = scheduleInfo['place'];
-//     String? detail = scheduleInfo['detail'];
-//     String startAt = scheduleInfo['start_at'];
-//     String endAt = scheduleInfo['end_at'];
-
-
-//     DocumentSnapshot<Map<String, dynamic>> groupInfo = await getGroupInfo(groupId);
-
-//     String groupName = groupInfo['name'];
-//     String groupImage = groupInfo['image'];
-    
-//     debugPrint('予定の取得に成功しました。');
-//     return {
-//       'scheduleId': id, 
-//       'groupId': groupId, 
-//       'title': title, 
-//       'color': color,
-//       'place': place,
-//       'detail': detail,
-//       'startAt': startAt,
-//       'endAt': endAt,
-//       'groupName': groupName,
-//       'groupImage': groupImage,
-//     };
-//   } catch (error) {
-//     debugPrint('予定を取得することができませんでした。 $error');
-//     return {'error': error};
-//   }
-// }
-
-
-// Future createMemberCondition() async {
-
-// }
-
-
-// Future inputMemberCondition(
-//   String id,
-//   String scheduleId,
-//   String userId,
-//   bool attendance,
-//   bool leaveEarly,
-//   bool lateness,
-//   bool absence,
-//   DateTime? startAt,
-//   DateTime? endAt,
-//   WidgetRef ref,
-// ) async {
-//   try {
-//     DocumentReference memberCondition =
-//         FirebaseFirestore.instance.collection('membercondition').doc(id);
-
-//     DocumentSnapshot getScheduleField =
-//         await FirebaseFirestore.instance.collection('schedules').doc(scheduleId).get();
-
-//     Map<>
-//     await memberCondition.update(updateCondition);
-
-//   } catch (error) {
-
-//   }
-// }
-
-
-
-
-
-
-
-
 
 
 
@@ -375,71 +236,71 @@ Future<bool> updateDocumentData(String collectionName, String docId,
   }
 }
 
-class DatabasesPage extends ConsumerWidget {
-  const DatabasesPage({Key? key});
+// class DatabasesPage extends ConsumerWidget {
+//   const DatabasesPage({Key? key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    return CupertinoApp(
-      home: CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Firebase 操作ページ'),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CupertinoButton.filled(
-                onPressed: () async {
-                  try {
-                    User? user = _auth.currentUser;
+//     return CupertinoApp(
+//       home: CupertinoPageScaffold(
+//         navigationBar: const CupertinoNavigationBar(
+//           middle: Text('Firebase 操作ページ'),
+//         ),
+//         child: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: [
+//               CupertinoButton.filled(
+//                 onPressed: () async {
+//                   try {
+//                     User? user = _auth.currentUser;
 
-                    if (user == null) {
-                      UserCredential userCredential =
-                          await _auth.signInWithEmailAndPassword(
-                        email: 'sample@gmail.com',
-                        password: 'aiueo12345',
-                      );
-                      print('userInfo: ${userCredential.user}');
-                      user = userCredential.user;
-                    }
+//                     if (user == null) {
+//                       UserCredential userCredential =
+//                           await _auth.signInWithEmailAndPassword(
+//                         email: 'sample@gmail.com',
+//                         password: 'aiueo12345',
+//                       );
+//                       print('userInfo: ${userCredential.user}');
+//                       user = userCredential.user;
+//                     }
 
-                    if (user != null) {
-                      // 以下はデータを追加する作業まず、Map型のデータ(今回はloginData)を定義する。
-                      // 次に、updataDocumentData関数を使いデータをfirestoreに追加する。()内については56行目あたりに書いてある。
-                      Map<String, dynamic> loginData = {"user_name": "test"};
-                      print(await updateDocumentData(
-                          'user_info', user.uid, loginData, ref));
+//                     if (user != null) {
+//                       // 以下はデータを追加する作業まず、Map型のデータ(今回はloginData)を定義する。
+//                       // 次に、updataDocumentData関数を使いデータをfirestoreに追加する。()内については56行目あたりに書いてある。
+//                       Map<String, dynamic> loginData = {"user_name": "test"};
+//                       print(await updateDocumentData(
+//                           'user_info', user.uid, loginData, ref));
 
-                      // 以下はデータを取得する作業まず、Map型のデータにgetDocumentData関数を使って定義する。()内については56行目あたりに書いてある。
-                      // 次に、dynamic型にMap型で取得したデータのうち使うデータ(今回はuser_name)を指定し定義する。
-                      Map<String, dynamic>? documentData =
-                          await getDocumentData('user_info', user.uid, ref);
-                      dynamic user_name = documentData!['user_name'];
-                      print(user_name);
-                    } else {
-                      print('ユーザーは認証されていません。');
-                    }
-                  } catch (e) {
-                    print('サインインでエラーが発生しました: $e');
-                  }
-                },
-                child: Text('アカウント情報表示'),
-              ),
-              SizedBox(height: 20),
-              CupertinoButton(
-                onPressed: () {
-                  createAccount("sample@gmail.com", "aiueo12345");
-                },
-                child: Text('アカウント作成'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//                       // 以下はデータを取得する作業まず、Map型のデータにgetDocumentData関数を使って定義する。()内については56行目あたりに書いてある。
+//                       // 次に、dynamic型にMap型で取得したデータのうち使うデータ(今回はuser_name)を指定し定義する。
+//                       Map<String, dynamic>? documentData =
+//                           await getDocumentData('user_info', user.uid, ref);
+//                       dynamic user_name = documentData!['user_name'];
+//                       print(user_name);
+//                     } else {
+//                       print('ユーザーは認証されていません。');
+//                     }
+//                   } catch (e) {
+//                     print('サインインでエラーが発生しました: $e');
+//                   }
+//                 },
+//                 child: Text('アカウント情報表示'),
+//               ),
+//               SizedBox(height: 20),
+//               CupertinoButton(
+//                 onPressed: () {
+//                   createAccount("sample@gmail.com", "aiueo12345");
+//                 },
+//                 child: Text('アカウント作成'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
