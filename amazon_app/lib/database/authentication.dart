@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'riverpod.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'riverpod.dart';
 
 Future<bool> createAccount(String mailAddress, String password) async {
   try {
@@ -33,33 +33,33 @@ Future<bool> loginUser(String email, String password) async {
   }
 }
 
-// 以下はデータを取得する関数
-// getDocumentData(コレクション(user_info or group_info or Schedule_info),docId(user.uid or primaryGropuId))でMap型のデータを取得できる。
-// user.uidは登録したユーザーの固有のID
-Future<Map<String, dynamic>?> getDocumentData(
-    String collectionName, String docId, WidgetRef ref) async {
-      final firestore = ref.watch(firestoreProvider);
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentReference userDoc =
-          firestore.collection(collectionName).doc(docId);
-      DocumentSnapshot document = await userDoc.get();
+// // 以下はデータを取得する関数
+// // getDocumentData(コレクション(user_info or group_info or Schedule_info),docId(user.uid or primaryGropuId))でMap型のデータを取得できる。
+// // user.uidは登録したユーザーの固有のID
+// Future<Map<String, dynamic>?> getDocumentData(
+//     String collectionName, String docId, WidgetRef ref) async {
+//       final firestore = ref.watch(firestoreProvider);
+//   try {
+//     User? user = FirebaseAuth.instance.currentUser;
+//     if (user != null) {
+//       DocumentReference userDoc =
+//           firestore.collection(collectionName).doc(docId);
+//       DocumentSnapshot document = await userDoc.get();
 
-      if (document.exists) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        print('データの取得に成功しました: $data');
-        return data;
-      } else {
-        print('ドキュメントが存在しません。');
-        return null;
-      }
-    } else {
-      print('ユーザーがログインしていません。');
-      return null;
-    }
-  } catch (error) {
-    print('データの取得中にエラーが発生しました: $error');
-    return null;
-  }
-}
+//       if (document.exists) {
+//         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+//         print('データの取得に成功しました: $data');
+//         return data;
+//       } else {
+//         print('ドキュメントが存在しません。');
+//         return null;
+//       }
+//     } else {
+//       print('ユーザーがログインしていません。');
+//       return null;
+//     }
+//   } catch (error) {
+//     print('データの取得中にエラーが発生しました: $error');
+//     return null;
+//   }
+// }

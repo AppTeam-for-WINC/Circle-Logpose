@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Schedule {
   Schedule({
@@ -24,7 +24,7 @@ class Schedule {
 
   ///Color
   ///When used, it must be converted to the Color type.
-  final String color;
+  final Color color;
 
   ///Place
   final String? place;
@@ -33,11 +33,11 @@ class Schedule {
   final String? detail;
 
   ///Start time
-  final Timestamp startAt;
+  final DateTime startAt;
 
   ///End time
-  final Timestamp endAt;
+  final DateTime endAt;
 
   ///Created database time.
-  final Timestamp? createdAt;
+  final DateTime? createdAt;
 }

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Group {
   Group({
     this.documentId,
@@ -26,5 +24,5 @@ class Group {
   final String? adminKey;
 
   ///created time
-  final Timestamp? createdAt;
+  final DateTime? createdAt;
 }

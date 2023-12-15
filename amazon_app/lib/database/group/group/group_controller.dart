@@ -13,14 +13,10 @@ class GroupController {
   ///Create group database.
   ///Return created group document ID.
   static Future<void> create(
-    ///Named parameters
-  {
-    required String name,
-    String? image,
-  }) async {
+    String name, String image,
+  ) async {
     ///Create new document ID
     final doc = db.collection(collectionPath).doc();
-    final imageToString = image.toString();
 
     ///Create new membershipkey
     final membershipKey = uuid.v4();
@@ -33,7 +29,7 @@ class GroupController {
 
     await doc.set({
       'name': name,
-      'image': imageToString,
+      'image': image,
       'membership_key': membershipKey,
       'admin_key': adminKey,
       'created_at': createdAt,
@@ -52,7 +48,7 @@ class GroupController {
 
       final name = data['name'] as String;
       final image = data['image'] as String;
-      final createdAt = data['created_at'] as Timestamp;
+      final createdAt = data['created_at'] as DateTime?;
 
       return Group(
         documentId: doc.id,
@@ -78,7 +74,7 @@ class GroupController {
     final image = data['image'] as String;
     final membershipKey = data['membership_key'] as String;
     final adminKey = data['admin_key'] as String;
-    final createdAt = data['created_at'] as Timestamp;
+    final createdAt = data['created_at'] as DateTime?;
 
     return Group(
       documentId: documentId,
