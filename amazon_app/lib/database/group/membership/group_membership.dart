@@ -1,5 +1,5 @@
 class GroupMembership {
-  GroupMembership({
+  const GroupMembership({
     this.documentId,
     required this.groupId,
     required this.userId,

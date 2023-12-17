@@ -37,7 +37,7 @@ class GroupSettingHome extends ConsumerStatefulWidget {
 
 class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
       child: Center(
@@ -51,11 +51,12 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
+                    onTap: () async {
+                      await Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                        MaterialPageRoute<MaterialPageRoute<dynamic>>(
+                          builder: (context) => const HomePage(),
+                        ),
                       );
                     },
                     child: Row(
@@ -140,13 +141,12 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                                 Icons.east,
                                 size: 25,
                                 color: Color(0xFF6D6D6D),
-                              )
+                              ),
                             ],
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                          },
+                          onTap: () {},
                           child: Container(
                             width: 80,
                             height: 80,
@@ -248,15 +248,15 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                     top: -15,
                     right: -15,
                     child: CupertinoButton(
-                      onPressed: () {
-                        showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Center(
-                            child: ShowMemberAddPopup(),
-                          );
-                        },
-                      );
+                      onPressed: () async {
+                        await showCupertinoModalPopup<ShowMemberAddPopup>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const Center(
+                              child: ShowMemberAddPopup(),
+                            );
+                          },
+                        );
                       },
                       child: Container(
                         width: 44,
@@ -320,10 +320,10 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                               width: 354,
                               height: 180,
                               padding: const EdgeInsets.only(
-                                  top: 10, right: 5, left: 5, bottom: 5),
+                                  top: 10, right: 5, left: 5, bottom: 5,),
                               child: GridView.builder(
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 3,
                                   mainAxisSpacing: 20,
@@ -343,15 +343,15 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                       top: 10,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                          showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Center(
-                            child: ScheduleCreatePopup(),
+                        onTap: () async {
+                          await showCupertinoModalPopup<ScheduleCreatePopup>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const Center(
+                                child: ScheduleCreatePopup(),
+                              );
+                            },
                           );
-                        },
-                      );
                         },
                         child: Container(
                           width: 44,
@@ -374,8 +374,7 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                       top: 60,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                        },
+                        onTap: () {},
                         child: Container(
                           width: 44,
                           height: 44,
@@ -401,16 +400,14 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
               height: 20,
             ),
             CupertinoButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               color: const Color(0xFF7B61FF),
               borderRadius: BorderRadius.circular(30),
               child: SizedBox(
                 width: 117,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
+                    DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.white,

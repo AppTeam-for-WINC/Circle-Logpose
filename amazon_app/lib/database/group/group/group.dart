@@ -1,5 +1,5 @@
 class Group {
-  Group({
+  const Group({
     this.documentId,
     required this.name,
     required this.image,

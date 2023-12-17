@@ -1,5 +1,5 @@
 class GroupAdmin {
-  GroupAdmin({
+  const GroupAdmin({
     this.documentId,
     required this.groupId,
     required this.userId,

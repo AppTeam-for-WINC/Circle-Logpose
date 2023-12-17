@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MemberCondition {
-  MemberCondition({
+  const MemberCondition({
     required this.scheduleId,
     required this.userId,
     this.documentId,

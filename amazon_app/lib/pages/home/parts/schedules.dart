@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 import '../../popup/behind_and_early_setting/behind_and_early_setting.dart';
+import '../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
 class ScheduleCard extends ConsumerWidget {
-  const ScheduleCard({
-    Key? key,
-  }) : super(key: key);
+  const ScheduleCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,12 +58,14 @@ class ScheduleCard extends ConsumerWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const ScheduleDetailConfirm();
-                                });
+                          onTap: () async {
+                            await showCupertinoModalPopup<
+                                ScheduleDetailConfirm>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const ScheduleDetailConfirm();
+                              },
+                            );
                           },
                           child: const SizedBox(
                             width: 117,
@@ -131,8 +131,9 @@ class ScheduleCard extends ConsumerWidget {
                         InkWell(
                           // highlightColor: const Color(0xFFFBCEFF),
                           highlightColor: Colors.pink,
-                          onTap: () {
-                            showCupertinoModalPopup(
+                          onTap: () async {
+                            await showCupertinoModalPopup<
+                                BehindAndEarlySetting>(
                               context: context,
                               builder: (BuildContext context) {
                                 return const Center(
@@ -169,8 +170,9 @@ class ScheduleCard extends ConsumerWidget {
                         ),
                         InkWell(
                           highlightColor: const Color(0xFFFBCEFF),
-                          onTap: () {
-                            showCupertinoModalPopup(
+                          onTap: () async {
+                            await showCupertinoModalPopup<
+                                BehindAndEarlySetting>(
                               context: context,
                               builder: (BuildContext context) {
                                 return const Center(

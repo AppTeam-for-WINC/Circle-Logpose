@@ -1,26 +1,47 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'dart:js_interop';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'riverpod.dart';
 
-Future<bool> createAccount(String mailAddress, String password) async {
+import 'user/user/user_controller.dart';
+
+///How to manage email.
+///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
+
+
+class AuthenticationController {
+
+}
+Future<bool> createAccount(String email, String password) async {
   try {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.createUserWithEmailAndPassword(
-      email: mailAddress,
+    final auth = FirebaseAuth.instance;
+    final userCredential = await auth.createUserWithEmailAndPassword(
+      email: email,
       password: password,
     );
-    print('アカウントの作成に成功しました');
+
+    final userId = userCredential.user?.uid ?? '';
+    if (userId == '') {
+      debugPrint('Error: Failed to create account.');
+      return false;
+    }
+    
+    await UserController.create(userId: userId, email: email);
+    debugPrint('アカウントの作成に成功しました。 $userId');
     return true;
-  } catch (error) {
-    print('アカウントの作成中にエラーが発生しました: $error');
+  } on FirebaseAuthException catch (error) {
+    debugPrint('アカウントの作成中にエラーが発生しました: $error');
     return false;
   }
 }
 
+
 Future<bool> loginUser(String email, String password) async {
   try {
-    FirebaseAuth auth = FirebaseAuth.instance;
+    final auth = FirebaseAuth.instance;
     await auth.signInWithEmailAndPassword(
       email: email,
       password: password,
@@ -32,6 +53,30 @@ Future<bool> loginUser(String email, String password) async {
     return false;
   }
 }
+
+
+///Watching whether users remain logged in.
+///True is signed in.
+///False is signed out.
+Stream<bool> userLoginState(String userId) async* {
+  await for (final user in FirebaseAuth.instance.authStateChanges()) {
+    if (user == null) {
+      debugPrint('User is currently signed out!');
+      yield false;
+    } else if (user.uid == userId) {
+      debugPrint('User is signed in!');
+      yield true;
+    } else {
+      debugPrint('Error, or a different user is signed in.');
+    }
+  }
+}
+
+
+
+
+
+
 
 // // 以下はデータを取得する関数
 // // getDocumentData(コレクション(user_info or group_info or Schedule_info),docId(user.uid or primaryGropuId))でMap型のデータを取得できる。

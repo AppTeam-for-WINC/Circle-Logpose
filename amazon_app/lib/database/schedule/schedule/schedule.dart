@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Schedule {
-  Schedule({
+  const Schedule({
     required this.groupId,
     this.documentId,
     required this.title,
