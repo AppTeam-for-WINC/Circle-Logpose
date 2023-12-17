@@ -1,5 +1,5 @@
-class UserDB {
-  UserDB({
+class UserProfile {
+  const UserProfile({
     required this.documentId,
     this.name,
     this.image,

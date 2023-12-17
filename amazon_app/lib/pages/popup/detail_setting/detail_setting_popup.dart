@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future detailpopupController(BuildContext context, WidgetRef ref) async {
-  showCupertinoModalPopup(
+Future<dynamic> detailPopupController(
+    BuildContext context, WidgetRef ref,) async {
+  await showCupertinoModalPopup<DetailSettingPopup>(
     context: context,
     builder: (BuildContext context) {
       return const DetailSettingPopup();
-    });
+    },
+  );
 }
 
 class DetailSettingPopup extends ConsumerStatefulWidget {
@@ -22,7 +24,7 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
   final picker = ImagePicker();
   // File? _image;
   String userName = '';
-  Future _getImage() async {
+  Future<void> _getImage() async {
     // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     // setState(() {
     //   if (pickedFile != null) {
@@ -33,8 +35,8 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceH = MediaQuery.of(context).size.height;
-    final double deviceW = MediaQuery.of(context).size.width;
+    final deviceH = MediaQuery.of(context).size.height;
+    final deviceW = MediaQuery.of(context).size.width;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -348,10 +350,10 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                       ),
                     ],
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async{
+                    await Navigator.push(
                       context,
-                      CupertinoPageRoute(
+                      CupertinoPageRoute<HomePage>(
                         builder: (context) => const HomePage(),
                       ),
                     );
@@ -410,10 +412,10 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                       ),
                     ],
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async{
+                    await Navigator.push(
                       context,
-                      CupertinoPageRoute(
+                      CupertinoPageRoute<HomePage>(
                         builder: (context) => const HomePage(),
                       ),
                     );
@@ -472,10 +474,10 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
                       ),
                     ],
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async{
+                    await Navigator.push(
                       context,
-                      CupertinoPageRoute(
+                      CupertinoPageRoute<HomePage>(
                         builder: (context) => const HomePage(),
                       ),
                     );
@@ -489,29 +491,6 @@ class _SignupScreenState extends ConsumerState<DetailSettingPopup> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

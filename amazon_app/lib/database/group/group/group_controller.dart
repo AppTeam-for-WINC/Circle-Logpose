@@ -67,14 +67,13 @@ class GroupController {
     final snapshot = await db.collection(collectionPath).doc(documentId).get();
     final data = snapshot.data();
     if (data == null) {
-      throw Exception('documentId not founded.');
+      throw Exception('documentId not found.');
     }
 
     final name = data['name'] as String;
     final image = data['image'] as String;
     final membershipKey = data['membership_key'] as String;
     final adminKey = data['admin_key'] as String;
-    final createdAt = data['created_at'] as DateTime?;
 
     return Group(
       documentId: documentId,
@@ -82,12 +81,11 @@ class GroupController {
       image: image,
       membershipKey: membershipKey,
       adminKey: adminKey,
-      createdAt: createdAt,
     );
   }
 
   ///Update group imformation
-  static Future<void> updateGroup({
+  static Future<void> update({
     required String documentId,
     required String name,
     required String image,

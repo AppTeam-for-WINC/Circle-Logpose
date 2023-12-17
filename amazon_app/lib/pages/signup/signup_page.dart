@@ -2,7 +2,7 @@ import 'package:amazon_app/pages/login/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:amazon_app/database/authentication.dart';
+import 'package:amazon_app/database/old_authentication.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});

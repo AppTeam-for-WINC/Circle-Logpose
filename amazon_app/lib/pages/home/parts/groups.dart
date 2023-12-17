@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../group/setting/group_setting_page.dart';
 import '../../group/create/group_create_page.dart';
+import '../../group/setting/group_setting_page.dart';
 
 class GroupBox extends ConsumerWidget {
-  const GroupBox({
-    Key? key,
-  }) : super(key: key);
+  const GroupBox({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const GroupSettingPage()),
+          MaterialPageRoute<MaterialPageRoute<dynamic>>(
+              builder: (context) => const GroupSettingPage(),),
         );
       },
       child: Container(
@@ -28,7 +27,7 @@ class GroupBox extends ConsumerWidget {
           children: [
             Icon(Icons.rocket),
             Text(
-              "団体名",
+              '団体名',
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -99,10 +98,10 @@ class Group extends ConsumerWidget {
                 height: 55,
                 child: FloatingActionButton.extended(
                   backgroundColor: const Color(0xFF7B61FF),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      MaterialPageRoute<MaterialPageRoute<dynamic>>(
                           builder: (context) => const GroupCreatePage()),
                     );
                   },

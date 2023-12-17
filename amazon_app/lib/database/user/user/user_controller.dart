@@ -27,7 +27,7 @@ class UserController {
     });
   }
 
-  static Future<UserDB> read(String documentId) async {
+  static Future<UserProfile> read(String documentId) async {
     final snapshot = await db.collection(collectionPath).doc(documentId).get();
     final data = snapshot.data();
     if (data == null) {
@@ -49,7 +49,7 @@ class UserController {
       email = email.toString();
     }
 
-    return UserDB(
+    return UserProfile(
       documentId: documentId,
       name: name,
       image: image,
@@ -62,8 +62,7 @@ class UserController {
     String documentId,
     String name, 
     String image, 
-    String email,) 
-  async {
+  ) async {
     final updateData = <String, dynamic>{
       'name': name,
       'image': image,

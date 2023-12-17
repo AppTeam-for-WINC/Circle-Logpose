@@ -65,8 +65,8 @@ class AttendanceRecord extends ConsumerWidget {
                 height: 55,
                 child: FloatingActionButton.extended(
                   backgroundColor: const Color(0xFF7B61FF),
-                  onPressed: () {
-                    showCupertinoModalPopup(
+                  onPressed: () async{
+                    await showCupertinoModalPopup<ScheduleCreatePopup>(
                       context: context,
                       builder: (BuildContext context) {
                         return const Center(
