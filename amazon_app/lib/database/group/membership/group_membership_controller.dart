@@ -13,10 +13,12 @@ class GroupMembershipController {
     required String userId,
   }) async {
     final doc = db.collection(collectionPath).doc();
+    final createdAt = FieldValue.serverTimestamp();
     
     await doc.set({
       'group_id': groupId,
       'user_id': userId,
+      'created_at': createdAt,
     });
   }
 
@@ -30,11 +32,13 @@ class GroupMembershipController {
       }
 
       final userId = data['user_id'] as String;
+      final createdAt = data['created_at'] as DateTime?;
       
       return GroupMembership(
         documentId: doc.id,
         userId: userId,
         groupId: groupId,
+        createdAt: createdAt,
       );
     }).toList();
 
