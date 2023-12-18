@@ -44,7 +44,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   colors: [
                 Color.fromRGBO(116, 85, 255, 0.56),
                 Color.fromRGBO(43, 0, 234, 0.18),
-              ])),
+              ],),),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -106,20 +106,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     border: Border(
                         left: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         top: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         right: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         bottom: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        )),
+                        ),),
                     //borderRadius: BorderRadius.all(30.0),
                   ),
                 ),
@@ -159,20 +155,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     border: Border(
                         left: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         top: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         right: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
                         ),
                         bottom: BorderSide(
                           color: Color.fromRGBO(123, 97, 255, 1),
-                          width: 1,
-                        )),
+                        ),),
                   ),
                 ),
               ),
@@ -183,17 +175,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 margin: const EdgeInsets.all(23),
                 child: CupertinoButton(
                     color: const Color.fromRGBO(80, 49, 238, 0.9),
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(30),
                     onPressed: () async {
-                      bool a = await loginUser(
-                          emailController.text, passwordController.text);
+                      final a = await loginUser(
+                          emailController.text, passwordController.text,
+                      );
                       if (a) {
                         // String confirmusername = 'user_name';
                         // String confirmpassword = 'password';
-                        Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) => const HomePage()));
+                        await Navigator.push(
+                          context,
+                          CupertinoPageRoute<HomePage>(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
                         // if (confirmusername == username) {
                         //   if (confirmpassword == password) {
                         //     // Navigator.push(
