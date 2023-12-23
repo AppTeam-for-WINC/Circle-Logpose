@@ -33,7 +33,7 @@ class MinLength8Validation implements Validation<Object> {
 
   String getStringInvalidRequiredMessage() =>
       ErrorMessages.requiredInvalidMessage;
-  String getMaxLengthInvalidMessage() => ErrorMessages.minLength8InvalidMessage;
+  String getMinLengthInvalidMessage() => ErrorMessages.minLength8InvalidMessage;
 }
 
 class RequiredValidation implements Validation<Object> {

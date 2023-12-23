@@ -25,7 +25,7 @@ class AuthController {
       }
 
       await UserController.create(userId: userId, email: email);
-      debugPrint('Success: Created new account. $userId');
+      debugPrint('Success: Created new account. user_id: $userId');
       return true;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error: Failed to create account. $error');
@@ -35,19 +35,6 @@ class AuthController {
 
   ///Login user's account.
   Future<bool> loginToAccount(String email, String password) async {
-    // // メールアドレスのバリデーション
-    // if (!RegExp(r'\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b').hasMatch(email)) {
-    //   debugPrint('無効なメールアドレスです。');
-    //   return false;
-    // }
-
-    // // パスワードのバリデーション（例：最低6文字）
-    // if (password.length < 6) {
-    //   debugPrint('パスワードは6文字以上である必要があります。');
-    //   return false;
-    // }
-    // Sample validation.
-
     try {
       await auth.signInWithEmailAndPassword(
         email: email,

@@ -12,9 +12,6 @@ import 'user/user/user_controller.dart';
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
 
 
-class AuthenticationController {
-
-}
 Future<bool> createAccount(String email, String password) async {
   try {
     final auth = FirebaseAuth.instance;
