@@ -404,7 +404,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
                       radius: widget.radius,
                       splashColor: widget.splashColor,
                       splashHighlightColor: widget.splashHighlightColor,
-                      callbackBuilder: _onTabTap(),
+                      callbackBuilder: _onTabTap(currentTab),
                       tabs: widget.tabs,
                       currentIndex: _internalIndex,
                       textStyle: textStyle.copyWith(
@@ -479,11 +479,17 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
     );
   }
 
-  VoidCallback Function(int)? _onTabTap() {
+  VoidCallback Function(int)? _onTabTap(SegmentTab tab) {
     if (_controller!.indexIsChanging) {
       return null;
     }
     return (int index) => () {
+          if (tab.name == '出席簿') {
+            print('出席簿Tap');
+          }
+          if (tab.name == '団体') {
+            print('団体Tap');
+          }
           _internalAnimationController.stop();
           _controller!.animateTo(index);
         };
@@ -621,12 +627,6 @@ class _Labels extends StatelessWidget {
                       child: Container(
                         child: tab.label,
                       ),
-                      // child: Text(
-                      //   tab.label,
-                      //   overflow: TextOverflow.clip,
-                      //   maxLines: 1,
-                      //   textAlign: TextAlign.center,
-                      // ),
                     ),
                   ),
                 ),

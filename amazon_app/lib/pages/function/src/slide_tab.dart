@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class SegmentTab {
   const SegmentTab({
     required this.label,
+    this.name,
     this.color,
     this.gradient,
     this.selectedTextColor,
@@ -17,6 +18,8 @@ class SegmentTab {
 
   /// This text will be displayed on tab.
   final Widget label;
+
+  final String? name;
 
   /// Tab flex factor
   final int flex;
