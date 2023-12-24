@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../function/slide_segmented_tab_control.dart';
 import 'parts/attendance.dart';
 import 'parts/groups.dart';
@@ -18,7 +19,7 @@ class HomePage extends ConsumerWidget {
             child: Stack(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 0),
+                  padding: EdgeInsets.zero,
                   child: TabBarView(
                     children: [
                       AttendanceRecord(),
@@ -43,10 +44,11 @@ class HomePage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(999),
                           boxShadow: const [
                             BoxShadow(
-                                blurRadius: 4,
-                                spreadRadius: 3,
-                                offset: Offset(0, 3),
-                                color: Color.fromRGBO(0, 0, 0, 0.25)),
+                              blurRadius: 4,
+                              spreadRadius: 3,
+                              offset: Offset(0, 3),
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                            ),
                           ],
                           border: Border.all(
                             color: const Color.fromRGBO(4, 49, 57, 0.05),
@@ -71,7 +73,8 @@ class HomePage extends ConsumerWidget {
                                     height: 33,
                                     decoration: BoxDecoration(
                                       color: const Color.fromRGBO(
-                                          255, 255, 255, 0.20),
+                                        255, 255, 255, 0.20,
+                                      ),
                                       borderRadius: BorderRadius.circular(33),
                                     ),
                                     child: const Center(
@@ -81,7 +84,8 @@ class HomePage extends ConsumerWidget {
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: Color.fromRGBO(
-                                              255, 255, 255, 0.80),
+                                            255, 255, 255, 0.80,
+                                          ),
                                         ),
                                       ),
                                     ),
