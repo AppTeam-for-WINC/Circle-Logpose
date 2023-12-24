@@ -52,29 +52,6 @@ Future<bool> loginUser(String email, String password) async {
 }
 
 
-///Watching whether users remain logged in.
-///True is signed in.
-///False is signed out.
-Stream<bool> userLoginState(String userId) async* {
-  await for (final user in FirebaseAuth.instance.authStateChanges()) {
-    if (user == null) {
-      debugPrint('User is currently signed out!');
-      yield false;
-    } else if (user.uid == userId) {
-      debugPrint('User is signed in!');
-      yield true;
-    } else {
-      debugPrint('Error, or a different user is signed in.');
-    }
-  }
-}
-
-
-
-
-
-
-
 // // 以下はデータを取得する関数
 // // getDocumentData(コレクション(user_info or group_info or Schedule_info),docId(user.uid or primaryGropuId))でMap型のデータを取得できる。
 // // user.uidは登録したユーザーの固有のID
