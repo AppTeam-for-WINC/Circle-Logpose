@@ -63,6 +63,7 @@ class HomePage extends ConsumerWidget {
                           height: 55,
                           tabs: [
                             SegmentTab(
+                              name: '出席簿',
                               textColor: const Color.fromRGBO(0, 0, 0, 1),
                               label: Row(
                                 mainAxisAlignment:
@@ -107,6 +108,7 @@ class HomePage extends ConsumerWidget {
                               color: const Color(0xFF7B61FF),
                             ),
                             SegmentTab(
+                              name: '団体',
                               label: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
