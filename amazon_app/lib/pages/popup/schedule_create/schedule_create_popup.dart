@@ -26,64 +26,6 @@ class ScheduleCreatePopup extends ConsumerStatefulWidget {
 }
 
 class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
-  // void showTeamPicker(BuildContext context, ScheduleCreationData schedule) {
-  //   showCupertinoModalPopup<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Container(
-  //         height: 200,
-  //         width: 360,
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.circular(10),
-  //         ),
-  //         child: Column(
-  //           children: <Widget>[
-  //             Container(
-  //               padding: EdgeInsets.zero,
-  //               height: 140,
-  //               margin: const EdgeInsets.only(
-  //                 top: 10,
-  //               ),
-  //               child: CupertinoPicker(
-  //                 itemExtent: 40,
-  //                 onSelectedItemChanged: (int index) {
-  //                   setState(() {
-  //                     schedule
-  //                       ..selectedGroupId = schedule.groupIds![index]
-  //                       ..selectedGroupName = schedule.groupNames![index];
-  //                   });
-  //                 },
-  //                 children: List.generate(
-  //                   schedule.groupNames!.length,
-  //                   (index) => Center(
-  //                     child: Text(schedule.groupNames![index]),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //             CupertinoButton(
-  //               padding: const EdgeInsets.only(
-  //                 bottom: 6,
-  //               ),
-  //               alignment: Alignment.bottomLeft,
-  //               child: const Text(
-  //                 'Close',
-  //                 style: TextStyle(
-  //                   fontSize: 15,
-  //                   color: Colors.blue,
-  //                 ),
-  //               ),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +110,18 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                         ),
                         CupertinoButton(
                           onPressed: () {
-                            setState(() {
-                              showTeamPicker(context, schedule); // 団体選択の処理
-                            });
+                            showTeamPicker(
+                              context,
+                              schedule,
+                              (int index) {
+                                setState(() {
+                                  schedule
+                                    ..selectedGroupId = schedule.groupIds![index]
+                                    ..selectedGroupName =
+                                        schedule.groupNames![index];
+                                });
+                              },
+                            );
                           },
                           child: Text(
                             schedule.selectedGroupName!,

@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../schedule_create_controller.dart';
 
-void showTeamPicker(BuildContext context, ScheduleCreationData schedule) {
+void showTeamPicker(
+  BuildContext context,
+  ScheduleCreationData schedule,
+  void Function(int)? onSelectedItemChanged,
+) {
   showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) {
+      //以下の内容をクラスで囲えばよろしい。
       return Container(
         height: 200,
         width: 360,
@@ -24,16 +29,7 @@ void showTeamPicker(BuildContext context, ScheduleCreationData schedule) {
               ),
               child: CupertinoPicker(
                 itemExtent: 40,
-                onSelectedItemChanged: (int index) {
-                  schedule
-                    ..selectedGroupId = schedule.groupIds![index]
-                    ..selectedGroupName = schedule.groupNames![index];
-                  // setState(() {
-                  //   schedule
-                  //     ..selectedGroupId = schedule.groupIds![index]
-                  //     ..selectedGroupName = schedule.groupNames![index];
-                  // });
-                },
+                onSelectedItemChanged: onSelectedItemChanged,
                 children: List.generate(
                   schedule.groupNames!.length,
                   (index) => Center(
