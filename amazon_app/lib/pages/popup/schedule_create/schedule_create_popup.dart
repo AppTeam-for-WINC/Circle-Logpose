@@ -1,57 +1,94 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/pages/home/home_page.dart';
+
 import '../../../database/schedule/schedule/schedule_controller.dart';
-// import 'schedule_create_popup.dart';
+import '../schedule_create/schedule_create_controller.dart';
+import '/pages/home/home_page.dart';
+import 'parts/group_picker.dart';
+
+//schedule.groupNames! など、無理やりnullじゃないことを指定しているが、
+//いちいちめんどくさいので、schedule_create_controller.dartファイルでnull checkを後で行おう!
+
+//showTesmPicker()メソッドは、別ファイルに記述する。
+
+//onPressed(): 内のコードを別ファイルに記述する。
+
+//スケジュールのカラー設定なくね？
+
+//スケジュールの日付、時刻設定なくね？
 
 class ScheduleCreatePopup extends ConsumerStatefulWidget {
   const ScheduleCreatePopup({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   ConsumerState createState() => ScheduleCreatePopupState();
 }
 
 class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
-  User? user = FirebaseAuth.instance.currentUser;
-  TextEditingController titleController = TextEditingController();
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
-  TextEditingController placeController = TextEditingController();
-  TextEditingController detailController = TextEditingController();
-  String selectedTeam = 'Team1';
-  List<String> teams = ['Team1', 'Team2', 'Team3', 'Team4'];
-
-  //schedule_create_controllerにて後ほど、管理する。
-  void showTeamPicker(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 200,
-          child: CupertinoPicker(
-            itemExtent: 40,
-            onSelectedItemChanged: (int index) {
-              setState(() {
-                selectedTeam = teams[index];
-              });
-            },
-            children: List.generate(
-              teams.length,
-              (index) => Center(
-                child: Text(teams[index]),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // void showTeamPicker(BuildContext context, ScheduleCreationData schedule) {
+  //   showCupertinoModalPopup<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         height: 200,
+  //         width: 360,
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //         child: Column(
+  //           children: <Widget>[
+  //             Container(
+  //               padding: EdgeInsets.zero,
+  //               height: 140,
+  //               margin: const EdgeInsets.only(
+  //                 top: 10,
+  //               ),
+  //               child: CupertinoPicker(
+  //                 itemExtent: 40,
+  //                 onSelectedItemChanged: (int index) {
+  //                   setState(() {
+  //                     schedule
+  //                       ..selectedGroupId = schedule.groupIds![index]
+  //                       ..selectedGroupName = schedule.groupNames![index];
+  //                   });
+  //                 },
+  //                 children: List.generate(
+  //                   schedule.groupNames!.length,
+  //                   (index) => Center(
+  //                     child: Text(schedule.groupNames![index]),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             CupertinoButton(
+  //               padding: const EdgeInsets.only(
+  //                 bottom: 6,
+  //               ),
+  //               alignment: Alignment.bottomLeft,
+  //               child: const Text(
+  //                 'Close',
+  //                 style: TextStyle(
+  //                   fontSize: 15,
+  //                   color: Colors.blue,
+  //                 ),
+  //               ),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final schedule = ref.watch(scheduleCreationDataProvider);
+
     return CupertinoPopupSurface(
       child: SizedBox(
         width: 360,
@@ -66,18 +103,19 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
             ),
             // ポップアップ下部の白色↑
             CupertinoButton(
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                    CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xFF7B61FF),
-                )),
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                  CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFF7B61FF),
+              ),
+            ),
             // カラー選択↓
             const Positioned(
               top: 50,
@@ -97,31 +135,17 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
               width: 270, // 横幅を指定
               child: CupertinoTextField(
                 placeholder: 'タイトルを追加',
+                controller: schedule.titleController,
                 placeholderStyle: const TextStyle(color: Colors.grey),
                 decoration: const BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(
-                      color: CupertinoColors.black,
-                      width: 1.0,
-                    ),
+                    bottom: BorderSide(),
                   ),
                 ),
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (title) async {
-                  // タイトルをデータベースに保存
-                  if (user != null) {
-                    final uid = user!.uid;
-                    final titleData = {'schedule_title': title};
-                    // uidをdocIdとして使って関数を呼び出す
-                    updateDocumentData('schedule_info', uid, titleData, ref);
-                  } else {
-                    // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
-                    debugPrint('ユーザーがサインインしていません');
-                  }
-                },
               ),
             ),
             // タイトル追加↑
@@ -144,10 +168,12 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                         ),
                         CupertinoButton(
                           onPressed: () {
-                            showTeamPicker(context); // 団体選択の処理
+                            setState(() {
+                              showTeamPicker(context, schedule); // 団体選択の処理
+                            });
                           },
                           child: Text(
-                            selectedTeam,
+                            schedule.selectedGroupName!,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Color(0xFF7B61FF),
@@ -158,28 +184,32 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                     ),
                   ),
                   // 団体選択↑
+
                   // 活動日時↓
                   //ここのContainer切り出す
                   Container(
-                    margin: const EdgeInsets.only(),
-                    child: Row(children: [
-                      const Icon(
-                        Icons.schedule,
-                        size: 25,
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 8),
-                        child: const Text(
-                          '2023/10/19   13:00-14:00',
-                          style: TextStyle(
-                            color: Colors.black,
+                    margin: EdgeInsets.zero,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.schedule,
+                          size: 25,
+                          color: Colors.grey,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          child: const Text(
+                            '2023/10/19   13:00-14:00',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                   ),
                   // 活動日時↑
+
                   // 場所↓
                   //ここのContainer切り出す
                   Container(
@@ -196,6 +226,8 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                           width: 100,
                           child: CupertinoTextField(
                             placeholder: '場所を追加',
+                            controller: schedule.placeController,
+                            // controller: placeController,
                             placeholderStyle:
                                 const TextStyle(color: Colors.grey),
                             decoration: const BoxDecoration(
@@ -209,24 +241,13 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                               fontSize: 16,
                               color: Colors.black,
                             ),
-                            onChanged: (place) async {
-                              // タイトルをデータベースに保存
-                              if (user != null) {
-                                String uid = user!.uid;
-                                Map<String, dynamic> placeData = {"schedule_place": place};
-                                // uidをdocIdとして使って関数を呼び出す
-                                updateDocumentData('schedule_info', uid, placeData, ref);
-                              } else {
-                                // userがnullの場合、サインインしていない旨の処理を行うか、エラーハンドリングを行う
-                                debugPrint('ユーザーがサインインしていません');
-                              }
-                            },
                           ),
                         ),
                       ],
                     ),
                   ),
                   // 場所↑
+
                   // 詳細のコンテナ↓
                   //ここのContainer切り出す
                   Container(
@@ -248,6 +269,8 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                               margin: const EdgeInsets.only(left: 8),
                               width: 100,
                               child: CupertinoTextField(
+                                controller: schedule.detailController,
+                                // controller: detailController,
                                 placeholder: '詳細を追加',
                                 placeholderStyle:
                                     const TextStyle(color: Colors.grey),
@@ -262,14 +285,6 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                                   fontSize: 16,
                                   color: Colors.black,
                                 ),
-                                onChanged: (content) async {
-                                  // タイトルをデータベースに保存
-                                  String uid = user!.uid;
-                                  Map<String, dynamic> detailData = {"schedule_content": content};
-                                  // uidをdocIdとして使って関数を呼び出す
-                                  updateDocumentData('schedule_info', uid, detailData, ref);
-                                  
-                                },
                               ),
                             ),
                             // 詳細テキスト↑
@@ -280,6 +295,50 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                     ),
                   ),
                   // 詳細のコンテナ↑
+                  //作成ボタン↓
+                  Container(
+                    width: 100,
+                    height: 50,
+                    margin: const EdgeInsets.only(
+                      right: 90,
+                      left: 90,
+                      top: 60,
+                      bottom: 10,
+                    ),
+                    alignment: Alignment.bottomCenter,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xFF7B61FF),
+                    ),
+                    child: CupertinoButton(
+                      child: const Text(
+                        'create',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onPressed: () async {
+                        final title = schedule.titleController.text;
+                        final place = schedule.placeController.text;
+                        final detail = schedule.detailController.text;
+                        await ScheduleController.create(
+                          groupId: schedule.selectedGroupId!,
+                          title: title,
+                          color: schedule.selectedColor,
+                          startAt: schedule.selectedDate,
+                          endAt: schedule.selectedDate.add(
+                            const Duration(
+                              hours: 3,
+                            ),
+                          ),
+                          place: place,
+                          detail: detail,
+                        );
+                      },
+                    ),
+                  ),
+                  //作成ボタン↑
                 ],
               ),
             ),

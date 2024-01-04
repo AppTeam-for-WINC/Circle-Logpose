@@ -1,67 +1,41 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/database/group/group/group.dart';
+import '/database/group/group/group_controller.dart';
 
-// riverpod
-//状態を管理することができる。
-//setState　とかで使われる、画面が描画されている間、ずっと実行されるアクション（動的状態）
+final scheduleCreationDataProvider =
+    Provider<ScheduleCreationData>(ScheduleCreationData.new);
 
-//https://riverpod.dev/ja/docs/essentials/first_request
+class ScheduleCreationData {
+  ScheduleCreationData(this.ref) {
+    loadGroups();
+  }
 
+  final Ref ref;
+  User? user = FirebaseAuth.instance.currentUser;
+  TextEditingController titleController = TextEditingController();
+  Color selectedColor = Colors.white;
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+  TextEditingController placeController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
 
+  List<Group>? groups;
+  List<String>? groupNames;
+  List<String?>? groupIds;
+  List<String>? groupImages;
+  String? selectedGroupId;
+  String? selectedGroupName;
 
-// String selectedTeam = 'Team1';
-// List<String> teams = ['Team1', 'Team2', 'Team3', 'Team4'];
-
-//   //schedule_create_controllerにて後ほど、管理する。
-//   void showTeamPicker(BuildContext context) {
-//     showCupertinoModalPopup(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 200,
-//           child: CupertinoPicker(
-//             itemExtent: 40,
-//             onSelectedItemChanged: (int index) {
-//               setState(() {
-//                 selectedTeam = teams[index];
-//               });
-//             },
-//             children: List.generate(
-//               teams.length,
-//               (index) => Center(
-//                 child: Text(teams[index]),
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-
-
-
-
-// void showTeamPicker(BuildContext context, List<String> teams, String selectedTeam, Function(String) onSelected) {
-//   showCupertinoModalPopup(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return SizedBox(
-//         height: 200,
-//         child: CupertinoPicker(
-//           itemExtent: 40,
-//           onSelectedItemChanged: (int index) {
-//             onSelected(teams[index]);
-//           },
-//           children: List.generate(
-//             teams.length,
-//             (index) => Center(
-//               child: Text(teams[index]),
-//             ),
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
+  //No need to debugPrint(apple); apple is too expensiver!!!
+  Future<void> loadGroups() async {
+    groups = await GroupController.readAll();
+    groupNames = groups?.map((group) => group.name).toList();
+    groupIds = groups?.map((group) => group.documentId).toList();
+    groupImages = groups?.map((group) => group.image).toList();
+    final apple = ref.refresh(scheduleCreationDataProvider);
+    debugPrint(apple.toString());
+  }
+}
