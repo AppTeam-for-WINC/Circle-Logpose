@@ -110,6 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ],
                     ),
                   ),
+                  
                   //↓メールアドレス文字
                   Container(
                     width: 346,
