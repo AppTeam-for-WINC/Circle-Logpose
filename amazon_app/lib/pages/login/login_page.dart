@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'login_controller.dart';
 import 'parts/progress_indicator.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
   @override
-  Widget build(BuildContext context) {
-    return const CupertinoApp(
-      home: LoginScreen(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoPageScaffold(
+      child: LoginScreen(),
     );
   }
 }
@@ -60,178 +60,182 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               //↓戻るボタン
               Positioned(
-                top: 20,
-                left: 20,
-                width: 30,
-                height: 30,
+                top: 30,
+                left: 15,
+                width: 40,
+                height: 40,
                 child: CupertinoButton(
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          // ignore: inference_failure_on_instance_creation
-                          CupertinoPageRoute(
-                              builder: (context) => const StartPage()));
-                    }),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async{
+                    Navigator.pop(
+                      context,
+                      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                        builder: (context) => const StartPage(),
+                      ),
+                    );
+                  },
+                ),
               ),
 
               //↑戻るボタン
               const LoginProgressIndicator(),
 
-              Stack(children: <Widget>[
-                Container(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.all(23),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          //↓アイコン
-                          Icon(
-                            CupertinoIcons.calendar_today,
-                            color: Colors.white,
-                            size: 103,
-                          ),
-                          //↑アイコン
-                          //↓アプリ名
-                          Text(
-                            'Amazon',
-                            style: TextStyle(
+              Stack(
+                children: <Widget>[
+                  Container(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.all(23),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            //↓アイコン
+                            Icon(
+                              CupertinoIcons.calendar_today,
                               color: Colors.white,
-                              fontSize: 40,
-                              fontStyle: FontStyle.normal,
+                              size: 103,
                             ),
-                          ),
-                          //↑アプリ名
-                        ],
+                            //↑アイコン
+                            //↓アプリ名
+                            Text(
+                              'Amazon',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                            //↑アプリ名
+                          ],
+                        ),
                       ),
-                    ),
 
-                    //↓メールアドレス文字
-                    Container(
-                      width: 346,
-                      margin: const EdgeInsets.all(13.5),
-                      child: const Text(
-                        'メールアドレス',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    //↑メールアドレス文字
-                    //↓Email form
-                    SizedBox(
-                      width: 346,
-                      height: 46,
-                      child: CupertinoTextField(
-                        controller: emailController,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(9),
-                            topRight: Radius.circular(9),
-                            bottomLeft: Radius.circular(9),
-                            bottomRight: Radius.circular(9),
-                          ),
-                          color: Colors.transparent,
-                          border: Border(
-                            left: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            top: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            right: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            bottom: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
+                      //↓メールアドレス文字
+                      Container(
+                        width: 346,
+                        margin: const EdgeInsets.all(13.5),
+                        child: const Text(
+                          'メールアドレス',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
                         ),
                       ),
-                    ),
-                    //↑Email form
+                      //↑メールアドレス文字
+                      //↓Email form
+                      SizedBox(
+                        width: 346,
+                        height: 46,
+                        child: CupertinoTextField(
+                          controller: emailController,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(9),
+                              topRight: Radius.circular(9),
+                              bottomLeft: Radius.circular(9),
+                              bottomRight: Radius.circular(9),
+                            ),
+                            color: Colors.transparent,
+                            border: Border(
+                              left: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              top: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              right: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              bottom: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //↑Email form
 
-                    Container(
-                      width: 346,
-                      margin: const EdgeInsets.all(13.5),
-                      child: const Text(
-                        'パスワード',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-
-                    //Password form
-                    SizedBox(
-                      width: 346,
-                      height: 46,
-                      child: CupertinoTextField(
-                        controller: passwordController,
-                        obscureText: true,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(9),
-                            topRight: Radius.circular(9),
-                            bottomLeft: Radius.circular(9),
-                            bottomRight: Radius.circular(9),
-                          ),
-                          color: Colors.transparent,
-                          border: Border(
-                            left: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            top: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            right: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
-                            bottom: BorderSide(
-                              color: Color.fromRGBO(123, 97, 255, 1),
-                            ),
+                      Container(
+                        width: 346,
+                        margin: const EdgeInsets.all(13.5),
+                        child: const Text(
+                          'パスワード',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
                         ),
                       ),
-                    ),
 
-                    Container(
-                      height: 47,
-                      width: 195,
-                      margin: const EdgeInsets.all(23),
-                      child: CupertinoButton(
-                        color: const Color.fromRGBO(80, 49, 238, 0.9),
-                        borderRadius: BorderRadius.circular(30),
-                        onPressed: isLoading
-                            ? null
-                            : () async {
-                                await _login();
-                              },
-                        child: const Text('login'),
+                      //Password form
+                      SizedBox(
+                        width: 346,
+                        height: 46,
+                        child: CupertinoTextField(
+                          controller: passwordController,
+                          obscureText: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(9),
+                              topRight: Radius.circular(9),
+                              bottomLeft: Radius.circular(9),
+                              bottomRight: Radius.circular(9),
+                            ),
+                            color: Colors.transparent,
+                            border: Border(
+                              left: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              top: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              right: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                              bottom: BorderSide(
+                                color: Color.fromRGBO(123, 97, 255, 1),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ]),
+
+                      Container(
+                        height: 47,
+                        width: 195,
+                        margin: const EdgeInsets.all(23),
+                        child: CupertinoButton(
+                          color: const Color.fromRGBO(80, 49, 238, 0.9),
+                          borderRadius: BorderRadius.circular(30),
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  await _login();
+                                },
+                          child: const Text('login'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
