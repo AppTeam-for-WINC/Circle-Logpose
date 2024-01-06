@@ -1,4 +1,5 @@
 import 'package:amazon_app/pages/popup/schedule_detail_confirm/parts/present_member.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'behind_and_early_setting_controller.dart';
@@ -7,8 +8,31 @@ class BehindAndEarlySetting extends ConsumerWidget {
   const BehindAndEarlySetting({super.key});
 
   @override
-  //絶対書く
   Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoApp(
+      home: BehindAndEarlySettingState(),
+    );
+  }
+}
+
+class BehindAndEarlySettingState extends ConsumerStatefulWidget {
+  const BehindAndEarlySettingState({super.key});
+
+  @override
+  ConsumerState<BehindAndEarlySettingState> createState() {
+    return _BehindAndEarlySettingState();
+  }
+}
+
+class _BehindAndEarlySettingState
+    extends ConsumerState<BehindAndEarlySettingState> {
+  bool _isPinkAttendance = false;
+  bool _isPinkLeavingEarly = false;
+  bool _isPinkBehindTime = false;
+  bool _isPinkAbsence = false;
+  @override
+  //絶対書く
+  Widget build(BuildContext context) {
     final deviceHight = MediaQuery.of(context).size.height;
     final productList = ProductList().productList;
 
@@ -33,12 +57,19 @@ class BehindAndEarlySetting extends ConsumerWidget {
                   decoration:
                       const BoxDecoration(color: Color(0xFFD8EB61)), //上の黄緑
                 ),
-                const Positioned(
-                  top: 70,
+                Positioned(
+                  top: 60,
                   left: 30,
-                  child: Icon(
-                    Icons.groups,
-                    size: 60,
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('images/group_img.jpeg'),
+                      ),
+                    ),
                   ),
                 ),
                 Container(
@@ -69,7 +100,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                             Container(
                               margin: const EdgeInsets.only(left: 8),
                               child: const Text(
-                                "参加メンバー |",
+                                '参加メンバー |',
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -81,44 +112,157 @@ class BehindAndEarlySetting extends ConsumerWidget {
                       ),
                       //ここのContainer切り出す
                       Container(
-                        margin: const EdgeInsets.only(top: 70, right: 30),
+                        margin: const EdgeInsets.only(top: 70, right: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  Icon(productList[0]),
-                                  const Text("出席"),
-                                ],
+                            Container(
+                              width: 77,
+                              height: 77,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  debugPrint('pressed');
+                                  setState(() {
+                                    _isPinkAttendance = !_isPinkAttendance;
+                                    _isPinkLeavingEarly = false;
+                                    _isPinkBehindTime = false;
+                                    _isPinkAbsence = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: _isPinkAttendance
+                                      ? const Color(0xFFFBCEFF)
+                                      : Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      productList[0],
+                                      color: Colors.black,
+                                    ),
+                                    const Text(
+                                      '出席',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  Icon(productList[1]),
-                                  const Text("早退"),
-                                ],
+                            Container(
+                              width: 77,
+                              height: 77,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  debugPrint('pressed2');
+                                  setState(() {
+                                    _isPinkAttendance = false;
+                                    _isPinkLeavingEarly = !_isPinkLeavingEarly;
+                                    _isPinkBehindTime = false;
+                                    _isPinkAbsence = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: _isPinkLeavingEarly
+                                      ? const Color(0xFFFBCEFF)
+                                      : Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      productList[1],
+                                      color: Colors.black,
+                                    ),
+                                    const Text(
+                                      '早退',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            GestureDetector(
-                              child: Column(
-                                children: [
-                                  Icon(productList[2]),
-                                  const Text("遅刻"),
-                                ],
+                            Container(
+                              width: 77,
+                              height: 77,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  debugPrint('pressed3');
+                                  setState(() {
+                                    _isPinkAttendance = false;
+                                    _isPinkLeavingEarly = false;
+                                    _isPinkBehindTime = !_isPinkBehindTime;
+                                    _isPinkAbsence = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: _isPinkBehindTime
+                                      ? const Color(0xFFFBCEFF)
+                                      : Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      productList[2],
+                                      color: Colors.black,
+                                    ),
+                                    const Text(
+                                      '遅刻',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  Icon(productList[3]),
-                                  const Text("欠席"),
-                                ],
+                            Container(
+                              width: 77,
+                              height: 77,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  debugPrint('pressed3');
+                                  setState(() {
+                                    _isPinkAttendance = false;
+                                    _isPinkLeavingEarly = false;
+                                    _isPinkBehindTime = false;
+                                    _isPinkAbsence = !_isPinkAbsence;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: _isPinkAbsence
+                                      ? const Color(0xFFFBCEFF)
+                                      : Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      productList[3],
+                                      color: Colors.black,
+                                    ),
+                                    const Text(
+                                      '欠席',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -133,7 +277,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
                           Container(
                             margin: const EdgeInsets.only(right: 80, top: 20),
                             child: const Text(
-                              "参加時間",
+                              '参加時間',
                               style: TextStyle(
                                 color: Colors.grey,
                               ),
