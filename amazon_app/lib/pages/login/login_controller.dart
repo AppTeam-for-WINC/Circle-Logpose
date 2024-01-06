@@ -11,7 +11,7 @@ void loadingJugeFunc(WidgetRef ref, {required bool judge}) {
   ref.watch(loadingJudgeProvider.notifier).state = judge;
 }
 
-Future<void> loginController(
+Future<String?> loginController(
   BuildContext context,
   WidgetRef ref,
   TextEditingController emailController,
@@ -59,6 +59,7 @@ Future<void> loginController(
     final errorMessage = const EmailValidation().emailInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailRequiredValidationJudge) {
@@ -66,6 +67,7 @@ Future<void> loginController(
         const RequiredValidation().getStringInvalidRequiredMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailMinLength8ValidationJudge) {
@@ -73,6 +75,7 @@ Future<void> loginController(
         const MinLength8Validation().getMinLengthInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailMaxLength32ValidationJudge) {
@@ -80,6 +83,7 @@ Future<void> loginController(
         const MaxLength32Validation().getMaxLengthInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordRequiredValidationJudge) {
@@ -87,6 +91,7 @@ Future<void> loginController(
         const RequiredValidation().getStringInvalidRequiredMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordMinLength8ValidationJudge) {
@@ -94,6 +99,7 @@ Future<void> loginController(
         const MinLength8Validation().getMinLengthInvalidMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordMaxLength32ValidationJudge) {
@@ -101,6 +107,7 @@ Future<void> loginController(
         const MaxLength32Validation().getMaxLengthInvalidMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (emailValidationJudge &&
@@ -113,13 +120,13 @@ Future<void> loginController(
     loadingJugeFunc(ref, judge: true);
     final loginSuccess = await AuthController.loginToAccount(email, password);
     loadingJugeFunc(ref, judge: false);
-    
+
     if (loginSuccess) {
       // Check if the widget is still in the tree.
       if (!isStillMounted()) {
-        return;
+        return null;
       }
-      
+
       //Do not need to modify this code.
       await Navigator.push(
         context,
@@ -129,4 +136,5 @@ Future<void> loginController(
       );
     }
   }
+  return null;
 }
