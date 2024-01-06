@@ -60,8 +60,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               //↓戻るボタン
               Positioned(
-                top: 0,
-                left: 0,
+                top: 20,
+                left: 20,
                 width: 30,
                 height: 30,
                 child: CupertinoButton(
@@ -82,153 +82,156 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               //↑戻るボタン
               const LoginProgressIndicator(),
 
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.all(23),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        //↓アイコン
-                        Icon(
-                          CupertinoIcons.calendar_today,
-                          color: Colors.white,
-                          size: 103,
-                        ),
-                        //↑アイコン
-                        //↓アプリ名
-                        Text(
-                          'Amazon',
-                          style: TextStyle(
+              Stack(children: <Widget>[
+                Container(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.all(23),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          //↓アイコン
+                          Icon(
+                            CupertinoIcons.calendar_today,
                             color: Colors.white,
-                            fontSize: 40,
-                            fontStyle: FontStyle.normal,
+                            size: 103,
                           ),
-                        ),
-                        //↑アプリ名
-                      ],
-                    ),
-                  ),
-                  
-                  //↓メールアドレス文字
-                  Container(
-                    width: 346,
-                    margin: const EdgeInsets.all(13.5),
-                    child: const Text(
-                      'メールアドレス',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
+                          //↑アイコン
+                          //↓アプリ名
+                          Text(
+                            'Amazon',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                          //↑アプリ名
+                        ],
                       ),
                     ),
-                  ),
-                  //↑メールアドレス文字
-                  //↓Email form
-                  SizedBox(
-                    width: 346,
-                    height: 46,
-                    child: CupertinoTextField(
-                      controller: emailController,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(9),
-                          topRight: Radius.circular(9),
-                          bottomLeft: Radius.circular(9),
-                          bottomRight: Radius.circular(9),
-                        ),
-                        color: Colors.transparent,
-                        border: Border(
-                          left: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          top: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          right: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          bottom: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  //↑Email form
 
-                  Container(
-                    width: 346,
-                    margin: const EdgeInsets.all(13.5),
-                    child: const Text(
-                      'パスワード',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-
-                  //Password form
-                  SizedBox(
-                    width: 346,
-                    height: 46,
-                    child: CupertinoTextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(9),
-                          topRight: Radius.circular(9),
-                          bottomLeft: Radius.circular(9),
-                          bottomRight: Radius.circular(9),
-                        ),
-                        color: Colors.transparent,
-                        border: Border(
-                          left: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          top: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          right: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
-                          bottom: BorderSide(
-                            color: Color.fromRGBO(123, 97, 255, 1),
-                          ),
+                    //↓メールアドレス文字
+                    Container(
+                      width: 346,
+                      margin: const EdgeInsets.all(13.5),
+                      child: const Text(
+                        'メールアドレス',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
                         ),
                       ),
                     ),
-                  ),
-
-                  Container(
-                    height: 47,
-                    width: 195,
-                    margin: const EdgeInsets.all(23),
-                    child: CupertinoButton(
-                      color: const Color.fromRGBO(80, 49, 238, 0.9),
-                      borderRadius: BorderRadius.circular(30),
-                      onPressed: isLoading
-                          ? null
-                          : () async {
-                              await _login();
-                            },
-                      child: const Text('login'),
+                    //↑メールアドレス文字
+                    //↓Email form
+                    SizedBox(
+                      width: 346,
+                      height: 46,
+                      child: CupertinoTextField(
+                        controller: emailController,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(9),
+                            topRight: Radius.circular(9),
+                            bottomLeft: Radius.circular(9),
+                            bottomRight: Radius.circular(9),
+                          ),
+                          color: Colors.transparent,
+                          border: Border(
+                            left: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            top: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            right: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                    //↑Email form
+
+                    Container(
+                      width: 346,
+                      margin: const EdgeInsets.all(13.5),
+                      child: const Text(
+                        'パスワード',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+
+                    //Password form
+                    SizedBox(
+                      width: 346,
+                      height: 46,
+                      child: CupertinoTextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(9),
+                            topRight: Radius.circular(9),
+                            bottomLeft: Radius.circular(9),
+                            bottomRight: Radius.circular(9),
+                          ),
+                          color: Colors.transparent,
+                          border: Border(
+                            left: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            top: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            right: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(123, 97, 255, 1),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      height: 47,
+                      width: 195,
+                      margin: const EdgeInsets.all(23),
+                      child: CupertinoButton(
+                        color: const Color.fromRGBO(80, 49, 238, 0.9),
+                        borderRadius: BorderRadius.circular(30),
+                        onPressed: isLoading
+                            ? null
+                            : () async {
+                                await _login();
+                              },
+                        child: const Text('login'),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
             ],
           ),
         ),

@@ -59,8 +59,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           child: Stack(
             children: [
               Positioned(
-                top: 0,
-                left: 0,
+                top: 20,
+                left: 20,
                 width: 30,
                 height: 30,
                 child: CupertinoButton(
