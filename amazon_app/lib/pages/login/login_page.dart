@@ -61,7 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               //↓戻るボタン
               Positioned(
                 top: 30,
-                left: 15,
+                left: 0,
                 width: 40,
                 height: 40,
                 child: CupertinoButton(
