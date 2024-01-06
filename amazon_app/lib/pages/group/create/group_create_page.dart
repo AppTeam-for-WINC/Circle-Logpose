@@ -1,7 +1,9 @@
 import 'package:amazon_app/pages/home/home_page.dart';
+import 'package:amazon_app/pages/popup/member_add/member_add_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 
 import 'parts/group_member.dart';
 
@@ -87,22 +89,38 @@ class GroupCreatePage extends ConsumerWidget {
                     ),
                     child: Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(60, 30, 80, 20),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(60, 30, 80, 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(
+                              const Icon(
                                 CupertinoIcons.arrow_clockwise,
                                 size: 80,
                               ),
-                              Icon(
-                                Icons.add,
+                              const Icon(
+                                Icons.arrow_forward,
                                 size: 50,
                               ),
-                              Icon(
-                                Icons.add_a_photo,
-                                size: 80,
+                              //imagepicker実装予定地
+                              GestureDetector(
+                                onTap: (){
+                                  
+                                },
+                                child: Container(
+                                width: 80,
+                                height: 80,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFD9D9D9),
+                                    borderRadius: BorderRadius.circular(40),),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color:Colors.white,
+                                      size: 25,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -111,8 +129,8 @@ class GroupCreatePage extends ConsumerWidget {
                           width: 272,
                           height: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
                             color: const Color.fromARGB(255, 244, 253, 194),
+                            borderRadius: BorderRadius.circular(40),
                             boxShadow: const [
                               BoxShadow(
                                 blurRadius: 3,
@@ -123,24 +141,14 @@ class GroupCreatePage extends ConsumerWidget {
                             ],
                           ),
                           child: const Padding(
-                            padding: EdgeInsets.only(left: 3),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 24,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    '団体名',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
+                            padding: EdgeInsets.only(left: 13),
+                            child: CupertinoTextField(
+                              prefix: Icon(Icons.add),
+                              style: TextStyle(fontSize: 18),
+                              placeholder: '団体名',
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                              ),
                             ),
                           ),
                         ),
@@ -276,38 +284,48 @@ class GroupCreatePage extends ConsumerWidget {
                 ],
               ),
               Positioned(
-                top: 410,
-                left: 355,
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
+                top: 380,
+                left: 340,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      const CircleBorder(),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xFFD8EB61)),
                   ),
                   child: const Icon(
                     Icons.person_remove,
                     color: Colors.black,
                     size: 20,
                   ),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<MaterialPageRoute<dynamic>>(
+                        builder: (context) => const ShowMemberAddPopup(),
+                      ),
+                    );
+                  },
                 ),
               ),
-              //追加ボタン
               Positioned(
-                top: 365,
-                left: 355,
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
+                top: 420,
+                left: 340,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      const CircleBorder(),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xFFEB6161)),
                   ),
                   child: const Icon(
-                    Icons.person_add,
+                    Icons.person_remove,
                     color: Colors.black,
                     size: 20,
                   ),
+                  onPressed: () async {
+                  
+                  },
                 ),
               ),
             ],
