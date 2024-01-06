@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'parts/progress_indicator.dart';
 import 'signup_controller.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends ConsumerWidget {
   const SignupPage({super.key});
   @override
-  Widget build(BuildContext context) {
-    return const CupertinoApp(
-      home: SignupScreen(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoPageScaffold(
+      child: SignupScreen(),
     );
   }
 }
@@ -59,23 +59,25 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           child: Stack(
             children: [
               Positioned(
-                top: 20,
-                left: 20,
-                width: 30,
-                height: 30,
+                top: 30,
+                left: 15,
+                width: 40,
+                height: 40,
                 child: CupertinoButton(
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          // ignore: inference_failure_on_instance_creation
-                          CupertinoPageRoute(
-                              builder: (context) => const StartPage()));
-                    }),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    Navigator.pop(
+                      context,
+                      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                        builder: (context) => const StartPage(),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SignupProgressIndicator(),
               Column(
@@ -210,9 +212,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     child: CupertinoButton(
                       color: const Color.fromRGBO(80, 49, 238, 0.9),
                       borderRadius: BorderRadius.circular(30),
-                      onPressed: isLoading ? null: () async {
-                        await _signup();
-                      },
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              await _signup();
+                            },
                       child: const Text('Sign up'),
                     ),
                   ),
