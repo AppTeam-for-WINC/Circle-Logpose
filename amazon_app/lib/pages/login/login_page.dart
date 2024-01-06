@@ -25,21 +25,38 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final errorMessageProvider = StateProvider<String?>((ref) => null);
   bool isLoading = false;
 
   Future<void> _login() async {
-    await loginController(
+    setState(() {
+      isLoading = true;
+    });
+
+    final String? errorMessage = await loginController(
       context,
       ref,
       emailController,
       passwordController,
       () => mounted,
     );
+
+    if (errorMessage != null) {
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+    } else {
+      ref.read(errorMessageProvider.notifier).state = null;
+      // 成功した場合の処理をここに書く
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    isLoading = ref.watch(loadingJudgeProvider);
+    final errorMessage = ref.watch(errorMessageProvider);
+    final isLoading = ref.watch(loadingJudgeProvider);
     return CupertinoApp(
       home: CupertinoPageScaffold(
         child: Container(
@@ -70,7 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     size: 25,
                     color: Colors.white,
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     Navigator.pop(
                       context,
                       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -115,6 +132,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                       ),
+
+                      if (errorMessage != null)
+                        Text(
+                          errorMessage.toString(),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 20),
+                        ),
 
                       //↓メールアドレス文字
                       Container(

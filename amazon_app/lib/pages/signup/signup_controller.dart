@@ -5,15 +5,13 @@ import '../login/login_page.dart';
 import '/database/auth/auth_controller.dart';
 import '/validation/validation.dart';
 
-
 final loadingJudgeProvider = StateProvider<bool>((ref) => false);
 
 void loadingJugeFunc(WidgetRef ref, {required bool judge}) {
   ref.watch(loadingJudgeProvider.notifier).state = judge;
 }
 
-
-Future<void> signupController(
+Future<String?> signupController(
   BuildContext context,
   WidgetRef ref,
   TextEditingController emailController,
@@ -61,6 +59,7 @@ Future<void> signupController(
     final errorMessage = const EmailValidation().emailInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailRequiredValidationJudge) {
@@ -68,6 +67,7 @@ Future<void> signupController(
         const RequiredValidation().getStringInvalidRequiredMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailMinLength8ValidationJudge) {
@@ -75,6 +75,7 @@ Future<void> signupController(
         const MinLength8Validation().getMinLengthInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!emailMaxLength32ValidationJudge) {
@@ -82,6 +83,7 @@ Future<void> signupController(
         const MaxLength32Validation().getMaxLengthInvalidMessage();
 
     debugPrint('emailError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordRequiredValidationJudge) {
@@ -89,6 +91,7 @@ Future<void> signupController(
         const RequiredValidation().getStringInvalidRequiredMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordMinLength8ValidationJudge) {
@@ -96,6 +99,7 @@ Future<void> signupController(
         const MinLength8Validation().getMinLengthInvalidMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (!passwordMaxLength32ValidationJudge) {
@@ -103,6 +107,7 @@ Future<void> signupController(
         const MaxLength32Validation().getMaxLengthInvalidMessage();
 
     debugPrint('passwordError: $errorMessage');
+    return errorMessage;
   }
 
   if (emailValidationJudge &&
@@ -117,12 +122,12 @@ Future<void> signupController(
     await AuthController.createAccount(email, password);
 
     loadingJugeFunc(ref, judge: false);
-    
+
     // Check if the widget is still in the tree.
     if (!isStillMounted()) {
-      return;
+      return null;
     }
-    
+
     //Do not need to modify this code.
     await Navigator.push(
       context,
@@ -131,4 +136,6 @@ Future<void> signupController(
       ),
     );
   }
+  return null;
 }
+

@@ -1,8 +1,8 @@
 import 'package:amazon_app/pages/start/start_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'parts/progress_indicator.dart';
 import 'signup_controller.dart';
 
@@ -25,21 +25,38 @@ class SignupScreen extends ConsumerStatefulWidget {
 class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final errorMessageProvider = StateProvider<String?>((ref) => null);
   bool isLoading = false;
 
   Future<void> _signup() async {
-    await signupController(
+    setState(() {
+      isLoading = true;
+    });
+
+    final String? errorMessage = await signupController(
       context,
       ref,
       emailController,
       passwordController,
       () => mounted,
     );
+
+    if (errorMessage != null) {
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+    } else {
+      ref.read(errorMessageProvider.notifier).state = null;
+      // 成功した場合の処理をここに書く
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(loadingJudgeProvider);
+    final errorMessage = ref.watch(errorMessageProvider);
     return CupertinoApp(
       home: CupertinoPageScaffold(
         child: Container(
@@ -60,7 +77,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             children: [
               Positioned(
                 top: 30,
-                left:0,
+                left: 0,
                 width: 40,
                 height: 40,
                 child: CupertinoButton(
@@ -107,6 +124,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     ),
                   ),
 
+                  //エラーメッセージ
+                  if (errorMessage != null)
+                    Text(
+                      errorMessage.toString(),
+                      style: const TextStyle(color: Colors.red, fontSize: 20),
+                    ),
+
                   Container(
                     width: 346,
                     margin: const EdgeInsets.all(13.5),
@@ -119,7 +143,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-
+                  
                   //Email form
                   SizedBox(
                     width: 346,
