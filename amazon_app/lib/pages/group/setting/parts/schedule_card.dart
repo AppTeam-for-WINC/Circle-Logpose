@@ -9,7 +9,7 @@ class ScheduleCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
       },
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: const Color.fromRGBO(216, 235, 97, 0.29),
           borderRadius: BorderRadius.circular(80),
