@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future filteringPopupController(BuildContext context) async {
+Future<dynamic> filteringPopupController(BuildContext context) async {
   showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -73,7 +73,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                       onPressed: () async{
                         await Navigator.push(
                             context,
-                            CupertinoPageRoute(
+                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                                 builder: (context) => const HomePage()));
                       },
                     ),
