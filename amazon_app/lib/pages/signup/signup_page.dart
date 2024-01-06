@@ -1,3 +1,4 @@
+import 'package:amazon_app/pages/start/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,6 +58,25 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           ),
           child: Stack(
             children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                width: 30,
+                height: 30,
+                child: CupertinoButton(
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          // ignore: inference_failure_on_instance_creation
+                          CupertinoPageRoute(
+                              builder: (context) => const StartPage()));
+                    }),
+              ),
               const SignupProgressIndicator(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,3 +1,4 @@
+import 'package:amazon_app/pages/start/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,22 +58,46 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           child: Stack(
             children: [
+              //↓戻るボタン
+              Positioned(
+                top: 0,
+                left: 0,
+                width: 30,
+                height: 30,
+                child: CupertinoButton(
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          // ignore: inference_failure_on_instance_creation
+                          CupertinoPageRoute(
+                              builder: (context) => const StartPage()));
+                    }),
+              ),
+
+              //↑戻るボタン
               const LoginProgressIndicator(),
+
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  //アイコン
                   Container(
                     margin: const EdgeInsets.all(23),
                     child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        //↓アイコン
                         Icon(
                           CupertinoIcons.calendar_today,
                           color: Colors.white,
                           size: 103,
                         ),
-
-                        //文字
+                        //↑アイコン
+                        //↓アプリ名
                         Text(
                           'Amazon',
                           style: TextStyle(
@@ -81,10 +106,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             fontStyle: FontStyle.normal,
                           ),
                         ),
+                        //↑アプリ名
                       ],
                     ),
                   ),
-
+                  //↓メールアドレス文字
                   Container(
                     width: 346,
                     margin: const EdgeInsets.all(13.5),
@@ -97,8 +123,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
-
-                  //Email form
+                  //↑メールアドレス文字
+                  //↓Email form
                   SizedBox(
                     width: 346,
                     height: 46,
@@ -133,6 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
+                  //↑Email form
 
                   Container(
                     width: 346,
