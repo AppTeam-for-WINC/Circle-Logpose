@@ -121,6 +121,10 @@ Future<String?> loginController(
     final loginSuccess = await AuthController.loginToAccount(email, password);
     loadingJugeFunc(ref, judge: false);
 
+    if (!loginSuccess) {
+      return 'Password or Email is not correct.';
+    }
+    
     if (loginSuccess) {
       // Check if the widget is still in the tree.
       if (!isStillMounted()) {
