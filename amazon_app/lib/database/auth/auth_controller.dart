@@ -34,6 +34,20 @@ class AuthController {
   }
 
   ///Login user's account.
+  // static Future<bool> loginToAccount(String email, String password) async {
+  //   try {
+  //     await auth.signInWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+
+  //     debugPrint('Success: Login to account.');
+  //     return true;
+  //   } on FirebaseAuthException catch (error) {
+  //     debugPrint('Error: Failed to login. $error');
+  //     return false;
+  //   }
+  // }
   static Future<bool> loginToAccount(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(
