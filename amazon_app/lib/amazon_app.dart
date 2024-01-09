@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/popup/account_setting_popup.dart';
+import 'package:amazon_app/pages/popup/account_setting_popup/account_setting_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'pages/group/create/group_create_page.dart';
 import 'pages/group/setting/group_setting_page.dart';
@@ -14,7 +14,7 @@ class AmazonApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       //ホームを指定、とりあえずアプリを起動時、スタート画面を表示させる設定にしています。
-      home: const StartPage(),
+      home: const AccountSettingPopup(),
 
       // パスを指定  例）　/home:　onPressed: () => Navigator.pushNamed(context, '/home'),　で押された際に指定されたパスに移動する。
       routes: {

@@ -1,18 +1,49 @@
+import 'dart:io';
+
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountSettingPopup extends ConsumerWidget {
   const AccountSettingPopup({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoPageScaffold(
+      child: AccountSettingScreen(),
+    );
+  }
+}
+
+class AccountSettingScreen extends ConsumerStatefulWidget {
+  const AccountSettingScreen({super.key});
+  @override
+  ConsumerState<AccountSettingScreen> createState() => AccountSettingState();
+}
+
+class AccountSettingState extends ConsumerState<AccountSettingScreen> {
+  File? image;
+
+  Future<void> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('failed:$e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
         width: 360,
-        height: 672,
+        height: 773,
         child: Container(
           width: double.infinity,
           height: double.infinity,
@@ -84,27 +115,29 @@ class AccountSettingPopup extends ConsumerWidget {
                     children: [
                       //個人アイコン
                       Container(
-                        margin: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 10,
-                        ),
-                        child: const Row(
+                        margin: const EdgeInsets.only(top:0),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.face,
                               size: 70,
                               color: Colors.grey,
                             ),
-                            Icon(
-                              Icons.keyboard_double_arrow_left,
+                            const Icon(
+                              Icons.arrow_forward,
                               size: 30,
                               color: Colors.grey,
                             ),
-                            Icon(
-                              Icons.collections,
-                              size: 60,
-                              color: Colors.grey,
+                            CupertinoButton(
+                              onPressed: pickImage,
+                              child: const SizedBox(
+                                child: Icon(
+                                  Icons.image,
+                                  size: 70,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -113,7 +146,11 @@ class AccountSettingPopup extends ConsumerWidget {
                       Container(
                         width: 178,
                         height: 38,
-                        margin: const EdgeInsets.only(top:10,),
+                        margin: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 20,
+                        ),
+                        padding: const EdgeInsets.only(left: 3),
                         decoration: BoxDecoration(
                           boxShadow: const [
                             BoxShadow(
@@ -126,21 +163,17 @@ class AccountSettingPopup extends ConsumerWidget {
                           color: const Color.fromARGB(255, 231, 238, 189),
                           borderRadius: BorderRadius.circular(80),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left:5,),
-                          child: CupertinoTextField(
-                            readOnly: true,
-                            enabled: false,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              backgroundBlendMode: BlendMode.dstIn,
-                            ),
-                            prefix: Icon(
-                              CupertinoIcons.text_cursor,
-                              color: Colors.black,
-                            ),
-                            placeholder: 'username',
+                        child: const CupertinoTextField(
+                          //ここにユーザーネーム変更のbackendの処理を書いて下さい。
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 231, 238, 189),
+                            backgroundBlendMode: BlendMode.dstIn,
                           ),
+                          prefix: Icon(
+                            CupertinoIcons.text_cursor,
+                            color: Colors.black,
+                          ),
+                          placeholder: 'username',
                         ),
                       ),
                     ],
