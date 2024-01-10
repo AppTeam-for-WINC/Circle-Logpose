@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
 import 'dart:ui';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<dynamic> filteringPopupController(BuildContext context) async {
-  showCupertinoModalPopup(
+  await showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
         return const GroupFilteringPopup();

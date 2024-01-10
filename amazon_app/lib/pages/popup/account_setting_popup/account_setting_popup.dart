@@ -1,29 +1,60 @@
+import 'dart:io';
+
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountSettingPopup extends ConsumerWidget {
   const AccountSettingPopup({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return const CupertinoPageScaffold(
+      child: AccountSettingScreen(),
+    );
+  }
+}
+
+class AccountSettingScreen extends ConsumerStatefulWidget {
+  const AccountSettingScreen({super.key});
+  @override
+  ConsumerState<AccountSettingScreen> createState() => AccountSettingState();
+}
+
+class AccountSettingState extends ConsumerState<AccountSettingScreen> {
+  File? image;
+
+  Future<void> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('failed:$e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
         width: 360,
-        height: 672,
+        height: 773,
         child: Container(
           width: double.infinity,
           height: double.infinity,
           color: const Color(0xFFF5F3FE),
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 15,
+              top: 55,
             ),
             child: Column(
               children: [
-                //一個目の緑
+                //ユーザー設定(title)
                 Container(
                   width: 178,
                   height: 38,
@@ -61,6 +92,7 @@ class AccountSettingPopup extends ConsumerWidget {
                 //１個目の白い箱
                 Container(
                   margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 10),
                   width: 360,
                   height: 180,
                   alignment: Alignment.topCenter,
@@ -81,37 +113,44 @@ class AccountSettingPopup extends ConsumerWidget {
                   ),
                   child: Column(
                     children: [
-                      //グループアイコン
+                      //個人アイコン
                       Container(
-                        margin: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 10,
-                        ),
-                        child: const Row(
+                        margin: const EdgeInsets.only(top:0),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.face,
                               size: 70,
                               color: Colors.grey,
                             ),
-                            Icon(
-                              Icons.keyboard_double_arrow_left,
+                            const Icon(
+                              Icons.arrow_forward,
                               size: 30,
                               color: Colors.grey,
                             ),
-                            Icon(
-                              Icons.collections,
-                              size: 60,
-                              color: Colors.grey,
+                            CupertinoButton(
+                              onPressed: pickImage,
+                              child: const SizedBox(
+                                child: Icon(
+                                  Icons.image,
+                                  size: 70,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      //緑の部分
+                      //ユーザーネーム変更所
                       Container(
                         width: 178,
                         height: 38,
+                        margin: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 20,
+                        ),
+                        padding: const EdgeInsets.only(left: 3),
                         decoration: BoxDecoration(
                           boxShadow: const [
                             BoxShadow(
@@ -124,23 +163,17 @@ class AccountSettingPopup extends ConsumerWidget {
                           color: const Color.fromARGB(255, 231, 238, 189),
                           borderRadius: BorderRadius.circular(80),
                         ),
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                            right: 10,
+                        child: const CupertinoTextField(
+                          //ここにユーザーネーム変更のbackendの処理を書いて下さい。
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 231, 238, 189),
+                            backgroundBlendMode: BlendMode.dstIn,
                           ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 30),
-                                child: const Text('username'),
-                              ),
-                            ],
+                          prefix: Icon(
+                            CupertinoIcons.text_cursor,
+                            color: Colors.black,
                           ),
+                          placeholder: 'username',
                         ),
                       ),
                     ],
@@ -149,6 +182,7 @@ class AccountSettingPopup extends ConsumerWidget {
                 //メアド
                 Container(
                   margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.all(0),
                   width: 323,
                   height: 46,
                   alignment: Alignment.centerLeft,
@@ -167,43 +201,60 @@ class AccountSettingPopup extends ConsumerWidget {
                       color: const Color(0xFFD9D9D9),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16), // アイコンの左マージン
-                        child: Icon(
-                          Icons.mail_outline,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 12), // テキストの左マージン
-                        child: Text('メールアドレス'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 120), // アイコンの左マージン
-                        child: GestureDetector(
-                          onTap: () async {
-                            // アイコンがタップされたときに新しいページに遷移
-                            await Navigator.push(
-                              context,
-                              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          },
+                  child: CupertinoButton(
+                    padding: const EdgeInsets.all(0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                          width: 30,
+                          height: 30,
                           child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey,
+                            Icons.mail_outline,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          height: 22,
+                          width: 143,
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                            bottom: 3,
+                          ),
+                          child: const Text(
+                            'メールアドレス',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 12,
+                          width: 7,
+                          margin: const EdgeInsets.only(left: 100, bottom: 8),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 //パスワード
                 Container(
                   margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.all(0),
                   width: 323,
                   height: 46,
                   alignment: Alignment.centerLeft,
@@ -222,38 +273,54 @@ class AccountSettingPopup extends ConsumerWidget {
                       color: const Color(0xFFD9D9D9),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16), // アイコンの左マージン
-                        child: Icon(
-                          Icons.lock_outline,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 12), // テキストの左マージン
-                        child: Text('パスワード'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 150), // アイコンの左マージン
-                        child: GestureDetector(
-                          onTap: () async {
-                            // アイコンがタップされたときに新しいページに遷移
-                            await Navigator.push(
-                              context,
-                              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          },
+                  child: CupertinoButton(
+                    padding: const EdgeInsets.all(0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                          width: 30,
+                          height: 30,
                           child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey,
+                            Icons.mail_outline,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          height: 22,
+                          width: 143,
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                            bottom: 3,
+                          ),
+                          child: const Text(
+                            'パスワード',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 12,
+                          width: 7,
+                          margin: const EdgeInsets.only(left: 100, bottom: 8),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 //最後の白い箱
