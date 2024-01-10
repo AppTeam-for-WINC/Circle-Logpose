@@ -1,5 +1,6 @@
-import 'dart:io';
 
+
+import 'dart:io';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AccountSettingPopup extends ConsumerWidget {
-  const AccountSettingPopup({super.key});
+class AccountSettingPage extends ConsumerWidget {
+  const AccountSettingPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const CupertinoPageScaffold(
@@ -29,21 +30,20 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
   Future<void> pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+      if (image == null) {
+        return;
+      }
       final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
-      print('failed:$e');
+      debugPrint('failed:$e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(60),
-      child: SizedBox(
-        width: 360,
-        height: 773,
+    return CupertinoApp(
+      home: CupertinoPageScaffold(
         child: Container(
           width: double.infinity,
           height: double.infinity,
@@ -115,7 +115,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     children: [
                       //個人アイコン
                       Container(
-                        margin: const EdgeInsets.only(top:0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -130,7 +129,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                               color: Colors.grey,
                             ),
                             CupertinoButton(
-                              onPressed: pickImage,
+                              onPressed: ()async{await pickImage();},
                               child: const SizedBox(
                                 child: Icon(
                                   Icons.image,
@@ -142,7 +141,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                           ],
                         ),
                       ),
-                      //ユーザーネーム変更所
+                      //ユーザーネーム変更
                       Container(
                         width: 178,
                         height: 38,
@@ -182,7 +181,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                 //メアド
                 Container(
                   margin: const EdgeInsets.only(top: 20),
-                  padding: const EdgeInsets.all(0),
                   width: 323,
                   height: 46,
                   alignment: Alignment.centerLeft,
@@ -202,7 +200,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     ),
                   ),
                   child: CupertinoButton(
-                    padding: const EdgeInsets.all(0),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -254,7 +251,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                 //パスワード
                 Container(
                   margin: const EdgeInsets.only(top: 20),
-                  padding: const EdgeInsets.all(0),
                   width: 323,
                   height: 46,
                   alignment: Alignment.centerLeft,
@@ -274,7 +270,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     ),
                   ),
                   child: CupertinoButton(
-                    padding: const EdgeInsets.all(0),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -370,6 +365,11 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                                     bottom: 5,
                                   ),
                                   child: GridView.builder(
+                                    itemCount: 20,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return const GroupCard();
+                                    },
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -377,11 +377,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                                       mainAxisSpacing: 20,
                                       crossAxisSpacing: 20,
                                     ),
-                                    itemCount: 20,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return const GroupCard();
-                                    },
                                   ),
                                 ),
                               ),
@@ -476,6 +471,7 @@ class GroupMemberIcons extends ConsumerWidget {
     const maxIcons = 8;
     const memberIcon = Icons.perm_identity;
     List<Widget> iconWidgets = [];
+    //↑今後完成させるときに自動的に消えるはず by ichiro
 
     num iconCount = 0;
     while (iconCount < maxIcons) {

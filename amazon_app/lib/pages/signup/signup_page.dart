@@ -1,6 +1,5 @@
 import 'package:amazon_app/pages/start/start_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'parts/progress_indicator.dart';
@@ -143,7 +142,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-                  
+
                   //Email form
                   SizedBox(
                     width: 346,
