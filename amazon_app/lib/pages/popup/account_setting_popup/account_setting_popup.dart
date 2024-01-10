@@ -1,4 +1,4 @@
-// ignore_for_file: lines_longer_than_80_chars
+
 
 import 'dart:io';
 import 'package:amazon_app/pages/home/home_page.dart';
@@ -115,7 +115,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     children: [
                       //個人アイコン
                       Container(
-                        margin: const EdgeInsets.only(top: 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
