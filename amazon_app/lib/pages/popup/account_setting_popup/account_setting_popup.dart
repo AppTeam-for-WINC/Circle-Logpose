@@ -127,7 +127,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                               color: Colors.grey,
                             ),
                             CupertinoButton(
-                              onPressed: pickImage,
+                              onPressed: ()async{await pickImage();},
                               child: const SizedBox(
                                 child: Icon(
                                   Icons.image,
@@ -139,7 +139,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                           ],
                         ),
                       ),
-                      //ユーザーネーム変更所
+                      //ユーザーネーム変更
                       Container(
                         width: 178,
                         height: 38,
