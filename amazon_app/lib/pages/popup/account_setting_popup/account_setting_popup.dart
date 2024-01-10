@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AccountSettingPopup extends ConsumerWidget {
-  const AccountSettingPopup({super.key});
+class AccountSettingPage extends ConsumerWidget {
+  const AccountSettingPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const CupertinoPageScaffold(
@@ -39,11 +39,8 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(60),
-      child: SizedBox(
-        width: 360,
-        height: 773,
+    return CupertinoApp(
+      home: CupertinoPageScaffold(
         child: Container(
           width: double.infinity,
           height: double.infinity,
@@ -115,7 +112,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     children: [
                       //個人アイコン
                       Container(
-                        margin: const EdgeInsets.only(top:0),
+                        margin: const EdgeInsets.only(top: 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

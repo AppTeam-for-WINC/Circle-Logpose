@@ -14,7 +14,7 @@ class AmazonApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       //ホームを指定、とりあえずアプリを起動時、スタート画面を表示させる設定にしています。
-      home: const StartPage(),
+      home: const AccountSettingPage(),
 
       // パスを指定  例）　/home:　onPressed: () => Navigator.pushNamed(context, '/home'),　で押された際に指定されたパスに移動する。
       routes: {
