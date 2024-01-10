@@ -1,4 +1,3 @@
-import 'package:amazon_app/pages/popup/account_setting_popup/account_setting_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'pages/group/create/group_create_page.dart';
 import 'pages/group/setting/group_setting_page.dart';
