@@ -57,7 +57,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     final isLoading = ref.watch(loadingJudgeProvider);
     final errorMessage = ref.watch(errorMessageProvider);
     return CupertinoApp(
-      home: CupertinoPageScaffold(
+      home: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(24),
           width: MediaQuery.of(context).size.width,
