@@ -1,12 +1,13 @@
-
-
 import 'dart:io';
-import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '/pages/home/home_page.dart';
+import 'parts/email/email_setting.dart';
+import 'parts/password/password_setting.dart';
 
 class AccountSettingPage extends ConsumerWidget {
   const AccountSettingPage({super.key});
@@ -114,32 +115,32 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                   child: Column(
                     children: [
                       //個人アイコン
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.face,
-                              size: 70,
-                              color: Colors.grey,
-                            ),
-                            const Icon(
-                              Icons.arrow_forward,
-                              size: 30,
-                              color: Colors.grey,
-                            ),
-                            CupertinoButton(
-                              onPressed: ()async{await pickImage();},
-                              child: const SizedBox(
-                                child: Icon(
-                                  Icons.image,
-                                  size: 70,
-                                  color: Colors.grey,
-                                ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.face,
+                            size: 70,
+                            color: Colors.grey,
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 30,
+                            color: Colors.grey,
+                          ),
+                          CupertinoButton(
+                            onPressed: () async {
+                              await pickImage();
+                            },
+                            child: const SizedBox(
+                              child: Icon(
+                                Icons.image,
+                                size: 70,
+                                color: Colors.grey,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       //ユーザーネーム変更
                       Container(
@@ -242,7 +243,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                       await Navigator.push(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const EmailSettingPage(),
                         ),
                       );
                     },
@@ -312,7 +313,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                       await Navigator.push(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const PasswordSettingPage(),
                         ),
                       );
                     },
@@ -391,7 +392,14 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                   height: 20,
                 ),
                 CupertinoButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
                   color: const Color(0xFF7B61FF),
                   borderRadius: BorderRadius.circular(30),
                   child: SizedBox(

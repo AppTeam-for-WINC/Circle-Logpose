@@ -33,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       isLoading = true;
     });
 
-    final String? errorMessage = await loginController(
+    final errorMessage = await loginController(
       context,
       ref,
       emailController,
@@ -58,7 +58,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final errorMessage = ref.watch(errorMessageProvider);
     final isLoading = ref.watch(loadingJudgeProvider);
     return CupertinoApp(
-      home: CupertinoPageScaffold(
+      home: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(24),
           width: MediaQuery.of(context).size.width,
