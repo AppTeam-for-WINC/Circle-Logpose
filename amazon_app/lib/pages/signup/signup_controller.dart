@@ -118,24 +118,27 @@ Future<String?> signupController(
       passwordMinLength8ValidationJudge &&
       passwordMaxLength32ValidationJudge) {
     loadingJugeFunc(ref, judge: true);
-
-    await AuthController.createAccount(email, password);
-
+    final signupSuccess = await AuthController.createAccount(email, password);
     loadingJugeFunc(ref, judge: false);
 
-    // Check if the widget is still in the tree.
-    if (!isStillMounted()) {
-      return null;
+    if (!signupSuccess) {
+      return 'The email address is already in use by another account.';
     }
 
-    //Do not need to modify this code.
-    await Navigator.push(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const LoginPage(),
-      ),
-    );
+    if (signupSuccess) {
+      // Check if the widget is still in the tree.
+      if (!isStillMounted()) {
+        return null;
+      }
+
+      //Do not need to modify this code.
+      await Navigator.push(
+        context,
+        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+          builder: (context) => const LoginPage(),
+        ),
+      );
+    }
   }
   return null;
 }
-
