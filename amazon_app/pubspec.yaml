@@ -7,16 +7,18 @@ environment:
 
 
 dependencies:
+  cloud_firestore: ^4.13.5
+  cloud_functions: ^4.6.0
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^4.12.1
+  firebase_core: ^2.17.0
+  firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
-  image_picker: ^1.0.4
-
-  cupertino_icons: ^1.0.2
-  firebase_core: ^2.17.0
-  firebase_auth: ^4.12.1
+  # cloud_firestore_odm: ^1.0.0-dev.80
   flutter_riverpod: ^2.4.3
-  cloud_firestore: ^4.13.5
-  cloud_firestore_odm: ^1.0.0-dev.80
+  http: ^1.1.2
+  image_picker: ^1.0.4
   json_annotation: ^4.8.1
   uuid: 4.3.1
 

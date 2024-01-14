@@ -139,4 +139,9 @@ class AuthController {
       return false;
     }
   }
+
+  static Future<String?>getUserIdToken() async{
+    final user = auth.currentUser;
+    return await user?.getIdToken();
+  }
 }
