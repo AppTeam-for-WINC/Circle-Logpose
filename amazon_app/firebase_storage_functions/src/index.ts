@@ -24,3 +24,6 @@ export const helloWorld = onRequest((request, response) => {
 export const testMorning = onRequest((request, response) => {
     logger.info("This is test. Good morning")
 });
+
+
+// cloud storage関連が updateした際に、cloud functionsでfirestoreをあえて発火させて導入する。

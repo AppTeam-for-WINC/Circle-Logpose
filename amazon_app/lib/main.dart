@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amazon_app.dart';
 import 'firebase_options.dart';
 
+import 'test/test.dart';
+
 void main() async {
   // Flutterアプリを初期化
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,9 @@ void main() async {
   );
 
   debugPrint('HELLO WORLD');
+
+  const question = 'ichiroはイチローなのか';
+  await postChatGPT(question);
 
   //Riverpodの適用範囲を設定
   const app = AmazonApp();

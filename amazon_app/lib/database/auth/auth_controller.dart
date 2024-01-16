@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../user/user/user_controller.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
@@ -143,5 +144,11 @@ class AuthController {
   static Future<String?>getUserIdToken() async{
     final user = auth.currentUser;
     return await user?.getIdToken();
+  }
+
+  static Future<String>getUpHello() async {
+    //引数は、 call()の中に書く。
+    final happy_result = await FirebaseFunctions.instance.httpsCallable('on_call_happy').call<String>();
+    return happy_result.data;
   }
 }
