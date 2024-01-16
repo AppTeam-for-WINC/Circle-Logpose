@@ -124,20 +124,17 @@ Future<String?> loginController(
     if (!loginSuccess) {
       return 'Password or Email is not correct.';
     }
-    
-    if (loginSuccess) {
-      // Check if the widget is still in the tree.
-      if (!isStillMounted()) {
-        return null;
-      }
 
-      //Do not need to modify this code.
-      await Navigator.push(
-        context,
-        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-          builder: (context) => const HomePage(),
-        ),
-      );
+    if (loginSuccess) {
+      if (context.mounted) {
+        await Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+            builder: (context) => const HomePage(),
+          ),
+          (_) => false,
+        );
+      }
     }
   }
   return null;

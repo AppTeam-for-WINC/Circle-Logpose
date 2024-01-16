@@ -17,6 +17,12 @@ Future<void> testSignInAndGetUserIdToken() async {
   var response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');
+
+
+  print('HELLO WORLD');
+  final data = await AuthController.getUpHello();
+  print(data);
+
 }
 
 
