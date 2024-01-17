@@ -15,7 +15,6 @@ class StorageController {
       final imagesRef = storage.child('images/users/$userId/$imageName');
       final upload = imagesRef.putFile(imageFile, metadata);
       await upload.whenComplete(() => null);
-
       final downloadURL = await imagesRef.getDownloadURL();
       debugPrint('Success to upload image file: $downloadURL');
 

@@ -9,8 +9,8 @@
 
 //このファイルに firebase storageに関するコードを書く。また、index.tsがlib/index.jsファイルにコンパイルされて処理される。（詰まるところ、index.jsファイルに書いても実行されるというわけです。）
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+// import {onRequest} from "firebase-functions/v2/https";
+// import * as logger from "firebase-functions/logger";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -25,22 +25,4 @@ import * as logger from "firebase-functions/logger";
 //     logger.info("This is test. Good morning")
 // });
 
-
-export const uploadUserImage = onRequest((request, image) => {
-
-});
-
-
-//まずは、cloud storageに画像をアップロードさせる関数が必要
-
-//次にcloud storageにアップロードされたことをtriggerにし、
-//cloud functionsでfirestoreにstorage内の画像のURLを保存させる。
-
-//そして、firestoreに保存された画像のURLをもとに画面上に描画、、、、
-
-
-
-
-// Storageに画像データをアップロードする関数を作る必要がある。
-
-// cloud storage関連が updateした際に、cloud functionsでfirestoreをあえて発火させて導入する。
+//　今の所、使う予定はないです。
