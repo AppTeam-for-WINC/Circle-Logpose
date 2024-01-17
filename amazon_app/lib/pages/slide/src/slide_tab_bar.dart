@@ -402,7 +402,8 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
           child: SizedBox(
             height: widget.height,
             child: GestureDetector(
-              onTap: () async => await onTapSegmentTab(currentTab.name),
+              onTap: () =>
+                   onTapSegmentTab(context, currentTab, currentTab.name, _internalIndex),
               child: Stack(
                 children: [
                   AnimatedContainer(
@@ -415,7 +416,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
                     ),
                     child: Material(
                       color: Colors.transparent,
-                      child: _Labels(
+                      child: Labels(
                         radius: widget.radius,
                         splashColor: widget.splashColor,
                         splashHighlightColor: widget.splashHighlightColor,
@@ -444,8 +445,8 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
                             duration: kTabScrollDuration,
                             curve: Curves.ease,
                             width: indicatorWidth,
-                            height:
-                                widget.height - widget.indicatorPadding.vertical,
+                            height: widget.height -
+                                widget.indicatorPadding.vertical,
                             decoration: BoxDecoration(
                               color: indicatorColor,
                               gradient: indicatorGradient,
@@ -475,7 +476,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
                         ),
                       ),
                       child: IgnorePointer(
-                        child: _Labels(
+                        child: Labels(
                           radius: widget.radius,
                           splashColor: widget.splashColor,
                           splashHighlightColor: widget.splashHighlightColor,
@@ -502,14 +503,14 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
     if (_controller!.indexIsChanging) {
       return null;
     }
-    
-    return (int index) => () {
-      final currentTab = widget.tabs[index];
-      debugPrint(currentTab.name);
 
-      _internalAnimationController.stop();
-      _controller!.animateTo(index);
-    };
+    return (int index) => () {
+          final currentTab = widget.tabs[index];
+          debugPrint(currentTab.name);
+
+          _internalAnimationController.stop();
+          _controller!.animateTo(index);
+        };
   }
 
   GestureDragDownCallback? _onPanDown() {
@@ -601,8 +602,8 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 }
 
-class _Labels extends StatelessWidget {
-  const _Labels({
+class Labels extends StatelessWidget {
+  const Labels({
     Key? key,
     this.callbackBuilder,
     required this.tabs,

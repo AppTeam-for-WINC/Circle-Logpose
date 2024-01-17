@@ -11,6 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceHeight = MediaQuery.of(context).size.height;
     return CupertinoApp(
       home: Scaffold(
         body: DefaultTabController(
@@ -31,8 +32,9 @@ class HomePage extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 50,
+                    padding: EdgeInsets.only(
+                      // top: 70,
+                      top: deviceHeight * 0.065,
                     ),
                     child: Container(
                       padding: const EdgeInsets.only(left: 14, right: 14),
