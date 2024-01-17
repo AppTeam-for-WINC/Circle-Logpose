@@ -1,3 +1,4 @@
+import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user.dart';
 
@@ -5,34 +6,25 @@ class UserController {
   const UserController();
 
   static final db = FirebaseFirestore.instance;
-
   static const collectionPath = 'users';
 
-  // static Future<String?> getUserImageFromStorage(String fileName) async {
-  //   final Reference? imagesRef = storageRef.child('user_images');
-
-  //   if (imagesRef == null) {
-  //     return null;
-  //   }
-  //   final imagePath = imagesRef.child(fileName).fullPath;
-  //   return imagePath;
-  // }
-
-
-  static Future<void> create(
-    {
-      required String userId, 
-      required String email,
-      String? name,
-      String? image,
-    }
-  ) async{
+  static Future<void> create({
+    required String userId,
+    required String email,
+    String? name,
+    String? image,
+  }) async {
     final doc = db.collection(collectionPath).doc(userId);
+    String? imagePath;
+    if (image != null) {
+      imagePath =
+          await StorageController.uploadUserImageToStorage(userId, image);
+    }
 
     await doc.set({
       'document_id': userId,
       'name': name,
-      'image': image,
+      'image': imagePath,
       'email': email,
     });
   }
@@ -70,12 +62,17 @@ class UserController {
   ///メールアドレスの変更機能はこの関数では行わない。
   static Future<void> update(
     String documentId,
-    String name, 
-    String image, 
+    String name,
+    String image,
   ) async {
-    final updateData = <String, dynamic>{
+    final imagePath =
+        await StorageController.uploadUserImageToStorage(documentId, image);
+    if (imagePath == null) {
+      return;
+    }
+    final updateData = <String, String>{
       'name': name,
-      'image': image,
+      'image': imagePath,
     };
 
     await db.collection(collectionPath).doc(documentId).update(updateData);
@@ -85,5 +82,4 @@ class UserController {
   static Future<void> delete(String documentId) async {
     await db.collection(collectionPath).doc(documentId).delete();
   }
-
 }

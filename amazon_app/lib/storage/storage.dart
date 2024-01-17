@@ -11,11 +11,11 @@ class StorageController {
     try {
       final metadata = SettableMetadata(contentType: 'image/*');
       final imageFile = File(image);
-      final imageName = imageFile.toString();
+      final imageName = imageFile.path;
       final imagesRef = storage.child('images/users/$userId/$imageName');
       final upload = imagesRef.putFile(imageFile, metadata);
-
       await upload.whenComplete(() => null);
+
       final downloadURL = await imagesRef.getDownloadURL();
       debugPrint('Success to upload image file: $downloadURL');
 
@@ -31,11 +31,11 @@ class StorageController {
     try {
       final metadata = SettableMetadata(contentType: 'image/*');
       final imageFile = File(image);
-      final imageName = imageFile.toString();
+      final imageName = imageFile.path;
       final imagesRef = storage.child('images/groups/$groupId/$imageName');
       final upload = imagesRef.putFile(imageFile, metadata);
-
       await upload.whenComplete(() => null);
+      
       final downloadURL = await imagesRef.getDownloadURL();
       debugPrint('Success to upload image file: $downloadURL');
 

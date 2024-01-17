@@ -1,3 +1,4 @@
+import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -7,15 +8,16 @@ class GroupController {
   const GroupController();
 
   static final db = FirebaseFirestore.instance;
-  static const uuid =  Uuid();
+  static const uuid = Uuid();
   static const collectionPath = 'groups';
 
   ///Create group database.
   ///Return created group document ID.
   static Future<void> create(
-    String name, String image,
+    String name,
+    String image,
   ) async {
-    ///Create new document ID
+    ///Create new document
     final doc = db.collection(collectionPath).doc();
 
     ///Create new membershipkey
@@ -27,9 +29,12 @@ class GroupController {
     ///Get server time
     final createdAt = FieldValue.serverTimestamp();
 
+    final imagePath =
+        await StorageController.uploadGroupImageToStorage(doc.id, image);
+
     await doc.set({
       'name': name,
-      'image': image,
+      'image': imagePath,
       'membership_key': membershipKey,
       'admin_key': adminKey,
       'created_at': createdAt,
@@ -90,9 +95,14 @@ class GroupController {
     required String name,
     required String image,
   }) async {
+    final imagePath =
+        await StorageController.uploadGroupImageToStorage(documentId, image);
+    if (imagePath == null) {
+      return;
+    }
     final updateData = <String, dynamic>{
       'name': name,
-      'image': image,
+      'image': imagePath,
     };
     await db.collection(collectionPath).doc(documentId).update(updateData);
   }
