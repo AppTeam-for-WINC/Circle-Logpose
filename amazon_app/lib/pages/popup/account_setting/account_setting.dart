@@ -55,40 +55,70 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
             ),
             child: Column(
               children: [
-                //ユーザー設定(title)
-                Container(
-                  width: 178,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xFFD9D9D9),
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                        spreadRadius: 1,
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
                       ),
-                    ],
-                    color: const Color(0xFFD8EB61),
-                    borderRadius: BorderRadius.circular(80),
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.manage_accounts,
-                          color: Colors.grey,
+                      child: CupertinoButton(
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 25,
+                          color: Colors.black,
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 30),
-                          child: const Text('ユーザ設定'),
-                        ),
-                      ],
+                        onPressed: () async {
+                          await Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                              builder: (context) => const HomePage(),
+                            ),
+                            (_) => false,
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                    //ユーザー設定(title)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 45,
+                      ),
+                      child: Container(
+                        width: 178,
+                        height: 38,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xFFD9D9D9),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                          color: const Color(0xFFD8EB61),
+                          borderRadius: BorderRadius.circular(80),
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.manage_accounts,
+                                color: Colors.grey,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 30),
+                                child: const Text('ユーザ設定'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 //１個目の白い箱
                 Container(
@@ -181,9 +211,9 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                 ),
                 //メアド
                 Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  width: 323,
-                  height: 46,
+                  margin: const EdgeInsets.only(top: 30),
+                  width: 350,
+                  height: 54,
                   alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     boxShadow: const [
@@ -201,59 +231,48 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     ),
                   ),
                   child: CupertinoButton(
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                          ),
-                          width: 30,
-                          height: 30,
-                          child: const Icon(
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 10,),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
                             Icons.mail_outline,
                             color: Colors.black,
                           ),
-                        ),
-                        Container(
-                          height: 22,
-                          width: 143,
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                            bottom: 3,
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'メールアドレス',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                          child: const Text(
-                            'メールアドレス',
-                            style: TextStyle(
+                          Padding(
+                            padding: EdgeInsets.only(left: 130),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
                               color: Colors.black,
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 12,
-                          width: 7,
-                          margin: const EdgeInsets.only(left: 100, bottom: 8),
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     onPressed: () async {
-                      await Navigator.push(
+                      await Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                           builder: (context) => const EmailSettingPage(),
                         ),
+                        (_) => false,
                       );
                     },
                   ),
                 ),
-                //パスワード
                 Container(
                   margin: const EdgeInsets.only(top: 20),
-                  width: 323,
-                  height: 46,
+                  width: 350,
+                  height: 54,
                   alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     boxShadow: const [
@@ -271,54 +290,44 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     ),
                   ),
                   child: CupertinoButton(
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                          ),
-                          width: 30,
-                          height: 30,
-                          child: const Icon(
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 10,),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
                             Icons.mail_outline,
                             color: Colors.black,
                           ),
-                        ),
-                        Container(
-                          height: 22,
-                          width: 143,
-                          margin: const EdgeInsets.only(
-                            left: 10,
-                            bottom: 3,
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'パスワード',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                          child: const Text(
-                            'パスワード',
-                            style: TextStyle(
+                          Padding(
+                            padding: EdgeInsets.only(left: 162),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
                               color: Colors.black,
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 12,
-                          width: 7,
-                          margin: const EdgeInsets.only(left: 100, bottom: 8),
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     onPressed: () async {
-                      await Navigator.push(
+                      await Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                           builder: (context) => const PasswordSettingPage(),
                         ),
+                        (_) => false,
                       );
                     },
                   ),
-                ),
+                ), 
                 //最後の白い箱
                 const SizedBox(height: 15),
                 Padding(
