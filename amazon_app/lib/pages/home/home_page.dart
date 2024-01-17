@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../function/slide_segmented_tab_control.dart';
+import '../slide/slide_segmented_tab_control.dart';
 import 'parts/attendance.dart';
 import 'parts/groups.dart';
 
