@@ -15,15 +15,32 @@ import * as logger from "firebase-functions/logger";
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+// export const helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
+
+
+// export const testMorning = onRequest((request) => {
+//     logger.info("This is test. Good morning")
+// });
+
+
+export const uploadUserImage = onRequest((request, image) => {
+
 });
 
 
-export const testMorning = onRequest((request, response) => {
-    logger.info("This is test. Good morning")
-});
+//まずは、cloud storageに画像をアップロードさせる関数が必要
 
+//次にcloud storageにアップロードされたことをtriggerにし、
+//cloud functionsでfirestoreにstorage内の画像のURLを保存させる。
+
+//そして、firestoreに保存された画像のURLをもとに画面上に描画、、、、
+
+
+
+
+// Storageに画像データをアップロードする関数を作る必要がある。
 
 // cloud storage関連が updateした際に、cloud functionsでfirestoreをあえて発火させて導入する。
