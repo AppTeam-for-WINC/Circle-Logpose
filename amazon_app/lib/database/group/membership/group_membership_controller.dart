@@ -45,7 +45,7 @@ class GroupMembershipController {
     return groupMemberships;
   }
 
-  static Future<void> deleteAll(String groupId) async {
+  static Future<void> delete(String groupId) async {
     final snapshot = await db.collection(collectionPath)
     .where('group_id', isEqualTo: groupId)
     .get();
@@ -55,16 +55,17 @@ class GroupMembershipController {
     }
   }
 
-  static Future<void> delete(String groupId, String userId) async {
-   final snapshot = await db.collection(collectionPath)
-    .where('group_id', isEqualTo: groupId)
-    .where('user_id', isEqualTo: userId)
-    .get();
+  ///Kick specified member.
+  static Future<void> kickMember(String groupId, String userId) async {
+    final snapshot = await db.collection(collectionPath).doc(groupId).get();
 
-    if (snapshot.docs.isEmpty) {
-      throw Exception('Error: Document ID not found');
-    }
-    await db.collection(collectionPath).doc(snapshot.docs.first.id).delete();
+    snapshot.id;
+
+    final deleteData = <String, String>{
+      'userId': userId,
+    };
+    await db.collection(collectionPath).doc(groupId).delete();
+    // await db.collection(collectionPath).doc(snapshot.docs.first.id).delete();
   }
 
   static Stream<void> watch() async* {

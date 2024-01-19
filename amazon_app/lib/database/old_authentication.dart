@@ -26,7 +26,7 @@ Future<bool> createAccount(String email, String password) async {
       return false;
     }
     
-    await UserController.create(userId: userId, email: email);
+    await UserController.create(docId: userId, email: email);
     debugPrint('アカウントの作成に成功しました。 $userId');
     return true;
   } on FirebaseAuthException catch (error) {

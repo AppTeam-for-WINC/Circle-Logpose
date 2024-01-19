@@ -42,6 +42,7 @@ class GroupController {
   }
 
   ///Get all group database
+  ///あとで修正する必要あり。
   static Future<List<Group>> readAll() async {
     final QuerySnapshot snapshot = await db.collection(collectionPath).get();
 
@@ -67,6 +68,7 @@ class GroupController {
   }
 
   ///セキュリティ度外視で　この関数のみ membership_key, admin_keyを返しています。
+  ///後で修正する必要あり。
   ///Get group database.
   static Future<Group> read(String documentId) async {
     final snapshot = await db.collection(collectionPath).doc(documentId).get();
