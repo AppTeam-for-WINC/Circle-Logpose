@@ -12,103 +12,112 @@ class GroupController {
   static const collectionPath = 'groups';
 
   ///Create group database.
-  ///Return created group document ID.
   static Future<void> create(
     String name,
-    String image,
+    String? image,
+    String? description,
   ) async {
     ///Create new document
-    final doc = db.collection(collectionPath).doc();
+    final groupDoc = db.collection(collectionPath).doc();
 
-    ///Create new membershipkey
-    final membershipKey = uuid.v4();
-
-    ///Create new adminkey
-    final adminKey = uuid.v4();
+    String? imagePath;
+    if (image == null) {
+      imagePath = 'amazon_app/images/group_img.jpeg';
+    } else {
+      imagePath =
+          await StorageController.uploadUserImageToStorage(groupDoc.id, image);
+    }
 
     ///Get server time
-    final createdAt = FieldValue.serverTimestamp();
+    final createdAt = FieldValue.serverTimestamp() as Timestamp;
 
-    final imagePath =
-        await StorageController.uploadGroupImageToStorage(doc.id, image);
-
-    await doc.set({
+    await groupDoc.set({
       'name': name,
       'image': imagePath,
-      'membership_key': membershipKey,
-      'admin_key': adminKey,
+      'description': description,
+      'updated_at': null,
       'created_at': createdAt,
     });
   }
 
-  ///Get all group database
-  static Future<List<Group>> readAll() async {
-    final QuerySnapshot snapshot = await db.collection(collectionPath).get();
-
-    final groups = snapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data == null) {
+  ///Read all members.
+  static Future<List<Group>> readAll(String userId) async {
+    final groups = await db.collection(collectionPath).where('user_id', isEqualTo: userId).get();
+    final groupMembershipsRefs = groups.docs.map((doc) {
+      final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipsRef == null) {
         throw Exception('Error : No found document data.');
       }
 
-      final name = data['name'] as String;
-      final image = data['image'] as String;
-      final createdAt = data['created_at'] as DateTime?;
+      final name = groupMembershipsRef['name'] as String;
+      final description = groupMembershipsRef['descrption'] as String?;
+      final image = groupMembershipsRef['image'] as String;
+      final updatedAt = groupMembershipsRef['updated_at'] as Timestamp?;
+      final createdAt = groupMembershipsRef['created_at'] as Timestamp;
 
       return Group(
-        documentId: doc.id,
         name: name,
+        description: description,
         image: image,
+        updatedAt: updatedAt,
         createdAt: createdAt,
       );
     }).toList();
 
-    return groups;
+    return groupMembershipsRefs;
   }
 
-  ///セキュリティ度外視で　この関数のみ membership_key, admin_keyを返しています。
-  ///Get group database.
-  static Future<Group> read(String documentId) async {
-    final snapshot = await db.collection(collectionPath).doc(documentId).get();
-    final data = snapshot.data();
-    if (data == null) {
-      throw Exception('documentId not found.');
+    ///Get the group database.
+  static Future<Group> read(String docId) async {
+    final groupDoc = await db.collection(collectionPath).doc(docId).get();
+    final groupDocRef = groupDoc.data();
+    if (groupDocRef == null) {
+      throw Exception('Error : No found document data.');
     }
 
-    final name = data['name'] as String;
-    final image = data['image'] as String;
-    final membershipKey = data['membership_key'] as String;
-    final adminKey = data['admin_key'] as String;
+    final name = groupDocRef['name'] as String;
+    final description = groupDocRef['descrption'] as String?;
+    final image = groupDocRef['image'] as String;
+    final updatedAt = groupDocRef['updated_at'] as Timestamp?;
+    final createdAt = groupDocRef['created_at'] as Timestamp;
 
     return Group(
-      documentId: documentId,
       name: name,
+      description: description,
       image: image,
-      membershipKey: membershipKey,
-      adminKey: adminKey,
+      updatedAt: updatedAt,
+      createdAt: createdAt,
     );
   }
 
-  ///Update group imformation
+  ///後で、アップデート機能をfactoryにして、名前、説明、画像其々個別で変更できるような関数を作成する。
+  ///Update group database
   static Future<void> update({
-    required String documentId,
+    required String docId,
     required String name,
+    required String? description,
     required String image,
   }) async {
     final imagePath =
-        await StorageController.uploadGroupImageToStorage(documentId, image);
+        await StorageController.uploadGroupImageToStorage(docId, image);
     if (imagePath == null) {
       return;
     }
+
+    final updatedAt = FieldValue.serverTimestamp() as Timestamp;
+
     final updateData = <String, dynamic>{
       'name': name,
+      'description': description,
       'image': imagePath,
+      'updated_at': updatedAt,
     };
-    await db.collection(collectionPath).doc(documentId).update(updateData);
+    await db.collection(collectionPath).doc(docId).update(updateData);
   }
 
+  ///後でcloud functionsに設定させる。（セキュリティ的な問題のため！）
   ///Delete group
-  static Future<void> delete(String documentId) async {
-    await db.collection(collectionPath).doc(documentId).delete();
+  static Future<void> delete(String docId) async {
+    await db.collection(collectionPath).doc(docId).delete();
   }
 }

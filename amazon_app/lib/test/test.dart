@@ -22,23 +22,23 @@ Future<void> postChatGPT(String question) async {
 }
 
 
-Future<void> testSignInAndGetUserIdToken() async {
-  // "Authorization: Bearer $(gcloud auth print-identity-token)"
-  await FirebaseAuth.instance.signInAnonymously();
-  final idToken = await AuthController.getUserIdToken();
+// Future<void> testSignInAndGetUserIdToken() async {
+//   // "Authorization: Bearer $(gcloud auth print-identity-token)"
+//   await FirebaseAuth.instance.signInAnonymously();
+//   final idToken = await AuthController.getUserIdToken();
 
-  print('idToken: $idToken');
-  // -qgddwv763a-uc.a.run.app/
-  var url = Uri.https('on-request-example-qgddwv763a-uc.a.run.app');
-  // var url = Uri.parse('https://on-request-example-qgddwv763a-uc.a.run.app/');
-  var response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
+//   print('idToken: $idToken');
+//   // -qgddwv763a-uc.a.run.app/
+//   var url = Uri.https('on-request-example-qgddwv763a-uc.a.run.app');
+//   // var url = Uri.parse('https://on-request-example-qgddwv763a-uc.a.run.app/');
+//   var response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
+//   print('Response status: ${response.statusCode}');
+//   print('Response body: ${response.body}');
 
-  final data = await AuthController.getUpHello();
-  print(data);
+//   final data = await AuthController.getUpHello();
+//   print(data);
 
-}
+// }
 
 
 

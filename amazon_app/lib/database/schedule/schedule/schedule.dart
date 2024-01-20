@@ -1,30 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Schedule {
-  const Schedule({
+class GroupSchedule {
+  const GroupSchedule({
     required this.groupId,
-    this.documentId,
     required this.title,
     required this.color,
     this.place,
     this.detail,
     required this.startAt,
     required this.endAt,
-    this.createdAt,
+    this.updatedAt,
+    required this.createdAt,
   });
 
   ///Group ID
   final String groupId;
-
-  ///Document ID
-  final String? documentId;
 
   ///Title
   final String title;
 
   ///Color
   ///When used, it must be converted to the Color type.
-  final Color color;
+  final String color;
 
   ///Place
   final String? place;
@@ -38,6 +35,9 @@ class Schedule {
   ///End time
   final DateTime endAt;
 
+  ///Updated database time.
+  final Timestamp? updatedAt;
+
   ///Created database time.
-  final DateTime? createdAt;
+  final Timestamp createdAt;
 }

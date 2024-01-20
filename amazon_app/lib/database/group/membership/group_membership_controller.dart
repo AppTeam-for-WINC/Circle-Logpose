@@ -8,66 +8,126 @@ class GroupMembershipController {
 
   static const collectionPath = 'group_memberships';
 
-  static Future<void> create({
-    required String groupId,
-    required String userId,
-  }) async {
-    final doc = db.collection(collectionPath).doc();
-    final createdAt = FieldValue.serverTimestamp();
-    
-    await doc.set({
-      'group_id': groupId,
+  //グループ作成時に作成者用に自動で呼び出すようにしなければならない。
+  ///Added the group to new member.
+  static Future<void> create(
+    String userId,
+    String role,
+    String groupId,
+  ) async {
+    final groupMembershipDoc = db.collection(collectionPath).doc();
+
+    final userDoc = await db.collection('users').doc(userId).get();
+    final userRef = userDoc.data();
+    if (userRef == null) {
+      throw Exception('Error : No found document data.');
+    }
+
+    final username = userRef['username'] as String;
+    final userDescription = userRef['user_description'] as String?;
+    final joinedAt = FieldValue.serverTimestamp() as Timestamp;
+
+    await groupMembershipDoc.set({
       'user_id': userId,
-      'created_at': createdAt,
+      'username': username,
+      'user_description': userDescription,
+      'group_id': groupId,
+      'role': role,
+      'created_at': joinedAt,
     });
   }
 
+  ///Read all members.
   static Future<List<GroupMembership>> readAll(String groupId) async {
-    final snapshot = await db.collection(collectionPath).get();
+    final groupMemberships = await db
+        .collection(collectionPath)
+        .where('group_id', isEqualTo: groupId)
+        .get();
 
-    final groupMemberships = snapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data == null) {
+    final groupMembershipsRefs = groupMemberships.docs.map((doc) {
+      final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipDocRef == null) {
         throw Exception('Error : No found document data.');
       }
 
-      final userId = data['user_id'] as String;
-      final createdAt = data['created_at'] as DateTime?;
-      
+      final userId = groupMembershipDocRef['user_id'] as String;
+      final username = groupMembershipDocRef['username'] as String;
+      final userDescription =
+          groupMembershipDocRef['user_description'] as String?;
+      final role = groupMembershipDocRef['role'] as String;
+      final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
+      final joinedAt = groupMembershipDocRef['joined_at'] as Timestamp;
+
       return GroupMembership(
-        documentId: doc.id,
         userId: userId,
+        username: username,
+        userDescription: userDescription,
+        role: role,
         groupId: groupId,
-        createdAt: createdAt,
+        updatedAt: updatedAt,
+        joinedAt: joinedAt,
       );
     }).toList();
 
-    return groupMemberships;
+    return groupMembershipsRefs;
   }
 
-  static Future<void> deleteAll(String groupId) async {
-    final snapshot = await db.collection(collectionPath)
-    .where('group_id', isEqualTo: groupId)
-    .get();
-    
-    for (final doc in snapshot.docs) {
-      await db.collection(collectionPath).doc(doc.id).delete();
+  ///Read specified member.
+  static Future<GroupMembership> read(String docId) async {
+    final groupMembershipDoc =
+        await db.collection(collectionPath).doc(docId).get();
+    final groupMembershipDocRef = groupMembershipDoc.data();
+    if (groupMembershipDocRef == null) {
+      throw Exception('Error : No found document data.');
     }
+
+    final userId = groupMembershipDocRef['user_id'] as String;
+    final username = groupMembershipDocRef['username'] as String;
+    final userDescription =
+        groupMembershipDocRef['user_description'] as String?;
+    final role = groupMembershipDocRef['role'] as String;
+    final groupId = groupMembershipDocRef['group_id'] as String;
+    final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
+    final joinedAt = groupMembershipDocRef['joined_at'] as Timestamp;
+
+    return GroupMembership(
+      userId: userId,
+      username: username,
+      userDescription: userDescription,
+      role: role,
+      groupId: groupId,
+      updatedAt: updatedAt,
+      joinedAt: joinedAt,
+    );
   }
 
-  static Future<void> delete(String groupId, String userId) async {
-   final snapshot = await db.collection(collectionPath)
-    .where('group_id', isEqualTo: groupId)
-    .where('user_id', isEqualTo: userId)
-    .get();
+  ///後で、factoryメソッドを使って、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
+  ///Update membership users 
+  static Future<void> update({
+    required String docId, 
+    required String userId,
+    required String username,
+    required String? userDescription,
+    required String role,
+    required String groupId,
+  }) async {
+    final updatedAt = FieldValue.serverTimestamp() as Timestamp;
 
-    if (snapshot.docs.isEmpty) {
-      throw Exception('Error: Document ID not found');
-    }
-    await db.collection(collectionPath).doc(snapshot.docs.first.id).delete();
+    final updateData = <String, dynamic>{
+      'user_id': userId,
+      'username': username,
+      'user_description': userDescription,
+      'role': role,
+      'group_id': groupId,
+      'updated_at': updatedAt,
+    };
+    await db.collection(collectionPath).doc(docId).update(updateData);
   }
 
-  static Stream<void> watch() async* {
-
+  ///Delete specified member.
+  static Future<void> delete(String docId) async {
+    await db.collection(collectionPath).doc(docId).delete();
   }
+
+  static Stream<void> watch() async* {}
 }

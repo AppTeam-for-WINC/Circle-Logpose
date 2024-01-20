@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'riverpod.dart';
 
-import 'user/user/user_controller.dart';
+import 'user/user_controller.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
@@ -26,7 +26,7 @@ Future<bool> createAccount(String email, String password) async {
       return false;
     }
     
-    await UserController.create(userId: userId, email: email);
+    await UserController.create(docId: userId);
     debugPrint('アカウントの作成に成功しました。 $userId');
     return true;
   } on FirebaseAuthException catch (error) {

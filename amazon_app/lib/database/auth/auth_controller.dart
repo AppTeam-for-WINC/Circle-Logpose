@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../user/user/user_controller.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+import '../user/user_controller.dart';
+// import 'package:cloud_functions/cloud_functions.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
@@ -19,14 +19,14 @@ class AuthController {
         password: password,
       );
 
-      final userId = userCredential.user?.uid ?? '';
-      if (userId == '') {
+      final docId = userCredential.user?.uid ?? '';
+      if (docId == '') {
         debugPrint('Error: Failed to create account.');
         return false;
       }
 
-      await UserController.create(userId: userId, email: email);
-      debugPrint('Success: Created new account. user_id: $userId');
+      await UserController.create(docId: docId);
+      debugPrint('Success: Created new account. doc_id: $docId');
       return true;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error: Failed to create account. $error');
@@ -52,12 +52,12 @@ class AuthController {
 
   ///Watching whether users remain logged in.
   ///True is signed in. False is signed out.
-  static Stream<bool> userLoginState(String userId) async* {
-    await for (final user in auth.authStateChanges()) {
-      if (user == null) {
+  static Stream<bool> userLoginState(String docId) async* {
+    await for (final doc in auth.authStateChanges()) {
+      if (doc == null) {
         debugPrint('User is currently signed out!');
         yield false;
-      } else if (user.uid == userId) {
+      } else if (doc.uid == docId) {
         debugPrint('User is signed in!');
         yield true;
       } else {
@@ -146,9 +146,9 @@ class AuthController {
     return await user?.getIdToken();
   }
 
-  static Future<String>getUpHello() async {
-    //引数は、 call()の中に書く。
-    final happy_result = await FirebaseFunctions.instance.httpsCallable('on_call_happy').call<String>();
-    return happy_result.data;
-  }
+  // static Future<String>getUpHello() async {
+  //   //引数は、 call()の中に書く。
+  //   final happy_result = await FirebaseFunctions.instance.httpsCallable('on_call_happy').call<String>();
+  //   return happy_result.data;
+  // }
 }
