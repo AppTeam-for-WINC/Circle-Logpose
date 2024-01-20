@@ -1,26 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Group {
-  const Group({
+class UserProfile {
+  const UserProfile({
+    required this.accountId,
     required this.name,
+    required this.image,
     this.description,
-    this.image,
     this.updatedAt,
     required this.createdAt,
   });
 
-  ///name
+  final String accountId;
   final String name;
-
-  ///description
+  final String image;
   final String? description;
-
-  ///image
-  final String? image;
-
-  ///updated_at
   final Timestamp? updatedAt;
-
-  ///created time
   final Timestamp createdAt;
 }

@@ -39,3 +39,6 @@ class ScheduleCreationData {
     debugPrint(apple.toString());
   }
 }
+
+
+//後で修正する。

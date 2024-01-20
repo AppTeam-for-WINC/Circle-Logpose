@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MemberCondition {
-  const MemberCondition({
+class GroupMemberSchedule {
+  const GroupMemberSchedule({
     required this.scheduleId,
     required this.userId,
-    this.documentId,
     required this.attendance,
     required this.leaveEarly,
     required this.lateness,
     required this.absence,
     required this.startAt,
     required this.endAt,
+    this.updatedAt,
+    required this.createdAt,
   });
-
-  ///Document ID
-  final String? documentId;
 
   ///Schedule ID
   final String scheduleId;
@@ -35,8 +33,14 @@ class MemberCondition {
   final bool absence;
 
   ///Start time
-  final Timestamp startAt;
+  final DateTime startAt;
 
   ///End time
-  final Timestamp endAt; 
+  final DateTime endAt; 
+
+  ///Updateed time
+  final Timestamp? updatedAt;
+
+  ///Created time
+  final Timestamp createdAt;
 }

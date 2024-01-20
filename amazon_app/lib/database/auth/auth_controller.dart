@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../user/user/user_controller.dart';
+import '../user/user_controller.dart';
 // import 'package:cloud_functions/cloud_functions.dart';
 
 ///How to manage email.
@@ -25,7 +25,7 @@ class AuthController {
         return false;
       }
 
-      await UserController.create(docId: docId, email: email);
+      await UserController.create(docId: docId);
       debugPrint('Success: Created new account. doc_id: $docId');
       return true;
     } on FirebaseAuthException catch (error) {
