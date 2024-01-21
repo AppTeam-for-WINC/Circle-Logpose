@@ -127,17 +127,15 @@ Future<String?> signupController(
 
     if (signupSuccess) {
       // Check if the widget is still in the tree.
-      if (!isStillMounted()) {
-        return null;
+      if (context.mounted) {
+        await Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+            builder: (context) => const LoginPage(),
+          ),
+          (_) => false,
+        );
       }
-
-      //Do not need to modify this code.
-      await Navigator.push(
-        context,
-        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-          builder: (context) => const LoginPage(),
-        ),
-      );
     }
   }
   return null;

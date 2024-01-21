@@ -141,6 +141,11 @@ class AuthController {
     }
   }
 
+  static Future<String?>getCurrentUserId() async {
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.uid;
+  }
+
   static Future<String?>getUserIdToken() async{
     final user = auth.currentUser;
     return await user?.getIdToken();

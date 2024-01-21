@@ -31,7 +31,6 @@ class PresentMember extends ConsumerWidget {
                 },
               );
             },
-            
             child: Icon(
               memberIcon,
               size: 20,

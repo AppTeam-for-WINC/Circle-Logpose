@@ -3,11 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 
 //Cupertinoデザインをインポート
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 //Riverpodをインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'amazon_app.dart';
+import 'amazon/amazon_app.dart';
 import 'firebase_options.dart';
 
 import 'test/test.dart';
@@ -29,6 +30,9 @@ void main() async {
   //Riverpodの適用範囲を設定
   const app = AmazonApp();
   const scope = ProviderScope(child: app);
+  //   runApp(MaterialApp(
+  //   home: AmazonApp(),
+  // ));
 
   // アプリのウィジェットツリーを生成し、実行
   runApp(scope);

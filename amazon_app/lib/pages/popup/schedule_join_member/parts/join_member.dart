@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 参加メンバーのアイコン↓
-class join_member extends ConsumerWidget {
-  const join_member({super.key});
+class JoinMember extends ConsumerWidget {
+  const JoinMember({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
-            blurRadius: 1.0,
-            spreadRadius: 2.0,
+            blurRadius: 1,
+            spreadRadius: 2,
             offset: Offset(1, 1),
             color: Colors.black12,
           ),
@@ -21,7 +21,7 @@ class join_member extends ConsumerWidget {
         color: const Color.fromARGB(255, 248, 233, 255),
       ),
       child: const Padding(
-        padding: EdgeInsets.only(left: 3.0),
+        padding: EdgeInsets.only(left: 3),
         child: Row(
           children: [
             Padding(

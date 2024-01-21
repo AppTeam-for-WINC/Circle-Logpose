@@ -31,7 +31,7 @@ class GroupInvitationController {
     ///Set Expires limit.
     final expiresAt = DateTime.now().add(const Duration(days: 7)) as Timestamp;
 
-    final createdAt = FieldValue.serverTimestamp() as Timestamp;
+    final createdAt = FieldValue.serverTimestamp();
 
     await groupInvitationDoc.set({
       'group_id': groupId,

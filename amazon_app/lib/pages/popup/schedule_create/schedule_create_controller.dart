@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +14,6 @@ class ScheduleCreationData {
   }
 
   final Ref ref;
-  User? user = FirebaseAuth.instance.currentUser;
   TextEditingController titleController = TextEditingController();
   Color selectedColor = Colors.white;
   DateTime selectedDate = DateTime.now();
@@ -24,16 +23,21 @@ class ScheduleCreationData {
 
   List<Group>? groups;
   List<String>? groupNames;
-  List<String?>? groupIds;
+  List<String>? groupIds;
   List<String>? groupImages;
   String? selectedGroupId;
   String? selectedGroupName;
 
   //No need to debugPrint(apple); apple is too expensiver!!!
   Future<void> loadGroups() async {
-    groups = await GroupController.readAll();
+    final userId = await AuthController.getCurrentUserId();
+    if (userId == null) {
+      throw Exception('Error : No found user ID.');
+    }
+
+    groups = await GroupController.readAll(userId);
+    groupIds = await GroupController.readAllDocId(userId);
     groupNames = groups?.map((group) => group.name).toList();
-    groupIds = groups?.map((group) => group.documentId).toList();
     groupImages = groups?.map((group) => group.image).toList();
     final apple = ref.refresh(scheduleCreationDataProvider);
     debugPrint(apple.toString());

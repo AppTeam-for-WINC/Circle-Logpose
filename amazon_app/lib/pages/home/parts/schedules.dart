@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../popup/behind_and_early_setting/behind_and_early_setting.dart';
 import '../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
-class ScheduleCard extends ConsumerWidget {
-  const ScheduleCard({super.key});
+class GroupScheduleCard extends ConsumerWidget {
+  const GroupScheduleCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -13,7 +13,7 @@ class ScheduleCard extends ConsumerWidget {
       width: 375,
       height: 215,
       margin: const EdgeInsets.only(
-        top: 20,
+        top: 10,
       ),
       child: Stack(
         children: [

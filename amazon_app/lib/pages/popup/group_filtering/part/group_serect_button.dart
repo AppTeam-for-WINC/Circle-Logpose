@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class GroupSerectButton extends ConsumerState<GroupFilteringPopup> {
   @override
   Widget build(BuildContext context) {
-    final double deviceW = MediaQuery.of(context).size.width;
+    final deviceW = MediaQuery.of(context).size.width;
     return Container(
       width: deviceW * 0.81,
       height: 92,
@@ -20,7 +20,6 @@ class GroupSerectButton extends ConsumerState<GroupFilteringPopup> {
       ),
       child: CupertinoButton(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               width: 50,

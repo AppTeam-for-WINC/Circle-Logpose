@@ -2,7 +2,7 @@ import 'package:amazon_app/pages/popup/home_tab_component/parts/attendance_tab.d
 import 'package:amazon_app/pages/popup/home_tab_component/parts/user_setting_tab.dart';
 import 'package:amazon_app/pages/slide/src/slide_tab.dart';
 // import 'package:amazon_app/pages/slide/src/slide_tab_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeTabComponent extends ConsumerStatefulWidget {
@@ -25,7 +25,7 @@ class HomeTabComponentState extends ConsumerState<HomeTabComponent> {
           top: deviceHeight * 0.076,
           right: 170,
         ),
-        child: Column(
+        child: const Column(
           children: [
             AttendanceTab(),
             SizedBox(height: 20),

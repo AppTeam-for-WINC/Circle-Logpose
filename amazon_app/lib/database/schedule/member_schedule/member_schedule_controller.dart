@@ -22,7 +22,7 @@ class GroupMemberScheduleController {
   ) async {
     final groupMemberScheduleDoc = db.collection(collectionPath).doc();
 
-    final createdAt = FieldValue.serverTimestamp() as Timestamp;
+    final createdAt = FieldValue.serverTimestamp();
 
 
     await groupMemberScheduleDoc.set({
@@ -79,7 +79,7 @@ class GroupMemberScheduleController {
     required DateTime startAt,
     required DateTime endAt,
   }) async{
-    final updatedAt = FieldValue.serverTimestamp() as Timestamp;
+    final updatedAt = FieldValue.serverTimestamp();
 
     final updateData = <String, dynamic>{
       'attendance': attendance,
