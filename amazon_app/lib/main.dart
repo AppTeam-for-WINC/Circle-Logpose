@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 //Riverpodをインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'amazon_app.dart';
+import 'amazon/amazon_app.dart';
 import 'firebase_options.dart';
 
 import 'test/test.dart';

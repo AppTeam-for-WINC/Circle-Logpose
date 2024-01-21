@@ -42,7 +42,10 @@ class GroupController {
 
   ///Read all members.
   static Future<List<Group>> readAll(String userId) async {
-    final groups = await db.collection(collectionPath).where('user_id', isEqualTo: userId).get();
+    final groups = await db
+        .collection(collectionPath)
+        .where('user_id', isEqualTo: userId)
+        .get();
     final groupMembershipsRefs = groups.docs.map((doc) {
       final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
       if (groupMembershipsRef == null) {
@@ -67,7 +70,24 @@ class GroupController {
     return groupMembershipsRefs;
   }
 
-    ///Get the group database.
+  static Future<List<String>> readAllDocId(String userId) async {
+    final groups = await db
+        .collection(collectionPath)
+        .where('user_id', isEqualTo: userId)
+        .get();
+    final groupMembershipsRefs = groups.docs.map((doc) {
+      final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipsRef == null) {
+        throw Exception('Error : No found document data.');
+      }
+
+      return doc.id;
+    }).toList();
+
+    return groupMembershipsRefs;
+  }
+
+  ///Get the group database.
   static Future<Group> read(String docId) async {
     final groupDoc = await db.collection(collectionPath).doc(docId).get();
     final groupDocRef = groupDoc.data();

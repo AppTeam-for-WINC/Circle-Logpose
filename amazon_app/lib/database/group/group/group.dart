@@ -4,7 +4,7 @@ class Group {
   const Group({
     required this.name,
     this.description,
-    this.image,
+    required this.image,
     this.updatedAt,
     required this.createdAt,
   });
@@ -16,7 +16,7 @@ class Group {
   final String? description;
 
   ///image
-  final String? image;
+  final String image;
 
   ///updated_at
   final Timestamp? updatedAt;

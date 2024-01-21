@@ -273,10 +273,10 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                         final title = schedule.titleController.text;
                         final place = schedule.placeController.text;
                         final detail = schedule.detailController.text;
-                        await ScheduleController.create(
+                        await GroupScheduleController.create(
                           groupId: schedule.selectedGroupId!,
                           title: title,
-                          color: schedule.selectedColor,
+                          color: schedule.selectedColor.toString(),
                           startAt: schedule.selectedDate,
                           endAt: schedule.selectedDate.add(
                             const Duration(
