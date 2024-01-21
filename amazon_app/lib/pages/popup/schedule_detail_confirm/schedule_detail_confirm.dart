@@ -8,7 +8,7 @@ class ScheduleDetailConfirm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    final deviceHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.only(
         left: 32,

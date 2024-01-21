@@ -14,15 +14,7 @@ class GroupSettingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CupertinoApp(
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: Color.fromARGB(255, 113, 130, 143),
-        primaryColor: Color.fromARGB(255, 18, 81, 162),
-      ),
-      home: GroupSettingHome(),
-    );
+    return const GroupSettingHome();
   }
 }
 
@@ -38,8 +30,8 @@ class GroupSettingHome extends ConsumerStatefulWidget {
 class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 233, 246),
+    return ColoredBox(
+      color: const Color.fromARGB(255, 233, 233, 246),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -54,7 +46,7 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                     onTap: () async {
                       await Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute<MaterialPageRoute<dynamic>>(
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                           builder: (context) => const HomePage(),
                         ),
                       );

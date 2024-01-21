@@ -14,5 +14,5 @@ class GroupInvitation {
 
   final Timestamp expiresAt;
 
-  final Timestamp createdAt;
+  final FieldValue createdAt;
 }

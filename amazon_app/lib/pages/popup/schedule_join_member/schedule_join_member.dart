@@ -55,7 +55,7 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 24,right: 24),
+                  margin: const EdgeInsets.only(left: 24, right: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -77,7 +77,9 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 15,),
+                        margin: const EdgeInsets.only(
+                          top: 15,
+                        ),
                         child: const Row(
                           children: [
                             Icon(
@@ -95,29 +97,30 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                         ),
                       ),
                       SingleChildScrollView(
-                        child:SizedBox(
+                        child: SizedBox(
                           height: 249,
                           child: GridView.count(
-                                crossAxisSpacing: 26,
-                                mainAxisSpacing: 14,
-                                childAspectRatio: 2.5,
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.all(10),
-                                children: const <Widget>[
-                                  //後でデータベースと繋げます
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                  join_member(),
-                                ],
-                              ),
+                            crossAxisSpacing: 26,
+                            mainAxisSpacing: 14,
+                            childAspectRatio: 2.5,
+                            crossAxisCount: 2,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(10),
+                            children: const <Widget>[
+                              //後でデータベースと繋げます
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                              JoinMember(),
+                            ],
+                          ),
                         ),
                       ),
                     ],

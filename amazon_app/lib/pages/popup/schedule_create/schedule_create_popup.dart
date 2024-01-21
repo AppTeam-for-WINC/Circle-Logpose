@@ -26,7 +26,6 @@ class ScheduleCreatePopup extends ConsumerStatefulWidget {
 }
 
 class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
-
   @override
   Widget build(BuildContext context) {
     final schedule = ref.watch(scheduleCreationDataProvider);
@@ -110,13 +109,14 @@ class ScheduleCreatePopupState extends ConsumerState<ScheduleCreatePopup> {
                         ),
                         CupertinoButton(
                           onPressed: () {
-                            showTeamPicker(
+                            showGroupPicker(
                               context,
                               schedule,
                               (int index) {
                                 setState(() {
                                   schedule
-                                    ..selectedGroupId = schedule.groupIds![index]
+                                    ..selectedGroupId =
+                                        schedule.groupIds![index]
                                     ..selectedGroupName =
                                         schedule.groupNames![index];
                                 });

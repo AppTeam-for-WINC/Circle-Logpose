@@ -9,9 +9,7 @@ class BehindAndEarlySetting extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CupertinoApp(
-      home: BehindAndEarlySettingState(),
-    );
+    return const BehindAndEarlySettingState();
   }
 }
 

@@ -1,335 +1,126 @@
-import 'package:amazon_app/pages/home/home_page.dart';
-import 'package:amazon_app/pages/popup/member_add/member_add_popup.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:amazon_app/pages/group/create/parts/group_contents.dart';
+import 'package:amazon_app/pages/home/parts/groups.dart';
+import 'package:amazon_app/pages/slide/src/slide_tab.dart';
+import 'package:amazon_app/pages/slide/src/slide_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-
-import 'parts/group_member.dart';
 
 class GroupCreatePage extends ConsumerWidget {
   const GroupCreatePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity, // 幅を画面幅いっぱいに広げる
-      height: double.infinity, // 高さを画面高さいっぱいに広げる
-      alignment: Alignment.center,
-      color: const Color.fromARGB(255, 245, 242, 254),
-      child: Container(
-        width: 400,
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Column(
+    final deviceHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: DefaultTabController(
+        length: 2,
+        child: Stack(
+          children: [
+            const Padding(
+              padding: EdgeInsets.zero,
+              child: TabBarView(
                 children: [
-                  Container(
-                    //上トピック
-                    margin: const EdgeInsets.only(top: 10),
-                    width: 350,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 147, 145, 145),
-                          spreadRadius: 2,
-                          blurRadius: 3,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.group_add,
-                              size: 20,
-                            ),
-                            Text('団体作成'),
-                            Icon(
-                              Icons.expand_more,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.people,
-                              size: 20,
-                            ),
-                            Text('団体'),
-                          ],
-                        ),
-                      ],
-                    ),
+                  GroupContents(),
+                  GroupPage(),
+                ],
+              ),
+            ),
+            //ここのRow切り出す
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    // top: 70,
+                    top: deviceHeight * 0.065,
                   ),
-                  Container(
-                    //中央トピック
-                    width: 350,
-                    height: 200,
-                    margin: const EdgeInsets.only(top: 50),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 14, right: 14),
+                    width: 375,
+                    height: 77,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
                       color: Colors.white,
+                      borderRadius: BorderRadius.circular(999),
                       boxShadow: const [
                         BoxShadow(
-                          color: Color.fromARGB(225, 127, 145, 145),
-                          spreadRadius: 2,
-                          blurRadius: 3,
+                          blurRadius: 4,
+                          spreadRadius: 3,
                           offset: Offset(0, 3),
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
                         ),
                       ],
+                      border: Border.all(
+                        color: const Color.fromRGBO(4, 49, 57, 0.05),
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(60, 30, 80, 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: SegmentedTabControl(
+                      radius: const Radius.circular(999),
+                      backgroundColor: Colors.white,
+                      tabTextColor: Colors.black,
+                      selectedTabTextColor: Colors.white,
+                      squeezeIntensity: 2,
+                      height: 55,
+                      tabs: [
+                        const SegmentTab(
+                          name: '団体作成',
+                          textColor: Color.fromRGBO(0, 0, 0, 1),
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 35),
+                                child: Text(
+                                  '団体作成',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                Icons.expand_more,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                          color: Color(0xFF7B61FF),
+                        ),
+                        SegmentTab(
+                          name: '団体',
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
-                                CupertinoIcons.arrow_clockwise,
-                                size: 80,
+                                Icons.group,
+                                size: 30,
+                                color: Colors.white,
                               ),
-                              const Icon(
-                                Icons.arrow_forward,
-                                size: 50,
-                              ),
-                              //imagepicker実装予定地
-                              GestureDetector(
-                                onTap: (){
-                                  
-                                },
-                                child: Container(
-                                width: 80,
-                                height: 80,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFD9D9D9),
-                                    borderRadius: BorderRadius.circular(40),),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.camera_alt,
-                                      color:Colors.white,
-                                      size: 25,
-                                    ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: const Text(
+                                  '団体',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          width: 272,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 244, 253, 194),
-                            borderRadius: BorderRadius.circular(40),
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 3,
-                                spreadRadius: 2,
-                                offset: Offset(0, 3),
-                                color: Color.fromARGB(225, 127, 145, 145),
-                              ),
-                            ],
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.only(left: 13),
-                            child: CupertinoTextField(
-                              prefix: Icon(Icons.add),
-                              style: TextStyle(fontSize: 18),
-                              placeholder: '団体名',
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                          ),
+                          selectedTextColor: Colors.white,
+                          textColor: Colors.black,
+                          color: const Color(0xFF7B61FF),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    //下トピック
-                    width: 350,
-                    height: 400,
-                    margin: const EdgeInsets.only(top: 50),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(225, 147, 145, 145),
-                          spreadRadius: 2,
-                          blurRadius: 3,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 30,
-                            bottom: 10,
-                          ),
-                          child: const Text(
-                            'メンバー',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          child: Center(
-                            child: SizedBox(
-                              height: 344,
-                              width: 330,
-                              child: GridView.count(
-                                crossAxisSpacing: 26,
-                                mainAxisSpacing: 14,
-                                childAspectRatio: 2.5,
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.all(10),
-                                children: const <Widget>[
-                                  //後でデータベースと繋げます
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                  GroupMember(),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    // 浮遊ボタン
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 25),
-                      width: 200,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(70),
-                        color: const Color.fromARGB(255, 107, 88, 252),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromARGB(225, 127, 145, 145),
-                            spreadRadius: 2,
-                            blurRadius: 3,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: TextButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute<MaterialPageRoute<dynamic>>(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(60),
-                                color: Colors.white,
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            const Text(
-                              '団体を作成',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 380,
-                left: 340,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      const CircleBorder(),
-                    ),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFFD8EB61)),
-                  ),
-                  child: const Icon(
-                    Icons.person_remove,
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute<MaterialPageRoute<dynamic>>(
-                        builder: (context) => const ShowMemberAddPopup(),
-                      ),
-                    );
-                  },
                 ),
-              ),
-              Positioned(
-                top: 420,
-                left: 340,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                      const CircleBorder(),
-                    ),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFFEB6161)),
-                  ),
-                  child: const Icon(
-                    Icons.person_remove,
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                  onPressed: () async {
-                  
-                  },
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

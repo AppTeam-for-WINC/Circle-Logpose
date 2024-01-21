@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../schedule_create_controller.dart';
 
-void showTeamPicker(
+void showGroupPicker(
   BuildContext context,
   ScheduleCreationData schedule,
   void Function(int)? onSelectedItemChanged,

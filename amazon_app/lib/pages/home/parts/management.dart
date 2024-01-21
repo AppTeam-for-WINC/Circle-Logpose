@@ -1,11 +1,11 @@
-import 'package:amazon_app/pages/home/parts/group_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../group/create/group_create_page.dart';
+import '../../popup/schedule_create/schedule_create_popup.dart';
+import 'schedules.dart';
 
-class GroupPage extends ConsumerWidget {
-  const GroupPage({super.key});
+class ScheduleManagement extends ConsumerWidget {
+  const ScheduleManagement({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,27 +19,31 @@ class GroupPage extends ConsumerWidget {
         alignment: AlignmentDirectional.center,
         children: [
           Positioned(
-            top: deviceHeight * 0.15,
-            // bottom: deviceHeight * 0.05,
-            child: SizedBox(
-              width: deviceWidth,
+            top: deviceHeight * 0.1,
+            child: Container(
+              width: deviceWidth * 0.9,
               height: deviceHeight,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GridView.count(
-                      primary: false,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(20),
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      crossAxisCount: 2,
-                      children: <Widget>[
-                        for (int i = 0; i < 10; i++) const GroupBox(),
+              color: const Color(0xFFF5F3FE),
+              padding: const EdgeInsets.only(top: 45),
+              child: const TabBarView(
+                physics: BouncingScrollPhysics(),
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        //Databaseからスケジュールデータを一覧取得
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
+                        GroupScheduleCard(),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -66,7 +70,7 @@ class GroupPage extends ConsumerWidget {
           Positioned(
             top: deviceHeight * 0.875,
             child: Container(
-              width: 300,
+              width: 200,
               height: 60,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(70),
@@ -82,11 +86,12 @@ class GroupPage extends ConsumerWidget {
               ),
               child: CupertinoButton(
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                      builder: (context) => const GroupCreatePage(),
-                    ),
+                  await showCupertinoModalPopup<ScheduleCreatePopup>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      print('hello');
+                      return const ScheduleCreatePopup();
+                    },
                   );
                 },
                 child: Row(
@@ -96,19 +101,18 @@ class GroupPage extends ConsumerWidget {
                       width: 30,
                       height: 30,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(60),
                         color: Colors.white,
                       ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.add,
-                          size: 25,
-                          color: Colors.black,
-                        ),
+                      child: const Icon(
+                        Icons.add,
+                        size: 25,
+                        color: Colors.black,
                       ),
                     ),
+                    const SizedBox(width: 20),
                     const Text(
-                      '新しい団体を作成',
+                      '予定を作成',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,

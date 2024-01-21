@@ -23,8 +23,8 @@ class GroupFilteringPopup extends ConsumerStatefulWidget {
 class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
   @override
   Widget build(BuildContext context) {
-    final double deviceH = MediaQuery.of(context).size.height;
-    final double deviceW = MediaQuery.of(context).size.width;
+    final deviceH = MediaQuery.of(context).size.height;
+    final deviceW = MediaQuery.of(context).size.width;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Padding(
@@ -377,4 +377,3 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
     );
   }
 }
-

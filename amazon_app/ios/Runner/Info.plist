@@ -4,10 +4,16 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>Used image picker plugin</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library Access Warning</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Camera Library Access Warning</string>
+	<string>Used image picker plugin</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>image</string>
+	</array>
+
 	<key>CFBundleDisplayName</key>
 	<string>Amazon App</string>
 	<key>CFBundleExecutable</key>

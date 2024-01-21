@@ -29,7 +29,7 @@ class GroupController {
     }
 
     ///Get server time
-    final createdAt = FieldValue.serverTimestamp() as Timestamp;
+    final createdAt = FieldValue.serverTimestamp();
 
     await groupDoc.set({
       'name': name,
@@ -124,7 +124,7 @@ class GroupController {
       return;
     }
 
-    final updatedAt = FieldValue.serverTimestamp() as Timestamp;
+    final updatedAt = FieldValue.serverTimestamp();
 
     final updateData = <String, dynamic>{
       'name': name,

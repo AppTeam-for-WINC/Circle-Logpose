@@ -1,6 +1,5 @@
 import 'package:amazon_app/amazon/amazon_app_controller.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../pages/group/create/group_create_page.dart';
 import '../pages/group/setting/group_setting_page.dart';
@@ -21,7 +20,7 @@ class AmazonApp extends StatelessWidget {
         future: firstPage(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const CircularProgressIndicator();
+            return const CupertinoActivityIndicator();
           }
           return snapshot.data!;
         },
