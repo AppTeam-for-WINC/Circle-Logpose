@@ -1,6 +1,5 @@
 import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
 
 import 'group.dart';
 
@@ -8,7 +7,6 @@ class GroupController {
   const GroupController();
 
   static final db = FirebaseFirestore.instance;
-  static const uuid = Uuid();
   static const collectionPath = 'groups';
 
   ///Create group database.

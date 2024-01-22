@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/home_page.dart';
-import '../../popup/member_add/member_add_popup.dart';
+import '../../popup/member_add/member_add.dart';
 import '../../popup/schedule_create/schedule_create_popup.dart';
 import 'parts/group_member_icons.dart';
 import 'parts/schedule_card.dart';
@@ -241,11 +241,11 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                     right: -15,
                     child: CupertinoButton(
                       onPressed: () async {
-                        await showCupertinoModalPopup<ShowMemberAddPopup>(
+                        await showCupertinoModalPopup<AddMember>(
                           context: context,
                           builder: (BuildContext context) {
                             return const Center(
-                              child: ShowMemberAddPopup(),
+                              child: AddMember(),
                             );
                           },
                         );
