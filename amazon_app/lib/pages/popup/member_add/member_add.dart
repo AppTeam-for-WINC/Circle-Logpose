@@ -1,10 +1,15 @@
-import 'package:amazon_app/pages/popup/member_add/member_add_controller.dart';
+import 'package:amazon_app/pages/popup/member_add/riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddMember extends ConsumerStatefulWidget {
-  const AddMember({super.key});
+  const AddMember({
+    super.key,
+    required this.groupId,
+  });
+  final String? groupId;
+
   @override
   ConsumerState<AddMember> createState() => ShowMemberAddState();
 }
@@ -12,8 +17,11 @@ class AddMember extends ConsumerStatefulWidget {
 class ShowMemberAddState extends ConsumerState<AddMember> {
   @override
   Widget build(BuildContext context) {
-    final memberAddData = ref.watch(memberAddDataProvider);
+    //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
+    final userProfile = ref.watch(memberAddDataProvider);
 
+    //memberAddDataは、値の変更を行うが、追跡は行わない。
+    final memberAddData = ref.watch(memberAddDataProvider.notifier);
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
@@ -180,10 +188,10 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                           ],
                         ),
                       ),
-                      if (memberAddData.user != null)
+                      if (userProfile != null)
                         Container(
                           height: 30,
-                          width: 80,
+                          width: 100,
                           padding: const EdgeInsets.only(left: 5, right: 5),
                           margin: const EdgeInsets.only(top: 15),
                           decoration: BoxDecoration(
@@ -200,7 +208,8 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                           ),
                           child: Row(
                             children: [
-                              Image.network(
+                              // Image.network(
+                              Image.asset(
                                 memberAddData.userImage!,
                                 width: 20,
                                 height: 20,
@@ -240,21 +249,24 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.content_copy,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15),
-                        child: const Text(
-                          '団体リンクのコピー',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
+                  child: CupertinoButton(
+                    onPressed: () async {},
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.content_copy,
+                          size: 20,
+                          color: Colors.white,
                         ),
-                      ),
-                    ],
+                        Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          child: const Text(
+                            '招待リンクのコピー',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

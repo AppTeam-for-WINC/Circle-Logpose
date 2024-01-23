@@ -1,26 +1,27 @@
+import 'package:amazon_app/database/group/invitation/invitation_controller.dart';
 import 'package:amazon_app/database/user/user.dart';
 import 'package:amazon_app/database/user/user_controller.dart';
 import 'package:amazon_app/validation/validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final memberAddDataProvider = Provider<MemberAddData>(MemberAddData.new);
+Future<String?> getGroupInvitationLink(String groupId) async {
+  final invitationData = await GroupInvitationController.create(groupId);
+  final invitationLink = invitationData.invitationLink;
+  return invitationLink;
+}
 
-class MemberAddData {
-  MemberAddData(this.ref) {
-    accountIdController.addListener(accountDataController);
-    memberAddController();
+class MemberAddData extends StateNotifier<UserProfile?> {
+  MemberAddData() : super(null) {
+   accountIdController.addListener(accountDataController); 
   }
 
-  final Ref ref;
   TextEditingController accountIdController = TextEditingController();
   List<UserProfile>? users;
   UserProfile? user;
   String? username;
   String? userImage;
   String? userDescription;
-
-  void testFunc(){}
 
   Future<void> accountDataController() async {
     await accountIdLengthChecker();
@@ -45,9 +46,9 @@ class MemberAddData {
     final accountId = accountIdController.text;
     users = await UserController.readWithAccountId(accountId);
     user = users!.first;
-    
     username = user!.name;
     userImage = user!.image;
     userDescription = user!.description;
+    state = users!.isNotEmpty ? users!.first : null;
   }
 }

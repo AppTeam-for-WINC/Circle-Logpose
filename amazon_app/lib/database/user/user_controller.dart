@@ -38,7 +38,7 @@ class UserController {
 
     String? imagePath;
     if (image is! String) {
-      imagePath = 'amazon_app/images/group_img.jpeg';
+      imagePath = 'amazon_app/src/images/group_img.jpeg';
     } else {
       imagePath =
           await StorageController.uploadUserImageToStorage(docId, image);

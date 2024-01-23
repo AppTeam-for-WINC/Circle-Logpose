@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:amazon_app/image/image.dart';
-import 'package:amazon_app/pages/group/create/parts/group_member.dart';
+import 'package:amazon_app/pages/group/create/parts/member/group_member.dart';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:amazon_app/pages/popup/member_add/member_add.dart';
+import 'package:amazon_app/pages/popup/member_add/riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +39,8 @@ class GroupContentsState extends ConsumerState<GroupContents> {
 
   @override
   Widget build(BuildContext context) {
+    //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
+    final userProfile = ref.watch(memberAddDataProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -203,23 +206,10 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(10),
-                          children: const <Widget>[
+                          children: <Widget>[
                             //後でデータベースと繋げます
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
+                            for (int i = 0; i < memberCount; i++)
+                              const GroupMember(),
                           ],
                         ),
                       ),
@@ -309,7 +299,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                   context: context,
                   builder: (BuildContext context) {
                     return const Center(
-                      child: AddMember(),
+                      child: AddMember(
+                        groupId: null,
+                      ),
                     );
                   },
                 );
