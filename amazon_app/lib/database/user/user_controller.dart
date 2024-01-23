@@ -38,7 +38,7 @@ class UserController {
 
     String? imagePath;
     if (image is! String) {
-      imagePath = 'amazon_app/images/group_img.jpeg';
+      imagePath = 'src/images/group_img.jpeg';
     } else {
       imagePath =
           await StorageController.uploadUserImageToStorage(docId, image);
@@ -82,7 +82,7 @@ class UserController {
     }
 
     var description = userRef['description'];
-    description = description as String?; 
+    description = description as String?;
 
     var updatedAt = userRef['updated_at'];
     updatedAt = updatedAt as Timestamp?;
@@ -100,6 +100,51 @@ class UserController {
       updatedAt: updatedAt,
       createdAt: createdAt,
     );
+  }
+
+  static Future<List<UserProfile>> readWithAccountId(String accountId) async {
+    final userSnapshot = await db
+        .collection(collectionPath)
+        .where('account_id', isEqualTo: accountId)
+        .get();
+
+    final userRefs = userSnapshot.docs.map((doc) {
+      final userDocRef = doc.data() as Map<String, dynamic>?;
+      if (userDocRef == null) {
+        throw Exception('Error : No found document data.');
+      }
+      var name = userDocRef['name'];
+      if (name is! String) {
+        name = name.toString();
+      }
+
+      var image = userDocRef['image'];
+      if (image is! String) {
+        image = image.toString();
+      }
+
+      var description = userDocRef['description'];
+      description = description as String?;
+
+      var updatedAt = userDocRef['updated_at'];
+      updatedAt = updatedAt as Timestamp?;
+
+      var createdAt = userDocRef['created_at'];
+      if (createdAt is! Timestamp) {
+        createdAt = createdAt as Timestamp;
+      }
+
+      return UserProfile(
+        accountId: accountId,
+        name: name,
+        image: image,
+        description: description,
+        updatedAt: updatedAt,
+        createdAt: createdAt,
+      );
+    }).toList();
+
+    return userRefs;
   }
 
   ///後で、factoryメソッドなどを用いて、ユーザーの名前、画像、説明などを個別で変更できる関数を生成する。
@@ -137,7 +182,7 @@ class UserController {
       debugPrint('The account ID is already used');
       return false;
     }
-    
+
     final updateData = <String, String>{
       'account_id': accountId,
     };

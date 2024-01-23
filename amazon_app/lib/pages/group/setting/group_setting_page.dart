@@ -2,34 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/home_page.dart';
-import '../../popup/member_add/member_add_popup.dart';
+import '../../popup/member_add/member_add.dart';
 import '../../popup/schedule_create/schedule_create_popup.dart';
 import 'parts/group_member_icons.dart';
 import 'parts/schedule_card.dart';
 
 enum GroupOption { edit, list }
 
-class GroupSettingPage extends ConsumerWidget {
-  const GroupSettingPage({super.key});
+class GroupSettingPage extends ConsumerStatefulWidget {
+  const GroupSettingPage({
+    super.key,
+    required this.groupId,
+  });
+  final String groupId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const GroupSettingHome();
+  ConsumerState<GroupSettingPage> createState() {
+    return GroupSettingPageState();
   }
 }
 
-class GroupSettingHome extends ConsumerStatefulWidget {
-  const GroupSettingHome({super.key});
+class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
 
-  @override
-  ConsumerState<GroupSettingHome> createState() {
-    return _GroupSettingHome();
-  }
-}
-
-class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
   @override
   Widget build(BuildContext context) {
+    final groupId = widget.groupId;
+
     return ColoredBox(
       color: const Color.fromARGB(255, 233, 233, 246),
       child: Center(
@@ -241,11 +239,11 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                     right: -15,
                     child: CupertinoButton(
                       onPressed: () async {
-                        await showCupertinoModalPopup<ShowMemberAddPopup>(
+                        await showCupertinoModalPopup<AddMember>(
                           context: context,
                           builder: (BuildContext context) {
-                            return const Center(
-                              child: ShowMemberAddPopup(),
+                            return AddMember(
+                              groupId: groupId,
                             );
                           },
                         );
@@ -312,10 +310,14 @@ class _GroupSettingHome extends ConsumerState<GroupSettingHome> {
                               width: 354,
                               height: 180,
                               padding: const EdgeInsets.only(
-                                  top: 10, right: 5, left: 5, bottom: 5,),
+                                top: 10,
+                                right: 5,
+                                left: 5,
+                                bottom: 5,
+                              ),
                               child: GridView.builder(
                                 gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 3,
                                   mainAxisSpacing: 20,

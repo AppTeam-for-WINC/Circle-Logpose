@@ -12,7 +12,22 @@ class GroupBox extends ConsumerWidget {
         await Navigator.push(
           context,
           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-            builder: (context) => const GroupSettingPage(),
+            //後でgroupIdをセットする。
+            ///////
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            ///
+            builder: (context) => GroupSettingPage(groupId: ''),
           ),
         );
       },

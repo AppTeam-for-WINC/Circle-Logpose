@@ -132,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                     if (errorMessage != null)
                       Text(
-                        errorMessage.toString(),
+                        errorMessage,
                         style: const TextStyle(color: Colors.red, fontSize: 20),
                       ),
 

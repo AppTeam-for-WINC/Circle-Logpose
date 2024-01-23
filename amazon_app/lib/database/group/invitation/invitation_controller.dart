@@ -40,6 +40,23 @@ class GroupInvitationController {
       'created_at': createdAt,
     });
 
+    final groupInvitationData = await read(groupInvitationDoc.id);
+
+    return groupInvitationData;
+  }
+
+  static Future<GroupInvitation> read(String docId) async {
+    final invitationDoc = await db.collection(collectionPath).doc(docId).get();
+    final invitationDocRef = invitationDoc.data();
+    if (invitationDocRef == null) {
+      throw Exception('Error : No found document data.');
+    }
+
+    final groupId = invitationDocRef['group_id'] as String;
+    final invitationLink = invitationDocRef['invitation_link'] as String;
+    final expiresAt = invitationDocRef['expires_at'] as Timestamp;
+    final createdAt = invitationDocRef['created_at'] as Timestamp;
+
     return GroupInvitation(
       groupId: groupId,
       invitationLink: invitationLink,

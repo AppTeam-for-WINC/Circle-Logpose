@@ -1,12 +1,29 @@
+import 'package:amazon_app/pages/popup/member_add/riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShowMemberAddPopup extends ConsumerWidget {
-  const ShowMemberAddPopup({super.key});
+class AddMember extends ConsumerStatefulWidget {
+  const AddMember({
+    super.key,
+    required this.groupId,
+  });
+  final String? groupId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AddMember> createState() => ShowMemberAddState();
+}
+
+class ShowMemberAddState extends ConsumerState<AddMember> {
+  @override
+  Widget build(BuildContext context) {
+    final groupId = widget.groupId;
+
+    //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
+    final userProfile = ref.watch(memberAddDataProvider);
+
+    //userProfileNotifierは、値の変更を行うが、追跡は行わない。
+    final userProfileNotifier = ref.watch(memberAddDataProvider.notifier);
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
@@ -143,14 +160,17 @@ class ShowMemberAddPopup extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 3, horizontal: 10),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                            horizontal: 10,
+                          ),
                           child: CupertinoTextField(
-                            prefix: Icon(Icons.search),
-                            style: TextStyle(fontSize: 16),
+                            controller: userProfileNotifier.accountIdController,
+                            prefix: const Icon(Icons.search),
+                            style: const TextStyle(fontSize: 16),
                             placeholder: 'ユーザIDの検索',
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Color(0xFFD8EB61),
                             ),
                           ),
@@ -170,81 +190,93 @@ class ShowMemberAddPopup extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        height: 30,
-                        width: 80,
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        margin: const EdgeInsets.only(top: 15),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF5F0FF),
-                          borderRadius: BorderRadius.circular(80),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xFFD9D9D9),
-                              offset: Offset(0, 2),
-                              blurRadius: 2,
-                              spreadRadius: 1,
-                            ),
-                          ],
+                      if (userProfile != null)
+                        Container(
+                          height: 30,
+                          width: 100,
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          margin: const EdgeInsets.only(top: 15),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F0FF),
+                            borderRadius: BorderRadius.circular(80),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xFFD9D9D9),
+                                offset: Offset(0, 2),
+                                blurRadius: 2,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              // Image.network(
+                              Image.asset(
+                                userProfileNotifier.userImage!,
+                                width: 20,
+                                height: 20,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                child: Text(
+                                  userProfileNotifier.username!,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF9A9A9A),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                    ],
+                  ),
+                ),
+                if (groupId != null) 
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Container(
+                      width: 190,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF7B61FF),
+                        borderRadius: BorderRadius.circular(80),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xFFD9D9D9),
+                            offset: Offset(0, 2),
+                            blurRadius: 2,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: CupertinoButton(
+                        onPressed: () async {},
+                        padding: EdgeInsets.zero,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Icon(
-                              Icons.person,
-                              size: 20,
+                              Icons.content_copy,
+                              size: 12,
+                              color: Colors.white,
                             ),
                             Container(
-                              margin: const EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.only(left: 15),
                               child: const Text(
-                                'User1',
+                                '招待リンクのコピー',
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF9A9A9A),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 20,
-                  ),
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  width: 190,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF7B61FF),
-                    borderRadius: BorderRadius.circular(80),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xFFD9D9D9),
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.content_copy,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15),
-                        child: const Text(
-                          '団体リンクのコピー',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),

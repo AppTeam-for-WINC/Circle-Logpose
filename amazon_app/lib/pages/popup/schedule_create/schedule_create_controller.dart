@@ -37,8 +37,8 @@ class ScheduleCreationData {
 
     groups = await GroupController.readAll(userId);
     groupIds = await GroupController.readAllDocId(userId);
-    groupNames = groups?.map((group) => group.name).toList();
-    groupImages = groups?.map((group) => group.image).toList();
+    groupNames = groups!.map((group) => group.name).toList();
+    groupImages = groups!.map((group) => group.image).toList();
     final apple = ref.refresh(scheduleCreationDataProvider);
     debugPrint(apple.toString());
   }

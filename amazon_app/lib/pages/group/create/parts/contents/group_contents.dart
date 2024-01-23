@@ -1,9 +1,10 @@
 import 'dart:io';
-
 import 'package:amazon_app/image/image.dart';
-import 'package:amazon_app/pages/group/create/parts/group_member.dart';
+import 'package:amazon_app/pages/group/create/parts/admin/group_admin.dart';
+import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/group/create/parts/membership/group_member.dart';
 import 'package:amazon_app/pages/home/home_page.dart';
-import 'package:amazon_app/pages/popup/member_add/member_add_popup.dart';
+import 'package:amazon_app/pages/popup/member_add/member_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,8 +38,13 @@ class GroupContentsState extends ConsumerState<GroupContents> {
 
   @override
   Widget build(BuildContext context) {
+    final userProfile = ref.watch(groupAddDataProvider);
+    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
+    final groupAddData = ref.watch(groupAddDataProvider.notifier);
+    final memberCount = ref.watch(groupMemberCountProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -72,12 +78,32 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //image
-                        const Icon(
-                          Icons.group,
-                          size: 70,
-                          color: Colors.grey,
-                        ),
+                        image == null
+                            ? const Icon(
+                                Icons.group,
+                                size: 70,
+                                color: Colors.grey,
+                              )
+                            : Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: FileImage(image!),
+                                    fit: BoxFit.cover, // 画像のフィットを指定
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(999), // 角丸の設定
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 1), // 影のオフセット
+                                    ),
+                                  ],
+                                ),
+                              ),
                         const Icon(
                           Icons.arrow_forward,
                           size: 30,
@@ -119,13 +145,14 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                         ),
                       ],
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 13),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 13),
                       child: CupertinoTextField(
-                        prefix: Icon(Icons.add),
-                        style: TextStyle(fontSize: 18),
+                        controller: groupAddData.groupNameController,
+                        prefix: const Icon(Icons.add),
+                        style: const TextStyle(fontSize: 18),
                         placeholder: '団体名',
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.transparent,
                         ),
                       ),
@@ -181,23 +208,19 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(10),
-                          children: const <Widget>[
+                          children: <Widget>[
                             //後でデータベースと繋げます
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
-                            GroupMember(),
+                            groupAdminMemberProfile.when(
+                              data: (adminUserProfile) {
+                                return GroupAdminMember(
+                                  adminUserProfile: adminUserProfile,
+                                );
+                              },
+                              loading: () => const SizedBox.shrink(),
+                              error: (error, stack) => Text('$error'),
+                            ),
+                            for (int i = 0; i < memberCount; i++)
+                              GroupMember(userProfile: userProfile),
                           ],
                         ),
                       ),
@@ -283,11 +306,15 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                 size: 20,
               ),
               onPressed: () async {
-                await Navigator.push(
-                  context,
-                  CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                    builder: (context) => const ShowMemberAddPopup(),
-                  ),
+                await showCupertinoModalPopup<AddMember>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const Center(
+                      child: AddMember(
+                        groupId: null,
+                      ),
+                    );
+                  },
                 );
               },
             ),
