@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:amazon_app/image/image.dart';
-import 'package:amazon_app/pages/group/create/parts/member/group_member.dart';
+import 'package:amazon_app/pages/group/create/parts/admin/group_admin.dart';
+import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/group/create/parts/membership/group_member.dart';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:amazon_app/pages/popup/member_add/member_add.dart';
-import 'package:amazon_app/pages/popup/member_add/riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +19,6 @@ class GroupContents extends ConsumerStatefulWidget {
 }
 
 class GroupContentsState extends ConsumerState<GroupContents> {
-  final TextEditingController groupNameController = TextEditingController();
   File? image;
 
   ///画像を選択する関数。
@@ -39,10 +39,13 @@ class GroupContentsState extends ConsumerState<GroupContents> {
 
   @override
   Widget build(BuildContext context) {
-    //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
-    final userProfile = ref.watch(memberAddDataProvider);
+    final userProfile = ref.watch(groupAddDataProvider);
+    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
+    final groupAddData = ref.watch(groupAddDataProvider.notifier);
+    final memberCount = ref.watch(groupMemberCountProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -146,7 +149,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 13),
                       child: CupertinoTextField(
-                        controller: groupNameController,
+                        controller: groupAddData.groupNameController,
                         prefix: const Icon(Icons.add),
                         style: const TextStyle(fontSize: 18),
                         placeholder: '団体名',
@@ -208,8 +211,17 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                           padding: const EdgeInsets.all(10),
                           children: <Widget>[
                             //後でデータベースと繋げます
+                            groupAdminMemberProfile.when(
+                              data: (adminUserProfile) {
+                                return GroupAdminMember(
+                                  adminUserProfile: adminUserProfile,
+                                );
+                              },
+                              loading: () => const SizedBox.shrink(),
+                              error: (error, stack) => Text('$error'),
+                            ),
                             for (int i = 0; i < memberCount; i++)
-                              const GroupMember(),
+                              GroupMember(userProfile: userProfile),
                           ],
                         ),
                       ),
