@@ -17,11 +17,13 @@ class AddMember extends ConsumerStatefulWidget {
 class ShowMemberAddState extends ConsumerState<AddMember> {
   @override
   Widget build(BuildContext context) {
+    final groupId = widget.groupId;
+
     //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
     final userProfile = ref.watch(memberAddDataProvider);
 
-    //memberAddDataは、値の変更を行うが、追跡は行わない。
-    final memberAddData = ref.watch(memberAddDataProvider.notifier);
+    //userProfileNotifierは、値の変更を行うが、追跡は行わない。
+    final userProfileNotifier = ref.watch(memberAddDataProvider.notifier);
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
@@ -164,7 +166,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                             horizontal: 10,
                           ),
                           child: CupertinoTextField(
-                            controller: memberAddData.accountIdController,
+                            controller: userProfileNotifier.accountIdController,
                             prefix: const Icon(Icons.search),
                             style: const TextStyle(fontSize: 16),
                             placeholder: 'ユーザIDの検索',
@@ -210,14 +212,14 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                             children: [
                               // Image.network(
                               Image.asset(
-                                memberAddData.userImage!,
+                                userProfileNotifier.userImage!,
                                 width: 20,
                                 height: 20,
                               ),
                               Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 child: Text(
-                                  memberAddData.username!,
+                                  userProfileNotifier.username!,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Color(0xFF9A9A9A),
@@ -230,45 +232,51 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 20,
-                  ),
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  width: 190,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF7B61FF),
-                    borderRadius: BorderRadius.circular(80),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xFFD9D9D9),
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
-                  child: CupertinoButton(
-                    onPressed: () async {},
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.content_copy,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 15),
-                          child: const Text(
-                            '招待リンクのコピー',
-                            style: TextStyle(fontSize: 14, color: Colors.white),
+                if (groupId != null) 
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Container(
+                      width: 190,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF7B61FF),
+                        borderRadius: BorderRadius.circular(80),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xFFD9D9D9),
+                            offset: Offset(0, 2),
+                            blurRadius: 2,
+                            spreadRadius: 1,
                           ),
+                        ],
+                      ),
+                      child: CupertinoButton(
+                        onPressed: () async {},
+                        padding: EdgeInsets.zero,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.content_copy,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: const Text(
+                                '招待リンクのコピー',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

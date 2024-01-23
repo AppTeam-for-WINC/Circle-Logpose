@@ -1,3 +1,4 @@
+import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:amazon_app/database/group/invitation/invitation_controller.dart';
 import 'package:amazon_app/database/user/user.dart';
 import 'package:amazon_app/database/user/user_controller.dart';
@@ -13,7 +14,7 @@ Future<String?> getGroupInvitationLink(String groupId) async {
 
 class MemberAddData extends StateNotifier<UserProfile?> {
   MemberAddData() : super(null) {
-   accountIdController.addListener(accountDataController); 
+    accountIdController.addListener(accountDataController);
   }
 
   TextEditingController accountIdController = TextEditingController();
@@ -43,12 +44,27 @@ class MemberAddData extends StateNotifier<UserProfile?> {
   }
 
   Future<void> memberAddController() async {
+    final myDocId = await AuthController.getCurrentUserId();
+    final myAccount = await UserController.read(myDocId!);
+
     final accountId = accountIdController.text;
     users = await UserController.readWithAccountId(accountId);
-    user = users!.first;
-    username = user!.name;
-    userImage = user!.image;
-    userDescription = user!.description;
-    state = users!.isNotEmpty ? users!.first : null;
+
+    //アカウントIDが見つからない場合は、nullを返す。
+    if (users!.isEmpty) {
+      username = null;
+      userImage = null;
+      userDescription = null;
+      state = null;
+    } else {
+      user = users!.first;
+      //自分のアカウントを検索した場合は、何も返さない。
+      if (myAccount.accountId != user!.accountId) {
+        username = user!.name;
+        userImage = user!.image;
+        userDescription = user!.description;
+        state = user;
+      }
+    }
   }
 }

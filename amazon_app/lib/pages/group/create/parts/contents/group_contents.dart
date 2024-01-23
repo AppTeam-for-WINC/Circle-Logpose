@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amazon_app/image/image.dart';
 import 'package:amazon_app/pages/group/create/parts/admin/group_admin.dart';
 import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
