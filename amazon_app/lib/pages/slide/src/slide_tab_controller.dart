@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/popup/home_tab_component/home_tab_component.dart';
+import 'package:amazon_app/pages/slide/src/tab_component.dart';
 import 'package:amazon_app/pages/slide/src/slide_tab.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -9,10 +9,10 @@ Future<void> onTapSegmentTab(
   }
   if (slideNum == 0) {
     debugPrint('$tabNameのラベルが押されました。');
-    await showCupertinoModalPopup<HomeTabComponent>(
+    await showCupertinoModalPopup<TabComponent>(
       context: context,
       builder: (BuildContext context) {
-        return HomeTabComponent(tab: tab, tabName: tabName);
+        return TabComponent(tab: tab, tabName: tabName);
       },
     );
   }

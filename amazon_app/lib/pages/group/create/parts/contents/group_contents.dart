@@ -3,6 +3,7 @@ import 'package:amazon_app/image/image.dart';
 import 'package:amazon_app/pages/group/create/parts/admin/group_admin.dart';
 import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
 import 'package:amazon_app/pages/group/create/parts/membership/group_member.dart';
+import 'package:amazon_app/pages/group/create/parts/membership/group_member_controller.dart';
 import 'package:amazon_app/pages/home/home_page.dart';
 import 'package:amazon_app/pages/popup/member_add/member_add.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,10 +39,8 @@ class GroupContentsState extends ConsumerState<GroupContents> {
 
   @override
   Widget build(BuildContext context) {
-    final userProfile = ref.watch(groupAddDataProvider);
     final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
-    final groupAddData = ref.watch(groupAddDataProvider.notifier);
-    final memberCount = ref.watch(groupMemberCountProvider);
+    final groupAddData = ref.watch(groupAddMemberDataProvider.notifier);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
@@ -72,6 +71,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                 ],
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(60, 20, 60, 10),
@@ -166,7 +166,6 @@ class GroupContentsState extends ConsumerState<GroupContents> {
             top: deviceHeight * 0.38,
             left: deviceWidth * 0.1,
             child: Container(
-              //下トピック
               width: 350,
               height: 400,
               margin: const EdgeInsets.only(top: 50),
@@ -209,7 +208,6 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(10),
                           children: <Widget>[
-                            //後でデータベースと繋げます
                             groupAdminMemberProfile.when(
                               data: (adminUserProfile) {
                                 return GroupAdminMember(
@@ -219,8 +217,11 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                               loading: () => const SizedBox.shrink(),
                               error: (error, stack) => Text('$error'),
                             ),
-                            for (int i = 0; i < memberCount; i++)
-                              GroupMember(userProfile: userProfile),
+                            //追加したユーザーを表示しています。
+                            ...ref
+                                .watch(groupMemberListProvider)
+                                .map((member) =>
+                                    GroupMember(userProfile: member),),
                           ],
                         ),
                       ),
@@ -251,11 +252,15 @@ class GroupContentsState extends ConsumerState<GroupContents> {
               ),
               child: TextButton(
                 onPressed: () async {
-                  await Navigator.push(
+                  await Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                      builder: (context) => const HomePage(),
+                      builder: (context) {
+                        
+                        return const HomePage();
+                      },
                     ),
+                    (_) => false,
                   );
                 },
                 child: Row(

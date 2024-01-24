@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../slide/slide_segmented_tab_control.dart';
-import 'parts/management.dart';
 import 'parts/groups.dart';
+import 'parts/management.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -25,13 +24,11 @@ class HomePage extends ConsumerWidget {
                 ],
               ),
             ),
-            //ここのRow切り出す
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                    // top: 70,
                     top: deviceHeight * 0.065,
                   ),
                   child: Container(

@@ -1,4 +1,5 @@
-import 'package:amazon_app/pages/popup/member_add/riverpod.dart';
+import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/popup/member_add/member_add_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,10 +21,10 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
     final groupId = widget.groupId;
 
     //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
-    final userProfile = ref.watch(memberAddDataProvider);
+    final userProfile = ref.watch(memberAddProvider);
 
     //userProfileNotifierは、値の変更を行うが、追跡は行わない。
-    final userProfileNotifier = ref.watch(memberAddDataProvider.notifier);
+    final userProfileNotifier = ref.watch(memberAddProvider.notifier);
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: SizedBox(
@@ -208,25 +209,34 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                               ),
                             ],
                           ),
-                          child: Row(
-                            children: [
-                              // Image.network(
-                              Image.asset(
-                                userProfileNotifier.userImage!,
-                                width: 20,
-                                height: 20,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 5),
-                                child: Text(
-                                  userProfileNotifier.username!,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF9A9A9A),
+                          child: CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              //後で、OOを追加しました。をalert()などで通知させる。
+                              print('${userProfileNotifier.username!}を追加しました。');
+                              ref.read(memberAddProvider.notifier).resetState();
+                              ref.read(groupMemberListProvider.notifier).addMember(userProfile);
+                            },
+                            child: Row(
+                              children: [
+                                // Image.network(
+                                Image.asset(
+                                  userProfileNotifier.userImage!,
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    userProfileNotifier.username!,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF9A9A9A),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                     ],
