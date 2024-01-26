@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:amazon_app/image/image.dart';
+import 'package:amazon_app/pages/group/create/group_create_controller.dart';
 import 'package:amazon_app/pages/group/create/parts/admin/group_admin.dart';
 import 'package:amazon_app/pages/group/create/parts/contents/group_contents_controller.dart';
 import 'package:amazon_app/pages/group/create/parts/membership/group_member.dart';
@@ -218,10 +219,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                               error: (error, stack) => Text('$error'),
                             ),
                             //追加したユーザーを表示しています。
-                            ...ref
-                                .watch(groupMemberListProvider)
-                                .map((member) =>
-                                    GroupMember(userProfile: member),),
+                            ...ref.watch(groupMemberListProvider).map(
+                                  (member) => GroupMember(userProfile: member),
+                                ),
                           ],
                         ),
                       ),
@@ -252,11 +252,23 @@ class GroupContentsState extends ConsumerState<GroupContents> {
               ),
               child: TextButton(
                 onPressed: () async {
+                  final success = await createGroup(
+                    groupAddData.groupNameController.text,
+                    image.toString(),
+                    '',
+                    ref,
+                  );
+                  if (!success) {
+                    return;
+                  }
+                  if (!mounted) {
+                    return;
+                  }
+
                   await Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                       builder: (context) {
-                        
                         return const HomePage();
                       },
                     ),

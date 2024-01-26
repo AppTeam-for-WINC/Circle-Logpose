@@ -11,24 +11,23 @@ class GroupMembershipController {
   //グループ作成時に作成者用に自動で呼び出すようにしなければならない。
   ///Added the group to new member.
   static Future<void> create(
-    String userId,
+    String userDocId,
     String role,
     String groupId,
   ) async {
     final groupMembershipDoc = db.collection(collectionPath).doc();
-
-    final userDoc = await db.collection('users').doc(userId).get();
+    final userDoc = await db.collection('users').doc(userDocId).get();
     final userRef = userDoc.data();
     if (userRef == null) {
       throw Exception('Error : No found document data.');
     }
 
-    final username = userRef['username'] as String;
-    final userDescription = userRef['user_description'] as String?;
-    final joinedAt = FieldValue.serverTimestamp() as Timestamp;
+    final username = userRef['name'] as String;
+    final userDescription = userRef['description'] as String?;
+    final joinedAt = FieldValue.serverTimestamp();
 
     await groupMembershipDoc.set({
-      'user_id': userId,
+      'user_id': userDocId,
       'username': username,
       'user_description': userDescription,
       'group_id': groupId,

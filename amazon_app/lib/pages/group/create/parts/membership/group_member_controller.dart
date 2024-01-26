@@ -30,7 +30,7 @@ class GroupAddData extends StateNotifier<UserProfile?> {
     final groupName = groupNameController.text;
     const requiredValidation = RequiredValidation();
     const maxLength32Validation = MaxLength32Validation();
-    final requiredValidationValidation = requiredValidation.validate(
+    final groupNameRequiredValidationValidation = requiredValidation.validate(
       groupName,
       'groupName',
     );
@@ -38,7 +38,7 @@ class GroupAddData extends StateNotifier<UserProfile?> {
       groupName,
       'groupName',
     );
-    if (requiredValidationValidation && groupNameMaxLength32Validation) {
+    if (groupNameRequiredValidationValidation && groupNameMaxLength32Validation) {
       return null;
     }
 

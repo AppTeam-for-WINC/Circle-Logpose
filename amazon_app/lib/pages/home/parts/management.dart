@@ -40,6 +40,7 @@ class ScheduleManagement extends ConsumerWidget {
                         GroupScheduleCard(),
                         GroupScheduleCard(),
                         GroupScheduleCard(),
+                        SizedBox(height: 200,),
                       ],
                     ),
                   ),
