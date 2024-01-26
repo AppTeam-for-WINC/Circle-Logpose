@@ -12,6 +12,12 @@ Future<String?> getGroupInvitationLink(String groupId) async {
   return invitationLink;
 }
 
+
+final memberAddProvider =
+    StateNotifierProvider<MemberAddData, UserProfile?>(
+  (ref) => MemberAddData(),
+);
+
 class MemberAddData extends StateNotifier<UserProfile?> {
   MemberAddData() : super(null) {
     accountIdController.addListener(accountDataController);
@@ -23,6 +29,11 @@ class MemberAddData extends StateNotifier<UserProfile?> {
   String? username;
   String? userImage;
   String? userDescription;
+
+  void resetState() {
+    accountIdController.text = '';
+    state = null;
+  }
 
   Future<void> accountDataController() async {
     await accountIdLengthChecker();

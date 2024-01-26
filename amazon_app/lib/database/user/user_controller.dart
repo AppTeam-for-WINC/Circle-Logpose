@@ -147,6 +147,25 @@ class UserController {
     return userRefs;
   }
 
+  static Future<String> readUserDocIdWithAccountId(String accountId) async {
+    final userSnapshot = await db
+        .collection(collectionPath)
+        .where('account_id', isEqualTo: accountId)
+        .get();
+    
+    if (userSnapshot.docs.isEmpty) {
+      throw Exception('Error: No document found for the user account ID.');
+    }
+     final userDoc = userSnapshot.docs.first;
+
+    final userDocRef = userDoc.data() as Map<String, dynamic>?;
+    if (userDocRef == null) {
+        throw Exception('Error: No found document data.');
+    }
+
+    return userDoc.id;
+  }
+
   ///後で、factoryメソッドなどを用いて、ユーザーの名前、画像、説明などを個別で変更できる関数を生成する。
   ///メールアドレスとaccountIdの変更機能はこの関数では行わない。
   static Future<void> update(

@@ -242,8 +242,10 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         await showCupertinoModalPopup<AddMember>(
                           context: context,
                           builder: (BuildContext context) {
-                            return AddMember(
-                              groupId: groupId,
+                            return Center(
+                              child: AddMember(
+                                groupId: groupId,
+                              ),
                             );
                           },
                         );

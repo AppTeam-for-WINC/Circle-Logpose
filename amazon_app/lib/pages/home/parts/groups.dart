@@ -38,6 +38,7 @@ class GroupPage extends ConsumerWidget {
                         for (int i = 0; i < 10; i++) const GroupBox(),
                       ],
                     ),
+                    const SizedBox(height: 200,),
                   ],
                 ),
               ),

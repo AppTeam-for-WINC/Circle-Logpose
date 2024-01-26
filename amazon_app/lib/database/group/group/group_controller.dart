@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,20 +12,20 @@ class GroupController {
   static const collectionPath = 'groups';
 
   ///Create group database.
-  static Future<void> create(
+  static Future<String> create(
     String name,
     String? image,
     String? description,
   ) async {
     ///Create new document
     final groupDoc = db.collection(collectionPath).doc();
-
     String? imagePath;
-    if (image == null) {
-      imagePath = 'amazon_app/images/group_img.jpeg';
-    } else {
+    if (image != null && File(image).existsSync()) {
       imagePath =
           await StorageController.uploadUserImageToStorage(groupDoc.id, image);
+    } else {
+      imagePath =
+          'src/images/group_img.jpeg';
     }
 
     ///Get server time
@@ -36,6 +38,8 @@ class GroupController {
       'updated_at': null,
       'created_at': createdAt,
     });
+
+    return groupDoc.id;
   }
 
   ///Read all members.
