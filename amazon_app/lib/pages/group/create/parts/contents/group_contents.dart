@@ -265,6 +265,12 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                     return;
                   }
 
+                  //init group name.
+                  groupAddData.groupNameController.clear();
+
+                  //init group member list.
+                  ref.watch(groupMemberListProvider.notifier).resetMemberList();
+
                   await Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoPageRoute<CupertinoPageRoute<dynamic>>(

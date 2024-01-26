@@ -26,4 +26,8 @@ class GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
   void addMember(UserProfile newMember) {
     state = [...state, newMember];
   }
+
+  void resetMemberList() {
+    state = [];
+  }
 }
