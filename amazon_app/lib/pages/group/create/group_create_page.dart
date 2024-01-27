@@ -1,5 +1,5 @@
 import 'package:amazon_app/pages/group/create/parts/contents/group_contents.dart';
-import 'package:amazon_app/pages/home/parts/groups.dart';
+import 'package:amazon_app/pages/home/parts/group/joined_groups.dart';
 import 'package:amazon_app/pages/slide/src/slide_tab.dart';
 import 'package:amazon_app/pages/slide/src/slide_tab_bar.dart';
 import 'package:flutter/material.dart';

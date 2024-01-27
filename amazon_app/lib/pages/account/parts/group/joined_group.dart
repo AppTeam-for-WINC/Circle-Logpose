@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class JoinedGroup extends ConsumerWidget {
-  const JoinedGroup({super.key});
+class JoinedGroupComponent extends ConsumerWidget {
+  const JoinedGroupComponent({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

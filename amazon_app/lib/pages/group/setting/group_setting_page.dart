@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:amazon_app/image/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../home/home_page.dart';
 import '../../popup/member_add/member_add.dart';
 import '../../popup/schedule_create/schedule_create_popup.dart';
@@ -23,6 +28,23 @@ class GroupSettingPage extends ConsumerStatefulWidget {
 }
 
 class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
+  File? image;
+
+  ///画像を選択する関数。
+  Future<String> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) {
+        return 'no image';
+      }
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+      return 'Success: selected image.';
+    } on PlatformException catch (e) {
+      debugPrint('Failed: $e');
+      return 'Failed';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,40 +54,42 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
       color: const Color.fromARGB(255, 233, 233, 246),
       child: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
+              padding: const EdgeInsets.only(
+                top: 100,
               ),
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () async {
-                      await Navigator.pushReplacement(
+                    onTap: () {
+                      Navigator.pop(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                           builder: (context) => const HomePage(),
                         ),
                       );
                     },
-                    child: Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.back,
-                          size: 25,
-                          color: Colors.black,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 3),
-                          child: const Text(
-                            '戻る',
-                            style: TextStyle(
-                              fontSize: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6, left: 15),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            CupertinoIcons.back,
+                            size: 25,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 3),
+                            child: const Text(
+                              '戻る',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const Expanded(
@@ -106,50 +130,57 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 40,
-                      bottom: 20,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(60, 20, 60, 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        image == null
+                            ? const Icon(
+                                Icons.group,
+                                size: 70,
+                                color: Colors.grey,
+                              )
+                            : Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: FileImage(image!),
+                                    fit: BoxFit.cover, // 画像のフィットを指定
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(999),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset:
+                                          const Offset(0, 1), // 影のオフセット
+                                    ),
+                                  ],
+                                ),
+                              ),
                         const Icon(
-                          Icons.groups,
-                          size: 70,
+                          Icons.arrow_forward,
+                          size: 30,
+                          color: Colors.grey,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.east,
-                                size: 15,
-                                color: Color(0xFF6D6D6D),
-                              ),
-                              Icon(
-                                Icons.east,
-                                size: 25,
-                                color: Color(0xFF6D6D6D),
-                              ),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFD9D9D9),
-                              borderRadius: BorderRadius.circular(80),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.add_a_photo,
-                                size: 30,
-                                color: Colors.white,
-                              ),
+                        CupertinoButton(
+                          onPressed: () async {
+                            final imageGetResult = await pickImage();
+                            if (imageGetResult == 'Failed') {
+                              if (!mounted) {
+                                return;
+                              }
+                              await showPhotoAccessDeniedDialog(context);
+                            }
+                          },
+                          child: const SizedBox(
+                            child: Icon(
+                              Icons.image,
+                              size: 70,
+                              color: Colors.grey,
                             ),
                           ),
                         ),

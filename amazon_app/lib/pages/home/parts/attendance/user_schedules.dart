@@ -1,14 +1,16 @@
+import 'package:amazon_app/pages/home/parts/attendance/user_schedule_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/schedule_create/schedule_create_popup.dart';
-import 'schedules.dart';
+import '../../../popup/schedule_create/schedule_create_popup.dart';
+import 'schedule_box.dart';
 
 class ScheduleManagement extends ConsumerWidget {
   const ScheduleManagement({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final groupExist = ref.watch(checkGroupExistProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -68,62 +70,68 @@ class ScheduleManagement extends ConsumerWidget {
               ),
             ),
           ),
-          Positioned(
-            top: deviceHeight * 0.875,
-            child: Container(
-              width: 200,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(70),
-                color: const Color.fromARGB(255, 107, 88, 252),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(225, 127, 145, 145),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: CupertinoButton(
-                onPressed: () async {
-                  await showCupertinoModalPopup<ScheduleCreatePopup>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      print('hello');
-                      return const ScheduleCreatePopup();
-                    },
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        color: Colors.white,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 25,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    const Text(
-                      '予定を作成',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+          if (groupExist is AsyncLoading)
+            const Center(child: CupertinoActivityIndicator()),
+          if (groupExist is AsyncError)
+            Center(child: Text('Error: ${groupExist.error}')),
+
+          // グループが存在する場合のみボタンを表示
+          if (groupExist is AsyncData && groupExist.value == true)
+            Positioned(
+              top: deviceHeight * 0.875,
+              child: Container(
+                width: 200,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(70),
+                  color: const Color.fromARGB(255, 107, 88, 252),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(225, 127, 145, 145),
+                      spreadRadius: 2,
+                      blurRadius: 3,
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
+                child: CupertinoButton(
+                  onPressed: () async {
+                    await showCupertinoModalPopup<ScheduleCreatePopup>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const ScheduleCreatePopup();
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(60),
+                          color: Colors.white,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          size: 25,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      const Text(
+                        '予定を作成',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

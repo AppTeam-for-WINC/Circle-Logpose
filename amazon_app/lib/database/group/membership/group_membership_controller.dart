@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'group_membership.dart';
 
@@ -36,17 +37,18 @@ class GroupMembershipController {
     });
   }
 
-  ///Read all members.
-  static Future<List<GroupMembership>> readAll(String groupId) async {
+  static Future<List<GroupMembership?>> readAllWithUserId(
+      String userDocId,) async {
     final groupMemberships = await db
         .collection(collectionPath)
-        .where('group_id', isEqualTo: groupId)
+        .where('user_id', isEqualTo: userDocId)
         .get();
 
     final groupMembershipsRefs = groupMemberships.docs.map((doc) {
       final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
       if (groupMembershipDocRef == null) {
-        throw Exception('Error : No found document data.');
+        debugPrint('Error : No found document data.');
+        return null;
       }
 
       final userId = groupMembershipDocRef['user_id'] as String;
@@ -54,9 +56,9 @@ class GroupMembershipController {
       final userDescription =
           groupMembershipDocRef['user_description'] as String?;
       final role = groupMembershipDocRef['role'] as String;
+      final groupId = groupMembershipDocRef['group_id'] as String;
       final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-      final joinedAt = groupMembershipDocRef['joined_at'] as Timestamp;
-
+      final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
       return GroupMembership(
         userId: userId,
         username: username,
@@ -87,7 +89,7 @@ class GroupMembershipController {
     final role = groupMembershipDocRef['role'] as String;
     final groupId = groupMembershipDocRef['group_id'] as String;
     final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-    final joinedAt = groupMembershipDocRef['joined_at'] as Timestamp;
+    final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
 
     return GroupMembership(
       userId: userId,
@@ -101,9 +103,9 @@ class GroupMembershipController {
   }
 
   ///後で、factoryメソッドを使って、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
-  ///Update membership users 
+  ///Update membership users
   static Future<void> update({
-    required String docId, 
+    required String docId,
     required String userId,
     required String username,
     required String? userDescription,

@@ -94,7 +94,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                                     fit: BoxFit.cover, // 画像のフィットを指定
                                   ),
                                   borderRadius:
-                                      BorderRadius.circular(999), // 角丸の設定
+                                      BorderRadius.circular(999),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),
@@ -254,7 +254,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                 onPressed: () async {
                   final success = await createGroup(
                     groupAddData.groupNameController.text,
-                    image.toString(),
+                    image,
                     '',
                     ref,
                   );

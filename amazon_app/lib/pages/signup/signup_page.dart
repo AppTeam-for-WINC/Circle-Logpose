@@ -84,7 +84,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     size: 25,
                     color: Colors.white,
                   ),
-                  onPressed: () async {
+                  onPressed: () {
                     Navigator.pop(
                       context,
                       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
