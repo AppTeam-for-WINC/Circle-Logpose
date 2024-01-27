@@ -1,5 +1,5 @@
-import 'package:amazon_app/pages/home/parts/group/group_box.dart';
 import 'package:amazon_app/pages/home/parts/group/controller/joined_group_controller.dart';
+import 'package:amazon_app/pages/home/parts/group/group_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +22,6 @@ class GroupPage extends ConsumerWidget {
         children: [
           Positioned(
             top: deviceHeight * 0.15,
-            // bottom: deviceHeight * 0.05,
             child: SizedBox(
               width: deviceWidth,
               height: deviceHeight,
@@ -41,9 +40,9 @@ class GroupPage extends ConsumerWidget {
                           if (groupProfile.isEmpty) {
                             return const [SizedBox.shrink()];
                           }
-                          return groupProfile
-                              .map((profile) => GroupBox(groupProfile: profile))
-                              .toList();
+                          return groupProfile.map((groupWithId) {
+                            return GroupBox(groupWithId: groupWithId);
+                          }).toList();
                         },
                         loading: () => const [SizedBox.shrink()],
                         error: (error, stack) => [Text('$error')],

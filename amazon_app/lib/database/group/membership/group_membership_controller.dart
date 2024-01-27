@@ -32,44 +32,9 @@ class GroupMembershipController {
       'user_description': userDescription,
       'group_id': groupId,
       'role': role,
-      'crated_at': joinedAt,
+      'created_at': joinedAt,
     });
   }
-
-  ///Read all members.
-  // static Future<List<GroupMembership>> readAll(String groupId) async {
-  //   final groupMemberships = await db
-  //       .collection(collectionPath)
-  //       .where('group_id', isEqualTo: groupId)
-  //       .get();
-
-  //   final groupMembershipsRefs = groupMemberships.docs.map((doc) {
-  //     final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
-  //     if (groupMembershipDocRef == null) {
-  //       throw Exception('Error : No found document data.');
-  //     }
-
-  //     final userId = groupMembershipDocRef['user_id'] as String;
-  //     final username = groupMembershipDocRef['username'] as String;
-  //     final userDescription =
-  //         groupMembershipDocRef['user_description'] as String?;
-  //     final role = groupMembershipDocRef['role'] as String;
-  //     final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-  //     final joinedAt = groupMembershipDocRef['joined_at'] as Timestamp;
-
-  //     return GroupMembership(
-  //       userId: userId,
-  //       username: username,
-  //       userDescription: userDescription,
-  //       role: role,
-  //       groupId: groupId,
-  //       updatedAt: updatedAt,
-  //       joinedAt: joinedAt,
-  //     );
-  //   }).toList();
-
-  //   return groupMembershipsRefs;
-  // }
 
   static Future<List<GroupMembership>> readAllWithUserId(
       String userDocId) async {
@@ -92,7 +57,6 @@ class GroupMembershipController {
       final groupId = groupMembershipDocRef['group_id'] as String;
       final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
       final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
-
       return GroupMembership(
         userId: userId,
         username: username,
@@ -123,7 +87,7 @@ class GroupMembershipController {
     final role = groupMembershipDocRef['role'] as String;
     final groupId = groupMembershipDocRef['group_id'] as String;
     final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-    final joinedAt = groupMembershipDocRef['crated_at'] as Timestamp;
+    final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
 
     return GroupMembership(
       userId: userId,

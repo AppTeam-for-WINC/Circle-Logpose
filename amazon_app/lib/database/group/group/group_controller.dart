@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -20,16 +18,12 @@ class GroupController {
     ///Create new document
     final groupDoc = db.collection(collectionPath).doc();
     String? imagePath;
-    print('imageResult image: ${image}, imagePath:${imagePath}');
     if (image != null) {
       imagePath =
-          await StorageController.uploadUserImageToStorage(groupDoc.id, image);
+          await StorageController.uploadGroupImageToStorage(groupDoc.id, image);
     } else {
-      imagePath =
-          'src/images/group_img.jpeg';
+      imagePath = 'src/images/group_img.jpeg';
     }
-
-
     ///Get server time
     final createdAt = FieldValue.serverTimestamp();
 

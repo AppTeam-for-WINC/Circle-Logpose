@@ -24,7 +24,7 @@ Future<bool> createGroup(
   
   final groupId = await GroupController.create(
     groupName,
-    image.toString(),
+    image?.path,
     groupDescription,
   );
 
