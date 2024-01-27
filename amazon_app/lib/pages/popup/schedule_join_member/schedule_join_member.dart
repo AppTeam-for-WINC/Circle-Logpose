@@ -19,19 +19,20 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(
         bottom: deviceHeight * 0.02,
         right: 32,
         left: 32,
       ),
       child: Center(
-        child: CupertinoPopupSurface(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(34),
           child: SizedBox(
             width: 360,
             height: 500,
             child: Stack(
-              children: [
+              children: [ 
                 Column(
                   children: [
                     Container(
@@ -96,31 +97,28 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                           ],
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: SizedBox(
-                          height: 249,
-                          child: GridView.count(
-                            crossAxisSpacing: 26,
-                            mainAxisSpacing: 14,
-                            childAspectRatio: 2.5,
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(10),
-                            children: const <Widget>[
-                              //後でデータベースと繋げます
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                              JoinMember(),
-                            ],
-                          ),
+                      Expanded(
+                        child: GridView.count(
+                          crossAxisSpacing: 26,
+                          mainAxisSpacing: 14,
+                          childAspectRatio: 2.5,
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.all(10),
+                          children: const <Widget>[
+                            //後でデータベースと繋げます
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                            JoinMember(),
+                          ],
                         ),
                       ),
                     ],
