@@ -21,7 +21,7 @@ final readJoinedGroupsProfileProvider =
 
   final groupsWithId = await Future.wait(
     memberships.map((membership) async {
-      final group = await GroupController.read(membership.groupId);
+      final group = await GroupController.read(membership!.groupId);
       return GroupWithId(group: group, groupId: membership.groupId);
     }),
   );

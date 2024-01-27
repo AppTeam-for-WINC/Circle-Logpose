@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PasswordSettingPage extends ConsumerWidget {
-  const PasswordSettingPage({super.key});
+class IdSettingPage extends ConsumerWidget {
+  const IdSettingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +49,7 @@ class PasswordSettingPage extends ConsumerWidget {
                     const SizedBox(
                       width: 346,
                       child: Text(
-                        '現在のパスワード',
+                        '現在のアカウントID',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Color.fromARGB(255, 124, 122, 122),
@@ -69,7 +69,7 @@ class PasswordSettingPage extends ConsumerWidget {
                       width: 346,
                       margin: const EdgeInsets.only(top: 30),
                       child: const Text(
-                        '新しいパスワード',
+                        '新しいアカウントID',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Color.fromARGB(255, 124, 122, 122),

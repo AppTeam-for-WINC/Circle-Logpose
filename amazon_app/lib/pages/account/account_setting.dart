@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:amazon_app/image/image.dart';
 import 'package:amazon_app/pages/account/account_setting_controller.dart';
 import 'package:amazon_app/pages/account/parts/group/joined_group.dart';
+import 'package:amazon_app/pages/account/parts/id/id_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -267,11 +268,22 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 130),
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 130),
+                      child: CupertinoButton(
+                        onPressed: () async {
+                          await Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                              builder: (context) => const IdSettingPage(),
+                            ),
+                            (_) => false,
+                          );
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],
@@ -450,7 +462,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                               child: GridView.builder(
                                 itemCount: 20,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return const JoinedGroup();
+                                  return const JoinedGroupComponent();
                                 },
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(

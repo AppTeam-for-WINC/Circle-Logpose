@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'group_membership.dart';
 
@@ -36,8 +37,8 @@ class GroupMembershipController {
     });
   }
 
-  static Future<List<GroupMembership>> readAllWithUserId(
-      String userDocId) async {
+  static Future<List<GroupMembership?>> readAllWithUserId(
+      String userDocId,) async {
     final groupMemberships = await db
         .collection(collectionPath)
         .where('user_id', isEqualTo: userDocId)
@@ -46,7 +47,8 @@ class GroupMembershipController {
     final groupMembershipsRefs = groupMemberships.docs.map((doc) {
       final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
       if (groupMembershipDocRef == null) {
-        throw Exception('Error : No found document data.');
+        debugPrint('Error : No found document data.');
+        return null;
       }
 
       final userId = groupMembershipDocRef['user_id'] as String;
