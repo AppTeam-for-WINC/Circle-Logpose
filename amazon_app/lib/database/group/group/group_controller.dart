@@ -20,13 +20,15 @@ class GroupController {
     ///Create new document
     final groupDoc = db.collection(collectionPath).doc();
     String? imagePath;
-    if (image != null && File(image).existsSync()) {
+    print('imageResult image: ${image}, imagePath:${imagePath}');
+    if (image != null) {
       imagePath =
           await StorageController.uploadUserImageToStorage(groupDoc.id, image);
     } else {
       imagePath =
           'src/images/group_img.jpeg';
     }
+
 
     ///Get server time
     final createdAt = FieldValue.serverTimestamp();
@@ -42,11 +44,12 @@ class GroupController {
     return groupDoc.id;
   }
 
+  ///後で消す。
   ///Read all members.
-  static Future<List<Group>> readAll(String userId) async {
+  static Future<List<Group>> readAll(String userDocId) async {
     final groups = await db
         .collection(collectionPath)
-        .where('user_id', isEqualTo: userId)
+        .where('user_id', isEqualTo: userDocId)
         .get();
     final groupMembershipsRefs = groups.docs.map((doc) {
       final groupMembershipsRef = doc.data() as Map<String, dynamic>?;

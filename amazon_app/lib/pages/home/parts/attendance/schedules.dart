@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/schedule_create/schedule_create_popup.dart';
-import 'schedules.dart';
+import '../../../popup/schedule_create/schedule_create_popup.dart';
+import 'schedule_box.dart';
 
 class ScheduleManagement extends ConsumerWidget {
   const ScheduleManagement({super.key});
@@ -90,7 +90,6 @@ class ScheduleManagement extends ConsumerWidget {
                   await showCupertinoModalPopup<ScheduleCreatePopup>(
                     context: context,
                     builder: (BuildContext context) {
-                      print('hello');
                       return const ScheduleCreatePopup();
                     },
                   );

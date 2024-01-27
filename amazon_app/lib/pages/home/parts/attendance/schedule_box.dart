@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../popup/behind_and_early_setting/behind_and_early_setting.dart';
-import '../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
+import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
+import '../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
 class GroupScheduleCard extends ConsumerWidget {
   const GroupScheduleCard({super.key});

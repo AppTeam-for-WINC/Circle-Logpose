@@ -1,14 +1,16 @@
-import 'package:amazon_app/pages/home/parts/group_box.dart';
+import 'package:amazon_app/pages/home/parts/group/group_box.dart';
+import 'package:amazon_app/pages/home/parts/group/controller/joined_group_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../group/create/group_create_page.dart';
+import '../../../group/create/group_create_page.dart';
 
 class GroupPage extends ConsumerWidget {
   const GroupPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -34,11 +36,22 @@ class GroupPage extends ConsumerWidget {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                       crossAxisCount: 2,
-                      children: <Widget>[
-                        for (int i = 0; i < 10; i++) const GroupBox(),
-                      ],
+                      children: groupsProfile.when(
+                        data: (groupProfile) {
+                          if (groupProfile.isEmpty) {
+                            return const [SizedBox.shrink()];
+                          }
+                          return groupProfile
+                              .map((profile) => GroupBox(groupProfile: profile))
+                              .toList();
+                        },
+                        loading: () => const [SizedBox.shrink()],
+                        error: (error, stack) => [Text('$error')],
+                      ),
                     ),
-                    const SizedBox(height: 200,),
+                    const SizedBox(
+                      height: 200,
+                    ),
                   ],
                 ),
               ),

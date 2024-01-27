@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:amazon_app/database/group/group/group_controller.dart';
 import 'package:amazon_app/database/group/membership/group_membership_controller.dart';
@@ -10,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///Create group.
 Future<bool> createGroup(
   String groupName,
-  String? image,
+  File? image,
   String? groupDescription,
   WidgetRef ref,
 ) async {
@@ -22,7 +24,7 @@ Future<bool> createGroup(
   
   final groupId = await GroupController.create(
     groupName,
-    image,
+    image.toString(),
     groupDescription,
   );
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../slide/slide_segmented_tab_control.dart';
-import 'parts/groups.dart';
-import 'parts/management.dart';
+import 'parts/group/joined_groups.dart';
+import 'parts/attendance/schedules.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
