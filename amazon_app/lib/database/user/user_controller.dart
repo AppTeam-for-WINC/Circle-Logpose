@@ -152,41 +152,45 @@ class UserController {
         .collection(collectionPath)
         .where('account_id', isEqualTo: accountId)
         .get();
-    
+
     if (userSnapshot.docs.isEmpty) {
       throw Exception('Error: No document found for the user account ID.');
     }
-     final userDoc = userSnapshot.docs.first;
+    final userDoc = userSnapshot.docs.first;
 
     final userDocRef = userDoc.data() as Map<String, dynamic>?;
     if (userDocRef == null) {
-        throw Exception('Error: No found document data.');
+      throw Exception('Error: No found document data.');
     }
 
     return userDoc.id;
   }
 
-  ///後で、factoryメソッドなどを用いて、ユーザーの名前、画像、説明などを個別で変更できる関数を生成する。
   ///メールアドレスとaccountIdの変更機能はこの関数では行わない。
   static Future<void> update(
     String docId,
-    String name,
-    String image,
-    String description,
+    String? name,
+    String? image,
+    String? description,
   ) async {
-    final imagePath =
-        await StorageController.uploadUserImageToStorage(docId, image);
-    if (imagePath == null) {
-      return;
+    final updatedAt = FieldValue.serverTimestamp();
+    final updateData = <String, dynamic>{'updated_at': updatedAt};
+
+    if (name != null) {
+      updateData['name'] = name;
     }
 
-    final updatedAt = FieldValue.serverTimestamp();
-    final updateData = <String, dynamic>{
-      'name': name,
-      'image': imagePath,
-      'description': description,
-      'updated_at': updatedAt,
-    };
+    if (image != null) {
+      final imagePath =
+          await StorageController.uploadUserImageToStorage(docId, image);
+      if (imagePath != null) {
+        updateData['image'] = imagePath;
+      }
+    }
+
+    if (description != null) {
+      updateData['description'] = description;
+    }
 
     await db.collection(collectionPath).doc(docId).update(updateData);
   }

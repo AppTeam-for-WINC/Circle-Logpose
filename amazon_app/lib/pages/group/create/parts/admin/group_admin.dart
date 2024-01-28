@@ -31,8 +31,7 @@ class GroupAdminMember extends ConsumerWidget {
                 height: 37,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    // image: NetworkImage(),
-                    image: AssetImage(
+                    image: NetworkImage(
                       adminUserProfile.image,
                     ),
                     fit: BoxFit.cover, // 画像のフィットを指定

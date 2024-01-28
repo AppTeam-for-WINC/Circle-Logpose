@@ -1,18 +1,34 @@
 import 'package:amazon_app/pages/account/account_setting.dart';
+import 'package:amazon_app/pages/account/account_setting_controller.dart';
+import 'package:amazon_app/pages/account/parts/id/id_setting_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IdSettingPage extends ConsumerWidget {
+class IdSettingPage extends ConsumerStatefulWidget {
   const IdSettingPage({super.key});
+  @override
+  ConsumerState<IdSettingPage> createState() => IdSettingPageState();
+}
+
+class IdSettingPageState extends ConsumerState<IdSettingPage> {
+  void copyToClipboard(String textToCopy) {
+    Clipboard.setData(ClipboardData(text: textToCopy));
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final accountId = ref.watch(userProfileProvider);
+    final accountIdNotifier = ref.watch(userProfileProvider.notifier);
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
       navigationBar: CupertinoNavigationBar(
         leading: TextButton.icon(
           onPressed: () async {
+            //Init
+            accountIdNotifier.accountIdController.clear();
+
             await Navigator.pushAndRemoveUntil(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -46,23 +62,48 @@ class IdSettingPage extends ConsumerWidget {
                 width: 336,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      width: 346,
-                      child: Text(
-                        '現在のアカウントID',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 124, 122, 122),
-                          fontSize: 14,
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color.fromARGB(255, 124, 122, 122),
+                          ),
                         ),
                       ),
-                    ),
-                    const CupertinoTextField(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 245, 243, 254),
-                        border: Border(
-                          bottom: BorderSide(),
-                        ),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            width: 346,
+                            child: Text(
+                              '現在のアカウントID',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 124, 122, 122),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              final userRef = await readUserRef();
+                              copyToClipboard(userRef.accountId);
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  accountId!.accountId,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 124, 122, 122),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Container(
@@ -77,8 +118,9 @@ class IdSettingPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const CupertinoTextField(
-                      decoration: BoxDecoration(
+                    CupertinoTextField(
+                      controller: accountIdNotifier.accountIdController,
+                      decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 245, 243, 254),
                         border: Border(
                           bottom: BorderSide(),
@@ -98,6 +140,22 @@ class IdSettingPage extends ConsumerWidget {
                   ),
                   backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                   onPressed: () async {
+                    final success = await changeAccountId(
+                      accountIdNotifier.accountIdController.text,
+                    );
+                    if (!success) {
+                      return;
+                    }
+                    //Init
+                    accountIdNotifier.changeAccountId(
+                      accountIdNotifier.accountIdController.text,
+                    );
+                    //Init
+                    accountIdNotifier.accountIdController.clear();
+
+                    if (!mounted) {
+                      return;
+                    }
                     await Navigator.pushAndRemoveUntil(
                       context,
                       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -127,8 +185,6 @@ class IdSettingPage extends ConsumerWidget {
                   ),
                 ),
               ),
-
-              // ↑変更を保存ボタン
             ],
           ),
         ),

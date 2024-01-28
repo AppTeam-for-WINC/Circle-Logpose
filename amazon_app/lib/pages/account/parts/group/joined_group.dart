@@ -1,11 +1,26 @@
+import 'package:amazon_app/pages/home/parts/group/controller/joined_group_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class JoinedGroupComponent extends ConsumerWidget {
-  const JoinedGroupComponent({super.key});
-
+class JoinedGroupComponent extends ConsumerStatefulWidget {
+  const JoinedGroupComponent({
+    super.key,
+    required this.groupWithId,
+  });
+  final GroupWithId groupWithId;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => JoinedGroupComponentState();
+}
+
+class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
+  @override
+  Widget build(BuildContext context) {
+    final groupWithId = widget.groupWithId;
+    final group = groupWithId.group;
+    // final groupId = groupWithId.groupId;
+
     return GestureDetector(
       onTap: () {},
       child: DecoratedBox(
@@ -18,19 +33,32 @@ class JoinedGroupComponent extends ConsumerWidget {
           ),
           borderRadius: BorderRadius.circular(80),
         ),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
             horizontal: 10,
           ),
           child: Row(
             children: [
-              Icon(CupertinoIcons.group_solid, size: 25),
-              Text(
-                '団体名',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF9A9A9A),
+              CachedNetworkImage(
+                imageUrl: group.image,
+                placeholder: (context, url) =>
+                    const CupertinoActivityIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 25,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
+              ),
+              Text(
+                group.name,
+                style: const TextStyle(fontSize: 14),
               ),
             ],
           ),

@@ -3,12 +3,12 @@ import 'package:amazon_app/image/image.dart';
 import 'package:amazon_app/pages/account/account_setting_controller.dart';
 import 'package:amazon_app/pages/account/parts/group/joined_group.dart';
 import 'package:amazon_app/pages/account/parts/id/id_setting.dart';
+import 'package:amazon_app/pages/home/parts/group/controller/joined_group_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '/pages/home/home_page.dart';
 import 'parts/email/email_setting.dart';
 import 'parts/password/password_setting.dart';
@@ -39,6 +39,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
       }
       final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
+
       return 'Success: selected image.';
     } on PlatformException catch (e) {
       debugPrint('Failed: $e');
@@ -46,12 +47,12 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
     }
   }
 
-  void copyToClipboard(String textToCopy) {
-    Clipboard.setData(ClipboardData(text: textToCopy));
-  }
-
   @override
   Widget build(BuildContext context) {
+    final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
+    final userProfile = ref.watch(userProfileProvider);
+    final userProfileNotifier = ref.watch(userProfileProvider.notifier);
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -75,6 +76,14 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                       color: Colors.black,
                     ),
                     onPressed: () async {
+                      //init
+                      await userProfileNotifier.initUserProfile();
+                      userProfileNotifier.nameController.text =
+                          userProfile!.name;
+                      
+                      if (!mounted) {
+                        return;
+                      }
                       await Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -85,7 +94,6 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                     },
                   ),
                 ),
-                //ユーザー設定(title)
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 45,
@@ -151,15 +159,38 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
               ),
               child: Column(
                 children: [
-                  //個人アイコン
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
-                        Icons.face,
-                        size: 70,
-                        color: Colors.grey,
-                      ),
+                      if (userProfile?.image != null)
+                        Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: userProfile!.image.startsWith('http')
+                                  ? NetworkImage(userProfile.image)
+                                  : AssetImage(userProfile.image)
+                                      as ImageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(999),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        const Icon(
+                          Icons.face,
+                          size: 70,
+                          color: Colors.grey,
+                        ),
                       const Icon(
                         Icons.arrow_forward,
                         size: 30,
@@ -173,6 +204,9 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                               return;
                             }
                             await showPhotoAccessDeniedDialog(context);
+                          }
+                          if (image != null) {
+                            userProfileNotifier.changeImage(image!);
                           }
                         },
                         child: const SizedBox(
@@ -206,13 +240,13 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                       color: const Color.fromARGB(255, 231, 238, 189),
                       borderRadius: BorderRadius.circular(80),
                     ),
-                    child: const CupertinoTextField(
-                      //ここにユーザーネーム変更のbackendの処理を書いて下さい。
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 231, 238, 189),
+                    child: CupertinoTextField(
+                      controller: userProfileNotifier.nameController,
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 106, 114, 61),
                         backgroundBlendMode: BlendMode.dstIn,
                       ),
-                      prefix: Icon(
+                      prefix: const Icon(
                         CupertinoIcons.text_cursor,
                         color: Colors.black,
                       ),
@@ -247,46 +281,40 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                 padding: const EdgeInsets.only(
                   left: 20,
                 ),
-                child: Row(
-                  children: <Widget>[
-                    const Icon(
-                      Icons.info,
-                      color: Colors.black,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: TextButton(
-                        onPressed: () async {
-                          final accountId = await getAccountId();
-                          copyToClipboard(accountId);
-                        },
-                        child: const Text(
+                child: CupertinoButton(
+                  onPressed: () async {
+                    await Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                        builder: (context) => const IdSettingPage(),
+                      ),
+                      (_) => false,
+                    );
+                  },
+                  child: const Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.info,
+                        color: Colors.black,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
                           'Account ID',
                           style: TextStyle(
                             color: Colors.black,
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 130),
-                      child: CupertinoButton(
-                        onPressed: () async {
-                          await Navigator.pushAndRemoveUntil(
-                            context,
-                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                              builder: (context) => const IdSettingPage(),
-                            ),
-                            (_) => false,
-                          );
-                        },
-                        child: const Icon(
+                      Padding(
+                        padding: EdgeInsets.only(left: 130),
+                        child: Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.black,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -381,7 +409,7 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                   child: Row(
                     children: <Widget>[
                       Icon(
-                        Icons.mail_outline,
+                        Icons.key,
                         color: Colors.black,
                       ),
                       Padding(
@@ -459,17 +487,26 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
                                 left: 5,
                                 bottom: 5,
                               ),
-                              child: GridView.builder(
-                                itemCount: 20,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return const JoinedGroupComponent();
-                                },
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
+                              child: GridView.count(
+                                primary: false,
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                childAspectRatio: 3,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 20,
+                                children: groupsProfile.when(
+                                  data: (groupProfile) {
+                                    if (groupProfile.isEmpty) {
+                                      return const [SizedBox.shrink()];
+                                    }
+                                    return groupProfile.map((groupWithId) {
+                                      return JoinedGroupComponent(
+                                        groupWithId: groupWithId,
+                                      );
+                                    }).toList();
+                                  },
+                                  loading: () => const [SizedBox.shrink()],
+                                  error: (error, stack) => [Text('$error')],
                                 ),
                               ),
                             ),
@@ -486,11 +523,25 @@ class AccountSettingState extends ConsumerState<AccountSettingScreen> {
             ),
             CupertinoButton(
               onPressed: () async {
-                await Navigator.push(
+                final success = await changeUserProfile(
+                  userProfileNotifier.nameController.text,
+                  image,
+                  null,
+                  ref,
+                );
+                if (!success) {
+                  return;
+                }
+
+                if (!mounted) {
+                  return;
+                }
+                await Navigator.pushAndRemoveUntil(
                   context,
                   CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                     builder: (context) => const HomePage(),
                   ),
+                  (_) => false,
                 );
               },
               color: const Color(0xFF7B61FF),
