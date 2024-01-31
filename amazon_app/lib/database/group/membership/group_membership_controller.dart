@@ -37,75 +37,46 @@ class GroupMembershipController {
     });
   }
 
-  // static Stream<List<GroupMembership?>> streamReadAllWithUserId(String userDocId) {
-  //   return db
-  //       .collection(collectionPath)
-  //       .where('user_id', isEqualTo: userDocId)
-  //       .snapshots()
-  //       .map(
-  //         (snapshot) => snapshot.docs.map((doc) {
-  //           final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
-  //           if (groupMembershipDocRef == null) {
-  //             debugPrint('Error : No found document data.');
-  //             return null;
-  //           }
-
-  //           final userId = groupMembershipDocRef['user_id'] as String;
-  //           final username = groupMembershipDocRef['username'] as String;
-  //           final userDescription =
-  //               groupMembershipDocRef['user_description'] as String?;
-  //           final role = groupMembershipDocRef['role'] as String;
-  //           final groupId = groupMembershipDocRef['group_id'] as String;
-  //           final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-  //           final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
-  //           return GroupMembership(
-  //             userId: userId,
-  //             username: username,
-  //             userDescription: userDescription,
-  //             role: role,
-  //             groupId: groupId,
-  //             updatedAt: updatedAt,
-  //             joinedAt: joinedAt,
-  //           );
-  //         }).toList(),
-  //       );
-  // }
-
-  static Future<List<GroupMembership?>> readAllWithUserId(
+  static Stream<List<GroupMembership?>> readAllWithUserId(
     String userDocId,
-  ) async {
-    final groupMemberships = await db
+  ) async* {
+    final groupMembershipsStream = db
         .collection(collectionPath)
         .where('user_id', isEqualTo: userDocId)
-        .get();
+        .snapshots();
 
-    final groupMembershipsRefs = groupMemberships.docs.map((doc) {
-      final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipDocRef == null) {
-        debugPrint('Error : No found document data.');
-        return null;
-      }
+    await for (final groupMemberships in groupMembershipsStream) {
+      final groupMembershipsRefs = groupMemberships.docs.map((doc) {
+        final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
+        if (groupMembershipDocRef == null) {
+          debugPrint('Error : No found document data.');
+          return null;
+        }
 
-      final userId = groupMembershipDocRef['user_id'] as String;
-      final username = groupMembershipDocRef['username'] as String;
-      final userDescription =
-          groupMembershipDocRef['user_description'] as String?;
-      final role = groupMembershipDocRef['role'] as String;
-      final groupId = groupMembershipDocRef['group_id'] as String;
-      final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-      final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
-      return GroupMembership(
-        userId: userId,
-        username: username,
-        userDescription: userDescription,
-        role: role,
-        groupId: groupId,
-        updatedAt: updatedAt,
-        joinedAt: joinedAt,
-      );
-    }).toList();
+        final userId = groupMembershipDocRef['user_id'] as String;
+        final username = groupMembershipDocRef['username'] as String;
+        final userDescription =
+            groupMembershipDocRef['user_description'] as String?;
+        final role = groupMembershipDocRef['role'] as String;
+        final groupId = groupMembershipDocRef['group_id'] as String;
+        final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
+        final joinedAt = groupMembershipDocRef['created_at'] as Timestamp?;
+        if (joinedAt == null) {
+          return null;
+        }
+        return GroupMembership(
+          userId: userId,
+          username: username,
+          userDescription: userDescription,
+          role: role,
+          groupId: groupId,
+          updatedAt: updatedAt,
+          joinedAt: joinedAt,
+        );
+      }).toList();
 
-    return groupMembershipsRefs;
+      yield groupMembershipsRefs;
+    }
   }
 
   ///Read specified member.

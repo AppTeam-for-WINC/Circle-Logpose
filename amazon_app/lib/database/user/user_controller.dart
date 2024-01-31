@@ -1,3 +1,4 @@
+import 'package:amazon_app/database/utils/error_messages.dart';
 import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,10 @@ import 'package:uuid/uuid.dart';
 import 'user.dart';
 
 class UserController {
-  const UserController();
+  //Hoge constructor
+  UserController._internal();
+  static final UserController _instance = UserController._internal();
+  static UserController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
   static const uuid = Uuid();
@@ -20,32 +24,24 @@ class UserController {
   }) async {
     final doc = db.collection(collectionPath).doc(docId);
 
-    final userSnapshot = await db
-        .collection(collectionPath)
-        .where('account_id', isEqualTo: accountId)
-        .get();
-
     while (true) {
+      final userSnapshot = await db
+          .collection(collectionPath)
+          .where('account_id', isEqualTo: accountId)
+          .get();
       accountId = uuid.v4();
+
       if (userSnapshot.docs.isEmpty) {
         break;
       }
     }
 
-    if (name is! String) {
-      name = 'no name';
-    }
-
     String? imagePath;
-    if (image is! String) {
+    if (image == null) {
       imagePath = 'src/images/group_img.jpeg';
     } else {
       imagePath =
           await StorageController.uploadUserImageToStorage(docId, image);
-    }
-
-    if (description is! String) {
-      description = null;
     }
 
     final createdAt = FieldValue.serverTimestamp();
@@ -63,43 +59,10 @@ class UserController {
     final userDoc = await db.collection(collectionPath).doc(docId).get();
     final userRef = userDoc.data();
     if (userRef == null) {
-      throw Exception('Error : No found document data.');
+      throw ControllerException(DBErrorMessages.userNotFound + docId);
     }
 
-    var accountId = userRef['account_id'];
-    if (accountId is! String) {
-      accountId = accountId.toString();
-    }
-
-    var name = userRef['name'];
-    if (name is! String) {
-      name = name.toString();
-    }
-
-    var image = userRef['image'];
-    if (image is! String) {
-      image = image.toString();
-    }
-
-    var description = userRef['description'];
-    description = description as String?;
-
-    var updatedAt = userRef['updated_at'];
-    updatedAt = updatedAt as Timestamp?;
-
-    var createdAt = userRef['created_at'];
-    if (createdAt is! Timestamp) {
-      createdAt = createdAt as Timestamp;
-    }
-
-    return UserProfile(
-      accountId: accountId,
-      name: name,
-      image: image,
-      description: description,
-      updatedAt: updatedAt,
-      createdAt: createdAt,
-    );
+    return UserProfile.fromMap(userRef);
   }
 
   static Future<List<UserProfile>> readWithAccountId(String accountId) async {
@@ -111,37 +74,9 @@ class UserController {
     final userRefs = userSnapshot.docs.map((doc) {
       final userDocRef = doc.data() as Map<String, dynamic>?;
       if (userDocRef == null) {
-        throw Exception('Error : No found document data.');
+        throw ControllerException(DBErrorMessages.noDocumentData + accountId);
       }
-      var name = userDocRef['name'];
-      if (name is! String) {
-        name = name.toString();
-      }
-
-      var image = userDocRef['image'];
-      if (image is! String) {
-        image = image.toString();
-      }
-
-      var description = userDocRef['description'];
-      description = description as String?;
-
-      var updatedAt = userDocRef['updated_at'];
-      updatedAt = updatedAt as Timestamp?;
-
-      var createdAt = userDocRef['created_at'];
-      if (createdAt is! Timestamp) {
-        createdAt = createdAt as Timestamp;
-      }
-
-      return UserProfile(
-        accountId: accountId,
-        name: name,
-        image: image,
-        description: description,
-        updatedAt: updatedAt,
-        createdAt: createdAt,
-      );
+      return UserProfile.fromMap(userDocRef);
     }).toList();
 
     return userRefs;
@@ -154,13 +89,14 @@ class UserController {
         .get();
 
     if (userSnapshot.docs.isEmpty) {
-      throw Exception('Error: No document found for the user account ID.');
+      throw ControllerException(DBErrorMessages.userAccountNotFound + accountId);
     }
-    final userDoc = userSnapshot.docs.first;
 
+    final userDoc = userSnapshot.docs.first;
     final userDocRef = userDoc.data() as Map<String, dynamic>?;
+
     if (userDocRef == null) {
-      throw Exception('Error: No found document data.');
+      throw ControllerException(DBErrorMessages.noDocumentData);
     }
 
     return userDoc.id;

@@ -8,7 +8,9 @@ import '../user/user_controller.dart';
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
 
 class AuthController {
-  const AuthController();
+  AuthController._internal();
+  static final AuthController _instance = AuthController._internal();
+  static AuthController get instance => _instance;
   static final auth = FirebaseAuth.instance;
 
   ///Create user's account.
@@ -25,7 +27,7 @@ class AuthController {
         return false;
       }
 
-      await UserController.create(docId: docId);
+      await UserController.create(docId: docId, name: 'no name',);
       debugPrint('Success: Created new account. doc_id: $docId');
       return true;
     } on FirebaseAuthException catch (error) {
@@ -63,6 +65,19 @@ class AuthController {
       } else {
         debugPrint('Error, or a different user is signed in.');
       }
+    }
+  }
+
+  static Future<String?> readEmail() async {
+    try {
+      final user = auth.currentUser;
+      if (user == null) {
+        throw Exception('User not found.');
+      }
+      return user.email;
+    } on FirebaseAuthException catch (error) {
+      debugPrint('Error: email not found.  $error');
+      throw Exception('Email not found.');
     }
   }
 
@@ -109,7 +124,7 @@ class AuthController {
     }
   }
 
-  /// Send a password reset email to the user 
+  /// Send a password reset email to the user
   /// registered with Firebase Authentication.
   static Future<bool> sendPasswordResetEmail(String email) async {
     try {
@@ -141,12 +156,12 @@ class AuthController {
     }
   }
 
-  static Future<String?>getCurrentUserId() async {
+  static Future<String?> getCurrentUserId() async {
     final user = FirebaseAuth.instance.currentUser;
     return user?.uid;
   }
 
-  static Future<String?>getUserIdToken() async{
+  static Future<String?> getUserIdToken() async {
     final user = auth.currentUser;
     return await user?.getIdToken();
   }

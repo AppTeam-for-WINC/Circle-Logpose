@@ -1,18 +1,28 @@
 import 'package:amazon_app/pages/account/account_setting.dart';
+import 'package:amazon_app/pages/account/parts/email/email_setting_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EmailSettingPage extends ConsumerWidget {
+class EmailSettingPage extends ConsumerStatefulWidget {
   const EmailSettingPage({super.key});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EmailSettingPage> createState() => EmailSettingPageState();
+}
+
+class EmailSettingPageState extends ConsumerState<EmailSettingPage> {
+  @override
+  Widget build(BuildContext context) {
+    final userEmail = ref.watch(userEmailProvider);
+    final emailNotifier = ref.watch(userEmailProvider.notifier);
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
       navigationBar: CupertinoNavigationBar(
         leading: TextButton.icon(
           onPressed: () async {
+            //Init
+            emailNotifier.emailController.clear();
+
             await Navigator.pushAndRemoveUntil(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -46,23 +56,47 @@ class EmailSettingPage extends ConsumerWidget {
                 width: 336,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      width: 346,
-                      child: Text(
-                        '現在のメールアドレス',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 124, 122, 122),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    const CupertinoTextField(
-                      decoration: BoxDecoration(
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 245, 243, 254),
                         border: Border(
                           bottom: BorderSide(),
                         ),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 346,
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                            ),
+                            child: const Text(
+                              '現在のメールアドレス',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 124, 122, 122),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 3,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  userEmail ?? '',
+                                  // emailController!.userEmail,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 124, 122, 122),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Container(
@@ -77,8 +111,9 @@ class EmailSettingPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const CupertinoTextField(
-                      decoration: BoxDecoration(
+                    CupertinoTextField(
+                      controller: emailNotifier.emailController,
+                      decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 245, 243, 254),
                         border: Border(
                           bottom: BorderSide(),
@@ -98,6 +133,18 @@ class EmailSettingPage extends ConsumerWidget {
                   ),
                   backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                   onPressed: () async {
+                    final success =
+                        await emailNotifier.changeEmail(
+                            emailNotifier.emailController.text,);
+                    if (!success) {
+                      return;
+                    }
+                    //Init
+                    emailNotifier.emailController.clear();
+                    if (!mounted) {
+                      return;
+                    }
+
                     await Navigator.pushAndRemoveUntil(
                       context,
                       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
