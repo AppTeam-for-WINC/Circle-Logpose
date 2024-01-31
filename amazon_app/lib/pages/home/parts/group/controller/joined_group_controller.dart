@@ -11,20 +11,24 @@ class GroupWithId {
 }
 
 final readJoinedGroupsProfileProvider =
-    FutureProvider<List<GroupWithId>>((ref) async {
+    StreamProvider<List<GroupWithId>>((ref) async* {
   final userDocId = await AuthController.getCurrentUserId();
   if (userDocId == null) {
     throw Exception('User not login.');
   }
-  final memberships =
-      await GroupMembershipController.readAllWithUserId(userDocId);
+  final membershipsStream =
+      GroupMembershipController.readAllWithUserId(userDocId);
 
-  final groupsWithId = await Future.wait(
-    memberships.map((membership) async {
-      final group = await GroupController.read(membership!.groupId);
-      return GroupWithId(group: group, groupId: membership.groupId);
-    }),
-  );
-
-  return groupsWithId;
+  await for (final memberships in membershipsStream) {
+    final groupsWithId = await Future.wait(
+      memberships.map((membership) async {
+        if (membership == null) {
+          return null;
+        }
+        final group = await GroupController.read(membership.groupId);
+        return GroupWithId(group: group, groupId: membership.groupId);
+      }),
+    );
+    yield groupsWithId.whereType<GroupWithId>().toList();
+  }
 });

@@ -25,13 +25,11 @@ class GroupCreatePage extends ConsumerWidget {
                 ],
               ),
             ),
-            //ここのRow切り出す
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                    // top: 70,
                     top: deviceHeight * 0.065,
                   ),
                   child: Container(

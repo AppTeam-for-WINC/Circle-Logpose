@@ -32,8 +32,7 @@ class GroupMember extends ConsumerWidget {
                 height: 37,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    // image: NetworkImage(),
-                    image: AssetImage(
+                    image: NetworkImage(
                       userProfile.image,
                     ),
                     fit: BoxFit.cover, // 画像のフィットを指定

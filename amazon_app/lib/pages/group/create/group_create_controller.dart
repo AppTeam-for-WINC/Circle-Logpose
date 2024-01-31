@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:amazon_app/database/group/group/group_controller.dart';
 import 'package:amazon_app/database/group/membership/group_membership_controller.dart';

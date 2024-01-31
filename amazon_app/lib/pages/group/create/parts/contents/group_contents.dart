@@ -93,8 +93,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                                     image: FileImage(image!),
                                     fit: BoxFit.cover, // 画像のフィットを指定
                                   ),
-                                  borderRadius:
-                                      BorderRadius.circular(999),
+                                  borderRadius: BorderRadius.circular(999),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),

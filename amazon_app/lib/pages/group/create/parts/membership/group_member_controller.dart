@@ -3,13 +3,18 @@ import 'package:amazon_app/database/user/user_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final groupAddMemberDataProvider = StateNotifierProvider<GroupAddData, UserProfile?>(
+final groupAddMemberDataProvider =
+    StateNotifierProvider<GroupAddData, UserProfile?>(
   (ref) => GroupAddData(),
 );
 
+
+
 class GroupAddData extends StateNotifier<UserProfile?> {
   GroupAddData() : super(null) {
-    groupNameController.addListener(groupDataController);
+    groupNameController.addListener(() {
+      memberController(groupNameController.text);
+    });
   }
 
   TextEditingController groupNameController = TextEditingController();
@@ -20,19 +25,19 @@ class GroupAddData extends StateNotifier<UserProfile?> {
   String? userImage;
   String? userDescription;
 
-  Future<void> groupDataController() async {
-    await memberController(accountId);
-  }
-
   Future<void> memberController(String? accountId) async {
-    if (accountId == null) {
+    if (accountId == null || accountId.isEmpty) {
       return;
     }
     users = await UserController.readWithAccountId(accountId);
-    user = users!.first;
-    username = user!.name;
-    userImage = user!.image;
-    userDescription = user!.description;
-    state = users!.isNotEmpty ? users!.first : null;
+    if (users != null && users!.isNotEmpty) {
+      user = users!.first;
+      username = user!.name;
+      userImage = user!.image;
+      userDescription = user!.description;
+      state = user;
+    } else {
+      state = null;
+    }
   }
 }
