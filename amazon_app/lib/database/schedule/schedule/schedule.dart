@@ -13,6 +13,32 @@ class GroupSchedule {
     required this.createdAt,
   });
 
+  factory GroupSchedule.fromMap(Map<String, dynamic> scheduleRef) {
+     ///Checked type of database variable;
+      final groupId = scheduleRef['group_id'] as String;
+
+      final title = scheduleRef['title'] as String;
+      final color = scheduleRef['color'] as String;
+      final place = scheduleRef['place'] as String?;
+      final detail = scheduleRef['detail'] as String?;
+      final startAt = scheduleRef['start_at'] as DateTime;
+      final endAt = scheduleRef['end_at'] as DateTime;
+      final updatedAt = scheduleRef['updated_at'] as Timestamp?;
+      final createdAt = scheduleRef['created_at'] as Timestamp;
+      
+      return GroupSchedule(
+        groupId: groupId,
+        title: title,
+        color: color,
+        place: place,
+        detail: detail,
+        startAt: startAt,
+        endAt: endAt,
+        updatedAt: updatedAt,
+        createdAt: createdAt,
+      );
+  }
+
   ///Group ID
   final String groupId;
 

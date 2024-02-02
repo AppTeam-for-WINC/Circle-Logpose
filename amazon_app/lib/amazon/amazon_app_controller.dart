@@ -1,6 +1,6 @@
 import 'package:amazon_app/database/auth/auth_controller.dart';
-import 'package:amazon_app/pages/home/home_page.dart';
-import 'package:amazon_app/pages/start/start_page.dart';
+import 'package:amazon_app/pages/src/home/home_page.dart';
+import 'package:amazon_app/pages/src/start/start_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
