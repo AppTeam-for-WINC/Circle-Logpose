@@ -1,12 +1,12 @@
 import 'package:amazon_app/amazon/amazon_app_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../pages/group/create/group_create_page.dart';
-import '../pages/home/home_page.dart';
-import '../pages/login/login_page.dart';
-import '../pages/popup/schedule_detail_confirm/schedule_detail_confirm.dart';
-import '../pages/signup/signup_page.dart';
-import '../pages/start/start_page.dart';
+import '../pages/src/group/create/group_create_page.dart';
+import '../pages/src/home/home_page.dart';
+import '../pages/src/login/login_page.dart';
+import '../pages/src/popup/schedule_detail_confirm/schedule_detail_confirm.dart';
+import '../pages/src/signup/signup_page.dart';
+import '../pages/src/start/start_page.dart';
 class AmazonApp extends StatelessWidget {
   const AmazonApp({super.key});
 
