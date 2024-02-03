@@ -1,4 +1,5 @@
 import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/parts/time_picker.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ScheduleActivityTime extends ConsumerStatefulWidget {
   const ScheduleActivityTime({super.key});
-
   @override
   ConsumerState createState() => _ScheduleActivityTimeState();
 }
+
 
 class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
   @override
@@ -29,12 +30,17 @@ class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
           ),
           CupertinoButton(
             onPressed: () {
-
+              showCupertinoModalPopup<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return const ActivityStartDateTimePicker();
+                },
+              );
             },
             padding: EdgeInsets.zero,
             child: Text(
               formatDateTimeExcYear(
-                formatString(scheduleNotifier.startAt),
+                scheduleNotifier.schedule!.startAt,
               ),
               style: const TextStyle(
                 color: Colors.black,
@@ -56,12 +62,17 @@ class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
           ),
           CupertinoButton(
             onPressed: () {
-
+              showCupertinoModalPopup<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return const ActivityEndDateTimePicker();
+                },
+              );
             },
             padding: EdgeInsets.zero,
             child: Text(
               formatDateTimeExcYear(
-                formatString(scheduleNotifier.endAt),
+                scheduleNotifier.schedule!.endAt,
               ),
               style: const TextStyle(
                 color: Colors.black,

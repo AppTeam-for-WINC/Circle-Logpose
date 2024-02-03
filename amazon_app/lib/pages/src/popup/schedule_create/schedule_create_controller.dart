@@ -1,4 +1,3 @@
-import 'package:amazon_app/controller/common/time_controller.dart';
 import 'package:amazon_app/database/schedule/schedule/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,16 +8,17 @@ final createGroupScheduleProvider =
 );
 
 class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
-  _CreateGroupScheduleNotifier() : super(null);
+  _CreateGroupScheduleNotifier() : super(null) {
+    initSchedule();
+  }
 
+  GroupSchedule? schedule;
   TextEditingController titleController = TextEditingController();
   String color = Colors.white.toString();
-  String startAt = formatDateTime(DateTime.now());
-  String endAt = formatDateTime(
-    DateTime.now().add(
-      const Duration(hours: 1),
-    ),
-  );
+  // DateTime startAt = DateTime.now();
+  // DateTime endAt = DateTime.now().add(const Duration(hours: 1));
+  DateTime startInitAt = DateTime.now();
+  DateTime endInitAt = DateTime.now().add(const Duration(hours: 1));
   TextEditingController placeController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
@@ -53,10 +53,25 @@ class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
     }
   }
 
+  //state != null　の状態なのだが、groupIdなどがnullとなっているので、別のアプローチが必要。
+  void initSchedule() {
+    schedule = GroupSchedule(
+      groupId: state!.groupId,
+        title: state!.title,
+        color: Colors.white.toString(),
+        place: state!.place,
+        detail: state!.detail,
+        startAt: DateTime.now(),
+        endAt: DateTime.now().add(const Duration(hours: 1)),
+        createdAt: state!.createdAt,
+    );
+    state = schedule;
+  }
+
   ///Before deployment
-  Future<bool> setSchedule(
-    String? groupId,
-  ) async {
+  void setSchedule(
+    String? groupId, DateTime? newStartAt, DateTime? newEndAt,
+  ) {
     if (state != null) {
       final values = _valueChecker(
         groupId,
@@ -64,8 +79,8 @@ class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
         color,
         placeController.text,
         detailController.text,
-        formatString(startAt),
-        formatString(endAt),
+        newStartAt,
+        newEndAt,
       );
 
       state = GroupSchedule(
@@ -78,9 +93,7 @@ class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
         endAt: values['endAt'] as DateTime,
         createdAt: state!.createdAt,
       );
-      return true;
     }
-    return false;
   }
 
   Future<bool> createSchedule() async {
