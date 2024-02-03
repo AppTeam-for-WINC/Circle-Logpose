@@ -18,6 +18,7 @@ class ScheduleCreate extends ConsumerStatefulWidget {
   ConsumerState createState() => _ScheduleCreateState();
 }
 
+
 class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
   @override
   Widget build(BuildContext context) {
@@ -29,15 +30,21 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(34),
-        child: Container(
-          color: Colors.white,
+        child: SizedBox(
           width: 360,
           height: 500,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
+              // ポップアップ下部の白色↓
+              Container(
+                width: double.infinity,
+                height: 500,
+                decoration: const BoxDecoration(color: Colors.white),
+              ),
+              // ポップアップ下部の白色↑
+              Positioned(
+                top: 10,
+                left: 10,
                 child: CupertinoButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Icon(
@@ -47,67 +54,73 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                 ),
               ),
               // カラー選択↓
-              CupertinoButton(
-                onPressed: () {
-                  showCupertinoDialog<Widget>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CupertinoAlertDialog(
-                        content: SizedBox(
-                          height: 110,
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 18,
-                              mainAxisSpacing: 18,
-                            ),
-                            itemCount: scheduleColorPalette.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  ref
-                                      .watch(scheduleColorProvider.notifier)
-                                      .color = scheduleColorPalette[index];
-                                  Navigator.of(context).pop();
-                                },
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: scheduleColorPalette[index],
-                                    border: selectedColor ==
+              Positioned(
+                top: 40,
+                left: 20,
+                child: CupertinoButton(
+                  onPressed: () {
+                    showCupertinoDialog<Widget>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          content: SizedBox(
+                            height: 110, // Set a fixed height for the GridView
+                            child: GridView.builder(
+                              padding: EdgeInsets.zero,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 18,
+                                mainAxisSpacing: 18,
+                              ),
+                              itemCount: scheduleColorPalette.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Update the state with the selected color
+                                    ref
+                                        .watch(scheduleColorProvider.notifier)
+                                        .color = scheduleColorPalette[index];
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: scheduleColorPalette[index],
+                                      border: selectedColor ==
+                                              scheduleColorPalette[index]
+                                          ? Border.all(width: 2)
+                                          : null,
+                                    ),
+                                    child: selectedColor ==
                                             scheduleColorPalette[index]
-                                        ? Border.all(width: 2)
+                                        ? const Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          )
                                         : null,
                                   ),
-                                  child: selectedColor ==
-                                          scheduleColorPalette[index]
-                                      ? const Icon(
-                                          Icons.check,
-                                          color: Colors.white,
-                                        )
-                                      : null,
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Icon(
-                  Icons.circle,
-                  size: 50,
-                  color: selectedColor,
+                        );
+                      },
+                    );
+                  },
+                  child: Icon(
+                    Icons.circle,
+                    size: 50,
+                    color: selectedColor,
+                  ),
                 ),
               ),
-
+              // カラー選択↑
+    
               // タイトル追加↓
               Container(
-                padding: const EdgeInsets.only(left: 20),
-                width: 270,
+                margin: const EdgeInsets.only(top: 110, left: 40),
+                width: 270, // 横幅を指定
                 child: CupertinoTextField(
                   placeholder: 'タイトルを追加',
                   controller: scheduleNotifier.titleController,
@@ -134,7 +147,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                     GroupPickerButton(groupsProfile: groupsProfile),
                     // Activity time
                     const ScheduleActivityTime(),
-
+    
                     // 場所↓
                     Container(
                       margin: const EdgeInsets.only(top: 20),
@@ -170,7 +183,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       ),
                     ),
                     // 場所↑
-
+    
                     // 詳細のコンテナ↓
                     //ここのContainer切り出す
                     Container(
@@ -235,7 +248,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                             ),
                           ),
                           onPressed: () async {
-
+                      
                           },
                         ),
                       ),

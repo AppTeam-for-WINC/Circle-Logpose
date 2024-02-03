@@ -39,10 +39,15 @@ class AuthController {
   ///Login user's account.
   static Future<bool> loginToAccount(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(
+      final userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      final docId = userCredential.user?.uid ?? '';
+      if (docId == '') {
+        debugPrint('Error: Failed to create account.');
+        return false;
+      }
 
       debugPrint('Success: Login to account.');
       return true;

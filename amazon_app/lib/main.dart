@@ -30,9 +30,6 @@ void main() async {
   //Riverpodの適用範囲を設定
   const app = AmazonApp();
   const scope = ProviderScope(child: app);
-  //   runApp(MaterialApp(
-  //   home: AmazonApp(),
-  // ));
 
   // アプリのウィジェットツリーを生成し、実行
   runApp(scope);

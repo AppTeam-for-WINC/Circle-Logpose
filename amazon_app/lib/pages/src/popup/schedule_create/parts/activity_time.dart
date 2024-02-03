@@ -15,11 +15,11 @@ class ScheduleActivityTime extends ConsumerStatefulWidget {
 class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
   @override
   Widget build(BuildContext context) {
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
     return Container(
       margin: EdgeInsets.zero,
       child: Row(
         children: [
+
           Container(
             margin: const EdgeInsets.only(right: 8),
             child: const Icon(
@@ -38,14 +38,22 @@ class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
               );
             },
             padding: EdgeInsets.zero,
-            child: Text(
-              formatDateTimeExcYear(
-                scheduleNotifier.schedule!.startAt,
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-              ),
+            child: Consumer(
+              builder: (context, watch, child) {
+                final scheduleStartAt = ref.watch(setGroupScheduleStartAtProvider);
+                final result = formatDateTimeExcYear(scheduleStartAt);
+                return Text(result);
+              },
             ),
+            // child: Text(
+            //   formatDateTimeExcYear(
+            //     scheduleStartAt.state,
+            //     // scheduleNotifier.startAt,
+            //   ),
+            //   style: const TextStyle(
+            //     color: Colors.black,
+            //   ),
+            // ),
           ),
           const Padding(
             padding: EdgeInsets.only(
@@ -70,14 +78,22 @@ class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
               );
             },
             padding: EdgeInsets.zero,
-            child: Text(
-              formatDateTimeExcYear(
-                scheduleNotifier.schedule!.endAt,
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-              ),
+            child: Consumer(
+              builder: (context, watch, child) {
+                final scheduleEndAt = ref.watch(setGroupScheduleEndAtProvider);
+                final result = formatDateTimeExcYear(scheduleEndAt);
+                return Text(result);
+              },
             ),
+            // child: Text(
+            //   formatDateTimeExcYear(
+            //     scheduleNotifier.endAt,
+            //     // scheduleNotifier.schedule!.endAt,
+            //   ),
+            //   style: const TextStyle(
+            //     color: Colors.black,
+            //   ),
+            // ),
           ),
         ],
       ),

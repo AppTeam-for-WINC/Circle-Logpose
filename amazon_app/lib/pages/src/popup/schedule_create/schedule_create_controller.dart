@@ -2,6 +2,15 @@ import 'package:amazon_app/database/schedule/schedule/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final setGroupScheduleStartAtProvider = StateProvider<DateTime>(
+  (ref) => DateTime.now(),
+);
+
+final setGroupScheduleEndAtProvider = StateProvider<DateTime>(
+  (ref) => DateTime.now().add(const Duration(hours: 1)),
+);
+
+
 final createGroupScheduleProvider =
     StateNotifierProvider<_CreateGroupScheduleNotifier, GroupSchedule?>(
   (ref) => _CreateGroupScheduleNotifier(),
@@ -9,16 +18,16 @@ final createGroupScheduleProvider =
 
 class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
   _CreateGroupScheduleNotifier() : super(null) {
-    initSchedule();
+    // initSchedule();
   }
 
   GroupSchedule? schedule;
   TextEditingController titleController = TextEditingController();
   String color = Colors.white.toString();
-  // DateTime startAt = DateTime.now();
-  // DateTime endAt = DateTime.now().add(const Duration(hours: 1));
-  DateTime startInitAt = DateTime.now();
-  DateTime endInitAt = DateTime.now().add(const Duration(hours: 1));
+  DateTime startAt = DateTime.now();
+  DateTime endAt = DateTime.now().add(const Duration(hours: 1));
+  // DateTime startInitAt = DateTime.now();
+  // DateTime endInitAt = DateTime.now().add(const Duration(hours: 1));
   TextEditingController placeController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
@@ -55,22 +64,24 @@ class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
 
   //state != null　の状態なのだが、groupIdなどがnullとなっているので、別のアプローチが必要。
   void initSchedule() {
-    schedule = GroupSchedule(
-      groupId: state!.groupId,
-        title: state!.title,
-        color: Colors.white.toString(),
-        place: state!.place,
-        detail: state!.detail,
-        startAt: DateTime.now(),
-        endAt: DateTime.now().add(const Duration(hours: 1)),
-        createdAt: state!.createdAt,
-    );
-    state = schedule;
+    // schedule = GroupSchedule(
+    //   groupId: state!.groupId,
+    //     title: state!.title,
+    //     color: Colors.white.toString(),
+    //     place: state!.place,
+    //     detail: state!.detail,
+    //     startAt: DateTime.now(),
+    //     endAt: DateTime.now().add(const Duration(hours: 1)),
+    //     createdAt: state!.createdAt,
+    // );
+    // state = schedule;
   }
 
   ///Before deployment
   void setSchedule(
-    String? groupId, DateTime? newStartAt, DateTime? newEndAt,
+    String? groupId,
+    DateTime? newStartAt,
+    DateTime? newEndAt,
   ) {
     if (state != null) {
       final values = _valueChecker(
