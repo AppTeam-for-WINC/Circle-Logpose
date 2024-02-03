@@ -8,6 +8,8 @@ import 'package:amazon_app/validation/validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final loadingJudgeProvider = StateProvider<bool>((ref) => false);
+
 ///Create group.
 Future<bool> createGroup(
   String groupName,

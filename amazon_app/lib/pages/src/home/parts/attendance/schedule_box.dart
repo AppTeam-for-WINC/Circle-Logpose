@@ -4,11 +4,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
 import '../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
-class GroupScheduleCard extends ConsumerWidget {
+class GroupScheduleCard extends ConsumerStatefulWidget {
   const GroupScheduleCard({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GroupScheduleCard> createState() {
+    return _GroupScheduleCardState();
+  }
+}
+
+class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
+  bool _isPinkAttendance = false;
+  bool _isPinkLeavingEarly = false;
+  bool _isPinkBehindTime = false;
+  bool _isPinkAbsence = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 375,
       height: 215,
@@ -63,7 +75,23 @@ class GroupScheduleCard extends ConsumerWidget {
                                 ScheduleDetailConfirm>(
                               context: context,
                               builder: (BuildContext context) {
-                                return const ScheduleDetailConfirm();
+                                if (_isPinkAttendance) {
+                                  return const ScheduleDetailConfirm(
+                                    responseIcon: '_isPinkAttendance',
+                                  );
+                                } else if (_isPinkLeavingEarly) {
+                                  return const ScheduleDetailConfirm(
+                                    responseIcon: '_isPinkLeavingEarly',
+                                  );
+                                } else if (_isPinkBehindTime) {
+                                  return const ScheduleDetailConfirm(
+                                    responseIcon: '_isPinkBehindTime',
+                                  );
+                                } else {
+                                  return const ScheduleDetailConfirm(
+                                    responseIcon: '_isPinkAbsence',
+                                  );
+                                }
                               },
                             );
                           },
@@ -97,19 +125,27 @@ class GroupScheduleCard extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        InkWell(
-                          highlightColor: const Color(0xFFFBCEFF),
+                        GestureDetector(
                           onTap: () {
-                            debugPrint('aa');
+                            setState(() {
+                              _isPinkAttendance = !_isPinkAttendance;
+                              _isPinkLeavingEarly = false;
+                              _isPinkBehindTime = false;
+                              _isPinkAbsence = false;
+                            });
                           },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
+                              color: _isPinkAttendance
+                                  ? const Color(0xFFFBCEFF)
+                                  : Colors.white,
                             ),
                             child: const Center(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.sentiment_satisfied,
@@ -128,28 +164,38 @@ class GroupScheduleCard extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          // highlightColor: const Color(0xFFFBCEFF),
-                          highlightColor: Colors.pink,
+                        GestureDetector(
                           onTap: () async {
-                            await showCupertinoModalPopup<
-                                BehindAndEarlySetting>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: BehindAndEarlySetting(),
-                                );
-                              },
-                            );
+                            setState(() {
+                              _isPinkAttendance = false;
+                              _isPinkLeavingEarly = !_isPinkLeavingEarly;
+                              _isPinkBehindTime = false;
+                              _isPinkAbsence = false;
+                            });
+                            if (_isPinkLeavingEarly) {
+                              await showCupertinoModalPopup<
+                                  BehindAndEarlySetting>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const BehindAndEarlySetting(
+                                    responseIcon: '_isPinkLeavingEarly',
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
+                              color: _isPinkLeavingEarly
+                                  ? const Color(0xFFFBCEFF)
+                                  : Colors.white,
                             ),
                             child: const Center(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.sentiment_satisfied,
@@ -168,25 +214,38 @@ class GroupScheduleCard extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          highlightColor: const Color(0xFFFBCEFF),
+                        GestureDetector(
                           onTap: () async {
-                            await showCupertinoModalPopup<
-                                BehindAndEarlySetting>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return  const BehindAndEarlySetting();
-                              },
-                            );
+                            setState(() {
+                              _isPinkAttendance = false;
+                              _isPinkLeavingEarly = false;
+                              _isPinkBehindTime = !_isPinkBehindTime;
+                              _isPinkAbsence = false;
+                            });
+                            if (_isPinkBehindTime) {
+                              await showCupertinoModalPopup<
+                                  BehindAndEarlySetting>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const BehindAndEarlySetting(
+                                    responseIcon: '_isPinkBehindTime',
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
+                              color: _isPinkBehindTime
+                                  ? const Color(0xFFFBCEFF)
+                                  : Colors.white,
                             ),
                             child: const Center(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.sentiment_satisfied,
@@ -205,17 +264,27 @@ class GroupScheduleCard extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          highlightColor: const Color(0xFFFBCEFF),
-                          onTap: () {},
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isPinkAttendance = false;
+                              _isPinkLeavingEarly = false;
+                              _isPinkBehindTime = false;
+                              _isPinkAbsence = !_isPinkAbsence;
+                            });
+                          },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
+                              color: _isPinkAbsence
+                                  ? const Color(0xFFFBCEFF)
+                                  : Colors.white,
                             ),
                             child: const Center(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.sentiment_satisfied,
