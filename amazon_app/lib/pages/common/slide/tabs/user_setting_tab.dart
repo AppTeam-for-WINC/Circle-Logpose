@@ -48,12 +48,17 @@ class UserSettingTabState extends ConsumerState<UserSettingTab> {
                 ),
               ),
             ),
-            const Text(
-              'ユーザー設定',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF7B61FF),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 5,
+              ),
+              child: const Text(
+                'ユーザー設定',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF7B61FF),
+                ),
               ),
             ),
           ],

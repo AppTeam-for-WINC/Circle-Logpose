@@ -106,8 +106,8 @@ class GroupPage extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 30,
-                      height: 30,
+                      width: 25,
+                      height: 25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -115,16 +115,21 @@ class GroupPage extends ConsumerWidget {
                       child: const Center(
                         child: Icon(
                           Icons.add,
-                          size: 25,
+                          size: 20,
                           color: Colors.black,
                         ),
                       ),
                     ),
-                    const Text(
-                      '新しい団体を作成',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 20,
+                      ),
+                      child: const Text(
+                        '新しい団体を作成',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

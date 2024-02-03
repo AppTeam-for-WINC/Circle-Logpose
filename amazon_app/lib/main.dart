@@ -24,8 +24,8 @@ void main() async {
 
   debugPrint('HELLO WORLD');
 
-  const question = 'ichiroはイチローなのか';
-  await postChatGPT(question);
+  // const question = 'ichiroはイチローなのか';
+  // await postChatGPT(question);
 
   //Riverpodの適用範囲を設定
   const app = AmazonApp();
