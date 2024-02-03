@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'parts/present_member.dart';
 
 class ScheduleDetailConfirm extends ConsumerWidget {
-  const ScheduleDetailConfirm({Key? key}) : super(key: key);
+  const ScheduleDetailConfirm({super.key, required this.responseIcon});
+  final String responseIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -163,4 +164,3 @@ class ScheduleDetailConfirm extends ConsumerWidget {
     );
   }
 }
-

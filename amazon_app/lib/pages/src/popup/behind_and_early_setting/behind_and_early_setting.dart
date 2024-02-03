@@ -4,31 +4,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'behind_and_early_setting_controller.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
-  const BehindAndEarlySetting({super.key});
+  const BehindAndEarlySetting({super.key, required this.responseIcon});
 
+  final String responseIcon;
   @override
   ConsumerState<BehindAndEarlySetting> createState() {
     return _BehindAndEarlySettingState();
   }
 }
 
-class _BehindAndEarlySettingState
-    extends ConsumerState<BehindAndEarlySetting> {
-  bool _isPinkAttendance = false;
-  bool _isPinkLeavingEarly = false;
-  bool _isPinkBehindTime = false;
-  bool _isPinkAbsence = false;
+class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   @override
   //絶対書く
   Widget build(BuildContext context) {
     final productList = ProductList().productList;
-
+    final responseIcon = widget.responseIcon;
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(34),
         child: SizedBox(
           width: 360,
-          height: 500,
+          height: 300,
           child: Stack(
             children: [
               Container(
@@ -38,7 +34,7 @@ class _BehindAndEarlySettingState
               ),
               Container(
                 width: double.infinity,
-                height: 100,
+                height: 80,
                 decoration:
                     const BoxDecoration(color: Color(0xFFD8EB61)), //上の黄緑
               ),
@@ -62,205 +58,91 @@ class _BehindAndEarlySettingState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 120),
-                      child: const Text(
-                        'Designner23',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      child: const Text('2023/9/20 13:00-14:00'),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.group,
-                            size: 25,
-                            color: Colors.grey,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 8),
-                            child: const Text(
-                              '参加メンバー |',
-                              style: TextStyle(
-                                color: Colors.grey,
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 110),
+                              child: const Text(
+                                'Designner23',
+                                style: TextStyle(fontSize: 35),
                               ),
                             ),
-                          ),
-                          const PresentMember(),
-                        ],
-                      ),
-                    ),
-                    //ここのContainer切り出す
-                    Container(
-                      margin: const EdgeInsets.only(top: 70, right: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: const Text('2023/9/20 13:00-14:00'),),
+                          ],
+                        ),
+                        if (responseIcon == '_isPinkLeavingEarly')
                           Container(
-                            width: 77,
-                            height: 77,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
+                            width: 80,
+                            height: 80,
+                            margin: const EdgeInsets.only(top: 105, left: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(80),
+                              color: const Color(0xFFFBCEFF),
                             ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                debugPrint('pressed');
-                                setState(() {
-                                  _isPinkAttendance = !_isPinkAttendance;
-                                  _isPinkLeavingEarly = false;
-                                  _isPinkBehindTime = false;
-                                  _isPinkAbsence = false;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: _isPinkAttendance
-                                    ? const Color(0xFFFBCEFF)
-                                    : Colors.white,
-                              ),
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    productList[0],
+                                    Icons.sentiment_satisfied,
+                                    size: 25,
                                     color: Colors.black,
                                   ),
-                                  const Text(
-                                    '出席',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 77,
-                            height: 77,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                debugPrint('pressed2');
-                                setState(() {
-                                  _isPinkAttendance = false;
-                                  _isPinkLeavingEarly = !_isPinkLeavingEarly;
-                                  _isPinkBehindTime = false;
-                                  _isPinkAbsence = false;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: _isPinkLeavingEarly
-                                    ? const Color(0xFFFBCEFF)
-                                    : Colors.white,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    productList[1],
-                                    color: Colors.black,
-                                  ),
-                                  const Text(
+                                  Text(
+                                    //Databaseから取得
                                     '早退',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                        if (responseIcon == '_isPinkBehindTime')
                           Container(
-                            width: 77,
-                            height: 77,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
+                            width: 80,
+                            height: 80,
+                            margin: const EdgeInsets.only(top: 105, left: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(80),
+                              color: const Color(0xFFFBCEFF),
                             ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                debugPrint('pressed3');
-                                setState(() {
-                                  _isPinkAttendance = false;
-                                  _isPinkLeavingEarly = false;
-                                  _isPinkBehindTime = !_isPinkBehindTime;
-                                  _isPinkAbsence = false;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: _isPinkBehindTime
-                                    ? const Color(0xFFFBCEFF)
-                                    : Colors.white,
-                              ),
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    productList[2],
+                                    Icons.sentiment_satisfied,
+                                    size: 25,
                                     color: Colors.black,
                                   ),
-                                  const Text(
+                                  Text(
+                                    //Databaseから取得
                                     '遅刻',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          Container(
-                            width: 77,
-                            height: 77,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                debugPrint('pressed3');
-                                setState(() {
-                                  _isPinkAttendance = false;
-                                  _isPinkLeavingEarly = false;
-                                  _isPinkBehindTime = false;
-                                  _isPinkAbsence = !_isPinkAbsence;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: _isPinkAbsence
-                                    ? const Color(0xFFFBCEFF)
-                                    : Colors.white,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    productList[3],
-                                    color: Colors.black,
-                                  ),
-                                  const Text(
-                                    '欠席',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
                     Row(
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(top: 20),
+                          margin: const EdgeInsets.only(top: 40),
                           child: const Icon(Icons.schedule),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(right: 80, top: 20),
+                          margin: const EdgeInsets.only(right: 80, top: 40),
                           child: const Text(
                             '参加時間',
                             style: TextStyle(
@@ -269,7 +151,7 @@ class _BehindAndEarlySettingState
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(right: 30, top: 20),
+                          margin: const EdgeInsets.only(right: 30, top: 40),
                           child: const Text(
                             '13:30-14:00',
                           ),
