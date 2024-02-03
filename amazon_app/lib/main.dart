@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amazon/amazon_app.dart';
 import 'firebase_options.dart';
 
-import 'test/test.dart';
+// import 'test/test.dart';
 
 void main() async {
   // Flutterアプリを初期化
