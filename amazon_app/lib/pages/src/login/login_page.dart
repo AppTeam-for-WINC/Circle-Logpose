@@ -43,7 +43,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ref.read(errorMessageProvider.notifier).state = errorMessage;
     } else {
       ref.read(errorMessageProvider.notifier).state = null;
-      // 成功した場合の処理をここに書く
     }
 
     setState(() {
@@ -96,10 +95,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   },
                 ),
               ),
-      
+
               //↑戻るボタン
               const LoginProgressIndicator(),
-      
+
               Stack(
                 children: <Widget>[
                   Container(),
@@ -131,13 +130,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                       ),
-      
+
                       if (errorMessage != null)
                         Text(
                           errorMessage,
-                          style: const TextStyle(color: Colors.red, fontSize: 20),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                          ),
                         ),
-      
+
                       //↓メールアドレス文字
                       Container(
                         width: 346,
@@ -188,7 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       //↑Email form
-      
+
                       Container(
                         width: 346,
                         margin: const EdgeInsets.all(13.5),
@@ -201,7 +203,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-      
+
                       //Password form
                       SizedBox(
                         width: 346,
@@ -238,7 +240,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-      
+
                       Container(
                         height: 47,
                         width: 195,

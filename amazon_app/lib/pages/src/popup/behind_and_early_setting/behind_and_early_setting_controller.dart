@@ -1,4 +1,3 @@
-//バックエンド処理
 import 'package:flutter/material.dart';
 
 class ProductList {
