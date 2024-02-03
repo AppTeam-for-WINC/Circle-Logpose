@@ -34,7 +34,7 @@ class GroupPickerModal extends ConsumerWidget {
               onSelectedItemChanged: (int index) {
                 final id = groups[index].groupId;
                 final name = groups[index].group.name;
-                groupScheduleNotifier.setSchedule(id);
+                groupScheduleNotifier.setSchedule(id, null, null);
                 ref.watch(groupNameProvider.notifier).state = name;
               },
               children: groups
