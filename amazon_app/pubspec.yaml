@@ -16,18 +16,16 @@ dependencies:
   firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
-  # cloud_firestore_odm: ^1.0.0-dev.80
   flutter_riverpod: ^2.4.3
   http: ^1.1.2
   image_picker: ^1.0.4
+  intl: ^0.19.0
   json_annotation: ^4.8.1
-  shared_preferences: ^2.2.2
   url_launcher: ^6.2.3
-  uuid: 4.3.3
+  uuid: ^4.3.3
 
 dev_dependencies:
   build_runner: ^2.4.7
-  cloud_firestore_odm_generator: ^1.0.0-dev.80
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
@@ -38,12 +36,3 @@ flutter:
   uses-material-design: true
   assets:
     - src/images/
-
-#cloud_firestore_odm settings
-# targets:
-#   $default:
-#     builders:
-#       json_serializable:
-#         options:
-#           create_field_map: true
-#           create_per_field_to_json: true

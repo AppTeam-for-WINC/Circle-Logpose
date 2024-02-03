@@ -4,7 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'group.dart';
 
 class GroupController {
-  const GroupController();
+    ///シングルトンパターンにしています。
+  GroupController._internal();
+  static final GroupController _instance =
+      GroupController._internal();
+  static GroupController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'groups';
@@ -40,7 +44,7 @@ class GroupController {
 
   ///後で消す。
   ///Read all members.
-  static Future<List<Group>> readAll(String userDocId) async {
+  static Future<List<GroupProfile>> readAll(String userDocId) async {
     final groups = await db
         .collection(collectionPath)
         .where('user_id', isEqualTo: userDocId)
@@ -51,19 +55,7 @@ class GroupController {
         throw Exception('Error : No found document data.');
       }
 
-      final name = groupMembershipsRef['name'] as String;
-      final description = groupMembershipsRef['descrption'] as String?;
-      final image = groupMembershipsRef['image'] as String;
-      final updatedAt = groupMembershipsRef['updated_at'] as Timestamp?;
-      final createdAt = groupMembershipsRef['created_at'] as Timestamp;
-
-      return Group(
-        name: name,
-        description: description,
-        image: image,
-        updatedAt: updatedAt,
-        createdAt: createdAt,
-      );
+      return GroupProfile.fromMap(groupMembershipsRef);
     }).toList();
 
     return groupMembershipsRefs;
@@ -87,26 +79,14 @@ class GroupController {
   }
 
   ///Get the group database.
-  static Future<Group> read(String docId) async {
+  static Future<GroupProfile> read(String docId) async {
     final groupDoc = await db.collection(collectionPath).doc(docId).get();
     final groupDocRef = groupDoc.data();
     if (groupDocRef == null) {
       throw Exception('Error : No found document data.');
     }
 
-    final name = groupDocRef['name'] as String;
-    final description = groupDocRef['descrption'] as String?;
-    final image = groupDocRef['image'] as String;
-    final updatedAt = groupDocRef['updated_at'] as Timestamp?;
-    final createdAt = groupDocRef['created_at'] as Timestamp;
-
-    return Group(
-      name: name,
-      description: description,
-      image: image,
-      updatedAt: updatedAt,
-      createdAt: createdAt,
-    );
+    return GroupProfile.fromMap(groupDocRef);
   }
 
   ///後で、アップデート機能をfactoryにして、名前、説明、画像其々個別で変更できるような関数を作成する。

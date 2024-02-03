@@ -1,4 +1,4 @@
-import 'package:amazon_app/database/utils/error_messages.dart';
+import 'package:amazon_app/database/common/error_messages.dart';
 import 'package:amazon_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
