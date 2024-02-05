@@ -1,5 +1,5 @@
+import 'package:amazon_app/controller/common/time_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'schedule.dart';
 
 class GroupScheduleController {
@@ -10,17 +10,10 @@ class GroupScheduleController {
   static GroupScheduleController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
-
   ///schedule path
-  static const collectionPath = 'schedules';
-
-  /// FirestoreのTimestampからDateTimeに変換
-  static DateTime? convertTimestampToDateTime(dynamic timestamp) {
-    return timestamp is Timestamp ? timestamp.toDate() : null;
-  }
+  static const collectionPath = 'group_schedules';
 
   ///Create schudule database.
-  ///Return created schedule document ID.
   static Future<void> create(
 
       ///Named parameters
@@ -52,25 +45,50 @@ class GroupScheduleController {
   }
 
   ///Get all schedule database.
-  static Future<List<GroupSchedule>> readAll(String groupId) async {
-    final QuerySnapshot schedules = await db
+  static Stream<List<GroupSchedule?>> readAll(String groupId) async* {
+    final schedulesStream = db
         .collection(collectionPath)
         .where(
           'group_id',
           isEqualTo: groupId,
         )
-        .get();
+        .snapshots();
 
-    final schedulesRefs = schedules.docs.map((doc) {
-      final scheduleRef = doc.data() as Map<String, dynamic>?;
-      if (scheduleRef == null) {
-        throw Exception('Error: No found document data.');
-      }
+    await for (final schedules in schedulesStream) {
+      final schedulesRefs = schedules.docs.map((doc) {
+        final scheduleRef = doc.data() as Map<String, dynamic>?;
+        if (scheduleRef == null) {
+          return null;
+        }
+        final groupId = scheduleRef['group_id'] as String;
+        final title = scheduleRef['title'] as String;
+        final color = scheduleRef['color'] as String;
+        final place = scheduleRef['place'] as String?;
+        final detail = scheduleRef['detail'] as String?;
+        final startAt = convertTimestampToDateTime(scheduleRef['start_at']);
+        final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
+        final updatedAt = scheduleRef['updated_at'] as Timestamp?;
+        final createdAt = scheduleRef['created_at'] as Timestamp?;
+        if (createdAt == null) {
+          return null;
+        }
 
-      return GroupSchedule.fromMap(scheduleRef);
-    }).toList();
+        return GroupSchedule(
+          groupId: groupId,
+          title: title,
+          color: color,
+          place: place,
+          detail: detail,
+          startAt: startAt!,
+          endAt: endAt!,
+          updatedAt: updatedAt,
+          createdAt: createdAt,
+        );
+        // return GroupSchedule.fromMap(scheduleRef);
+      }).toList();
 
-    return schedulesRefs;
+      yield schedulesRefs;
+    }
   }
 
   //Get selected schedule database.
@@ -91,7 +109,7 @@ class GroupScheduleController {
     required String groupId,
     required String title,
     required String? place,
-    required Color color,
+    required String color,
     required String? detail,
     required DateTime startAt,
     required DateTime endAt,

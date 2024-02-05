@@ -1,4 +1,3 @@
-import 'package:amazon_app/controller/common/color_controller.dart';
 import 'package:amazon_app/pages/common/src/color/color_palette.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/parts/activity_time.dart';
@@ -8,8 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'parts/group_picker/button.dart';
 import 'schedule_create_controller.dart';
-
-//スケジュールの日付、時刻設定なくね？
 
 class ScheduleCreate extends ConsumerStatefulWidget {
   const ScheduleCreate({super.key});
@@ -21,8 +18,8 @@ class ScheduleCreate extends ConsumerStatefulWidget {
 class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final schedule = ref.watch(createGroupScheduleProvider);
-    final selectedColor = ref.watch(scheduleColorProvider);
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
 
@@ -36,18 +33,16 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 5),
-                child: CupertinoButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Color(0xFF7B61FF),
-                  ),
+              CupertinoButton(
+                padding: const EdgeInsets.only(left: 15, top: 15),
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Color(0xFF7B61FF),
                 ),
               ),
-              // カラー選択↓
               CupertinoButton(
+                padding: const EdgeInsets.only(left: 20),
                 onPressed: () {
                   showCupertinoDialog<Widget>(
                     context: context,
@@ -67,21 +62,21 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  ref
-                                      .watch(scheduleColorProvider.notifier)
-                                      .color = scheduleColorPalette[index];
+                                  scheduleNotifier.setColor(
+                                    scheduleColorPalette[index],
+                                  );
                                   Navigator.of(context).pop();
                                 },
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: scheduleColorPalette[index],
-                                    border: selectedColor ==
+                                    border: schedule.color ==
                                             scheduleColorPalette[index]
                                         ? Border.all(width: 2)
                                         : null,
                                   ),
-                                  child: selectedColor ==
+                                  child: schedule.color ==
                                           scheduleColorPalette[index]
                                       ? const Icon(
                                           Icons.check,
@@ -100,33 +95,30 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                 child: Icon(
                   Icons.circle,
                   size: 50,
-                  color: selectedColor,
+                  color: schedule!.color,
                 ),
               ),
-
-              // タイトル追加↓
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                width: 270,
-                child: CupertinoTextField(
-                  placeholder: 'タイトルを追加',
-                  controller: scheduleNotifier.titleController,
-                  placeholderStyle: const TextStyle(color: Colors.grey),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(),
+              Center(
+                child: SizedBox(
+                  width: deviceWidth * 0.7,
+                  child: CupertinoTextField(
+                    placeholder: 'タイトルを追加',
+                    controller: schedule.titleController,
+                    placeholderStyle: const TextStyle(color: Colors.grey),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
                     ),
                   ),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
                 ),
               ),
-              // タイトル追加↑
-
-              Container(
-                margin: const EdgeInsets.only(left: 40),
+              Padding(
+                padding: EdgeInsets.only(left: deviceWidth * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -134,10 +126,9 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                     GroupPickerButton(groupsProfile: groupsProfile),
                     // Activity time
                     const ScheduleActivityTime(),
-
-                    // 場所↓
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
+                    // Place
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
                       child: Row(
                         children: [
                           const Icon(
@@ -146,10 +137,10 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                             color: Colors.grey,
                           ),
                           Container(
-                            margin: const EdgeInsets.only(left: 8),
-                            width: 270,
+                            padding: const EdgeInsets.only(left: 8),
+                            width: deviceWidth * 0.6,
                             child: CupertinoTextField(
-                              controller: scheduleNotifier.placeController,
+                              controller: schedule.placeController,
                               placeholder: '場所を追加',
                               placeholderStyle:
                                   const TextStyle(color: Colors.grey),
@@ -169,30 +160,24 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ],
                       ),
                     ),
-                    // 場所↑
-
-                    // 詳細のコンテナ↓
-                    //ここのContainer切り出す
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
+                    //Detail
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              // 詳細左部のアイコン↓
                               const Icon(
                                 Icons.edit_square,
                                 size: 25,
                                 color: Colors.grey,
                               ),
-                              // 詳細左部のアイコン↑
-                              // 詳細テキスト↓
                               Container(
-                                margin: const EdgeInsets.only(left: 8),
-                                width: 270,
+                                padding: const EdgeInsets.only(left: 8),
+                                width: deviceWidth * 0.6,
                                 child: CupertinoTextField(
-                                  controller: scheduleNotifier.detailController,
+                                  controller: schedule.detailController,
                                   placeholder: '詳細を追加',
                                   placeholderStyle:
                                       const TextStyle(color: Colors.grey),
@@ -209,38 +194,68 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                                   ),
                                 ),
                               ),
-                              // 詳細テキスト↑
                             ],
                           ),
-                          // 詳細内容↑
                         ],
                       ),
                     ),
-                    // 詳細のコンテナ↑
-                    //作成ボタン↓
-                    Center(
-                      child: Container(
-                        width: 100,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: const Color(0xFF7B61FF),
-                        ),
-                        child: CupertinoButton(
-                          child: const Text(
-                            'Create',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                    //Button of creation
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: deviceWidth * 0.15,
+                        top: 80,
+                      ),
+                      width: deviceWidth * 0.3,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: const Color(0xFF7B61FF),
+                      ),
+                      child: CupertinoButton(
+                        child: const Text(
+                          'CREATE',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
                           ),
-                          onPressed: () async {
-
-                          },
                         ),
+                        onPressed: () async {
+                          if (schedule.groupId == null) {
+                            debugPrint('No selected group.');
+                            return;
+                          }
+                          if (schedule.titleController.text.isEmpty) {
+                            debugPrint('No entered title.');
+                            return;
+                          }
+
+                          final success =
+                              await CreateGroupSchedule.createSchedule(
+                            schedule.groupId!,
+                            schedule.titleController.text,
+                            schedule.color,
+                            schedule.placeController.text,
+                            schedule.detailController.text,
+                            schedule.startAt,
+                            schedule.endAt,
+                          );
+                          if (!success) {
+                            debugPrint('Failed to create schedule.');
+                            return;
+                          }
+                          if (!mounted) {
+                            return;
+                          }
+
+                          // Init schedule.
+                          scheduleNotifier.initSchedule();
+                          ref.watch(groupNameProvider.notifier).state =
+                              'No selected group';
+
+                          Navigator.of(context).pop();
+                        },
                       ),
                     ),
-                    //作成ボタン↑
                   ],
                 ),
               ),

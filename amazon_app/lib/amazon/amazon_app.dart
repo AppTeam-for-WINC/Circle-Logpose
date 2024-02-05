@@ -35,7 +35,7 @@ class AmazonApp extends StatelessWidget {
         },
       ),
 
-      // パスを指定  例）　/home:　onPressed: () => Navigator.pushNamed(context, '/home'),　で押された際に指定されたパスに移動する。
+      // パスを指定
       routes: {
         '/home': (context) => const HomePage(),
         '/start': (context) => const StartPage(),

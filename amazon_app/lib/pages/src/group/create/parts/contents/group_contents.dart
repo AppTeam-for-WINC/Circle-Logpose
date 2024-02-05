@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
+
 import 'package:amazon_app/pages/src/group/create/group_create_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/admin/group_admin.dart';
 import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
@@ -252,7 +253,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
               ),
               child: TextButton(
                 onPressed: () async {
-                  final success = await createGroup(
+                  final success = await CreateGroupController.createGroup(
                     groupAddData.groupNameController.text,
                     image,
                     '',

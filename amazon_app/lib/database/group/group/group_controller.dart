@@ -4,10 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'group.dart';
 
 class GroupController {
-    ///シングルトンパターンにしています。
+  ///シングルトンパターンにしています。
   GroupController._internal();
-  static final GroupController _instance =
-      GroupController._internal();
+  static final GroupController _instance = GroupController._internal();
   static GroupController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
@@ -28,6 +27,7 @@ class GroupController {
     } else {
       imagePath = 'src/images/group_img.jpeg';
     }
+
     ///Get server time
     final createdAt = FieldValue.serverTimestamp();
 
@@ -93,24 +93,33 @@ class GroupController {
   ///Update group database
   static Future<void> update({
     required String docId,
-    required String name,
+    required String? name,
     required String? description,
-    required String image,
+    required String? image,
   }) async {
-    final imagePath =
-        await StorageController.uploadGroupImageToStorage(docId, image);
-    if (imagePath == null) {
-      return;
+    // final imagePath =
+    //     await StorageController.uploadGroupImageToStorage(docId, image);
+    // if (imagePath == null) {
+    //   return;
+    // }
+    final updatedAt = FieldValue.serverTimestamp();
+    final updateData = <String, dynamic>{'updated_at': updatedAt};
+
+    if (name != null) {
+      updateData['name'] = name;
     }
 
-    final updatedAt = FieldValue.serverTimestamp();
+    if (image != null) {
+      final imagePath =
+          await StorageController.uploadGroupImageToStorage(docId, image);
+      if (imagePath != null) {
+        updateData['image'] = imagePath;
+      }
+    }
 
-    final updateData = <String, dynamic>{
-      'name': name,
-      'description': description,
-      'image': imagePath,
-      'updated_at': updatedAt,
-    };
+    if (description != null) {
+      updateData['description'] = description;
+    }
     await db.collection(collectionPath).doc(docId).update(updateData);
   }
 

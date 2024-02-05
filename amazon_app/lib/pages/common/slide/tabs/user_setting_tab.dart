@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/account/account_setting.dart';
+import 'package:amazon_app/pages/src/account/account_setting_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -69,11 +69,11 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         color: Colors.black,
                       ),
                       onPressed: () async {
-                        //init
+                        // init
                         await userProfileNotifier.initUserProfile();
                         userProfileNotifier.nameController.text =
                             userProfile!.name;
-                        
+
                         if (!mounted) {
                           return;
                         }
@@ -128,7 +128,6 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                   ),
                 ],
               ),
-              //１個目の白い箱
               Container(
                 margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.only(top: 10),
@@ -153,7 +152,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 60,right: 50),
+                      padding: const EdgeInsets.only(left: 60, right: 50),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -303,7 +302,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 169),
+                          padding: EdgeInsets.only(left: 160),
                           child: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.black,
@@ -314,7 +313,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                   ),
                 ),
               ),
-      
+
               //Email
               Container(
                 margin: const EdgeInsets.only(top: 30),
@@ -528,7 +527,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                   if (!success) {
                     return;
                   }
-      
+
                   if (!mounted) {
                     return;
                   }

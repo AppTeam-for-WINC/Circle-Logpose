@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/account/account_setting.dart';
+import 'package:amazon_app/pages/src/account/account_setting_page.dart';
 import 'package:amazon_app/pages/src/account/parts/email/email_setting_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

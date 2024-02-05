@@ -174,6 +174,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                             decoration: const BoxDecoration(
                               color: Color(0xFFD8EB61),
                             ),
+                            autofocus: true,
                           ),
                         ),
                       ),
@@ -215,15 +216,26 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                               //後で、OOを追加しました。をalert()などで通知させる。
                               print('${userProfileNotifier.username!}を追加しました。');
                               ref.read(memberAddProvider.notifier).resetState();
-                              ref.read(groupMemberListProvider.notifier).addMember(userProfile);
+                              ref
+                                  .read(groupMemberListProvider.notifier)
+                                  .addMember(userProfile);
                             },
                             child: Row(
                               children: [
-                                // Image.network(
-                                Image.asset(
-                                  userProfileNotifier.userImage!,
+                                Container(
                                   width: 20,
                                   height: 20,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          userProfile.image.startsWith('http')
+                                              ? NetworkImage(userProfile.image)
+                                              : AssetImage(userProfile.image)
+                                                  as ImageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(left: 5),
@@ -242,7 +254,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                     ],
                   ),
                 ),
-                if (groupId != null) 
+                if (groupId != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Container(

@@ -1,7 +1,5 @@
-import 'package:amazon_app/pages/src/popup/schedule_detail_confirm/parts/present_member.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'behind_and_early_setting_controller.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({super.key, required this.responseIcon});
@@ -15,9 +13,7 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
 
 class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   @override
-  //絶対書く
   Widget build(BuildContext context) {
-    final productList = ProductList().productList;
     final responseIcon = widget.responseIcon;
     return Center(
       child: ClipRRect(

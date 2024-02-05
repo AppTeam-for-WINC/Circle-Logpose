@@ -1,5 +1,4 @@
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_create/parts/group_picker/riverpod.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,7 @@ class GroupPickerModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupScheduleNotifier =
-        ref.watch(createGroupScheduleProvider.notifier);
+    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
     return Container(
       height: 200,
       width: 360,
@@ -34,7 +32,7 @@ class GroupPickerModal extends ConsumerWidget {
               onSelectedItemChanged: (int index) {
                 final id = groups[index].groupId;
                 final name = groups[index].group.name;
-                groupScheduleNotifier.setSchedule(id, null, null);
+                scheduleNotifier.setGroupId(id);
                 ref.watch(groupNameProvider.notifier).state = name;
               },
               children: groups
