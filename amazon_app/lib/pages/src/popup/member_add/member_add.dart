@@ -195,7 +195,6 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                       if (userProfile != null)
                         Container(
                           height: 30,
-                          width: 100,
                           padding: const EdgeInsets.only(left: 5, right: 5),
                           margin: const EdgeInsets.only(top: 15),
                           decoration: BoxDecoration(
@@ -221,6 +220,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                                   .addMember(userProfile);
                             },
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
                                   width: 20,
@@ -237,13 +237,20 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                                     borderRadius: BorderRadius.circular(999),
                                   ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    userProfileNotifier.username!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF9A9A9A),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minWidth: 50,
+                                      maxWidth: 120,
+                                    ),
+                                    child: Text(
+                                      userProfileNotifier.username!,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF9A9A9A),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
                                 ),

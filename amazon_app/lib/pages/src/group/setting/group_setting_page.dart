@@ -3,17 +3,19 @@ import 'dart:io';
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/group/setting/group_setting_controller.dart';
+import 'package:amazon_app/pages/src/group/setting/parts/group_member_image.dart';
+import 'package:amazon_app/pages/src/group/setting/parts/schedule_card.dart';
+import 'package:amazon_app/pages/src/home/home_page.dart';
+import 'package:amazon_app/pages/src/popup/member_add/member_add.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../home/home_page.dart';
-import '../../popup/member_add/member_add.dart';
-import '../../popup/schedule_create/schedule_create.dart';
-import 'parts/group_member_image.dart';
-import 'parts/schedule_card.dart';
+
 
 enum GroupOption { edit, list }
 

@@ -10,9 +10,12 @@ class ScheduleManagement extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupExist = ref.watch(checkGroupExistProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
+    final groupExist = ref.watch(checkGroupExistProvider);
+    final groupScheduleList = ref.watch(readUserScheduleProvider);
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -27,22 +30,29 @@ class ScheduleManagement extends ConsumerWidget {
               height: deviceHeight,
               color: const Color(0xFFF5F3FE),
               padding: const EdgeInsets.only(top: 45),
-              child: const TabBarView(
-                physics: BouncingScrollPhysics(),
+              child: TabBarView(
+                physics: const BouncingScrollPhysics(),
                 children: [
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        //Databaseからスケジュールデータを一覧取得
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        GroupScheduleCard(),
-                        SizedBox(height: 200,),
+                        Column(
+                          children: groupScheduleList.when(
+                            data: (groupSchedule) {
+                              if (groupSchedule.isEmpty) {
+                                return const [SizedBox.shrink()];
+                              }
+                              return groupSchedule.map((schedule) {
+                                return GroupScheduleCard(schedule: schedule);
+                              }).toList();
+                            },
+                            loading: () => const [SizedBox.shrink()],
+                            error: (error, stack) => [Text('$error')],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 200,
+                        ),
                       ],
                     ),
                   ),

@@ -1,9 +1,9 @@
+import 'package:amazon_app/pages/src/group/setting/group_setting_page.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../group/setting/group_setting_page.dart';
 
 class GroupBox extends ConsumerStatefulWidget {
   const GroupBox({super.key, required this.groupWithId});

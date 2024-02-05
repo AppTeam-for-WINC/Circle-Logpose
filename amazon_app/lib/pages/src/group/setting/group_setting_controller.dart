@@ -123,7 +123,7 @@ class GroupValidation {
 }
 
 final readGroupScheduleProvider =
-    StreamProvider.family<List<GroupSchedule>, String>(
+    StreamProvider.family.autoDispose<List<GroupSchedule>, String>(
   (ref, groupId) async* {
     final schedulesStream = GroupScheduleController.readAll(groupId);
 

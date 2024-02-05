@@ -23,6 +23,30 @@ DateTime formatStringExcYear(String datetime) {
   return DateFormat('MM/dd HH:mm').parseStrict(datetime);
 }
 
+/// Format DateTime data to String data. And Except year data.
+String formatDateTimeExcYearHourMinuteDay(DateTime datetime) {
+  final formatter = DateFormat('MM/dd');
+  return formatter.format(datetime);
+}
+
+/// Format DateTime data to String data. And Except year data.
+DateTime formatStringExcYearHourMinuteDay(String datetime) {
+  return DateFormat('MM/dd').parseStrict(datetime);
+}
+
+/// Format DateTime data to String data. And Except year data.
+String formatDateTimeExcYearMonthDay(DateTime datetime) {
+  final formatter = DateFormat('HH:mm');
+  return formatter.format(datetime);
+}
+
+/// Format DateTime data to String data. And Except year data.
+DateTime formatStringExcYearMonthDay(String datetime) {
+  return DateFormat('HH:mm').parseStrict(datetime);
+}
+
+
+
 /// Convert Timestamp to DateTime.
 DateTime? convertTimestampToDateTime(dynamic timestamp) {
   return timestamp is Timestamp ? timestamp.toDate() : null;

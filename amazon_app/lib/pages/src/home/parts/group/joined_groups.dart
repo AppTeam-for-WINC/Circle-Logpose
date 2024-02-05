@@ -1,9 +1,9 @@
+import 'package:amazon_app/pages/src/group/create/group_create_page.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
 import 'package:amazon_app/pages/src/home/parts/group/group_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../group/create/group_create_page.dart';
 
 class GroupPage extends ConsumerWidget {
   const GroupPage({super.key});

@@ -403,7 +403,11 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
             height: widget.height,
             child: GestureDetector(
               onTap: () => onTapSegmentTab(
-                  context, currentTab, currentTab.name, _internalIndex),
+                context,
+                currentTab,
+                currentTab.name,
+                _internalIndex,
+              ),
               child: Stack(
                 children: [
                   AnimatedContainer(

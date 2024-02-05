@@ -15,12 +15,12 @@ class UserSettingTabState extends ConsumerState<UserSettingTab> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        await Navigator.pushAndRemoveUntil(
+        await Navigator.push(
           context,
           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
             builder: (context) => const AccountSettingPage(),
           ),
-          (_) => false,
+          // (route) => route.settings.name == '/home',
         );
       },
       child: Container(

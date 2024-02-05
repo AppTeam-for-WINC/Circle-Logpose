@@ -16,7 +16,7 @@ final groupAdminMemberProfileProvider =
 
 
 final groupMemberListProvider =
-    StateNotifierProvider<GroupMemberListNotifier, List<UserProfile>>(
+    StateNotifierProvider.autoDispose<GroupMemberListNotifier, List<UserProfile>>(
         (ref) => GroupMemberListNotifier(),);
 
 ///メンバーリストを追加するためのStateNotifier

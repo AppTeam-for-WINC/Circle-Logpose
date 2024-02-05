@@ -1,3 +1,5 @@
+import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/pages/src/home/parts/attendance/user_schedule_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,8 +7,8 @@ import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
 import '../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
 class GroupScheduleCard extends ConsumerStatefulWidget {
-  const GroupScheduleCard({super.key});
-
+  const GroupScheduleCard({super.key, required this.schedule});
+  final GroupScheduleWithId schedule;
   @override
   ConsumerState<GroupScheduleCard> createState() {
     return _GroupScheduleCardState();
@@ -21,6 +23,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
+    final groupImage = widget.schedule.groupImage;
+    final groupSchedule = widget.schedule.groupSchedule;
     return Container(
       width: 375,
       height: 215,
@@ -29,7 +33,6 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
       ),
       child: Stack(
         children: [
-          //ここのCenter切り出す
           Center(
             child: Container(
               margin: const EdgeInsets.only(
@@ -62,51 +65,72 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          //Databaseから取得
-                          '13:00-14:00',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.startAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const Text(
+                              '-',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.endAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            await showCupertinoModalPopup<
-                                ScheduleDetailConfirm>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                if (_isPinkAttendance) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkAttendance',
-                                  );
-                                } else if (_isPinkLeavingEarly) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkLeavingEarly',
-                                  );
-                                } else if (_isPinkBehindTime) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkBehindTime',
-                                  );
-                                } else {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkAbsence',
-                                  );
-                                }
-                              },
-                            );
-                          },
-                          child: const SizedBox(
-                            width: 117,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await showCupertinoModalPopup<
+                                  ScheduleDetailConfirm>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  if (_isPinkAttendance) {
+                                    return const ScheduleDetailConfirm(
+                                      responseIcon: '_isPinkAttendance',
+                                    );
+                                  } else if (_isPinkLeavingEarly) {
+                                    return const ScheduleDetailConfirm(
+                                      responseIcon: '_isPinkLeavingEarly',
+                                    );
+                                  } else if (_isPinkBehindTime) {
+                                    return const ScheduleDetailConfirm(
+                                      responseIcon: '_isPinkBehindTime',
+                                    );
+                                  } else {
+                                    return const ScheduleDetailConfirm(
+                                      responseIcon: '_isPinkAbsence',
+                                    );
+                                  }
+                                },
+                              );
+                            },
                             child: Row(
                               children: [
-                                Text(
-                                  //Databaseから取得
-                                  'Designer23',
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                Expanded(
+                                  child: Text(
+                                    groupSchedule.title,
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_ios,
                                   size: 20,
                                   color: Color(0xFF7B61FF),
@@ -320,20 +344,34 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                 color: const Color(0xFFD8EB61),
                 borderRadius: BorderRadius.circular(99),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  //Databaseから取得
-                  '9/20',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  formatDateTimeExcYearHourMinuteDay(
+                    groupSchedule.startAt,
+                  ),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
           ),
-          const Positioned(
+          // tsubasa
+          Positioned(
             right: 35,
-            child: Icon(
-              Icons.group,
-              size: 40,
+            child: Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: groupImage.startsWith('http')
+                      ? NetworkImage(groupImage)
+                      : AssetImage(groupImage) as ImageProvider,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(999),
+              ),
             ),
           ),
         ],
