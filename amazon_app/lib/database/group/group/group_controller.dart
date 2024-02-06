@@ -42,25 +42,6 @@ class GroupController {
     return groupDoc.id;
   }
 
-  ///後で消す。
-  ///Read all members.
-  static Future<List<GroupProfile>> readAll(String userDocId) async {
-    final groups = await db
-        .collection(collectionPath)
-        .where('user_id', isEqualTo: userDocId)
-        .get();
-    final groupMembershipsRefs = groups.docs.map((doc) {
-      final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipsRef == null) {
-        throw Exception('Error : No found document data.');
-      }
-
-      return GroupProfile.fromMap(groupMembershipsRef);
-    }).toList();
-
-    return groupMembershipsRefs;
-  }
-
   static Future<List<String>> readAllDocId(String userId) async {
     final groups = await db
         .collection(collectionPath)
@@ -79,17 +60,29 @@ class GroupController {
   }
 
   ///Get the group database.
-  static Future<GroupProfile> read(String docId) async {
+  static Stream<GroupProfile?> read(String docId) async* {
     final groupDoc = await db.collection(collectionPath).doc(docId).get();
     final groupDocRef = groupDoc.data();
     if (groupDocRef == null) {
       throw Exception('Error : No found document data.');
     }
 
-    return GroupProfile.fromMap(groupDocRef);
+    yield GroupProfile.fromMap(groupDocRef);
   }
 
-  ///後で、アップデート機能をfactoryにして、名前、説明、画像其々個別で変更できるような関数を作成する。
+
+  ///Get the group database.
+  // static Future<GroupProfile> read(String docId) async {
+  //   final groupDoc = await db.collection(collectionPath).doc(docId).get();
+  //   final groupDocRef = groupDoc.data();
+  //   if (groupDocRef == null) {
+  //     throw Exception('Error : No found document data.');
+  //   }
+
+  //   return GroupProfile.fromMap(groupDocRef);
+  // }
+
+  ///後で、名前、説明、画像其々個別で変更できるような関数を作成する。
   ///Update group database
   static Future<void> update({
     required String docId,
@@ -97,11 +90,6 @@ class GroupController {
     required String? description,
     required String? image,
   }) async {
-    // final imagePath =
-    //     await StorageController.uploadGroupImageToStorage(docId, image);
-    // if (imagePath == null) {
-    //   return;
-    // }
     final updatedAt = FieldValue.serverTimestamp();
     final updateData = <String, dynamic>{'updated_at': updatedAt};
 

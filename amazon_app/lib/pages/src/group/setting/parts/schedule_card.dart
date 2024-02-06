@@ -25,10 +25,10 @@ class _ScheduleCardState extends ConsumerState<ScheduleCard> {
         child: Center(
           child: Text(
             groupSchedule.title,
-            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 18,
               color: Color.fromARGB(255, 69, 68, 68),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),

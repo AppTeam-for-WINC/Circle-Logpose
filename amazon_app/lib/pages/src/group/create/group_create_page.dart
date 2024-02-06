@@ -1,7 +1,7 @@
 import 'package:amazon_app/pages/common/slide/src/slide_tab.dart';
 import 'package:amazon_app/pages/common/slide/src/slide_tab_bar.dart';
 
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents.dart';
 import 'package:amazon_app/pages/src/home/parts/group/joined_groups.dart';
 
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/popup/member_add/member_add_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

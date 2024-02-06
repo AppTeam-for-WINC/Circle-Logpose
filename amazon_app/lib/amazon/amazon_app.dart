@@ -23,7 +23,6 @@ class AmazonApp extends StatelessWidget {
         Locale('ja'),
       ],
       locale: const Locale('ja'),
-      //homeを指定、とりあえずアプリを起動時、スタート画面を表示させる設定にしています。
       // home: const StartPage(),
       home: FutureBuilder<ConsumerWidget>(
         future: firstPage(),

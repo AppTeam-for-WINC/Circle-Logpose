@@ -4,13 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'group_membership.dart';
 
 class GroupMembershipController {
-  const GroupMembershipController();
-  static final db = FirebaseFirestore.instance;
+  GroupMembershipController._internal();
+  static final GroupMembershipController _instance =
+      GroupMembershipController._internal();
+  static GroupMembershipController get instance => _instance;
 
+  static final db = FirebaseFirestore.instance;
   static const collectionPath = 'group_memberships';
 
-  //グループ作成時に作成者用に自動で呼び出すようにしなければならない。
-  ///Added the group to new member.
+  /// Added the group to new member.
   static Future<void> create(
     String userDocId,
     String role,
@@ -79,7 +81,7 @@ class GroupMembershipController {
     }
   }
 
-  ///Read specified member.
+  /// Read specified member.
   static Future<GroupMembership> read(String docId) async {
     final groupMembershipDoc =
         await db.collection(collectionPath).doc(docId).get();
@@ -108,8 +110,8 @@ class GroupMembershipController {
     );
   }
 
-  ///後で、factoryメソッドを使って、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
-  ///Update membership users
+  /// 後で、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
+  /// Update membership users
   static Future<void> update({
     required String docId,
     required String userId,
@@ -135,6 +137,4 @@ class GroupMembershipController {
   static Future<void> delete(String docId) async {
     await db.collection(collectionPath).doc(docId).delete();
   }
-
-  static Stream<void> watch() async* {}
 }

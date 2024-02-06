@@ -71,27 +71,3 @@ final readUserScheduleProvider =
         .toList();
   }
 });
-
-
-// final readUserScheduleProvider =
-//     StreamProvider.autoDispose<List<GroupSchedule>>((ref) async* {
-//   final userDocId = await AuthController.getCurrentUserId();
-//   if (userDocId == null) {
-//     throw Exception('User not logged in.');
-//   }
-
-//   final groupMemberships =
-//       GroupMembershipController.readAllWithUserId(userDocId);
-
-//   await for (final memberships in groupMemberships) {
-//     final futures =
-//         memberships.whereType<GroupMembership>().map((membership) async {
-//       final groupSchedules =
-//           await ref.watch(readGroupScheduleProvider(membership.groupId).future);
-//       return groupSchedules;
-//     });
-
-//     final scheduleLists = await Future.wait(futures);
-//     yield scheduleLists.expand((x) => x).toList();
-//   }
-// });

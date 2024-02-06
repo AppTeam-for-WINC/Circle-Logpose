@@ -25,10 +25,38 @@ final readJoinedGroupsProfileProvider =
         if (membership == null) {
           return null;
         }
-        final group = await GroupController.read(membership.groupId);
+        final groupStream = GroupController.read(membership.groupId);
+        await for (final group in groupStream) {
+          if (group == null) {
+            continue;
+          }
         return GroupWithId(group: group, groupId: membership.groupId);
+        }
       }),
     );
     yield groupsWithId.whereType<GroupWithId>().toList();
   }
 });
+
+// final readJoinedGroupsProfileProvider =
+//     StreamProvider<List<GroupWithId>>((ref) async* {
+//   final userDocId = await AuthController.getCurrentUserId();
+//   if (userDocId == null) {
+//     throw Exception('User not login.');
+//   }
+//   final membershipsStream =
+//       GroupMembershipController.readAllWithUserId(userDocId);
+
+//   await for (final memberships in membershipsStream) {
+//     final groupsWithId = await Future.wait(
+//       memberships.map((membership) async {
+//         if (membership == null) {
+//           return null;
+//         }
+//         final group = await GroupController.read(membership.groupId);
+//         return GroupWithId(group: group, groupId: membership.groupId);
+//       }),
+//     );
+//     yield groupsWithId.whereType<GroupWithId>().toList();
+//   }
+// });

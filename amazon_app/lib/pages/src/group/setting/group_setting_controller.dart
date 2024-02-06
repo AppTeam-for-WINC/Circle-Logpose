@@ -27,7 +27,7 @@ class GroupSettingNotifier extends StateNotifier<GroupProfile?> {
       return;
     }
     try {
-      group = await GroupController.read(groupId);
+      group = GroupController.read(groupId);
       if (group != null) {
         state = group;
         groupNameController.text = group!.name;
@@ -38,6 +38,23 @@ class GroupSettingNotifier extends StateNotifier<GroupProfile?> {
       throw Exception('Error: No found group $e');
     }
   }
+  // Future<void> initProfile() async {
+  //   if (groupId.isEmpty) {
+  //     state = null;
+  //     return;
+  //   }
+  //   try {
+  //     group = await GroupController.read(groupId);
+  //     if (group != null) {
+  //       state = group;
+  //       groupNameController.text = group!.name;
+  //     } else {
+  //       state = null;
+  //     }
+  //   } on Exception catch (e) {
+  //     throw Exception('Error: No found group $e');
+  //   }
+  // }
 
   Future<void> changeProfile(File newImage) async {
     if (state != null) {

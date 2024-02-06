@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/group/setting/group_setting_controller.dart';
 import 'package:amazon_app/pages/src/group/setting/parts/group_member_image.dart';
 import 'package:amazon_app/pages/src/group/setting/parts/schedule_card.dart';

@@ -3,7 +3,7 @@ import 'package:amazon_app/controller/entities/device/image_controller.dart';
 
 import 'package:amazon_app/pages/src/group/create/group_create_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/admin/group_admin.dart';
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/membership/group_member.dart';
 import 'package:amazon_app/pages/src/group/create/parts/membership/group_member_controller.dart';
 import 'package:amazon_app/pages/src/home/home_page.dart';
@@ -197,11 +197,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: Center(
-                      child: SizedBox(
-                        height: 344,
-                        width: 330,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Center(
                         child: GridView.count(
                           crossAxisSpacing: 26,
                           mainAxisSpacing: 14,

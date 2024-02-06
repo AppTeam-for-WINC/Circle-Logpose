@@ -42,6 +42,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
   @override
   Widget build(BuildContext context) {
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
+    final groupsProfileNotifier = ref.watch(readJoinedGroupsProfileProvider.notifier);
     final userProfile = ref.watch(userProfileProvider);
     final userProfileNotifier = ref.watch(userProfileProvider.notifier);
 

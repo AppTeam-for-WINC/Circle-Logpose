@@ -14,10 +14,10 @@ final groupAdminMemberProfileProvider =
   return user;
 });
 
-
-final groupMemberListProvider =
-    StateNotifierProvider.autoDispose<GroupMemberListNotifier, List<UserProfile>>(
-        (ref) => GroupMemberListNotifier(),);
+final groupMemberListProvider = StateNotifierProvider.autoDispose<
+    GroupMemberListNotifier, List<UserProfile>>(
+  (ref) => GroupMemberListNotifier(),
+);
 
 ///メンバーリストを追加するためのStateNotifier
 class GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
