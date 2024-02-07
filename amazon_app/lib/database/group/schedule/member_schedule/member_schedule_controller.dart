@@ -3,27 +3,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'member_schedule.dart';
 
 class GroupMemberScheduleController {
-  const GroupMemberScheduleController();
+  GroupMemberScheduleController._internal();
+  static final GroupMemberScheduleController _instance =
+      GroupMemberScheduleController._internal();
+  static GroupMemberScheduleController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'member_condition';
 
-  static Future<void> create(
-    {
-      required String scheduleId,
-      required String userId,
-      required bool attendance,
-      required bool leaveEarly,
-      required bool lateness,
-      required bool absence,
-      required DateTime startAt,
-      required DateTime endAt,
-    }
-  ) async {
+  static Future<void> create({
+    required String scheduleId,
+    required String userId,
+    required bool attendance,
+    required bool leaveEarly,
+    required bool lateness,
+    required bool absence,
+    required DateTime startAt,
+    required DateTime endAt,
+  }) async {
     final groupMemberScheduleDoc = db.collection(collectionPath).doc();
 
     final createdAt = FieldValue.serverTimestamp();
-
 
     await groupMemberScheduleDoc.set({
       'schedule_id': scheduleId,
@@ -38,36 +38,15 @@ class GroupMemberScheduleController {
     });
   }
 
-  static Future<GroupMemberSchedule> read(String docId) async{
-    final groupMemberScheduleDoc = await db.collection(collectionPath).doc(docId).get();
+  static Future<GroupMemberSchedule> read(String docId) async {
+    final groupMemberScheduleDoc =
+        await db.collection(collectionPath).doc(docId).get();
     final groupMemberScheduleRef = groupMemberScheduleDoc.data();
     if (groupMemberScheduleRef == null) {
       throw Exception('Error : No found document data.');
     }
-    
-    final scheduleId = groupMemberScheduleRef['schedule_id'] as String;
-    final userId = groupMemberScheduleRef['user_id'] as String;
-    final attendance = groupMemberScheduleRef['attendance'] as bool;
-    final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
-    final lateness = groupMemberScheduleRef['lateness'] as bool;
-    final absence = groupMemberScheduleRef['absence'] as bool;
-    final startAt = groupMemberScheduleRef['start_at'] as DateTime;
-    final endAt = groupMemberScheduleRef['end_at'] as DateTime;
-    final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
-    final createdAt = groupMemberScheduleRef['created_at'] as Timestamp;
 
-    return GroupMemberSchedule(
-      scheduleId: scheduleId,
-      userId: userId,
-      attendance: attendance,
-      leaveEarly: leaveEarly,
-      lateness: lateness,
-      absence: absence,
-      startAt: startAt,
-      endAt: endAt,
-      updatedAt: updatedAt,
-      createdAt: createdAt,
-    );
+    return GroupMemberSchedule.fromMap(groupMemberScheduleRef);
   }
 
   static Future<void> update({
@@ -78,7 +57,7 @@ class GroupMemberScheduleController {
     required bool absence,
     required DateTime startAt,
     required DateTime endAt,
-  }) async{
+  }) async {
     final updatedAt = FieldValue.serverTimestamp();
 
     final updateData = <String, dynamic>{
@@ -94,7 +73,7 @@ class GroupMemberScheduleController {
     await db.collection(collectionPath).doc(docId).update(updateData);
   }
 
-  static Future<void> delete(String docId) async{
+  static Future<void> delete(String docId) async {
     await db.collection(collectionPath).doc(docId).delete();
   }
 }

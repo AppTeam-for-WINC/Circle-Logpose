@@ -8,14 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final groupNameProvider = StateProvider<String>((ref) => 'No selected group');
 
 final createGroupScheduleProvider =
-    StateNotifierProvider<_SetGroupScheduleNotifier, GroupScheduleViewer?>(
+    StateNotifierProvider<_SetGroupScheduleNotifier, _GroupScheduleViewer?>(
   (ref) => _SetGroupScheduleNotifier(),
 );
 
 /// Schedule Object.
-class GroupScheduleViewer {
+class _GroupScheduleViewer {
   // Init
-  GroupScheduleViewer({
+  _GroupScheduleViewer({
     this.groupId,
     this.color = const Color.fromARGB(255, 217, 0, 255),
     String? title,
@@ -38,7 +38,7 @@ class GroupScheduleViewer {
   final TextEditingController detailController;
 
   // Update schedule data.
-  GroupScheduleViewer copyWith({
+  _GroupScheduleViewer copyWith({
     String? groupId,
     Color? color,
     String? title,
@@ -47,7 +47,7 @@ class GroupScheduleViewer {
     String? place,
     String? detail,
   }) {
-    return GroupScheduleViewer(
+    return _GroupScheduleViewer(
       groupId: groupId ?? this.groupId,
       color: color ?? this.color,
       title: title ?? titleController.text,
@@ -60,11 +60,11 @@ class GroupScheduleViewer {
 }
 
 /// Set schedule to group.
-class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleViewer> {
-  _SetGroupScheduleNotifier() : super(GroupScheduleViewer());
+class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer> {
+  _SetGroupScheduleNotifier() : super(_GroupScheduleViewer());
 
   void initSchedule() {
-    state = GroupScheduleViewer(
+    state = _GroupScheduleViewer(
       groupId: null,
       color: const Color.fromARGB(255, 217, 0, 255),
       title: '',

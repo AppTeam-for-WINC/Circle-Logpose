@@ -14,6 +14,33 @@ class GroupMemberSchedule {
     required this.createdAt,
   });
 
+  factory GroupMemberSchedule.fromMap(
+      Map<String, dynamic> groupMemberScheduleRef) {
+    final scheduleId = groupMemberScheduleRef['schedule_id'] as String;
+    final userId = groupMemberScheduleRef['user_id'] as String;
+    final attendance = groupMemberScheduleRef['attendance'] as bool;
+    final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
+    final lateness = groupMemberScheduleRef['lateness'] as bool;
+    final absence = groupMemberScheduleRef['absence'] as bool;
+    final startAt = groupMemberScheduleRef['start_at'] as DateTime;
+    final endAt = groupMemberScheduleRef['end_at'] as DateTime;
+    final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
+    final createdAt = groupMemberScheduleRef['created_at'] as Timestamp;
+
+    return GroupMemberSchedule(
+      scheduleId: scheduleId,
+      userId: userId,
+      attendance: attendance,
+      leaveEarly: leaveEarly,
+      lateness: lateness,
+      absence: absence,
+      startAt: startAt,
+      endAt: endAt,
+      updatedAt: updatedAt,
+      createdAt: createdAt,
+    );
+  }
+
   ///Schedule ID
   final String scheduleId;
 
@@ -36,7 +63,7 @@ class GroupMemberSchedule {
   final DateTime startAt;
 
   ///End time
-  final DateTime endAt; 
+  final DateTime endAt;
 
   ///Updateed time
   final Timestamp? updatedAt;

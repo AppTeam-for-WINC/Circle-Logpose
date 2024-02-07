@@ -5,7 +5,7 @@ import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'parts/present_member.dart';
+import 'parts/responsed_member.dart';
 
 class ScheduleDetailConfirm extends ConsumerStatefulWidget {
   const ScheduleDetailConfirm({
@@ -138,28 +138,8 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                             ),
                           ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.group,
-                                size: 25,
-                                color: Colors.grey,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 8),
-                                child: const Text(
-                                  '参加メンバー |',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                              const PresentMember(),
-                            ],
-                          ),
-                        ),
+                        // Responsed members
+                        const ResponsedMembers(),
                         Container(
                           margin: const EdgeInsets.only(top: 15),
                           child: Column(
