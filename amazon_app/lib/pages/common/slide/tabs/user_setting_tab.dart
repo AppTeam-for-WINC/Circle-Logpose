@@ -39,12 +39,12 @@ class UserSettingTabState extends ConsumerState<UserSettingTab> {
               width: 33,
               height: 33,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(210, 194, 136, 223),
+                color: const Color.fromARGB(210, 239, 207, 255),
                 borderRadius: BorderRadius.circular(33),
               ),
               child: const Center(
                 child: Icon(
-                  Icons.person,
+                  Icons.manage_accounts,
                 ),
               ),
             ),

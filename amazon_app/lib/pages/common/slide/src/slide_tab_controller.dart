@@ -8,7 +8,6 @@ Future<void> onTapSegmentTab(
     return;
   }
   if (slideNum == 0) {
-    debugPrint('$tabNameのラベルが押されました。');
     await showCupertinoModalPopup<TabComponent>(
       context: context,
       builder: (BuildContext context) {

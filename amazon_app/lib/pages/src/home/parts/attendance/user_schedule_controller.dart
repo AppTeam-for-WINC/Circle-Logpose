@@ -1,4 +1,5 @@
 import 'package:amazon_app/database/auth/auth_controller.dart';
+import 'package:amazon_app/database/group/group/group.dart';
 import 'package:amazon_app/database/group/group/group_controller.dart';
 import 'package:amazon_app/database/group/membership/group_membership.dart';
 import 'package:amazon_app/database/group/membership/group_membership_controller.dart';
@@ -19,19 +20,19 @@ final checkGroupExistProvider = StreamProvider<bool>((ref) async* {
   }
 });
 
-class GroupScheduleWithId {
-  GroupScheduleWithId({
+class GroupProfileWithScheduleWithId {
+  GroupProfileWithScheduleWithId({
     required this.groupSchedule,
     required this.groupId,
-    required this.groupImage,
+    required this.groupProfile,
   });
   final GroupSchedule groupSchedule;
   final String groupId;
-  final String groupImage;
+  final GroupProfile groupProfile;
 }
 
 final readUserScheduleProvider =
-    StreamProvider<List<GroupScheduleWithId>>((ref) async* {
+    StreamProvider<List<GroupProfileWithScheduleWithId>>((ref) async* {
   final userDocId = await AuthController.getCurrentUserId();
   if (userDocId == null) {
     throw Exception('User not logged in.');
@@ -45,28 +46,35 @@ final readUserScheduleProvider =
         memberships.whereType<GroupMembership>().map((membership) async {
       final schedulesStream =
           GroupScheduleController.readAll(membership.groupId);
-      final groupProfile = await GroupController.read(membership.groupId);
-      await for (final schedules in schedulesStream) {
-        final scheduleList = await Future.wait(
-          schedules.map((schedule) async {
-            if (schedule == null) {
-              return null;
-            }
-            final scheduleWithId = GroupScheduleWithId(
-              groupSchedule: schedule,
-              groupId: membership.groupId,
-              groupImage: groupProfile.image,
-            );
-            return scheduleWithId;
-          }),
-        );
-        return scheduleList.whereType<GroupScheduleWithId>().toList();
+      final groupStream = GroupController.read(membership.groupId);
+      await for (final group in groupStream) {
+        if (group == null) {
+          continue;
+        }
+        await for (final schedules in schedulesStream) {
+          final scheduleList = await Future.wait(
+            schedules.map((schedule) async {
+              if (schedule == null) {
+                return null;
+              }
+              final scheduleWithId = GroupProfileWithScheduleWithId(
+                groupSchedule: schedule,
+                groupId: membership.groupId,
+                groupProfile: group,
+              );
+              return scheduleWithId;
+            }),
+          );
+          return scheduleList
+              .whereType<GroupProfileWithScheduleWithId>()
+              .toList();
+        }
       }
     });
 
     final scheduleLists = await Future.wait(futures);
     yield scheduleLists
-        .whereType<List<GroupScheduleWithId>>()
+        .whereType<List<GroupProfileWithScheduleWithId>>()
         .expand((x) => x)
         .toList();
   }

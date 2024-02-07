@@ -2,17 +2,24 @@ import 'dart:io';
 
 import 'package:amazon_app/database/group/group/group.dart';
 import 'package:amazon_app/database/group/group/group_controller.dart';
+import 'package:amazon_app/database/group/membership/group_membership_controller.dart';
 import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
 import 'package:amazon_app/database/group/schedule/schedule/schedule_controller.dart';
+import 'package:amazon_app/database/user/user.dart';
+import 'package:amazon_app/database/user/user_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/validation/validation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+///Controller of group setting.
 final groupSettingProvider =
     StateNotifierProvider.family<GroupSettingNotifier, GroupProfile?, String>(
   (ref, groupId) => GroupSettingNotifier(groupId),
 );
 
+/// Group of notifier.
 class GroupSettingNotifier extends StateNotifier<GroupProfile?> {
   GroupSettingNotifier(this.groupId) : super(null) {
     initProfile();
@@ -27,34 +34,24 @@ class GroupSettingNotifier extends StateNotifier<GroupProfile?> {
       return;
     }
     try {
-      group = GroupController.read(groupId);
-      if (group != null) {
-        state = group;
-        groupNameController.text = group!.name;
-      } else {
-        state = null;
+      final groupStream = GroupController.read(groupId);
+      await for (final groupData in groupStream) {
+        if (groupData == null) {
+          continue;
+        }
+        group = groupData;
+        if (group != null) {
+          state = group;
+          groupNameController.text = group!.name;
+        } else {
+          state = null;
+        }
+        return;
       }
     } on Exception catch (e) {
       throw Exception('Error: No found group $e');
     }
   }
-  // Future<void> initProfile() async {
-  //   if (groupId.isEmpty) {
-  //     state = null;
-  //     return;
-  //   }
-  //   try {
-  //     group = await GroupController.read(groupId);
-  //     if (group != null) {
-  //       state = group;
-  //       groupNameController.text = group!.name;
-  //     } else {
-  //       state = null;
-  //     }
-  //   } on Exception catch (e) {
-  //     throw Exception('Error: No found group $e');
-  //   }
-  // }
 
   Future<void> changeProfile(File newImage) async {
     if (state != null) {
@@ -78,6 +75,7 @@ class UpdateGroupSettings {
     String name,
     String? description,
     File? image,
+    WidgetRef ref,
   ) async {
     String? imagePath;
     final nameValidation = GroupValidation.nameValidation(name);
@@ -97,12 +95,36 @@ class UpdateGroupSettings {
       description: description,
       image: imagePath,
     );
+    
+    final groupMembersList = ref.watch(setGroupMemberListProvider);
+    await _addMeberships(groupMembersList, groupId);
 
     debugPrint('Success: Changed profile.');
     return true;
   }
+
+  static Future<void> _addMeberships(
+    List<UserProfile> groupMemberList,
+    String groupId,
+  ) async {
+    try {
+      await Future.forEach<UserProfile>(groupMemberList, (member) async {
+        final memberDocId = await UserController.readUserDocIdWithAccountId(
+          member.accountId,
+        );
+        await GroupMembershipController.create(
+          memberDocId,
+          'membership',
+          groupId,
+        );
+      });
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to add member. $e');
+    }
+  }
 }
 
+/// Validation of group
 class GroupValidation {
   GroupValidation._internal();
   static final GroupValidation _instance = GroupValidation._internal();
@@ -139,6 +161,7 @@ class GroupValidation {
   }
 }
 
+/// Read group schedule.
 final readGroupScheduleProvider =
     StreamProvider.family.autoDispose<List<GroupSchedule>, String>(
   (ref, groupId) async* {

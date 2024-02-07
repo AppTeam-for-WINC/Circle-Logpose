@@ -13,11 +13,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loadingJudgeProvider = StateProvider<bool>((ref) => false);
 
-class CreateGroupController {
-  CreateGroupController._internal();
-  static final CreateGroupController _instance =
-      CreateGroupController._internal();
-  static CreateGroupController get instance => _instance;
+class CreateGroup {
+  CreateGroup._internal();
+  static final CreateGroup _instance =
+      CreateGroup._internal();
+  static CreateGroup get instance => _instance;
 
   ///Create group.
   static Future<bool> createGroup(
@@ -45,7 +45,7 @@ class CreateGroupController {
       await GroupMembershipController.create(userDocId, 'admin', groupId);
     }
 
-    final groupMembersList = ref.watch(groupMemberListProvider);
+    final groupMembersList = ref.watch(setGroupMemberListProvider);
     await _addMeberships(groupMembersList, groupId);
 
     debugPrint('Success: Created group');

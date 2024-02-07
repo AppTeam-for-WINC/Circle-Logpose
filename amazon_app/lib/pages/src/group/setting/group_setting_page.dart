@@ -16,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 enum GroupOption { edit, list }
 
 class GroupSettingPage extends ConsumerStatefulWidget {
@@ -52,7 +51,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
   @override
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
-    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
+    final groupAdminProfileList =
+        ref.watch(groupAdminProfileListProvider(groupId));
+    final groupMembershipProfileList =
+        ref.watch(groupMembershipProfileListProvider(groupId));
 
     final groupProfile = ref.watch(groupSettingProvider(groupId));
     final groupProfileNotifier =
@@ -75,11 +77,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      // init
                       await groupProfileNotifier.initProfile();
-                      groupProfileNotifier.groupNameController.text =
-                          groupProfile!.name;
-
                       if (!mounted) {
                         return;
                       }
@@ -176,8 +174,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             color: Colors.grey,
                           ),
                         const Icon(
-                          Icons.arrow_forward,
-                          size: 30,
+                          Icons.cached_sharp,
+                          size: 40,
                           color: Colors.grey,
                         ),
                         CupertinoButton(
@@ -227,9 +225,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       child: CupertinoTextField(
                         controller: groupProfileNotifier.groupNameController,
                         prefix: const Icon(
-                          Icons.edit_note,
+                          Icons.create_sharp,
                           color: Color(0xFF6D6D6D),
-                          size: 30,
                         ),
                         style: const TextStyle(fontSize: 16),
                         placeholder: '団体名',
@@ -281,17 +278,41 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           ),
                           Row(
                             children: [
-                              groupAdminMemberProfile.when(
-                                data: (adminUserProfile) {
-                                  return GroupMemberImage(
-                                    userProfile: adminUserProfile,
+                              groupAdminProfileList.when(
+                                data: (membershipProfiles) {
+                                  return Column(
+                                    children: membershipProfiles
+                                        .map((membershipProfile) {
+                                      return membershipProfile != null
+                                          ? GroupMemberImage(
+                                              userProfile: membershipProfile,
+                                            )
+                                          : const SizedBox.shrink();
+                                    }).toList(),
                                   );
                                 },
                                 loading: () => const SizedBox.shrink(),
                                 error: (error, stack) => Text('$error'),
                               ),
+                              groupMembershipProfileList.when(
+                                data: (membershipProfiles) {
+                                  return Row(
+                                    children: membershipProfiles
+                                        .map((membershipProfile) {
+                                      return membershipProfile != null
+                                          ? GroupMemberImage(
+                                              userProfile: membershipProfile,
+                                            )
+                                          : const SizedBox.shrink();
+                                    }).toList(),
+                                  );
+                                },
+                                loading: () => const SizedBox.shrink(),
+                                error: (error, stack) => Text('$error'),
+                              ),
+
                               //追加したユーザーを表示しています。
-                              ...ref.watch(groupMemberListProvider).map(
+                              ...ref.watch(setGroupMemberListProvider).map(
                                     (member) => groupProfile != null
                                         ? GroupMemberImage(
                                             userProfile: member,
@@ -381,7 +402,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                               width: 354,
                               height: 180,
                               padding: const EdgeInsets.only(
-                                top: 10,
                                 right: 5,
                                 left: 5,
                                 bottom: 5,
@@ -480,6 +500,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                   groupProfileNotifier.groupNameController.text,
                   null,
                   image,
+                  ref,
                 );
                 if (!success) {
                   return;

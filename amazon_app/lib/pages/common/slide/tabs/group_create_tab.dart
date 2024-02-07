@@ -14,7 +14,7 @@ class GroupCreateTabState extends ConsumerState<GroupCreateTab> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async{
+      onTap: () async {
         await Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -39,12 +39,12 @@ class GroupCreateTabState extends ConsumerState<GroupCreateTab> {
               width: 33,
               height: 33,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(210, 194, 136, 223),
+                color: const Color.fromARGB(210, 229, 236, 157),
                 borderRadius: BorderRadius.circular(33),
               ),
               child: const Center(
                 child: Icon(
-                  Icons.person,
+                  Icons.add,
                 ),
               ),
             ),
@@ -57,7 +57,7 @@ class GroupCreateTabState extends ConsumerState<GroupCreateTab> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF7B61FF),
+                  color: Color.fromARGB(210, 8, 86, 8),
                 ),
               ),
             ),

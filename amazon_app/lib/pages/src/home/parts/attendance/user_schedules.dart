@@ -14,7 +14,7 @@ class ScheduleManagement extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     final groupExist = ref.watch(checkGroupExistProvider);
-    final groupScheduleList = ref.watch(readUserScheduleProvider);
+    final groupsDataeList = ref.watch(readUserScheduleProvider);
 
     return Container(
       width: double.infinity,
@@ -37,13 +37,13 @@ class ScheduleManagement extends ConsumerWidget {
                     child: Column(
                       children: [
                         Column(
-                          children: groupScheduleList.when(
-                            data: (groupSchedule) {
-                              if (groupSchedule.isEmpty) {
+                          children: groupsDataeList.when(
+                            data: (groupData) {
+                              if (groupData.isEmpty) {
                                 return const [SizedBox.shrink()];
                               }
-                              return groupSchedule.map((schedule) {
-                                return GroupScheduleCard(schedule: schedule);
+                              return groupData.map((group) {
+                                return GroupScheduleCard(groupData: group);
                               }).toList();
                             },
                             loading: () => const [SizedBox.shrink()],

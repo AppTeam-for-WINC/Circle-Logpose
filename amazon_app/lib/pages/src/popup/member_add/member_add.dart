@@ -216,7 +216,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                               print('${userProfileNotifier.username!}を追加しました。');
                               ref.read(memberAddProvider.notifier).resetState();
                               ref
-                                  .read(groupMemberListProvider.notifier)
+                                  .read(setGroupMemberListProvider.notifier)
                                   .addMember(userProfile);
                             },
                             child: Row(

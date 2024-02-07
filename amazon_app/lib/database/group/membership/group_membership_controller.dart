@@ -1,3 +1,5 @@
+import 'package:amazon_app/database/user/user.dart';
+import 'package:amazon_app/database/user/user_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -37,6 +39,32 @@ class GroupMembershipController {
       'role': role,
       'created_at': joinedAt,
     });
+  }
+
+  /// Read all role(Please selected 'admin', or 'membership') member's profiles.
+  static Stream<List<UserProfile?>> readAllRoleByProfileWithGroupId(
+    String groupId, String role,
+  ) async* {
+    final groupMemberStream = db
+        .collection(collectionPath)
+        .where('group_id', isEqualTo: groupId)
+        .where('role', isEqualTo: role)
+        .snapshots();
+
+    await for (final groupMembers in groupMemberStream) {
+      final groupMemberRefsFuture = groupMembers.docs.map((doc) async{
+        final groupMemberDocRef = doc.data() as Map<String, dynamic>?;
+        if (groupMemberDocRef == null) {
+          debugPrint('No found $role document data.');
+          return null;
+        }
+
+        final userId = groupMemberDocRef['user_id'] as String;
+        return UserController.read(userId);
+      }).toList();
+      final groupMemberRefs = await Future.wait(groupMemberRefsFuture);
+    yield groupMemberRefs;
+    }
   }
 
   static Stream<List<GroupMembership?>> readAllWithUserId(
@@ -90,28 +118,11 @@ class GroupMembershipController {
       throw Exception('Error : No found document data.');
     }
 
-    final userId = groupMembershipDocRef['user_id'] as String;
-    final username = groupMembershipDocRef['username'] as String;
-    final userDescription =
-        groupMembershipDocRef['user_description'] as String?;
-    final role = groupMembershipDocRef['role'] as String;
-    final groupId = groupMembershipDocRef['group_id'] as String;
-    final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-    final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
-
-    return GroupMembership(
-      userId: userId,
-      username: username,
-      userDescription: userDescription,
-      role: role,
-      groupId: groupId,
-      updatedAt: updatedAt,
-      joinedAt: joinedAt,
-    );
+    return GroupMembership.fromMap(groupMembershipDocRef);
   }
 
-  /// 後で、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
-  /// Update membership users
+  ///後で、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
+  ///Update membership users
   static Future<void> update({
     required String docId,
     required String userId,

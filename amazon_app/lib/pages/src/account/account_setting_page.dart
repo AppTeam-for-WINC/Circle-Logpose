@@ -42,7 +42,6 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
   @override
   Widget build(BuildContext context) {
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
-    final groupsProfileNotifier = ref.watch(readJoinedGroupsProfileProvider.notifier);
     final userProfile = ref.watch(userProfileProvider);
     final userProfileNotifier = ref.watch(userProfileProvider.notifier);
 
@@ -434,10 +433,8 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     },
                   ),
                 ),
-                //最後の白い箱
-                const SizedBox(height: 15),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20, top: 15),
                   child: SizedBox(
                     width: 390,
                     child: Stack(
@@ -466,6 +463,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                   children: [
                                     Text(
                                       '所属団体',
+                                      style: TextStyle(color: Colors.grey),
                                     ),
                                   ],
                                 ),
@@ -475,11 +473,13 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                   width: 354,
                                   height: 180,
                                   padding: const EdgeInsets.only(
+                                    top: 5,
                                     right: 5,
                                     left: 5,
                                     bottom: 5,
                                   ),
                                   child: GridView.count(
+                                    padding: EdgeInsets.zero,
                                     primary: false,
                                     shrinkWrap: true,
                                     crossAxisCount: 2,
@@ -510,51 +510,51 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CupertinoButton(
-                  onPressed: () async {
-                    final success = await changeUserProfile(
-                      userProfileNotifier.nameController.text,
-                      image,
-                      null,
-                      ref,
-                    );
-                    if (!success) {
-                      return;
-                    }
-      
-                    if (!mounted) {
-                      return;
-                    }
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                        builder: (context) => const HomePage(),
-                      ),
-                      (_) => false,
-                    );
-                  },
-                  color: const Color(0xFF7B61FF),
-                  borderRadius: BorderRadius.circular(30),
-                  child: SizedBox(
-                    width: 117,
-                    child: Row(
-                      children: [
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                          ),
-                          child: const Icon(
-                            Icons.download,
-                            color: Colors.black,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: CupertinoButton(
+                    onPressed: () async {
+                      final success = await changeUserProfile(
+                        userProfileNotifier.nameController.text,
+                        image,
+                        null,
+                        ref,
+                      );
+                      if (!success) {
+                        return;
+                      }
+                        
+                      if (!mounted) {
+                        return;
+                      }
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const HomePage(),
                         ),
-                        const SizedBox(width: 10),
-                        const Text('変更を保存'),
-                      ],
+                        (_) => false,
+                      );
+                    },
+                    color: const Color(0xFF7B61FF),
+                    borderRadius: BorderRadius.circular(30),
+                    child: SizedBox(
+                      width: 117,
+                      child: Row(
+                        children: [
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: const Icon(
+                              Icons.download,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text('変更を保存'),
+                        ],
+                      ),
                     ),
                   ),
                 ),

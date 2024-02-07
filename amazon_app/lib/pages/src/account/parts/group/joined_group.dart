@@ -33,35 +33,30 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
           ),
           borderRadius: BorderRadius.circular(80),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: Row(
-            children: [
-              CachedNetworkImage(
-                imageUrl: group.image,
-                placeholder: (context, url) =>
-                    const CupertinoActivityIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 25,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(999),
+        child: Row(
+          children: [
+            CachedNetworkImage(
+              imageUrl: group.image,
+              placeholder: (context, url) =>
+                  const CupertinoActivityIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                width: 25,
+                height: 25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
                   ),
+                  borderRadius: BorderRadius.circular(999),
                 ),
               ),
-              Text(
-                group.name,
-                style: const TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
+            ),
+            Text(
+              group.name,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ],
         ),
       ),
     );
