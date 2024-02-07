@@ -20,28 +20,28 @@ final checkGroupExistProvider = StreamProvider<bool>((ref) async* {
   }
 });
 
-class GroupProfileWithScheduleWithId {
-  GroupProfileWithScheduleWithId({
-    required this.groupSchedule,
-    required this.groupId,
-    required this.groupProfile,
-  });
-  final GroupSchedule groupSchedule;
-  final String groupId;
-  final GroupProfile groupProfile;
-}
 // class GroupProfileWithScheduleWithId {
 //   GroupProfileWithScheduleWithId({
-//     required this.groupScheduleId,
 //     required this.groupSchedule,
 //     required this.groupId,
 //     required this.groupProfile,
 //   });
-//   final String groupScheduleId;
 //   final GroupSchedule groupSchedule;
 //   final String groupId;
 //   final GroupProfile groupProfile;
 // }
+class GroupProfileWithScheduleWithId {
+  GroupProfileWithScheduleWithId({
+    required this.groupScheduleId,
+    required this.groupSchedule,
+    required this.groupId,
+    required this.groupProfile,
+  });
+  final String groupScheduleId;
+  final GroupSchedule groupSchedule;
+  final String groupId;
+  final GroupProfile groupProfile;
+}
 
 final readUserScheduleProvider =
     StreamProvider<List<GroupProfileWithScheduleWithId>>((ref) async* {
@@ -59,28 +59,40 @@ final readUserScheduleProvider =
       final schedulesStream =
           GroupScheduleController.readAll(membership.groupId);
       final groupStream = GroupController.read(membership.groupId);
-      await for (final group in groupStream) {
-        if (group == null) {
-          continue;
-        }
-        await for (final schedules in schedulesStream) {
-          final scheduleList = await Future.wait(
-            schedules.map((schedule) async {
-              if (schedule == null) {
-                return null;
+      final scheduleIdStream =
+          GroupScheduleController.readAllScheduleId(membership.groupId);
+      await for (final scheduleIdList in scheduleIdStream) {
+        await Future.wait(
+          scheduleIdList.map((scheduleId) async {
+            if (scheduleId == null) {
+              return null;
+            }
+            await for (final group in groupStream) {
+              if (group == null) {
+                continue;
               }
-              final scheduleWithId = GroupProfileWithScheduleWithId(
-                groupSchedule: schedule,
-                groupId: membership.groupId,
-                groupProfile: group,
-              );
-              return scheduleWithId;
-            }),
-          );
-          return scheduleList
-              .whereType<GroupProfileWithScheduleWithId>()
-              .toList();
-        }
+              await for (final schedules in schedulesStream) {
+                final scheduleList = await Future.wait(
+                  schedules.map((schedule) async {
+                    if (schedule == null) {
+                      return null;
+                    }
+                    final scheduleWithId = GroupProfileWithScheduleWithId(
+                      groupScheduleId: scheduleId,
+                      groupSchedule: schedule,
+                      groupId: membership.groupId,
+                      groupProfile: group,
+                    );
+                    return scheduleWithId;
+                  }),
+                );
+                return scheduleList
+                    .whereType<GroupProfileWithScheduleWithId>()
+                    .toList();
+              }
+            }
+          }),
+        );
       }
     });
 
