@@ -26,10 +26,6 @@ class UserData extends StateNotifier<UserProfile?> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController accountIdController = TextEditingController();
-  String? accountId;
-  String? name;
-  File? image;
-  String? userDescription;
 
   Future<void> readUserData() async {
     try {
@@ -77,6 +73,7 @@ class UserData extends StateNotifier<UserProfile?> {
 Future<bool> changeUserProfile(
   String name,
   File? image,
+  // File? image,
   String? description,
   WidgetRef ref,
 ) async {

@@ -8,8 +8,6 @@ final groupAddMemberDataProvider =
   (ref) => GroupAddData(),
 );
 
-
-
 class GroupAddData extends StateNotifier<UserProfile?> {
   GroupAddData() : super(null) {
     groupNameController.addListener(() {

@@ -1,162 +1,232 @@
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/database/group/group/group.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'parts/present_member.dart';
+import 'parts/responsed_member.dart';
 
-class ScheduleDetailConfirm extends ConsumerWidget {
-  const ScheduleDetailConfirm({super.key, required this.responseIcon});
-  final String responseIcon;
-
+class ScheduleDetailConfirm extends ConsumerStatefulWidget {
+  const ScheduleDetailConfirm({
+    super.key,
+    required this.responseIcon,
+    required this.responseText,
+    required this.group,
+    required this.schedule,
+  });
+  final Icon? responseIcon;
+  final Text? responseText;
+  final GroupProfile group;
+  final GroupSchedule schedule;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _ScheduleDetailConfirmState();
+}
+
+class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
+  @override
+  Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 32,
-        right: 32,
-        bottom: deviceHeight * 0.02,
-      ),
-      child: Center(
-        child: CupertinoPopupSurface(
-          child: SizedBox(
-            width: 360,
-            height: 500,
-            child: Stack(
-              children: [
-                // ポップアップ下部の白色↓
-                Container(
-                  width: double.infinity,
-                  height: 500,
-                  decoration: const BoxDecoration(color: Colors.white),
-                ),
-                // ポップアップ下部の白色↑
-                //ポップアップ上部の黄緑色↓
-                Container(
-                  width: double.infinity,
-                  height: 100,
-                  decoration: BoxDecoration(color: Colors.yellow[200]),
-                ),
-                // ポップアップ上部の黄緑色↑
-                // 団体アイコン↓
-                const Positioned(
-                  top: 70,
-                  left: 30,
-                  child: Icon(
-                    Icons.groups,
-                    size: 60,
+
+    final responseIcon = widget.responseIcon;
+    final responseText = widget.responseText;
+    final group = widget.group;
+    final groupSchedule = widget.schedule;
+
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 32,
+          right: 32,
+          bottom: deviceHeight * 0.02,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(34),
+          child: CupertinoPopupSurface(
+            child: SizedBox(
+              width: 360,
+              height: 500,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 500,
+                    decoration: const BoxDecoration(color: Colors.white),
                   ),
-                ),
-                // 団体アイコン↑
-                // 出席アイコン↓
-                Positioned(
-                  top: 120,
-                  left: 250,
-                  child: Icon(
-                    Icons.sentiment_satisfied,
-                    size: 70,
-                    color: Colors.pink[300],
+                  Container(
+                    width: double.infinity,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: hexToColor(groupSchedule.color),
+                    ),
                   ),
-                ),
-                // 出席アイコン↑
-                Container(
-                  margin: const EdgeInsets.only(left: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 団体名↓
-                      Container(
-                        margin: const EdgeInsets.only(top: 120),
-                        child: const Text(
-                          'TeamName',
-                          style: TextStyle(fontSize: 30),
+                  Positioned(
+                    top: 70,
+                    left: 30,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: group.image.startsWith('http')
+                              ? NetworkImage(group.image)
+                              : AssetImage(group.image) as ImageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                  ),
+                  if (responseIcon != null)
+                    Positioned(
+                      top: 20,
+                      right: 20,
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        margin: const EdgeInsets.only(top: 105, left: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(80),
+                          color: const Color(0xFFFBCEFF),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              responseIcon,
+                              if (responseText != null) responseText,
+                            ],
+                          ),
                         ),
                       ),
-                      // 団体名↑
-                      // 活動日時↓
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: const Text('2023/9/20 13:00-14:00'),
-                      ),
-                      // 活動日時↑
-                      // 参加メンバーのコンテナ↓
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: Row(
+                    ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 30, top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 120),
+                          child: Text(
+                            group.name,
+                            style: const TextStyle(fontSize: 26),
+                          ),
+                        ),
+                        Row(
                           children: [
-                            // 参加メンバー左部のアイコン↓
-                            const Icon(
-                              Icons.group,
-                              size: 25,
-                              color: Colors.grey,
-                            ),
-                            // 参加メンバー左部のアイコン↑
-                            // 参加メンバーテキスト↓
-                            Container(
-                              margin: const EdgeInsets.only(left: 8),
-                              child: const Text(
-                                '参加メンバー |',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.startAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
                               ),
                             ),
-                            // 参加メンバーテキスト↑
-                            const PresentMember(),
+                            const Text(
+                              '-',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.endAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      // 参加メンバーのコンテナ↑
-                      // 詳細のコンテナ↓
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                // 詳細左部のアイコン↓
-                                const Icon(
-                                  Icons.edit_square,
-                                  size: 25,
-                                  color: Colors.grey,
-                                ),
-                                // 詳細左部のアイコン↑
-                                // 詳細テキスト↓
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  child: const Text(
-                                    '詳細',
-                                    style: TextStyle(
-                                      color: Colors.grey,
+                        // Responsed members
+                        const ResponsedMembers(),
+                        Container(
+                          margin: const EdgeInsets.only(top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.place,
+                                    size: 25,
+                                    color: Colors.grey,
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8),
+                                    child: const Text(
+                                      '場所',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                // 詳細テキスト↑
-                              ],
-                            ),
-                            // 詳細内容↓
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              padding: const EdgeInsets.only(right: 30),
-                              child: const Text(
-                                '詳細内容ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15,
-                                ),
-                                maxLines: 7,
-                                overflow: TextOverflow.ellipsis,
+                                ],
                               ),
-                            ),
-                            // 詳細内容↑
-                          ],
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(right: 30),
+                                child: groupSchedule.place != null
+                                    ? Text(
+                                        groupSchedule.place!,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                        ),
+                                        maxLines: 7,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      // 詳細のコンテナ↑
-                    ],
+                        Container(
+                          margin: const EdgeInsets.only(top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.edit_square,
+                                    size: 25,
+                                    color: Colors.grey,
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8),
+                                    child: const Text(
+                                      '詳細',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(right: 30),
+                                child: groupSchedule.detail != null
+                                    ? Text(
+                                        groupSchedule.detail!,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                        ),
+                                        maxLines: 7,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

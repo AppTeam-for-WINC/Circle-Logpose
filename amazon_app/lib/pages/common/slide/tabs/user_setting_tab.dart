@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/account/account_setting.dart';
+import 'package:amazon_app/pages/src/account/account_setting_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,12 +15,12 @@ class UserSettingTabState extends ConsumerState<UserSettingTab> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        await Navigator.pushAndRemoveUntil(
+        await Navigator.push(
           context,
           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
             builder: (context) => const AccountSettingPage(),
           ),
-          (_) => false,
+          // (route) => route.settings.name == '/home',
         );
       },
       child: Container(
@@ -39,12 +39,12 @@ class UserSettingTabState extends ConsumerState<UserSettingTab> {
               width: 33,
               height: 33,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(210, 194, 136, 223),
+                color: const Color.fromARGB(210, 239, 207, 255),
                 borderRadius: BorderRadius.circular(33),
               ),
               child: const Center(
                 child: Icon(
-                  Icons.person,
+                  Icons.manage_accounts,
                 ),
               ),
             ),

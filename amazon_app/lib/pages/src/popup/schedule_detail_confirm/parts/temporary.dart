@@ -6,10 +6,10 @@ import '../../schedule_join_member/schedule_join_member.dart';
 // 参加メンバーのアイコン↓
 class PresentMember extends ConsumerWidget {
   // 参加メンバーのアイコンを取得するように変更してください
+  const PresentMember({super.key});
   final memberIcon = Icons.perm_identity;
   final int maxIcons = 5;
 
-  const PresentMember({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

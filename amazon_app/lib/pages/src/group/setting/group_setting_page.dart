@@ -1,19 +1,20 @@
 import 'dart:io';
 
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/group/setting/group_setting_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_create/parts/group_picker/riverpod.dart';
+import 'package:amazon_app/pages/src/group/setting/parts/group_member_image.dart';
+import 'package:amazon_app/pages/src/group/setting/parts/schedule_card.dart';
+import 'package:amazon_app/pages/src/home/home_page.dart';
+import 'package:amazon_app/pages/src/popup/member_add/member_add.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../home/home_page.dart';
-import '../../popup/member_add/member_add.dart';
-import '../../popup/schedule_create/schedule_create.dart';
-import 'parts/group_member_image.dart';
-import 'parts/schedule_card.dart';
 
 enum GroupOption { edit, list }
 
@@ -25,12 +26,10 @@ class GroupSettingPage extends ConsumerStatefulWidget {
   final String groupId;
 
   @override
-  ConsumerState<GroupSettingPage> createState() {
-    return GroupSettingPageState();
-  }
+  ConsumerState<GroupSettingPage> createState() => _GroupSettingPageState();
 }
 
-class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
+class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
   File? image;
 
   ///画像を選択する関数。
@@ -52,10 +51,18 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
   @override
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
-    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
+    final groupAdminProfileList =
+        ref.watch(groupAdminProfileListProvider(groupId));
+    final groupMembershipProfileList =
+        ref.watch(groupMembershipProfileListProvider(groupId));
+
     final groupProfile = ref.watch(groupSettingProvider(groupId));
     final groupProfileNotifier =
         ref.watch(groupSettingProvider(groupId).notifier);
+
+    final groupSchedules = ref.watch(readGroupScheduleProvider(groupId));
+    final groupScheduleNotifier =
+        ref.watch(createGroupScheduleProvider.notifier);
 
     return ColoredBox(
       color: const Color.fromARGB(255, 233, 233, 246),
@@ -69,7 +76,11 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await groupProfileNotifier.initProfile();
+                      if (!mounted) {
+                        return;
+                      }
                       Navigator.pop(
                         context,
                         CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -148,23 +159,12 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: groupProfile!.image.startsWith('http')
-                                    ? NetworkImage(
-                                        groupProfileNotifier.group!.image,
-                                      )
-                                    : AssetImage(
-                                        groupProfileNotifier.group!.image,
-                                      ) as ImageProvider,
+                                    ? NetworkImage(groupProfile.image)
+                                    : AssetImage(groupProfile.image)
+                                        as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                               borderRadius: BorderRadius.circular(999),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 1), // 影のオフセット
-                                ),
-                              ],
                             ),
                           )
                         else
@@ -174,8 +174,8 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             color: Colors.grey,
                           ),
                         const Icon(
-                          Icons.arrow_forward,
-                          size: 30,
+                          Icons.cached_sharp,
+                          size: 40,
                           color: Colors.grey,
                         ),
                         CupertinoButton(
@@ -225,9 +225,8 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       child: CupertinoTextField(
                         controller: groupProfileNotifier.groupNameController,
                         prefix: const Icon(
-                          Icons.edit_note,
+                          Icons.create_sharp,
                           color: Color(0xFF6D6D6D),
-                          size: 30,
                         ),
                         style: const TextStyle(fontSize: 16),
                         placeholder: '団体名',
@@ -243,7 +242,6 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
             const SizedBox(
               height: 10,
             ),
-            //ここのSizedBox切り出す
             SizedBox(
               height: 95,
               width: 383,
@@ -280,17 +278,41 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           ),
                           Row(
                             children: [
-                              groupAdminMemberProfile.when(
-                                data: (adminUserProfile) {
-                                  return GroupMemberImage(
-                                    userProfile: adminUserProfile,
+                              groupAdminProfileList.when(
+                                data: (membershipProfiles) {
+                                  return Column(
+                                    children: membershipProfiles
+                                        .map((membershipProfile) {
+                                      return membershipProfile != null
+                                          ? GroupMemberImage(
+                                              userProfile: membershipProfile,
+                                            )
+                                          : const SizedBox.shrink();
+                                    }).toList(),
                                   );
                                 },
                                 loading: () => const SizedBox.shrink(),
                                 error: (error, stack) => Text('$error'),
                               ),
+                              groupMembershipProfileList.when(
+                                data: (membershipProfiles) {
+                                  return Row(
+                                    children: membershipProfiles
+                                        .map((membershipProfile) {
+                                      return membershipProfile != null
+                                          ? GroupMemberImage(
+                                              userProfile: membershipProfile,
+                                            )
+                                          : const SizedBox.shrink();
+                                    }).toList(),
+                                  );
+                                },
+                                loading: () => const SizedBox.shrink(),
+                                error: (error, stack) => Text('$error'),
+                              ),
+
                               //追加したユーザーを表示しています。
-                              ...ref.watch(groupMemberListProvider).map(
+                              ...ref.watch(setGroupMemberListProvider).map(
                                     (member) => groupProfile != null
                                         ? GroupMemberImage(
                                             userProfile: member,
@@ -340,7 +362,6 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               ),
             ),
             const SizedBox(height: 15),
-            //ここのPadding切り出す
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
@@ -381,23 +402,30 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                               width: 354,
                               height: 180,
                               padding: const EdgeInsets.only(
-                                top: 10,
                                 right: 5,
                                 left: 5,
                                 bottom: 5,
                               ),
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
+                              child: GridView.count(
+                                padding: EdgeInsets.zero,
+                                primary: false,
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                childAspectRatio: 3,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 20,
+                                children: groupSchedules.when(
+                                  data: (groupSchedule) {
+                                    if (groupSchedule.isEmpty) {
+                                      return const [SizedBox.shrink()];
+                                    }
+                                    return groupSchedule.map((schedule) {
+                                      return ScheduleCard(schedule: schedule);
+                                    }).toList();
+                                  },
+                                  loading: () => const [SizedBox.shrink()],
+                                  error: (error, stack) => [Text('$error')],
                                 ),
-                                itemCount: 20,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return const ScheduleCard();
-                                },
                               ),
                             ),
                           ),
@@ -409,8 +437,9 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       right: 0,
                       child: GestureDetector(
                         onTap: () async {
+                          groupScheduleNotifier.setGroupId(groupId);
                           ref.watch(groupNameProvider.notifier).state =
-                              groupProfile!.name;
+                              groupProfileNotifier.groupNameController.text;
                           await showCupertinoModalPopup<ScheduleCreate>(
                             context: context,
                             builder: (BuildContext context) {
@@ -465,7 +494,29 @@ class GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               height: 20,
             ),
             CupertinoButton(
-              onPressed: () {},
+              onPressed: () async {
+                final success = await UpdateGroupSettings.update(
+                  groupId,
+                  groupProfileNotifier.groupNameController.text,
+                  null,
+                  image,
+                  ref,
+                );
+                if (!success) {
+                  return;
+                }
+
+                if (!mounted) {
+                  return;
+                }
+                await Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                    builder: (context) => const HomePage(),
+                  ),
+                  (_) => false,
+                );
+              },
               color: const Color(0xFF7B61FF),
               borderRadius: BorderRadius.circular(30),
               child: SizedBox(

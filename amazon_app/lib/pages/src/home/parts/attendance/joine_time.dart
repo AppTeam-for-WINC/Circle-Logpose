@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScheduleActivityTime extends ConsumerStatefulWidget {
-  const ScheduleActivityTime({super.key});
+class ScheduleJoinTime extends ConsumerStatefulWidget {
+  const ScheduleJoinTime({super.key});
   @override
-  ConsumerState createState() => _ScheduleActivityTimeState();
+  ConsumerState createState() => _ScheduleJoinTimeState();
 }
 
-class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
+class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
   @override
   Widget build(BuildContext context) {
     final schedule = ref.watch(createGroupScheduleProvider);

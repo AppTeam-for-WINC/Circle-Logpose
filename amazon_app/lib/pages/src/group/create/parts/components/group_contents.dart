@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
+
 import 'package:amazon_app/pages/src/group/create/group_create_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/admin/group_admin.dart';
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/group/create/parts/membership/group_member.dart';
 import 'package:amazon_app/pages/src/group/create/parts/membership/group_member_controller.dart';
 import 'package:amazon_app/pages/src/home/home_page.dart';
@@ -106,7 +107,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                                 ),
                               ),
                         const Icon(
-                          Icons.arrow_forward,
+                          Icons.cached_sharp,
                           size: 30,
                           color: Colors.grey,
                         ),
@@ -150,7 +151,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                       padding: const EdgeInsets.only(left: 13),
                       child: CupertinoTextField(
                         controller: groupAddData.groupNameController,
-                        prefix: const Icon(Icons.add),
+                        prefix: const Icon(
+                          Icons.create_sharp,
+                        ),
                         style: const TextStyle(fontSize: 18),
                         placeholder: '団体名',
                         decoration: const BoxDecoration(
@@ -196,11 +199,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: Center(
-                      child: SizedBox(
-                        height: 344,
-                        width: 330,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Center(
                         child: GridView.count(
                           crossAxisSpacing: 26,
                           mainAxisSpacing: 14,
@@ -219,7 +220,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                               error: (error, stack) => Text('$error'),
                             ),
                             //追加したユーザーを表示しています。
-                            ...ref.watch(groupMemberListProvider).map(
+                            ...ref.watch(setGroupMemberListProvider).map(
                                   (member) => GroupMember(userProfile: member),
                                 ),
                           ],
@@ -252,10 +253,10 @@ class GroupContentsState extends ConsumerState<GroupContents> {
               ),
               child: TextButton(
                 onPressed: () async {
-                  final success = await createGroup(
+                  final success = await CreateGroup.createGroup(
                     groupAddData.groupNameController.text,
                     image,
-                    '',
+                    null,
                     ref,
                   );
                   if (!success) {
@@ -269,7 +270,9 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                   groupAddData.groupNameController.clear();
 
                   //init group member list.
-                  ref.watch(groupMemberListProvider.notifier).resetMemberList();
+                  ref
+                      .watch(setGroupMemberListProvider.notifier)
+                      .resetMemberList();
 
                   await Navigator.pushAndRemoveUntil(
                     context,

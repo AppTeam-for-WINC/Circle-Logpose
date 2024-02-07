@@ -4,22 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'group.dart';
 
 class GroupController {
-    ///シングルトンパターンにしています。
+  // シングルトンパターンにしています。
   GroupController._internal();
-  static final GroupController _instance =
-      GroupController._internal();
+  static final GroupController _instance = GroupController._internal();
   static GroupController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'groups';
 
-  ///Create group database.
+  /// Create group database.
   static Future<String> create(
     String name,
     String? image,
     String? description,
   ) async {
-    ///Create new document
+    // Create new document
     final groupDoc = db.collection(collectionPath).doc();
     String? imagePath;
     if (image != null) {
@@ -28,7 +27,8 @@ class GroupController {
     } else {
       imagePath = 'src/images/group_img.jpeg';
     }
-    ///Get server time
+
+    // Get server time
     final createdAt = FieldValue.serverTimestamp();
 
     await groupDoc.set({
@@ -40,25 +40,6 @@ class GroupController {
     });
 
     return groupDoc.id;
-  }
-
-  ///後で消す。
-  ///Read all members.
-  static Future<List<GroupProfile>> readAll(String userDocId) async {
-    final groups = await db
-        .collection(collectionPath)
-        .where('user_id', isEqualTo: userDocId)
-        .get();
-    final groupMembershipsRefs = groups.docs.map((doc) {
-      final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipsRef == null) {
-        throw Exception('Error : No found document data.');
-      }
-
-      return GroupProfile.fromMap(groupMembershipsRef);
-    }).toList();
-
-    return groupMembershipsRefs;
   }
 
   static Future<List<String>> readAllDocId(String userId) async {
@@ -78,39 +59,43 @@ class GroupController {
     return groupMembershipsRefs;
   }
 
-  ///Get the group database.
-  static Future<GroupProfile> read(String docId) async {
-    final groupDoc = await db.collection(collectionPath).doc(docId).get();
-    final groupDocRef = groupDoc.data();
-    if (groupDocRef == null) {
-      throw Exception('Error : No found document data.');
-    }
+  /// Get the group database.
+  static Stream<GroupProfile?> read(String docId) {
+    return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        throw Exception('Error : No found document data.');
+      }
 
-    return GroupProfile.fromMap(groupDocRef);
+      return GroupProfile.fromMap(snapshot.data()!);
+    });
   }
 
-  ///後で、アップデート機能をfactoryにして、名前、説明、画像其々個別で変更できるような関数を作成する。
+  ///後で、名前、説明、画像其々個別で変更できるような関数を作成する。
   ///Update group database
   static Future<void> update({
     required String docId,
-    required String name,
+    required String? name,
     required String? description,
-    required String image,
+    required String? image,
   }) async {
-    final imagePath =
-        await StorageController.uploadGroupImageToStorage(docId, image);
-    if (imagePath == null) {
-      return;
+    final updatedAt = FieldValue.serverTimestamp();
+    final updateData = <String, dynamic>{'updated_at': updatedAt};
+
+    if (name != null) {
+      updateData['name'] = name;
     }
 
-    final updatedAt = FieldValue.serverTimestamp();
+    if (image != null) {
+      final imagePath =
+          await StorageController.uploadGroupImageToStorage(docId, image);
+      if (imagePath != null) {
+        updateData['image'] = imagePath;
+      }
+    }
 
-    final updateData = <String, dynamic>{
-      'name': name,
-      'description': description,
-      'image': imagePath,
-      'updated_at': updatedAt,
-    };
+    if (description != null) {
+      updateData['description'] = description;
+    }
     await db.collection(collectionPath).doc(docId).update(updateData);
   }
 

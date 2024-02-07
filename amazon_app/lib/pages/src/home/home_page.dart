@@ -1,6 +1,9 @@
+import 'package:amazon_app/pages/common/slide/src/slide_tab.dart';
+import 'package:amazon_app/pages/common/slide/src/slide_tab_bar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/slide/slide_segmented_tab_control.dart';
+
 import 'parts/attendance/user_schedules.dart';
 import 'parts/group/joined_groups.dart';
 

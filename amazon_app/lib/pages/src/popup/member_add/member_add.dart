@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/group/create/parts/contents/group_contents_controller.dart';
+import 'package:amazon_app/pages/src/group/create/parts/components/group_contents_controller.dart';
 import 'package:amazon_app/pages/src/popup/member_add/member_add_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +174,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                             decoration: const BoxDecoration(
                               color: Color(0xFFD8EB61),
                             ),
+                            autofocus: true,
                           ),
                         ),
                       ),
@@ -194,7 +195,6 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                       if (userProfile != null)
                         Container(
                           height: 30,
-                          width: 100,
                           padding: const EdgeInsets.only(left: 5, right: 5),
                           margin: const EdgeInsets.only(top: 15),
                           decoration: BoxDecoration(
@@ -215,23 +215,42 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                               //後で、OOを追加しました。をalert()などで通知させる。
                               print('${userProfileNotifier.username!}を追加しました。');
                               ref.read(memberAddProvider.notifier).resetState();
-                              ref.read(groupMemberListProvider.notifier).addMember(userProfile);
+                              ref
+                                  .read(setGroupMemberListProvider.notifier)
+                                  .addMember(userProfile);
                             },
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Image.network(
-                                Image.asset(
-                                  userProfileNotifier.userImage!,
+                                Container(
                                   width: 20,
                                   height: 20,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          userProfile.image.startsWith('http')
+                                              ? NetworkImage(userProfile.image)
+                                              : AssetImage(userProfile.image)
+                                                  as ImageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    userProfileNotifier.username!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF9A9A9A),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minWidth: 50,
+                                      maxWidth: 120,
+                                    ),
+                                    child: Text(
+                                      userProfileNotifier.username!,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF9A9A9A),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -242,7 +261,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                     ],
                   ),
                 ),
-                if (groupId != null) 
+                if (groupId != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Container(

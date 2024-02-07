@@ -1,12 +1,15 @@
-import 'package:amazon_app/pages/src/popup/schedule_detail_confirm/parts/present_member.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'behind_and_early_setting_controller.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
-  const BehindAndEarlySetting({super.key, required this.responseIcon});
+  const BehindAndEarlySetting({
+    super.key,
+    required this.responseIcon,
+    required this.responseText,
+  });
 
-  final String responseIcon;
+  final Icon responseIcon;
+  final Text responseText;
   @override
   ConsumerState<BehindAndEarlySetting> createState() {
     return _BehindAndEarlySettingState();
@@ -15,10 +18,9 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
 
 class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   @override
-  //絶対書く
   Widget build(BuildContext context) {
-    final productList = ProductList().productList;
     final responseIcon = widget.responseIcon;
+    final responseText = widget.responseText;
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(34),
@@ -72,67 +74,28 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 10),
-                              child: const Text('2023/9/20 13:00-14:00'),),
+                              child: const Text('2023/9/20 13:00-14:00'),
+                            ),
                           ],
                         ),
-                        if (responseIcon == '_isPinkLeavingEarly')
-                          Container(
-                            width: 80,
-                            height: 80,
-                            margin: const EdgeInsets.only(top: 105, left: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: const Color(0xFFFBCEFF),
-                            ),
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    //Databaseから取得
-                                    '早退',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        Container(
+                          width: 80,
+                          height: 80,
+                          margin: const EdgeInsets.only(top: 105, left: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(80),
+                            color: const Color(0xFFFBCEFF),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                responseIcon,
+                                responseText,
+                              ],
                             ),
                           ),
-                        if (responseIcon == '_isPinkBehindTime')
-                          Container(
-                            width: 80,
-                            height: 80,
-                            margin: const EdgeInsets.only(top: 105, left: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: const Color(0xFFFBCEFF),
-                            ),
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    //Databaseから取得
-                                    '遅刻',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        ),
                       ],
                     ),
                     Row(

@@ -1,12 +1,16 @@
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/pages/src/home/parts/attendance/user_schedule_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
 import '../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
+import 'schedule_response.dart';
 
 class GroupScheduleCard extends ConsumerStatefulWidget {
-  const GroupScheduleCard({super.key});
-
+  const GroupScheduleCard({super.key, required this.groupData});
+  final GroupProfileWithScheduleWithId groupData;
   @override
   ConsumerState<GroupScheduleCard> createState() {
     return _GroupScheduleCardState();
@@ -14,13 +18,16 @@ class GroupScheduleCard extends ConsumerStatefulWidget {
 }
 
 class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
-  bool _isPinkAttendance = false;
-  bool _isPinkLeavingEarly = false;
-  bool _isPinkBehindTime = false;
-  bool _isPinkAbsence = false;
+  bool _isAttendance = false;
+  bool _isLeavingEarly = false;
+  bool _isBehindTime = false;
+  bool _isAbsence = false;
 
   @override
   Widget build(BuildContext context) {
+    final groupProfile = widget.groupData.groupProfile;
+    final groupImage = widget.groupData.groupProfile.image;
+    final groupSchedule = widget.groupData.groupSchedule;
     return Container(
       width: 375,
       height: 215,
@@ -29,7 +36,6 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
       ),
       child: Stack(
         children: [
-          //ここのCenter切り出す
           Center(
             child: Container(
               margin: const EdgeInsets.only(
@@ -62,51 +68,107 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          //Databaseから取得
-                          '13:00-14:00',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.startAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const Text(
+                              '-',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              formatDateTimeExcYearMonthDay(
+                                groupSchedule.endAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            await showCupertinoModalPopup<
-                                ScheduleDetailConfirm>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                if (_isPinkAttendance) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkAttendance',
-                                  );
-                                } else if (_isPinkLeavingEarly) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkLeavingEarly',
-                                  );
-                                } else if (_isPinkBehindTime) {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkBehindTime',
-                                  );
-                                } else {
-                                  return const ScheduleDetailConfirm(
-                                    responseIcon: '_isPinkAbsence',
-                                  );
-                                }
-                              },
-                            );
-                          },
-                          child: const SizedBox(
-                            width: 117,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await showCupertinoModalPopup<
+                                  ScheduleDetailConfirm>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  if (_isAttendance) {
+                                    return ScheduleDetailConfirm(
+                                      responseIcon: ScheduleResponse.getIcon(
+                                        ResponseType.attendance,
+                                      ),
+                                      responseText: ScheduleResponse.getText(
+                                        ResponseType.attendance,
+                                      ),
+                                      group: groupProfile,
+                                      schedule: groupSchedule,
+                                    );
+                                  } else if (_isLeavingEarly) {
+                                    return ScheduleDetailConfirm(
+                                      responseIcon: ScheduleResponse.getIcon(
+                                        ResponseType.leavingEarly,
+                                      ),
+                                      responseText: ScheduleResponse.getText(
+                                        ResponseType.leavingEarly,
+                                      ),
+                                      group: groupProfile,
+                                      schedule: groupSchedule,
+                                    );
+                                  } else if (_isBehindTime) {
+                                    return ScheduleDetailConfirm(
+                                      responseIcon: ScheduleResponse.getIcon(
+                                        ResponseType.behindTime,
+                                      ),
+                                      responseText: ScheduleResponse.getText(
+                                        ResponseType.behindTime,
+                                      ),
+                                      group: groupProfile,
+                                      schedule: groupSchedule,
+                                    );
+                                  } else if (_isAbsence){
+                                    return ScheduleDetailConfirm(
+                                      responseIcon: ScheduleResponse.getIcon(
+                                        ResponseType.absence,
+                                      ),
+                                      responseText: ScheduleResponse.getText(
+                                        ResponseType.absence,
+                                      ),
+                                      group: groupProfile,
+                                      schedule: groupSchedule,
+                                    );
+                                  } else {
+                                    return ScheduleDetailConfirm(
+                                      responseIcon: null,
+                                      responseText: null,
+                                      group: groupProfile,
+                                      schedule: groupSchedule,
+                                    );
+                                  }
+                                },
+                              );
+                            },
                             child: Row(
                               children: [
-                                Text(
-                                  //Databaseから取得
-                                  'Designer23',
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                Expanded(
+                                  child: Text(
+                                    groupSchedule.title,
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_ios,
                                   size: 20,
                                   color: Color(0xFF7B61FF),
@@ -128,10 +190,10 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              _isPinkAttendance = !_isPinkAttendance;
-                              _isPinkLeavingEarly = false;
-                              _isPinkBehindTime = false;
-                              _isPinkAbsence = false;
+                              _isAttendance = !_isAttendance;
+                              _isLeavingEarly = false;
+                              _isBehindTime = false;
+                              _isAbsence = false;
                             });
                           },
                           child: Container(
@@ -139,25 +201,19 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isPinkAttendance
+                              color: _isAttendance
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
+                                  ScheduleResponse.getIcon(
+                                    ResponseType.attendance,
                                   ),
-                                  Text(
-                                    //Databaseから取得
-                                    '出席',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                  ScheduleResponse.getText(
+                                    ResponseType.attendance,
                                   ),
                                 ],
                               ),
@@ -167,18 +223,23 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             setState(() {
-                              _isPinkAttendance = false;
-                              _isPinkLeavingEarly = !_isPinkLeavingEarly;
-                              _isPinkBehindTime = false;
-                              _isPinkAbsence = false;
+                              _isAttendance = false;
+                              _isLeavingEarly = !_isLeavingEarly;
+                              _isBehindTime = false;
+                              _isAbsence = false;
                             });
-                            if (_isPinkLeavingEarly) {
+                            if (_isLeavingEarly) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return const BehindAndEarlySetting(
-                                    responseIcon: '_isPinkLeavingEarly',
+                                  return BehindAndEarlySetting(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.leavingEarly,
+                                    ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.leavingEarly,
+                                    ),
                                   );
                                 },
                               );
@@ -189,25 +250,19 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isPinkLeavingEarly
+                              color: _isLeavingEarly
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
+                                  ScheduleResponse.getIcon(
+                                    ResponseType.leavingEarly,
                                   ),
-                                  Text(
-                                    //Databaseから取得
-                                    '早退',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                  ScheduleResponse.getText(
+                                    ResponseType.leavingEarly,
                                   ),
                                 ],
                               ),
@@ -217,18 +272,23 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             setState(() {
-                              _isPinkAttendance = false;
-                              _isPinkLeavingEarly = false;
-                              _isPinkBehindTime = !_isPinkBehindTime;
-                              _isPinkAbsence = false;
+                              _isAttendance = false;
+                              _isLeavingEarly = false;
+                              _isBehindTime = !_isBehindTime;
+                              _isAbsence = false;
                             });
-                            if (_isPinkBehindTime) {
+                            if (_isBehindTime) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return const BehindAndEarlySetting(
-                                    responseIcon: '_isPinkBehindTime',
+                                  return BehindAndEarlySetting(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.behindTime,
+                                    ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.behindTime,
+                                    ),
                                   );
                                 },
                               );
@@ -239,25 +299,19 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isPinkBehindTime
+                              color: _isBehindTime
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
+                                  ScheduleResponse.getIcon(
+                                    ResponseType.behindTime,
                                   ),
-                                  Text(
-                                    //Databaseから取得
-                                    '遅刻',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                  ScheduleResponse.getText(
+                                    ResponseType.behindTime,
                                   ),
                                 ],
                               ),
@@ -267,10 +321,10 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              _isPinkAttendance = false;
-                              _isPinkLeavingEarly = false;
-                              _isPinkBehindTime = false;
-                              _isPinkAbsence = !_isPinkAbsence;
+                              _isAttendance = false;
+                              _isLeavingEarly = false;
+                              _isBehindTime = false;
+                              _isAbsence = !_isAbsence;
                             });
                           },
                           child: Container(
@@ -278,25 +332,19 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isPinkAbsence
+                              color: _isAbsence
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.sentiment_satisfied,
-                                    size: 25,
-                                    color: Colors.black,
+                                  ScheduleResponse.getIcon(
+                                    ResponseType.absence,
                                   ),
-                                  Text(
-                                    //Databaseから取得
-                                    '欠席',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                  ScheduleResponse.getText(
+                                    ResponseType.absence,
                                   ),
                                 ],
                               ),
@@ -317,23 +365,36 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
               width: 80,
               height: 38,
               decoration: BoxDecoration(
-                color: const Color(0xFFD8EB61),
+                color: hexToColor(groupSchedule.color),
                 borderRadius: BorderRadius.circular(99),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  //Databaseから取得
-                  '9/20',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  formatDateTimeExcYearHourMinuteDay(
+                    groupSchedule.startAt,
+                  ),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             right: 35,
-            child: Icon(
-              Icons.group,
-              size: 40,
+            child: Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: groupImage.startsWith('http')
+                      ? NetworkImage(groupImage)
+                      : AssetImage(groupImage) as ImageProvider,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(999),
+              ),
             ),
           ),
         ],

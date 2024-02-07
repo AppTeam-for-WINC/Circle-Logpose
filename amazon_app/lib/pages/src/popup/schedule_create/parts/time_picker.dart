@@ -9,13 +9,12 @@ class ActivityStartDateTimePicker extends ConsumerStatefulWidget {
   ConsumerState createState() => _ActivityStartDateTimePickerState();
 }
 
-
 class _ActivityStartDateTimePickerState
     extends ConsumerState<ActivityStartDateTimePicker> {
   @override
   Widget build(BuildContext context) {
+    final schedule = ref.watch(createGroupScheduleProvider);
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
-    final scheduleStartAt = ref.watch(setGroupScheduleStartAtProvider.notifier);
     return Container(
       height: 300,
       color: Colors.white,
@@ -48,7 +47,6 @@ class _ActivityStartDateTimePickerState
                     ),
                   ),
                   onPressed: () {
-                    scheduleStartAt.state;
                     if (!mounted) {
                       return;
                     }
@@ -61,13 +59,12 @@ class _ActivityStartDateTimePickerState
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
-              initialDateTime: scheduleNotifier.startAt,
+              initialDateTime: schedule!.startAt,
               backgroundColor: Colors.white,
               use24hFormat: true,
-              minimumDate: scheduleNotifier.startAt,
+              minimumDate: schedule.startAt,
               onDateTimeChanged: (newDateTime) async {
-                scheduleStartAt.state = newDateTime;
-                // scheduleNotifier.setSchedule(null, newDateTime, null);
+                scheduleNotifier.setStartAt(newDateTime);
               },
             ),
           ),
@@ -87,8 +84,8 @@ class _ActivityEndDateTimePickerState
     extends ConsumerState<ActivityEndDateTimePicker> {
   @override
   Widget build(BuildContext context) {
+    final schedule = ref.watch(createGroupScheduleProvider);
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
-    final scheduleEndAt = ref.watch(setGroupScheduleEndAtProvider.notifier);
     return Container(
       height: 300,
       color: Colors.white,
@@ -121,7 +118,6 @@ class _ActivityEndDateTimePickerState
                     ),
                   ),
                   onPressed: () {
-                    scheduleEndAt.state;
                     if (!mounted) {
                       return;
                     }
@@ -134,13 +130,12 @@ class _ActivityEndDateTimePickerState
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
-              initialDateTime: scheduleNotifier.startAt,
+              initialDateTime: schedule!.endAt,
               backgroundColor: Colors.white,
               use24hFormat: true,
-              minimumDate: scheduleNotifier.startAt,
+              minimumDate: schedule.endAt,
               onDateTimeChanged: (newDateTime) async {
-                scheduleEndAt.state = newDateTime;
-                // scheduleNotifier.setSchedule(null, newDateTime, null);
+                scheduleNotifier.setEndAt(newDateTime);
               },
             ),
           ),

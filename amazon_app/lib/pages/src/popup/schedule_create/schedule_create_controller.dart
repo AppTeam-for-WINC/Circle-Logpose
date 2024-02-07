@@ -1,113 +1,232 @@
-import 'package:amazon_app/database/schedule/schedule/schedule.dart';
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule_controller.dart';
+import 'package:amazon_app/validation/validation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final setGroupScheduleStartAtProvider = StateProvider<DateTime>(
-  (ref) => DateTime.now(),
-);
-
-final setGroupScheduleEndAtProvider = StateProvider<DateTime>(
-  (ref) => DateTime.now().add(const Duration(hours: 1)),
-);
-
+final groupNameProvider = StateProvider<String>((ref) => 'No selected group');
 
 final createGroupScheduleProvider =
-    StateNotifierProvider<_CreateGroupScheduleNotifier, GroupSchedule?>(
-  (ref) => _CreateGroupScheduleNotifier(),
+    StateNotifierProvider<_SetGroupScheduleNotifier, _GroupScheduleViewer?>(
+  (ref) => _SetGroupScheduleNotifier(),
 );
 
-class _CreateGroupScheduleNotifier extends StateNotifier<GroupSchedule?> {
-  _CreateGroupScheduleNotifier() : super(null) {
-    // initSchedule();
-  }
-
-  GroupSchedule? schedule;
-  TextEditingController titleController = TextEditingController();
-  String color = Colors.white.toString();
-  DateTime startAt = DateTime.now();
-  DateTime endAt = DateTime.now().add(const Duration(hours: 1));
-  // DateTime startInitAt = DateTime.now();
-  // DateTime endInitAt = DateTime.now().add(const Duration(hours: 1));
-  TextEditingController placeController = TextEditingController();
-  TextEditingController detailController = TextEditingController();
-
-  Map<String?, dynamic> _valueChecker(
-    String? groupId,
+/// Schedule Object.
+class _GroupScheduleViewer {
+  // Init
+  _GroupScheduleViewer({
+    this.groupId,
+    this.color = const Color.fromARGB(255, 217, 0, 255),
     String? title,
-    String? color,
-    String? place,
-    String? detail,
     DateTime? startAt,
     DateTime? endAt,
-  ) {
-    if (state != null) {
-      final newGroupId = groupId ?? state!.groupId;
-      final newTitle = title ?? state!.title;
-      final newColor = color ?? state!.color;
-      final newPlace = place ?? state!.place;
-      final newDetail = detail ?? state!.detail;
-      final newStartAt = startAt ?? state!.startAt;
-      final newEndAt = endAt ?? state!.endAt;
-      return {
-        'groupId': newGroupId,
-        'title': newTitle,
-        'color': newColor,
-        'place': newPlace,
-        'detail': newDetail,
-        'startAt': newStartAt,
-        'endAt': newEndAt,
-      };
-    } else {
-      throw Exception('Exception: State is not correct.');
-    }
-  }
+    String? place,
+    String? detail,
+  })  : titleController = TextEditingController(text: title),
+        placeController = TextEditingController(text: place),
+        detailController = TextEditingController(text: detail),
+        startAt = startAt ?? DateTime.now(),
+        endAt = endAt ?? DateTime.now().add(const Duration(hours: 1));
 
-  //state != null　の状態なのだが、groupIdなどがnullとなっているので、別のアプローチが必要。
-  void initSchedule() {
-    // schedule = GroupSchedule(
-    //   groupId: state!.groupId,
-    //     title: state!.title,
-    //     color: Colors.white.toString(),
-    //     place: state!.place,
-    //     detail: state!.detail,
-    //     startAt: DateTime.now(),
-    //     endAt: DateTime.now().add(const Duration(hours: 1)),
-    //     createdAt: state!.createdAt,
-    // );
-    // state = schedule;
-  }
+  final String? groupId;
+  final Color color;
+  final TextEditingController titleController;
+  final DateTime startAt;
+  final DateTime endAt;
+  final TextEditingController placeController;
+  final TextEditingController detailController;
 
-  ///Before deployment
-  void setSchedule(
+  // Update schedule data.
+  _GroupScheduleViewer copyWith({
     String? groupId,
-    DateTime? newStartAt,
-    DateTime? newEndAt,
-  ) {
-    if (state != null) {
-      final values = _valueChecker(
-        groupId,
-        titleController.text,
-        color,
-        placeController.text,
-        detailController.text,
-        newStartAt,
-        newEndAt,
-      );
+    Color? color,
+    String? title,
+    DateTime? startAt,
+    DateTime? endAt,
+    String? place,
+    String? detail,
+  }) {
+    return _GroupScheduleViewer(
+      groupId: groupId ?? this.groupId,
+      color: color ?? this.color,
+      title: title ?? titleController.text,
+      startAt: startAt ?? this.startAt,
+      endAt: endAt ?? this.endAt,
+      place: place ?? placeController.text,
+      detail: detail ?? detailController.text,
+    );
+  }
+}
 
-      state = GroupSchedule(
-        groupId: values['groupId'] as String,
-        title: values['title'] as String,
-        color: values['color'] as String,
-        place: values['place'] as String,
-        detail: values['detail'] as String,
-        startAt: values['startAt'] as DateTime,
-        endAt: values['endAt'] as DateTime,
-        createdAt: state!.createdAt,
-      );
-    }
+/// Set schedule to group.
+class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer> {
+  _SetGroupScheduleNotifier() : super(_GroupScheduleViewer());
+
+  void initSchedule() {
+    state = _GroupScheduleViewer(
+      groupId: null,
+      color: const Color.fromARGB(255, 217, 0, 255),
+      title: '',
+      place: '',
+      detail: '',
+      startAt: DateTime.now(),
+      endAt: DateTime.now().add(const Duration(hours: 1)),
+    );
   }
 
-  Future<bool> createSchedule() async {
-    return false;
+  void setGroupId(String groupId) {
+    state = state.copyWith(groupId: groupId);
+  }
+
+  void setColor(Color color) {
+    state = state.copyWith(color: color);
+  }
+
+  void setTitle(TextEditingController title) {
+    state = state.copyWith(title: title.text);
+  }
+
+  void setStartAt(DateTime startAt) {
+    state = state.copyWith(startAt: startAt);
+  }
+
+  void setEndAt(DateTime endAt) {
+    state = state.copyWith(endAt: endAt);
+  }
+
+  void setPlace(TextEditingController place) {
+    state = state.copyWith(place: place.text);
+  }
+
+  void setDetail(TextEditingController detail) {
+    state = state.copyWith(detail: detail.text);
+  }
+}
+
+/// Create schedule.
+class CreateGroupSchedule {
+  CreateGroupSchedule._internal();
+  static final CreateGroupSchedule _instance = CreateGroupSchedule._internal();
+  static CreateGroupSchedule get instance => _instance;
+
+  static Future<bool> createSchedule(
+    String groupId,
+    String title,
+    Color color,
+    String place,
+    String detail,
+    DateTime startAt,
+    DateTime endAt,
+  ) async {
+    try {
+      final titleValidation = ScheduleValidation.titleValidation(title);
+      final placeValidation = ScheduleValidation.placeValidation(place);
+      final detailValidation = ScheduleValidation.detailValidation(detail);
+      if (!(titleValidation && placeValidation && detailValidation)) {
+        return false;
+      }
+      final colorToString = colorToHex(color);
+      await GroupScheduleController.create(
+        groupId: groupId,
+        title: title,
+        color: colorToString,
+        place: place,
+        detail: detail,
+        startAt: startAt,
+        endAt: endAt,
+      );
+
+      debugPrint('Scucess: create schedule.');
+      return true;
+    } on FirebaseException catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+}
+
+/// Validation of schedule.
+class ScheduleValidation {
+  ScheduleValidation._internal();
+  static final ScheduleValidation _instance = ScheduleValidation._internal();
+  static ScheduleValidation get instance => _instance;
+
+  static bool titleValidation(String title) {
+    const requiredValidation = RequiredValidation();
+    const maxLength32Validation = MaxLength32Validation();
+
+    final titleRequiredValidation = requiredValidation.validate(
+      title,
+      'title',
+    );
+    final titleMaxLength32Validation = maxLength32Validation.validate(
+      title,
+      'title',
+    );
+    if (!titleRequiredValidation) {
+      final errorMessage =
+          const RequiredValidation().getStringInvalidRequiredMessage();
+
+      debugPrint('titleError: $errorMessage');
+      return false;
+    }
+    if (!titleMaxLength32Validation) {
+      final errorMessage =
+          const MaxLength32Validation().getMaxLengthInvalidMessage();
+
+      debugPrint('titleError: $errorMessage');
+      return false;
+    }
+
+    return true;
+  }
+
+  static bool placeValidation(String place) {
+    if (place.isEmpty) {
+      return true;
+    }
+    const maxLength64Validation = MaxLength64Validation();
+
+    final placeMaxLength64Validation = maxLength64Validation.validate(
+      place,
+      'place',
+    );
+    if (!placeMaxLength64Validation) {
+      final errorMessage =
+          const MaxLength64Validation().getMaxLengthInvalidMessage();
+
+      debugPrint('placeError: $errorMessage');
+      return false;
+    }
+
+    return true;
+  }
+
+  static bool detailValidation(String detail) {
+    if (detail.isEmpty) {
+      return true;
+    }
+    const maxLength2048Validation = MaxLength2048Validation();
+
+    final detailMaxLength2048Validation = maxLength2048Validation.validate(
+      detail,
+      'detail',
+    );
+    if (!detailMaxLength2048Validation) {
+      final errorMessage =
+          const RequiredValidation().getStringInvalidRequiredMessage();
+
+      debugPrint('detailError: $errorMessage');
+      return false;
+    }
+    if (!detailMaxLength2048Validation) {
+      final errorMessage =
+          const MaxLength2048Validation().getMaxLengthInvalidMessage();
+
+      debugPrint('detailError: $errorMessage');
+      return false;
+    }
+
+    return true;
   }
 }

@@ -16,7 +16,6 @@ class GroupSchedule {
   factory GroupSchedule.fromMap(Map<String, dynamic> scheduleRef) {
      ///Checked type of database variable;
       final groupId = scheduleRef['group_id'] as String;
-
       final title = scheduleRef['title'] as String;
       final color = scheduleRef['color'] as String;
       final place = scheduleRef['place'] as String?;

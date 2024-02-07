@@ -1,41 +1,35 @@
-import 'package:flutter/cupertino.dart';
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScheduleCard extends ConsumerWidget {
-  const ScheduleCard({super.key});
-
+class ScheduleCard extends ConsumerStatefulWidget {
+  const ScheduleCard({super.key, required this.schedule});
+  final GroupSchedule schedule;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ScheduleCard> createState() => _ScheduleCardState();
+}
+
+class _ScheduleCardState extends ConsumerState<ScheduleCard> {
+  @override
+  Widget build(BuildContext context) {
+    final groupSchedule = widget.schedule;
+
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(216, 235, 97, 0.29),
+          color: hexToColor(groupSchedule.color),
           borderRadius: BorderRadius.circular(80),
         ),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: Row(
-            children: [
-              Icon(CupertinoIcons.group_solid, size: 25),
-              Text(
-                '12:00~20:00/',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF9A9A9A),
-                ),
-              ),
-              Text(
-                '12人',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF9A9A9A),
-                ),
-              ),
-            ],
+        child: Center(
+          child: Text(
+            groupSchedule.title,
+            style: const TextStyle(
+              fontSize: 18,
+              color: Color.fromARGB(255, 69, 68, 68),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
