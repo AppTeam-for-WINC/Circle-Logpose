@@ -25,9 +25,12 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
+    final groupProfileWithScheduleWithId = widget.groupData;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
     final groupSchedule = widget.groupData.groupSchedule;
+    final groupScheduleId = widget.groupData.groupScheduleId;
+
     return Container(
       width: 375,
       height: 215,
@@ -134,7 +137,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       group: groupProfile,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (_isAbsence){
+                                  } else if (_isAbsence) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.absence,
@@ -187,14 +190,25 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                     ),
                     child: Row(
                       children: [
+                        // Attendance
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               _isAttendance = !_isAttendance;
                               _isLeavingEarly = false;
                               _isBehindTime = false;
                               _isAbsence = false;
                             });
+
+                            await UpdateGroupMemberSchedule.update(
+                              docId: groupScheduleId,
+                              attendance: _isAttendance,
+                              leaveEarly: _isLeavingEarly,
+                              lateness: _isBehindTime,
+                              absence: _isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
                           },
                           child: Container(
                             width: 80,
@@ -220,6 +234,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             ),
                           ),
                         ),
+
+                        // LeavingEarly
                         GestureDetector(
                           onTap: () async {
                             setState(() {
@@ -234,6 +250,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return BehindAndEarlySetting(
+                                    groupProfileWithScheduleWithId:
+                                        groupProfileWithScheduleWithId,
                                     responseIcon: ScheduleResponse.getIcon(
                                       ResponseType.leavingEarly,
                                     ),
@@ -244,6 +262,15 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 },
                               );
                             }
+                            await UpdateGroupMemberSchedule.update(
+                              docId: groupScheduleId,
+                              attendance: _isAttendance,
+                              leaveEarly: _isLeavingEarly,
+                              lateness: _isBehindTime,
+                              absence: _isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
                           },
                           child: Container(
                             width: 80,
@@ -269,6 +296,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             ),
                           ),
                         ),
+
+                        // BehindTime (lateness)
                         GestureDetector(
                           onTap: () async {
                             setState(() {
@@ -283,6 +312,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return BehindAndEarlySetting(
+                                    groupProfileWithScheduleWithId:
+                                        groupProfileWithScheduleWithId,
                                     responseIcon: ScheduleResponse.getIcon(
                                       ResponseType.behindTime,
                                     ),
@@ -293,6 +324,15 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 },
                               );
                             }
+                            await UpdateGroupMemberSchedule.update(
+                              docId: groupScheduleId,
+                              attendance: _isAttendance,
+                              leaveEarly: _isLeavingEarly,
+                              lateness: _isBehindTime,
+                              absence: _isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
                           },
                           child: Container(
                             width: 80,
@@ -318,14 +358,26 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             ),
                           ),
                         ),
+
+                        // Absence
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               _isAttendance = false;
                               _isLeavingEarly = false;
                               _isBehindTime = false;
                               _isAbsence = !_isAbsence;
                             });
+
+                            await UpdateGroupMemberSchedule.update(
+                              docId: groupScheduleId,
+                              attendance: _isAttendance,
+                              leaveEarly: _isLeavingEarly,
+                              lateness: _isBehindTime,
+                              absence: _isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
                           },
                           child: Container(
                             width: 80,

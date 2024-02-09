@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ActivityStartDateTimePicker extends ConsumerStatefulWidget {
-  const ActivityStartDateTimePicker({super.key});
+class JoinScheduleStartDateTimePicker extends ConsumerStatefulWidget {
+  const JoinScheduleStartDateTimePicker({super.key});
   @override
-  ConsumerState createState() => _ActivityStartDateTimePickerState();
+  ConsumerState createState() => _JoinScheduleStartDateTimePickerState();
 }
 
-class _ActivityStartDateTimePickerState
-    extends ConsumerState<ActivityStartDateTimePicker> {
+class _JoinScheduleStartDateTimePickerState
+    extends ConsumerState<JoinScheduleStartDateTimePicker> {
   @override
   Widget build(BuildContext context) {
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
@@ -73,14 +73,14 @@ class _ActivityStartDateTimePickerState
   }
 }
 
-class ActivityEndDateTimePicker extends ConsumerStatefulWidget {
-  const ActivityEndDateTimePicker({super.key});
+class JoinScheduleEndDateTimePicker extends ConsumerStatefulWidget {
+  const JoinScheduleEndDateTimePicker({super.key});
   @override
-  ConsumerState createState() => _ActivityEndDateTimePickerState();
+  ConsumerState createState() => _JoinScheduleEndDateTimePickerState();
 }
 
-class _ActivityEndDateTimePickerState
-    extends ConsumerState<ActivityEndDateTimePicker> {
+class _JoinScheduleEndDateTimePickerState
+    extends ConsumerState<JoinScheduleEndDateTimePicker> {
   @override
   Widget build(BuildContext context) {
     final schedule = ref.watch(createGroupScheduleProvider);

@@ -1,26 +1,33 @@
 import 'package:amazon_app/pages/common/src/color/color_palette.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_create/parts/activity_time.dart';
+import 'package:amazon_app/pages/src/popup/schedule_change/change_activity_time.dart';
+import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/parts/group_picker/button.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'parts/group_picker/button.dart';
-import 'schedule_create_controller.dart';
+class ScheduleChange extends ConsumerStatefulWidget {
+  const ScheduleChange({
+    super.key,
+    required this.groupScheduleId,
+  });
 
-class ScheduleCreate extends ConsumerStatefulWidget {
-  const ScheduleCreate({super.key});
-
+  final String groupScheduleId;
   @override
-  ConsumerState createState() => _ScheduleCreateState();
+  ConsumerState createState() => _ScheduleChangeState();
 }
 
-class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
+class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final schedule = ref.watch(createGroupScheduleProvider);
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    
+    final groupScheduleId = widget.groupScheduleId;
+    final schedule = ref.watch(changeGroupScheduleProvider(groupScheduleId));
+    final scheduleNotifier =
+        ref.watch(changeGroupScheduleProvider(groupScheduleId).notifier);
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
 
     return Center(
@@ -125,7 +132,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                     // Select group
                     GroupPickerButton(groupsProfile: groupsProfile),
                     // Activity time
-                    const ScheduleActivityTime(),
+                    ChangeScheduleActivityTime(scheduleId: groupScheduleId),
                     // Place
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
@@ -213,7 +220,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       ),
                       child: CupertinoButton(
                         child: const Text(
-                          '保存',
+                          '変更を保存',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -230,10 +237,11 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                           }
 
                           final success =
-                              await CreateGroupSchedule.createSchedule(
+                              await UpdateGroupSchedule.updateSchedule(
+                            groupScheduleId,
                             schedule.groupId!,
                             schedule.titleController.text,
-                            schedule.color,
+                            schedule.color!,
                             schedule.placeController.text,
                             schedule.detailController.text,
                             schedule.startAt,
@@ -248,7 +256,6 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                           }
 
                           // Init schedule.
-                          scheduleNotifier.initSchedule();
                           ref.watch(groupNameProvider.notifier).state =
                               'No selected group';
 

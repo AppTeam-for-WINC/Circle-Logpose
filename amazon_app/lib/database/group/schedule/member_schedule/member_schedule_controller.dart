@@ -9,17 +9,18 @@ class GroupMemberScheduleController {
   static GroupMemberScheduleController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
-  static const collectionPath = 'member_condition';
+  static const collectionPath = 'group_member_schedules';
 
+  /// Create GroupMembershipSchedule.
   static Future<void> create({
     required String scheduleId,
     required String userId,
-    required bool attendance,
-    required bool leaveEarly,
-    required bool lateness,
-    required bool absence,
-    required DateTime startAt,
-    required DateTime endAt,
+    bool? attendance,
+    bool? leaveEarly,
+    bool? lateness,
+    bool? absence,
+    DateTime? startAt,
+    DateTime? endAt,
   }) async {
     final groupMemberScheduleDoc = db.collection(collectionPath).doc();
 
@@ -38,6 +39,7 @@ class GroupMemberScheduleController {
     });
   }
 
+  /// Read GroupMemberSchedule.
   static Future<GroupMemberSchedule> read(String docId) async {
     final groupMemberScheduleDoc =
         await db.collection(collectionPath).doc(docId).get();
@@ -49,14 +51,96 @@ class GroupMemberScheduleController {
     return GroupMemberSchedule.fromMap(groupMemberScheduleRef);
   }
 
+  /// Read GroupMembershipSchedule's doc ID.
+  static Future<String?> readDocIdWithScheduleIdAndUserId(
+    String scheduleDocId,
+    String userDocId,
+  ) async {
+    final groupMemberScheduleSnapshot = await db
+        .collection(collectionPath)
+        .where(
+          'schedule_id',
+          isEqualTo: scheduleDocId,
+        )
+        .where(
+          'user_id',
+          isEqualTo: userDocId,
+        )
+        .get();
+
+    final groupMemberSchedule = groupMemberScheduleSnapshot.docs.map((doc) {
+      final groupMembershipScheduleRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipScheduleRef == null) {
+        return null;
+      }
+      
+      return doc.id;
+    }).first;
+    return groupMemberSchedule;
+  }
+   
+  /// Read GroupMembershipSchedule by GroupSchedule, UserDocID.
+  static Future<GroupMemberSchedule?> readWithScheduleIdAndUserId(
+    String scheduleDocId,
+    String userDocId,
+  ) async {
+    final groupMemberScheduleSnapshot = await db
+        .collection(collectionPath)
+        .where(
+          'schedule_id',
+          isEqualTo: scheduleDocId,
+        )
+        .where(
+          'user_id',
+          isEqualTo: userDocId,
+        )
+        .get();
+
+    final groupMemberSchedule = groupMemberScheduleSnapshot.docs.map((doc) {
+      final groupMembershipScheduleRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipScheduleRef == null) {
+        return null;
+      }
+      final scheduleId = groupMembershipScheduleRef['schedule_id'] as String;
+      final userId = groupMembershipScheduleRef['user_id'] as String;
+      final attendance = groupMembershipScheduleRef['attendance'] as bool;
+      final leaveEarly = groupMembershipScheduleRef['leave_early'] as bool;
+      final lateness = groupMembershipScheduleRef['lateness'] as bool;
+      final absence = groupMembershipScheduleRef['absence'] as bool;
+      final startAt = groupMembershipScheduleRef['start_at'] as DateTime?;
+      final endAt = groupMembershipScheduleRef['end_at'] as DateTime?;
+      final updatedAt = groupMembershipScheduleRef['updated_at'] as Timestamp?;
+      final createdAt = groupMembershipScheduleRef['created_at'] as Timestamp?;
+      if (createdAt == null) {
+        return null;
+      }
+
+      return GroupMemberSchedule(
+        scheduleId: scheduleId,
+        userId: userId,
+        attendance: attendance,
+        leaveEarly: leaveEarly,
+        lateness: lateness,
+        absence: absence,
+        startAt: startAt,
+        endAt: endAt,
+        updatedAt: updatedAt,
+        createdAt: createdAt,
+      );
+    }).first;
+
+    return groupMemberSchedule;
+  }
+
+  /// Update GroupMembershipSchedule.
   static Future<void> update({
     required String docId,
     required bool attendance,
     required bool leaveEarly,
     required bool lateness,
     required bool absence,
-    required DateTime startAt,
-    required DateTime endAt,
+    required DateTime? startAt,
+    required DateTime? endAt,
   }) async {
     final updatedAt = FieldValue.serverTimestamp();
 

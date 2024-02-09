@@ -1,28 +1,28 @@
 import 'package:amazon_app/pages/src/account/account_setting_page.dart';
-import 'package:amazon_app/pages/src/account/parts/password/password_setting_controller.dart';
+import 'package:amazon_app/pages/src/account/parts/email/email_setting_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PasswordSettingPage extends ConsumerStatefulWidget {
-  const PasswordSettingPage({super.key});
+class EmailVerificationPage extends ConsumerStatefulWidget {
+  const EmailVerificationPage({super.key});
   @override
-  ConsumerState<PasswordSettingPage> createState() =>
-      _PasswordSettingPageState();
+  ConsumerState<EmailVerificationPage> createState() =>
+      _EmailVerificationPageState();
 }
 
-class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
+class _EmailVerificationPageState extends ConsumerState<EmailVerificationPage> {
   @override
   Widget build(BuildContext context) {
-    final passwordNotifier = ref.watch(passwordSettingProvider.notifier);
+    final userEmail = ref.watch(userEmailProvider);
+    final emailNotifier = ref.watch(userEmailProvider.notifier);
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
       navigationBar: CupertinoNavigationBar(
         leading: TextButton.icon(
           onPressed: () async {
-            // Init
-            passwordNotifier.passwordController.clear();
-            passwordNotifier.newPasswordController.clear();
+            //Init
+            emailNotifier.emailController.clear();
 
             await Navigator.pushAndRemoveUntil(
               context,
@@ -57,32 +57,54 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                 width: 336,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      width: 346,
-                      child: Text(
-                        '現在のパスワード',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 124, 122, 122),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    CupertinoTextField(
-                      controller: passwordNotifier.passwordController,
-                      obscureText: true,
+                    DecoratedBox(
                       decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 245, 243, 254),
                         border: Border(
                           bottom: BorderSide(),
                         ),
                       ),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 346,
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                            ),
+                            child: const Text(
+                              '現在のメールアドレス',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 124, 122, 122),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 3,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  userEmail ?? '',
+                                  // emailController!.userEmail,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 124, 122, 122),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       width: 346,
                       margin: const EdgeInsets.only(top: 30),
                       child: const Text(
-                        '新しいパスワード',
+                        '新しいメールアドレス',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Color.fromARGB(255, 124, 122, 122),
@@ -91,8 +113,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                       ),
                     ),
                     CupertinoTextField(
-                      controller: passwordNotifier.newPasswordController,
-                      obscureText: true,
+                      controller: emailNotifier.emailController,
                       decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 245, 243, 254),
                         border: Border(
@@ -113,20 +134,17 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                   ),
                   backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                   onPressed: () async {
-                    final success = await UserPasswordSetting().update(
-                      passwordNotifier.passwordController.text,
-                      passwordNotifier.newPasswordController.text,
+                    final success = await emailNotifier.changeEmail(
+                      emailNotifier.emailController.text,
                     );
                     if (!success) {
                       return;
                     }
+                    //Init
+                    emailNotifier.emailController.clear();
                     if (!mounted) {
                       return;
                     }
-
-                    // Init
-                    passwordNotifier.passwordController.clear();
-                    passwordNotifier.newPasswordController.clear();
 
                     await Navigator.pushAndRemoveUntil(
                       context,
@@ -144,6 +162,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                         child: const Icon(
                           Icons.download,
                           size: 30,
+                          color: Colors.white,
                         ),
                       ),
                       const Text(

@@ -29,14 +29,11 @@ class StartPage extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //アイコン
           const Icon(
             CupertinoIcons.calendar_today,
             color: Colors.white,
             size: 103,
           ),
-
-          //文字
           const Text(
             'Amazon',
             style: TextStyle(
@@ -45,14 +42,10 @@ class StartPage extends ConsumerWidget {
               fontStyle: FontStyle.normal,
             ),
           ),
-
-          //余白用
           const SizedBox(
             width: 300,
             height: 200,
           ),
-
-          //サインアップボタン
           SizedBox(
             width: 234,
             height: 60,
@@ -86,8 +79,6 @@ class StartPage extends ConsumerWidget {
               ),
             ),
           ),
-
-          //ログインボタン
           SizedBox(
             width: 234,
             height: 60,

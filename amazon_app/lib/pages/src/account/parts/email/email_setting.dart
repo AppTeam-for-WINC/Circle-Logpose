@@ -7,10 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class EmailSettingPage extends ConsumerStatefulWidget {
   const EmailSettingPage({super.key});
   @override
-  ConsumerState<EmailSettingPage> createState() => EmailSettingPageState();
+  ConsumerState<EmailSettingPage> createState() => _EmailSettingPageState();
 }
 
-class EmailSettingPageState extends ConsumerState<EmailSettingPage> {
+class _EmailSettingPageState extends ConsumerState<EmailSettingPage> {
   @override
   Widget build(BuildContext context) {
     final userEmail = ref.watch(userEmailProvider);

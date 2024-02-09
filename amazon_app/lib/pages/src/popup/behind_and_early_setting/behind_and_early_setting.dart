@@ -1,13 +1,19 @@
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/pages/src/home/parts/attendance/join_time.dart';
+import 'package:amazon_app/pages/src/home/parts/attendance/user_schedule_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
     super.key,
+    required this.groupProfileWithScheduleWithId,
     required this.responseIcon,
     required this.responseText,
   });
 
+  final GroupProfileWithScheduleWithId groupProfileWithScheduleWithId;
   final Icon responseIcon;
   final Text responseText;
   @override
@@ -19,6 +25,8 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
 class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   @override
   Widget build(BuildContext context) {
+    final groupData = widget.groupProfileWithScheduleWithId;
+    final groupSchedule = widget.groupProfileWithScheduleWithId.groupSchedule;
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
     return Center(
@@ -26,102 +34,121 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
         borderRadius: BorderRadius.circular(34),
         child: SizedBox(
           width: 360,
-          height: 300,
+          height: 320,
           child: Stack(
             children: [
-              Container(
-                width: double.infinity,
-                height: 500,
-                decoration: const BoxDecoration(color: Colors.white), //メインの白
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                ),
               ),
               Container(
                 width: double.infinity,
                 height: 80,
-                decoration:
-                    const BoxDecoration(color: Color(0xFFD8EB61)), //上の黄緑
-              ),
-              Positioned(
-                top: 60,
-                left: 30,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('images/group_img.jpeg'),
-                    ),
-                  ),
+                decoration: BoxDecoration(
+                  color: hexToColor(groupSchedule.color),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 110),
-                              child: const Text(
-                                'Designner23',
-                                style: TextStyle(fontSize: 35),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: const Text('2023/9/20 13:00-14:00'),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: 80,
-                          height: 80,
-                          margin: const EdgeInsets.only(top: 105, left: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(80),
-                            color: const Color(0xFFFBCEFF),
-                          ),
-                          child: Center(
+                width: 80,
+                height: 80,
+                margin: const EdgeInsets.only(
+                  top: 100,
+                  left: 260,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80),
+                  color: const Color(0xFFFBCEFF),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      responseIcon,
+                      responseText,
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                responseIcon,
-                                responseText,
+                                Container(
+                                  margin: const EdgeInsets.only(top: 100),
+                                  width: 220,
+                                  child: Expanded(
+                                    child: Text(
+                                      groupSchedule.title,
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        overflow: TextOverflow.clip,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          formatDateTimeExcYearHourMinuteDay(
+                                            groupSchedule.startAt,
+                                          ),
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        formatDateTimeExcYearMonthDay(
+                                          groupSchedule.startAt,
+                                        ),
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      const Text(
+                                        '-',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        formatDateTimeExcYearMonthDay(
+                                          groupSchedule.endAt,
+                                        ),
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: ScheduleJoinTime(
+                          groupProfileWithScheduleWithId: groupData,
                         ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 40),
-                          child: const Icon(Icons.schedule),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 80, top: 40),
-                          child: const Text(
-                            '参加時間',
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 30, top: 40),
-                          child: const Text(
-                            '13:30-14:00',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

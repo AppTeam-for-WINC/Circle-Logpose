@@ -44,7 +44,7 @@ class GroupPage extends ConsumerWidget {
                             return GroupBox(groupWithId: groupWithId);
                           }).toList();
                         },
-                        loading: () => const [CupertinoActivityIndicator()],
+                        loading: () => const [SizedBox.shrink()],
                         error: (error, stack) => [Text('Error: $error')],
                       ),
                     ),

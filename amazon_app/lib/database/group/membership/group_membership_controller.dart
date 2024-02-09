@@ -41,9 +41,30 @@ class GroupMembershipController {
     });
   }
 
+  /// Read all memgber's doc ID.
+  static Future<List<String>> readAllUserDocIdWithGroupId(
+    String groupId,
+  ) async {
+    final groupMembershipSnapshot = await db
+        .collection(collectionPath)
+        .where('group_id', isEqualTo: groupId)
+        .get();
+
+    final userDocId = groupMembershipSnapshot.docs.map((doc) {
+      final groupMembershipRef = doc.data() as Map<String, dynamic>?;
+      if (groupMembershipRef == null) {
+        throw Exception('No found document data.');
+      }
+      return doc.id;
+    }).toList();
+
+    return userDocId;
+  }
+
   /// Read all role(Please selected 'admin', or 'membership') member's profiles.
   static Stream<List<UserProfile?>> readAllRoleByProfileWithGroupId(
-    String groupId, String role,
+    String groupId,
+    String role,
   ) async* {
     final groupMemberStream = db
         .collection(collectionPath)
@@ -52,7 +73,7 @@ class GroupMembershipController {
         .snapshots();
 
     await for (final groupMembers in groupMemberStream) {
-      final groupMemberRefsFuture = groupMembers.docs.map((doc) async{
+      final groupMemberRefsFuture = groupMembers.docs.map((doc) async {
         final groupMemberDocRef = doc.data() as Map<String, dynamic>?;
         if (groupMemberDocRef == null) {
           debugPrint('No found $role document data.');
@@ -63,7 +84,7 @@ class GroupMembershipController {
         return UserController.read(userId);
       }).toList();
       final groupMemberRefs = await Future.wait(groupMemberRefsFuture);
-    yield groupMemberRefs;
+      yield groupMemberRefs;
     }
   }
 

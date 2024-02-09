@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
+import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:amazon_app/pages/src/account/account_setting_controller.dart';
 import 'package:amazon_app/pages/src/account/parts/group/joined_group.dart';
 import 'package:amazon_app/pages/src/account/parts/id/id_setting.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
+import 'package:amazon_app/pages/src/start/start_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,12 +76,16 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                           await userProfileNotifier.initUserProfile();
                           userProfileNotifier.nameController.text =
                               userProfile!.name;
-      
+
                           if (!mounted) {
                             return;
                           }
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          await Navigator.push(
+                            context,
+                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -119,6 +125,55 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                      ),
+                      child: CupertinoButton(
+                        onPressed: () async {
+                          await showCupertinoModalPopup<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CupertinoAlertDialog(
+                                title: const Text('ログアウトしますか?'),
+                                actions: <CupertinoDialogAction>[
+                                  CupertinoDialogAction(
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('No'),
+                                  ),
+                                  CupertinoDialogAction(
+                                    isDefaultAction: true,
+                                    onPressed: () async {
+                                      await AuthController.logout();
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      await Navigator.push(
+                                        context,
+                                        CupertinoPageRoute<
+                                            CupertinoPageRoute<dynamic>>(
+                                          builder: (context) =>
+                                              const StartPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                          size: 30,
                         ),
                       ),
                     ),
@@ -309,7 +364,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     ),
                   ),
                 ),
-      
+
                 //Email
                 Container(
                   margin: const EdgeInsets.only(top: 30),
@@ -523,7 +578,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                       if (!success) {
                         return;
                       }
-                        
+
                       if (!mounted) {
                         return;
                       }

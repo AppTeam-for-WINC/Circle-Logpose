@@ -23,40 +23,49 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
 
     return GestureDetector(
       onTap: () {},
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(
-            216,
-            235,
-            97,
-            0.29,
+      child: Expanded(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(
+              216,
+              235,
+              97,
+              0.29,
+            ),
+            borderRadius: BorderRadius.circular(80),
           ),
-          borderRadius: BorderRadius.circular(80),
-        ),
-        child: Row(
-          children: [
-            CachedNetworkImage(
-              imageUrl: group.image,
-              placeholder: (context, url) =>
-                  const CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              imageBuilder: (context, imageProvider) => Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+          child: Expanded(
+            child: Row(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: group.image,
+                  placeholder: (context, url) =>
+                      const CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(999),
                 ),
-              ),
+                Expanded(
+                  child: Text(
+                    group.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Text(
-              group.name,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ],
+          ),
         ),
       ),
     );
