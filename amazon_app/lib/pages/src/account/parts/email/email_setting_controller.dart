@@ -29,6 +29,10 @@ class UserEmail extends StateNotifier<String?> {
     if (!validation) {
       return false;
     }
+    final emailVerification = await AuthController.sendConfirmationEmail();
+    if (!emailVerification) {
+      return false;
+    }
     final success = await AuthController.updateUserEmail(userEmail!, newEmail);
     if (!success) {
       return false;

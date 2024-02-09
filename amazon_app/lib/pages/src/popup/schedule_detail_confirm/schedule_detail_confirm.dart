@@ -107,13 +107,25 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(top: 120),
+                          width: 220,
                           child: Text(
-                            group.name,
+                            groupSchedule.title,
                             style: const TextStyle(fontSize: 26),
                           ),
                         ),
                         Row(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Text(
+                                formatDateTimeExcYearHourMinuteDay(
+                                  groupSchedule.startAt,
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
                             Text(
                               formatDateTimeExcYearMonthDay(
                                 groupSchedule.startAt,

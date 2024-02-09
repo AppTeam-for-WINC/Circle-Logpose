@@ -16,8 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-enum GroupOption { edit, list }
-
 class GroupSettingPage extends ConsumerStatefulWidget {
   const GroupSettingPage({
     super.key,
@@ -60,7 +58,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final groupProfileNotifier =
         ref.watch(groupSettingProvider(groupId).notifier);
 
-    final groupSchedules = ref.watch(readGroupScheduleProvider(groupId));
+    final groupSchedules = ref.watch(readGroupScheduleAndIdProvider(groupId));
     final groupScheduleNotifier =
         ref.watch(createGroupScheduleProvider.notifier);
 
@@ -122,6 +120,42 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    child: CupertinoButton(
+                      onPressed: () async {
+                        await showCupertinoModalPopup<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: const Text('団体を削除しますか?'),
+                              content: const Text('削除後、元に戻すことはできません。'),
+                              actions: <CupertinoDialogAction>[
+                                CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('No'),
+                                ),
+                                CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Icon(
+                        Icons.delete_forever,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     width: 60,
                   ),
@@ -129,7 +163,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               ),
             ),
             const SizedBox(height: 20),
-            //ここのContainer切り出す
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
@@ -420,7 +453,11 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                       return const [SizedBox.shrink()];
                                     }
                                     return groupSchedule.map((schedule) {
-                                      return ScheduleCard(schedule: schedule);
+                                      return ScheduleCard(
+                                        schedule: schedule,
+                                        groupName: groupProfileNotifier
+                                            .groupNameController.text,
+                                      );
                                     }).toList();
                                   },
                                   loading: () => const [SizedBox.shrink()],

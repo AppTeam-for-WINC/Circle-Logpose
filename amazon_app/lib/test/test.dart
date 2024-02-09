@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:amazon_app/database/auth/auth_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,7 +29,8 @@ Future<void> postChatGPT(String question) async {
 //   // -qgddwv763a-uc.a.run.app/
 //   var url = Uri.https('on-request-example-qgddwv763a-uc.a.run.app');
 //   // var url = Uri.parse('https://on-request-example-qgddwv763a-uc.a.run.app/');
-//   var response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
+//   var response = 
+//await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
 //   print('Response status: ${response.statusCode}');
 //   print('Response body: ${response.body}');
 
@@ -63,7 +62,8 @@ Future<void> postChatGPT(String question) async {
 //   // -qgddwv763a-uc.a.run.app/
 //   var url = Uri.https('on-request-example-qgddwv763a-uc.a.run.app/');
 //   // var url = Uri.parse('https://on-request-example-qgddwv763a-uc.a.run.app/');
-//   var response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
+//   var response = 
+//await http.get(url, headers: {'Authorization': 'Bearer $idToken'},);
 //   print('Response status: ${response.statusCode}');
 //   print('Response body: ${response.body}');
 

@@ -13,7 +13,7 @@ class AuthController {
   static AuthController get instance => _instance;
   static final auth = FirebaseAuth.instance;
 
-  ///Create user's account.
+  /// Create user's account.
   static Future<bool> createAccount(String email, String password) async {
     try {
       final userCredential = await auth.createUserWithEmailAndPassword(
@@ -27,7 +27,10 @@ class AuthController {
         return false;
       }
 
-      await UserController.create(docId: docId, name: 'no name',);
+      await UserController.create(
+        docId: docId,
+        name: 'no name',
+      );
       debugPrint('Success: Created new account. doc_id: $docId');
       return true;
     } on FirebaseAuthException catch (error) {
@@ -57,8 +60,8 @@ class AuthController {
     }
   }
 
-  ///Watching whether users remain logged in.
-  ///True is signed in. False is signed out.
+  /// Watching whether users remain logged in.
+  /// True is signed in. False is signed out.
   static Stream<bool> userLoginState(String docId) async* {
     await for (final doc in auth.authStateChanges()) {
       if (doc == null) {
@@ -86,7 +89,7 @@ class AuthController {
     }
   }
 
-  ///Update email.
+  /// Update email.
   static Future<bool> updateUserEmail(String oldEmail, String email) async {
     try {
       final user = auth.currentUser;
@@ -107,10 +110,10 @@ class AuthController {
     }
   }
 
-  ///Send Confirmation email.
+  /// Send Confirmation email.
   static Future<bool> sendConfirmationEmail() async {
     try {
-      ///Set auth code of language to japanese.
+      /// Set auth code of language to japanese.
       await auth.setLanguageCode('ja');
 
       final user = auth.currentUser;
@@ -143,21 +146,47 @@ class AuthController {
   }
 
   /// Update user's new password.
-  static Future<bool> updateUserPassword(String newPassword) async {
+  static Future<bool> updateUserPassword(
+    String email,
+    String password,
+    String newPassword,
+  ) async {
     try {
       final user = auth.currentUser;
 
       if (user == null) {
         debugPrint('User is not currently signed in.');
         return false;
-      } else {
-        await user.updatePassword(newPassword);
-        debugPrint('Password updated successfully.');
-        return true;
       }
+      final credential = await _checkSignInWithCredential(
+        email,
+        password,
+      );
+      await user.reauthenticateWithCredential(credential);
+
+      await user.updatePassword(newPassword);
+      debugPrint('Password updated successfully.');
+      return true;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error updating password: $error');
       return false;
+    }
+  }
+
+  /// Credential by email, password.
+  static Future<AuthCredential> _checkSignInWithCredential(
+    String email,
+    String password,
+  ) async {
+    try {
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Error: $e');
     }
   }
 
@@ -169,6 +198,15 @@ class AuthController {
   static Future<String?> getUserIdToken() async {
     final user = auth.currentUser;
     return await user?.getIdToken();
+  }
+
+  /// Logout.
+  static Future<void> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to logout: $e');
+    }
   }
 
   // static Future<String>getUpHello() async {

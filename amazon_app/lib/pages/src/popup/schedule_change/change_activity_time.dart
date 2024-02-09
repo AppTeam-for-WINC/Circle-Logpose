@@ -1,20 +1,24 @@
 import 'package:amazon_app/controller/common/time_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_create/parts/time_picker.dart';
-import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_change/change_activity_time_picker.dart';
+import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScheduleJoinTime extends ConsumerStatefulWidget {
-  const ScheduleJoinTime({super.key});
+class ChangeScheduleActivityTime extends ConsumerStatefulWidget {
+  const ChangeScheduleActivityTime({super.key, required this.scheduleId});
+
+  final String scheduleId;
   @override
-  ConsumerState createState() => _ScheduleJoinTimeState();
+  ConsumerState createState() => _ChangeScheduleActivityTimeState();
 }
 
-class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
+class _ChangeScheduleActivityTimeState
+    extends ConsumerState<ChangeScheduleActivityTime> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(createGroupScheduleProvider);
+    final scheduleId = widget.scheduleId;
+    final schedule = ref.watch(changeGroupScheduleProvider(scheduleId));
     return Row(
       children: [
         Container(
@@ -30,7 +34,7 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
-                return const ActivityStartDateTimePicker();
+                return ChangeActivityStartDateTimePicker(scheduleId: scheduleId);
               },
             );
           },
@@ -59,14 +63,14 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
-                return const ActivityEndDateTimePicker();
+                return ChangeActivityEndDateTimePicker(scheduleId: scheduleId);
               },
             );
           },
           padding: EdgeInsets.zero,
           child: Consumer(
             builder: (context, watch, child) {
-                return Text(formatDateTimeExcYear(schedule!.endAt));
+              return Text(formatDateTimeExcYear(schedule!.endAt));
             },
           ),
         ),

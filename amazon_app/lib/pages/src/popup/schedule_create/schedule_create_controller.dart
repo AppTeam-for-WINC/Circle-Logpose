@@ -1,4 +1,6 @@
 import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/database/group/membership/group_membership_controller.dart';
+import 'package:amazon_app/database/group/schedule/member_schedule/member_schedule_controller.dart';
 import 'package:amazon_app/database/group/schedule/schedule/schedule_controller.dart';
 import 'package:amazon_app/validation/validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -127,7 +129,8 @@ class CreateGroupSchedule {
         return false;
       }
       final colorToString = colorToHex(color);
-      await GroupScheduleController.create(
+
+      final scheduleId = await GroupScheduleController.create(
         groupId: groupId,
         title: title,
         color: colorToString,
@@ -137,8 +140,40 @@ class CreateGroupSchedule {
         endAt: endAt,
       );
 
-      debugPrint('Scucess: create schedule.');
+      final userDocIds =
+          await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
+
+      for (final userDocId in userDocIds) {
+        await CreateMemberSchedules.create(
+          scheduleId: scheduleId,
+          userId: userDocId,
+        );
+      }
+
+      debugPrint('Success: create schedule.');
       return true;
+    } on FirebaseException catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+}
+
+class CreateMemberSchedules {
+  CreateMemberSchedules._internal();
+  static final CreateMemberSchedules _instance =
+      CreateMemberSchedules._internal();
+  static CreateMemberSchedules get instance => _instance;
+
+  static Future<void> create({
+    required String scheduleId,
+    required String userId,
+  }) async {
+    try {
+      // Create membership schedule by member.
+      await GroupMemberScheduleController.create(
+        scheduleId: scheduleId,
+        userId: userId,
+      );
     } on FirebaseException catch (e) {
       throw Exception('Error: $e');
     }

@@ -1,19 +1,26 @@
-import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ActivityStartDateTimePicker extends ConsumerStatefulWidget {
-  const ActivityStartDateTimePicker({super.key});
+class ChangeActivityStartDateTimePicker extends ConsumerStatefulWidget {
+  const ChangeActivityStartDateTimePicker({
+    super.key,
+    required this.scheduleId,
+  });
+
+  final String scheduleId;
   @override
-  ConsumerState createState() => _ActivityStartDateTimePickerState();
+  ConsumerState createState() => _ChangeActivityStartDateTimePickerState();
 }
 
-class _ActivityStartDateTimePickerState
-    extends ConsumerState<ActivityStartDateTimePicker> {
+class _ChangeActivityStartDateTimePickerState
+    extends ConsumerState<ChangeActivityStartDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    final scheduleId = widget.scheduleId;
+    final scheduleNotifier =
+        ref.watch(changeGroupScheduleProvider(scheduleId).notifier);
     return Container(
       height: 300,
       color: Colors.white,
@@ -73,18 +80,22 @@ class _ActivityStartDateTimePickerState
   }
 }
 
-class ActivityEndDateTimePicker extends ConsumerStatefulWidget {
-  const ActivityEndDateTimePicker({super.key});
+class ChangeActivityEndDateTimePicker extends ConsumerStatefulWidget {
+  const ChangeActivityEndDateTimePicker({super.key, required this.scheduleId});
+
+  final String scheduleId;
   @override
-  ConsumerState createState() => _ActivityEndDateTimePickerState();
+  ConsumerState createState() => _ChangeActivityEndDateTimePickerState();
 }
 
-class _ActivityEndDateTimePickerState
-    extends ConsumerState<ActivityEndDateTimePicker> {
+class _ChangeActivityEndDateTimePickerState
+    extends ConsumerState<ChangeActivityEndDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(createGroupScheduleProvider);
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    final scheduleId = widget.scheduleId;
+    final schedule = ref.watch(changeGroupScheduleProvider(scheduleId));
+    final scheduleNotifier =
+        ref.watch(changeGroupScheduleProvider(scheduleId).notifier);
     return Container(
       height: 300,
       color: Colors.white,

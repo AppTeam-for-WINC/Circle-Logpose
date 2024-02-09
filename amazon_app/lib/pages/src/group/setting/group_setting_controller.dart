@@ -95,7 +95,7 @@ class UpdateGroupSettings {
       description: description,
       image: imagePath,
     );
-    
+
     final groupMembersList = ref.watch(setGroupMemberListProvider);
     await _addMeberships(groupMembersList, groupId);
 
@@ -161,22 +161,59 @@ class GroupValidation {
   }
 }
 
-/// Read group schedule.
-final readGroupScheduleProvider =
-    StreamProvider.family.autoDispose<List<GroupSchedule>, String>(
-  (ref, groupId) async* {
-    final schedulesStream = GroupScheduleController.readAll(groupId);
+class GroupScheduleAndId {
+  GroupScheduleAndId({
+    required this.groupSchedule,
+    required this.groupScheduleId,
+  });
 
-    await for (final schedules in schedulesStream) {
-      final scheduleList = await Future.wait(
-        schedules.map((schedule) async {
-          if (schedule == null) {
-            return null;
-          }
-          return schedule;
-        }),
-      );
-      yield scheduleList.whereType<GroupSchedule>().toList();
+  final GroupSchedule groupSchedule;
+  final String groupScheduleId;
+}
+
+/// Read group schedule and schedule ID.
+final readGroupScheduleAndIdProvider =
+    StreamProvider.family.autoDispose<List<GroupScheduleAndId>, String>(
+  (ref, groupId) async* {
+    final scheduleIds =
+        await GroupScheduleController.readAllScheduleId(groupId).first;
+
+    List<GroupScheduleAndId> schedulesAndIds = [];
+    for (final scheduleId in scheduleIds) {
+      if (scheduleId == null) {
+        continue;
+      }
+      final schedule = await GroupScheduleController.read(scheduleId);
+      if (schedule != null) {
+        schedulesAndIds.add(
+          GroupScheduleAndId(
+            groupSchedule: schedule,
+            groupScheduleId: scheduleId,
+          ),
+        );
+      }
     }
+
+    yield schedulesAndIds;
   },
 );
+
+// /// Read group schedule and schedule ID.
+// final readGroupScheduleProvider =
+//     StreamProvider.family.autoDispose<List<GroupSchedule>, String>(
+//   (ref, groupId) async* {
+//     final schedulesStream = GroupScheduleController.readAll(groupId);
+
+//     await for (final schedules in schedulesStream) {
+//       final scheduleList = await Future.wait(
+//         schedules.map((schedule) async {
+//           if (schedule == null) {
+//             return null;
+//           }
+//           return schedule;
+//         }),
+//       );
+//       yield scheduleList.whereType<GroupSchedule>().toList();
+//     }
+//   },
+// );

@@ -1,22 +1,24 @@
 import 'package:amazon_app/controller/common/time_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'schedule.dart';
 
 class GroupScheduleController {
-  ///シングルトンパターンにしています。
+  // シングルトンパターンにしています。
   GroupScheduleController._internal();
   static final GroupScheduleController _instance =
       GroupScheduleController._internal();
   static GroupScheduleController get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
-  ///schedule path
+
+  // schedule path
   static const collectionPath = 'group_schedules';
 
-  ///Create schudule database.
-  static Future<void> create(
+  /// Create schudule database.
+  static Future<String> create(
 
-      ///Named parameters
+      // Named parameters
       {
     required String groupId,
     required String title,
@@ -26,10 +28,10 @@ class GroupScheduleController {
     required DateTime startAt,
     required DateTime endAt,
   }) async {
-    ///Create new document ID.
+    // Create new document ID.
     final doc = db.collection(collectionPath).doc();
 
-    ///Get created server time.
+    // Get created server time.
     final createdAt = FieldValue.serverTimestamp();
 
     await doc.set({
@@ -42,6 +44,8 @@ class GroupScheduleController {
       'end_at': endAt,
       'created_at': createdAt,
     });
+
+    return doc.id;
   }
 
   ///Get all schedule database.
@@ -91,61 +95,60 @@ class GroupScheduleController {
     }
   }
 
-  // /// Read list of schedule ID.
-  // static Stream<List<String?>> readAllScheduleId(String groupId) async* {
-  //   final schedulesStream = db
-  //       .collection(collectionPath)
-  //       .where(
-  //         'group_id',
-  //         isEqualTo: groupId,
-  //       )
-  //       .snapshots();
+  /// Read list of schedule ID.
+  static Stream<List<String?>> readAllScheduleId(String groupId) async* {
+    final schedulesStream = db
+        .collection(collectionPath)
+        .where(
+          'group_id',
+          isEqualTo: groupId,
+        )
+        .snapshots();
 
-  //   await for (final schedules in schedulesStream) {
-  //     final schedulesRefs = schedules.docs.map((doc) {
-  //       final scheduleRef = doc.data() as Map<String, dynamic>?;
-  //       if (scheduleRef == null) {
-  //         return null;
-  //       }
-  //       final groupId = scheduleRef['group_id'] as String;
-  //       final title = scheduleRef['title'] as String;
-  //       final color = scheduleRef['color'] as String;
-  //       final place = scheduleRef['place'] as String?;
-  //       final detail = scheduleRef['detail'] as String?;
-  //       final startAt = convertTimestampToDateTime(scheduleRef['start_at']);
-  //       final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
-  //       final updatedAt = scheduleRef['updated_at'] as Timestamp?;
-  //       final createdAt = scheduleRef['created_at'] as Timestamp?;
-  //       if (createdAt == null) {
-  //         return null;
-  //       }
+    await for (final schedules in schedulesStream) {
+      final schedulesRefs = schedules.docs.map((doc) {
+        final scheduleRef = doc.data() as Map<String, dynamic>?;
+        if (scheduleRef == null) {
+          return null;
+        }
 
-  //       return GroupSchedule(
-  //         groupId: groupId,
-  //         title: title,
-  //         color: color,
-  //         place: place,
-  //         detail: detail,
-  //         startAt: startAt!,
-  //         endAt: endAt!,
-  //         updatedAt: updatedAt,
-  //         createdAt: createdAt,
-  //       );
-  //     }).toList();
+        return doc.id;
+      }).toList();
 
-  //     yield schedulesRefs;
-  //   }
-  // }
+      yield schedulesRefs;
+    }
+  }
 
-  //Get selected schedule database.
-  static Future<GroupSchedule> read(String docId) async {
+  // Get selected schedule database.
+  static Future<GroupSchedule?> read(String docId) async {
     final snapshot = await db.collection(collectionPath).doc(docId).get();
     final scheduleRef = snapshot.data();
     if (scheduleRef == null) {
-      throw Exception('documentId not found.');
+      debugPrint('documentId not found.');
+      return null;
     }
 
-    return GroupSchedule.fromMap(scheduleRef);
+    final groupId = scheduleRef['group_id'] as String;
+    final title = scheduleRef['title'] as String;
+    final color = scheduleRef['color'] as String;
+    final place = scheduleRef['place'] as String?;
+    final detail = scheduleRef['detail'] as String?;
+    final startAt = convertTimestampToDateTime(scheduleRef['start_at']);
+    final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
+    final updatedAt = scheduleRef['updated_at'] as Timestamp?;
+    final createdAt = scheduleRef['created_at'] as Timestamp?;
+
+    return GroupSchedule(
+      groupId: groupId,
+      title: title,
+      color: color,
+      place: place,
+      detail: detail,
+      startAt: startAt!,
+      endAt: endAt!,
+      updatedAt: updatedAt,
+      createdAt: createdAt!,
+    );
   }
 
   ///Update scheule database.

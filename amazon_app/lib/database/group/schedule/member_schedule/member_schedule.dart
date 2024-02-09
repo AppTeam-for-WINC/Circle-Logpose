@@ -8,8 +8,8 @@ class GroupMemberSchedule {
     required this.leaveEarly,
     required this.lateness,
     required this.absence,
-    required this.startAt,
-    required this.endAt,
+    this.startAt,
+    this.endAt,
     this.updatedAt,
     required this.createdAt,
   });
@@ -22,8 +22,8 @@ class GroupMemberSchedule {
     final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
     final lateness = groupMemberScheduleRef['lateness'] as bool;
     final absence = groupMemberScheduleRef['absence'] as bool;
-    final startAt = groupMemberScheduleRef['start_at'] as DateTime;
-    final endAt = groupMemberScheduleRef['end_at'] as DateTime;
+    final startAt = groupMemberScheduleRef['start_at'] as DateTime?;
+    final endAt = groupMemberScheduleRef['end_at'] as DateTime?;
     final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
     final createdAt = groupMemberScheduleRef['created_at'] as Timestamp;
 
@@ -60,10 +60,10 @@ class GroupMemberSchedule {
   final bool absence;
 
   ///Start time
-  final DateTime startAt;
+  final DateTime? startAt;
 
   ///End time
-  final DateTime endAt;
+  final DateTime? endAt;
 
   ///Updateed time
   final Timestamp? updatedAt;
