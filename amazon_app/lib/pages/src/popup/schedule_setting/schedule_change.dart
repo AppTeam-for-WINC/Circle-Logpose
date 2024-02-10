@@ -1,7 +1,7 @@
 import 'package:amazon_app/pages/common/src/color/color_palette.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_change/change_activity_time.dart';
-import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/change_activity_time.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change_controller.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/parts/group_picker/button.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
 import 'package:flutter/cupertino.dart';

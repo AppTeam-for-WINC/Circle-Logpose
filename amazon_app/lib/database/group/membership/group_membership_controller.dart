@@ -50,15 +50,16 @@ class GroupMembershipController {
         .where('group_id', isEqualTo: groupId)
         .get();
 
-    final userDocId = groupMembershipSnapshot.docs.map((doc) {
+    final userDocIds = groupMembershipSnapshot.docs.map((doc) {
       final groupMembershipRef = doc.data() as Map<String, dynamic>?;
       if (groupMembershipRef == null) {
         throw Exception('No found document data.');
       }
-      return doc.id;
+      final userDocId = groupMembershipRef['user_id'] as String;
+      return userDocId;
     }).toList();
 
-    return userDocId;
+    return userDocIds;
   }
 
   /// Read all role(Please selected 'admin', or 'membership') member's profiles.

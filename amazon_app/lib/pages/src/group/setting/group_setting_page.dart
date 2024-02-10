@@ -350,7 +350,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                         ? GroupMemberImage(
                                             userProfile: member,
                                           )
-                                        : const Text('No group'),
+                                        : const Text('No member'),
                                   ),
                             ],
                           ),

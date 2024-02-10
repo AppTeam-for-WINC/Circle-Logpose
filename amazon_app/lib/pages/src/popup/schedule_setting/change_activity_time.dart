@@ -1,6 +1,6 @@
 import 'package:amazon_app/controller/common/time_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_change/change_activity_time_picker.dart';
-import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/change_activity_time_picker.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -151,8 +151,8 @@ class GroupScheduleController {
     );
   }
 
-  ///Update scheule database.
-  ///Group ID can't be changed.
+  /// Update scheule database.
+  /// Group ID can't be changed.
   static Future<void> update({
     required String docId,
     required String groupId,
