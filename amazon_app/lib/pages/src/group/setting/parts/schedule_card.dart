@@ -1,6 +1,6 @@
 import 'package:amazon_app/controller/common/color_exchanger.dart';
 import 'package:amazon_app/pages/src/group/setting/group_setting_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

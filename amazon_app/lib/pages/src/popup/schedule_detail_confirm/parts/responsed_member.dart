@@ -1,10 +1,23 @@
+import 'package:amazon_app/database/group/group/group.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
+import 'package:amazon_app/pages/src/group/setting/parts/group_member_image.dart';
+import 'package:amazon_app/pages/src/popup/schedule_detail_confirm/parts/reaponsed_member_controller.dart';
 import 'package:amazon_app/pages/src/popup/schedule_join_member/schedule_join_member.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ResponsedMembers extends ConsumerStatefulWidget {
-  const ResponsedMembers({super.key});
+  const ResponsedMembers({
+    super.key,
+    required this.groupProfile,
+    required this.scheduleId,
+    required this.schedule,
+  });
+
+  final GroupProfile groupProfile;
+  final String scheduleId;
+  final GroupSchedule schedule;
   @override
   ConsumerState createState() => _ResponsedMemberState();
 }
@@ -12,13 +25,27 @@ class ResponsedMembers extends ConsumerStatefulWidget {
 class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
   @override
   Widget build(BuildContext context) {
+    final groupProfile = widget.groupProfile;
+    final scheduleId = widget.scheduleId;
+    final schedule = widget.schedule;
+    final groupMember =
+        ref.watch(groupMembershipProfileListNotAbsenceProvider(scheduleId));
+
     return GestureDetector(
       onTap: () async {
         await showCupertinoModalPopup<ScheduleJoinMember>(
           context: context,
           builder: (BuildContext context) {
-            return const Center(
-              child: ScheduleJoinMember(),
+            return groupMember.when(
+              data: (membershipProfiles) {
+                return ScheduleJoinMember(
+                  memberProfiles: membershipProfiles,
+                  groupProfile: groupProfile,
+                  schedule: schedule,
+                );
+              },
+              loading: () => const SizedBox.shrink(),
+              error: (error, stack) => Text('$error'),
             );
           },
         );
@@ -41,58 +68,24 @@ class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
                 ),
               ),
             ),
-            // Added schedule responsed members.
+            groupMember.when(
+              data: (membershipProfiles) {
+                return Column(
+                  children: membershipProfiles.map((membershipProfile) {
+                    return membershipProfile != null
+                        ? GroupMemberImage(
+                            userProfile: membershipProfile,
+                          )
+                        : const SizedBox.shrink();
+                  }).toList(),
+                );
+              },
+              loading: () => const SizedBox.shrink(),
+              error: (error, stack) => Text('$error'),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-// class PresentMember extends ConsumerWidget {
-//   // 参加メンバーのアイコンを取得するように変更してください
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     List<Widget> iconWidgets = [];
-
-//     int iconCount = 0;
-//     while (iconCount < maxIcons) {
-//       iconWidgets.add(
-//         Container(
-//           margin: const EdgeInsets.only(right: 5),
-//           child: GestureDetector(
-//             onTap: () async{
-//               await showCupertinoModalPopup<ScheduleJoinMember>(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return const Center(
-//                     child: ScheduleJoinMember(),
-//                   );
-//                 },
-//               );
-//             },
-//             child: Icon(
-//               memberIcon,
-//               size: 20,
-//             ),
-//           ),
-//         ),
-//       );
-//       iconCount++;
-//     }
-
-//     if (iconCount >= maxIcons) {
-//       iconWidgets.add(
-//         const Text(
-//           '…',
-//           style: TextStyle(color: Colors.grey),
-//         ),
-//       );
-//     }
-
-//     return Row(
-//       children: iconWidgets,
-//     );
-//   }
-// }
-// //参加メンバーのアイコン↑

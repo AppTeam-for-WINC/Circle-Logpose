@@ -1,4 +1,4 @@
-import 'package:amazon_app/pages/src/popup/schedule_change/schedule_change_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

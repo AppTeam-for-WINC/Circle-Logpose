@@ -1,14 +1,23 @@
-import 'package:flutter/cupertino.dart';
+import 'package:amazon_app/controller/common/color_exchanger.dart';
+import 'package:amazon_app/controller/common/time_controller.dart';
+import 'package:amazon_app/database/group/group/group.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
+import 'package:amazon_app/database/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'parts/join_member.dart';
 
-// 担当　小山祐希
-
-// ポップアップ画面
 class ScheduleJoinMember extends ConsumerStatefulWidget {
-  const ScheduleJoinMember({super.key});
+  const ScheduleJoinMember({
+    super.key,
+    required this.memberProfiles,
+    required this.groupProfile,
+    required this.schedule,
+  });
 
+  final List<UserProfile?> memberProfiles;
+  final GroupProfile groupProfile;
+  final GroupSchedule schedule;
   @override
   ConsumerState<ScheduleJoinMember> createState() {
     return ScheduleJoinMemberState();
@@ -19,6 +28,11 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
+
+    final memberProfiles = widget.memberProfiles;
+    final groupProfile = widget.groupProfile;
+    final schedule = widget.schedule;
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: deviceHeight * 0.02,
@@ -32,12 +46,12 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
             width: 360,
             height: 500,
             child: Stack(
-              children: [ 
+              children: [
                 Column(
                   children: [
                     Container(
                       height: 99,
-                      color: const Color(0xFFD8EB61),
+                      color: hexToColor(schedule.color),
                     ),
                     Container(
                       height: 401,
@@ -45,13 +59,20 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                     ),
                   ],
                 ),
-                const Positioned(
+                Positioned(
                   top: 80,
                   left: 24,
-                  child: FittedBox(
-                    child: Icon(
-                      Icons.group,
-                      size: 40,
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: groupProfile.image.startsWith('http')
+                            ? NetworkImage(groupProfile.image)
+                            : AssetImage(groupProfile.image) as ImageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(999),
                     ),
                   ),
                 ),
@@ -62,20 +83,47 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 140),
-                        child: const Text(
-                          'Designer23',
-                          style: TextStyle(fontSize: 30),
+                        child: Text(
+                          schedule.title,
+                          style: const TextStyle(fontSize: 30),
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: const Text(
-                          '2023/9/20  13:00-14:00',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF043139),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Text(
+                              formatDateTimeExcYearHourMinuteDay(
+                                schedule.startAt,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            formatDateTimeExcYearMonthDay(
+                              schedule.startAt,
+                            ),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const Text(
+                            '-',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            formatDateTimeExcYearMonthDay(
+                              schedule.endAt,
+                            ),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
                         margin: const EdgeInsets.only(
@@ -105,20 +153,11 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(10),
-                          children: const <Widget>[
-                            //後でデータベースと繋げます
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                            JoinMember(),
-                          ],
+                          children: memberProfiles
+                              .whereType<UserProfile>()
+                              .map((userProfile) {
+                            return JoinMember(userProfile: userProfile);
+                          }).toList(),
                         ),
                       ),
                     ],

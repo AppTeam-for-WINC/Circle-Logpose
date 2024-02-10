@@ -1,12 +1,20 @@
+import 'package:amazon_app/database/user/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// 参加メンバーのアイコン↓
-class JoinMember extends ConsumerWidget {
-  const JoinMember({super.key});
+class JoinMember extends ConsumerStatefulWidget {
+  const JoinMember({super.key, required this.userProfile});
+  final UserProfile userProfile;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<JoinMember> createState() => _JoinMemberState();
+}
+
+class _JoinMemberState extends ConsumerState<JoinMember> {
+  @override
+  Widget build(BuildContext context) {
+    final userProfile = widget.userProfile;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         boxShadow: const [
@@ -20,22 +28,31 @@ class JoinMember extends ConsumerWidget {
         borderRadius: BorderRadius.circular(40),
         color: const Color.fromARGB(255, 248, 233, 255),
       ),
-      child: const Padding(
-        padding: EdgeInsets.only(left: 3),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 3),
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 5),
-              child: Icon(
-                Icons.group,
-                size: 37,
+              padding: const EdgeInsets.only(left: 5),
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: userProfile.image.startsWith('http')
+                        ? NetworkImage(userProfile.image)
+                        : AssetImage(userProfile.image) as ImageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(999),
+                ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
-                'User1',
-                style: TextStyle(color: Colors.grey),
+                userProfile.name,
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           ],
@@ -44,4 +61,3 @@ class JoinMember extends ConsumerWidget {
     );
   }
 }
-//参加メンバーのアイコン↑

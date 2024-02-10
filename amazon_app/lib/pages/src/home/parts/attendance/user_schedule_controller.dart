@@ -21,14 +21,140 @@ final checkGroupExistProvider = StreamProvider<bool>((ref) async* {
   }
 });
 
-class UpdateGroupMemberSchedule {
-  UpdateGroupMemberSchedule._internal();
-  static final UpdateGroupMemberSchedule _instance =
-      UpdateGroupMemberSchedule._internal();
-  static UpdateGroupMemberSchedule get instance => _instance;
+final setMemberScheduleProvider = StateNotifierProvider.family<
+    _SetMemberScheduleNotifier, _SetMemberScheduleViewer?, String>(
+  (ref, groupScheduleId) => _SetMemberScheduleNotifier(groupScheduleId),
+);
+
+class _SetMemberScheduleViewer {
+  _SetMemberScheduleViewer({
+    this.attendance,
+    this.leavingEarly,
+    this.lateness,
+    this.absence,
+    this.startAt,
+    this.endAt,
+  });
+
+  final bool? attendance;
+  final bool? leavingEarly;
+  final bool? lateness;
+  final bool? absence;
+  final DateTime? startAt;
+  final DateTime? endAt;
+
+  _SetMemberScheduleViewer copyWith({
+    DateTime? startAt,
+    DateTime? endAt,
+    bool? attendance,
+    bool? leavingEarly,
+    bool? lateness,
+    bool? absence,
+  }) {
+    return _SetMemberScheduleViewer(
+      startAt: startAt ?? this.startAt,
+      endAt: endAt ?? this.startAt,
+      attendance: attendance ?? this.attendance,
+      leavingEarly: leavingEarly ?? this.leavingEarly,
+      lateness: lateness ?? this.lateness,
+      absence: absence ?? this.absence,
+    );
+  }
+}
+
+class _SetMemberScheduleNotifier
+    extends StateNotifier<_SetMemberScheduleViewer?> {
+  _SetMemberScheduleNotifier(
+    String groupScheduleId,
+  ) : super(null) {
+    _initSchedule(groupScheduleId);
+  }
+
+  Future<void> _initSchedule(String groupScheduleId) async {
+    final groupSchedule = await GroupScheduleController.read(groupScheduleId);
+    if (groupSchedule == null) {
+      return;
+    }
+
+    final userDocId = await AuthController.getCurrentUserId();
+    if (userDocId == null) {
+      throw Exception('User not logged in.');
+    }
+
+    final memberScheduleId = await GroupMemberScheduleSetting.readDocId(
+      groupScheduleId,
+      userDocId,
+    );
+    if (memberScheduleId == null) {
+      return;
+    }
+
+    final memberSchedule =
+        await GroupMemberScheduleController.read(memberScheduleId);
+    if (memberSchedule == null) {
+      return;
+    }
+
+    state = _SetMemberScheduleViewer(
+      startAt: groupSchedule.startAt,
+      endAt: groupSchedule.endAt,
+      attendance: memberSchedule.attendance,
+      leavingEarly: memberSchedule.leaveEarly,
+      lateness: memberSchedule.lateness,
+      absence: memberSchedule.absence,
+    );
+  }
+
+  void setStartAt(DateTime startAt) {
+    state = state!.copyWith(startAt: startAt);
+  }
+
+  void setEndAt(DateTime endAt) {
+    state = state!.copyWith(endAt: endAt);
+  }
+
+  void setAttendance({required bool attendance}) {
+    state = state!.copyWith(
+      attendance: !attendance,
+      leavingEarly: false,
+      lateness: false,
+      absence: false,
+    );
+  }
+  void setLeavingEarly({required bool leavingEarly}) {
+    state = state!.copyWith(
+      attendance: false,
+      leavingEarly: !leavingEarly,
+      lateness: false,
+      absence: false,
+    );
+  }
+  void setLateness({required bool lateness}) {
+    state = state!.copyWith(
+      attendance: false,
+      leavingEarly: false,
+      lateness: !lateness,
+      absence: false,
+    );
+  }
+  void setAbsence({required bool absence}) {
+    state = state!.copyWith(
+      attendance: false,
+      leavingEarly: false,
+      lateness: false,
+      absence: !absence,
+    );
+  }
+}
+
+class GroupMemberScheduleSetting {
+  GroupMemberScheduleSetting._internal();
+  static final GroupMemberScheduleSetting _instance =
+      GroupMemberScheduleSetting._internal();
+  static GroupMemberScheduleSetting get instance => _instance;
 
   static Future<void> update({
-    required String docId,
+    required String scheduleId,
     required bool attendance,
     required bool leaveEarly,
     required bool lateness,
@@ -37,18 +163,70 @@ class UpdateGroupMemberSchedule {
     required DateTime? endAt,
   }) async {
     try {
+      final userDocId = await AuthController.getCurrentUserId();
+      if (userDocId == null) {
+        throw Exception('User not logged in.');
+      }
+      final docId = await readDocId(scheduleId, userDocId);
+      if (docId == null) {
+        return;
+      }
       await GroupMemberScheduleController.update(
-      docId: docId,
-      attendance: attendance,
-      leaveEarly: leaveEarly,
-      lateness: lateness,
-      absence: absence,
-      startAt: startAt,
-      endAt: endAt,
-    );
+        docId: docId,
+        attendance: attendance,
+        leaveEarly: leaveEarly,
+        lateness: lateness,
+        absence: absence,
+        startAt: startAt,
+        endAt: endAt,
+      );
     } on FirebaseException catch (e) {
       throw Exception('Failed to update database. $e');
     }
+  }
+
+  static Future<void> updateTime({
+    required String scheduleId,
+    DateTime? startAt,
+    DateTime? endAt,
+  }) async {
+    try {
+      final userDocId = await AuthController.getCurrentUserId();
+      if (userDocId == null) {
+        throw Exception('User not logged in.');
+      }
+      final docId = await readDocId(scheduleId, userDocId);
+      if (docId == null) {
+        return;
+      }
+      await GroupMemberScheduleController.updateTime(
+        docId: docId,
+        startAt: startAt,
+        endAt: endAt,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to update database. $e');
+    }
+  }
+
+  static Future<String?> readDocId(
+    String scheduleId,
+    String userDocId,
+  ) async {
+    try {
+      final docId =
+          await GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
+        scheduleId: scheduleId,
+        userDocId: userDocId,
+      );
+      return docId;
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to read Doc ID. $e');
+    }
+  }
+
+  static Future<String?> readGroupMembershipSchedule() async {
+    return null;
   }
 }
 

@@ -20,6 +20,9 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
   @override
   Widget build(BuildContext context) {
     final groupSchedule = widget.groupProfileWithScheduleWithId.groupSchedule;
+    final groupScheduleId =
+        widget.groupProfileWithScheduleWithId.groupScheduleId;
+    final schedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +45,10 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
                 showCupertinoModalPopup<void>(
                   context: context,
                   builder: (BuildContext context) {
-                    return const JoinScheduleStartDateTimePicker();
+                    return JoinScheduleStartDateTimePicker(
+                      groupSchedule: groupSchedule,
+                      groupScheduleId: groupScheduleId,
+                    );
                   },
                 );
               },
@@ -50,7 +56,7 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
               child: Consumer(
                 builder: (context, watch, child) {
                   return Text(
-                    formatDateTimeExcYear(groupSchedule.startAt),
+                    formatDateTimeExcYear(schedule!.startAt!),
                   );
                 },
               ),
@@ -73,7 +79,10 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
                 showCupertinoModalPopup<void>(
                   context: context,
                   builder: (BuildContext context) {
-                    return const JoinScheduleEndDateTimePicker();
+                    return JoinScheduleEndDateTimePicker(
+                      groupSchedule: groupSchedule,
+                      groupScheduleId: groupScheduleId,
+                    );
                   },
                 );
               },
@@ -81,7 +90,8 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
               child: Consumer(
                 builder: (context, watch, child) {
                   return Text(
-                    formatDateTimeExcYear(groupSchedule.endAt),
+                    formatDateTimeExcYear(schedule!.endAt!),
+                    // formatDateTimeExcYear(schedule!.endAt!),
                   );
                 },
               ),

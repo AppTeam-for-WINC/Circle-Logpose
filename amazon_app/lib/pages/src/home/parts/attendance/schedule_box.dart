@@ -18,18 +18,27 @@ class GroupScheduleCard extends ConsumerStatefulWidget {
 }
 
 class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
-  bool _isAttendance = false;
-  bool _isLeavingEarly = false;
-  bool _isBehindTime = false;
-  bool _isAbsence = false;
+  // bool _isAttendance = false;
+  // bool _isLeavingEarly = false;
+  // bool _isBehindTime = false;
+  // bool _isAbsence = false;
 
   @override
   Widget build(BuildContext context) {
     final groupProfileWithScheduleWithId = widget.groupData;
+    final groupId = groupProfileWithScheduleWithId.groupId;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
     final groupSchedule = widget.groupData.groupSchedule;
     final groupScheduleId = widget.groupData.groupScheduleId;
+    final userSchedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
+    final userScheduleNotifier =
+        ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
+
+    final isAttendance = userSchedule!.attendance!;
+    final isLeavingEarly = userSchedule.leavingEarly!;
+    final isBehindTime = userSchedule.lateness!;
+    final isAbsence = userSchedule.absence!;
 
     return Container(
       width: 375,
@@ -104,7 +113,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                   ScheduleDetailConfirm>(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  if (_isAttendance) {
+                                  if (isAttendance) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.attendance,
@@ -112,10 +121,12 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.attendance,
                                       ),
+                                      groupId: groupId,
                                       group: groupProfile,
+                                      scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (_isLeavingEarly) {
+                                  } else if (isLeavingEarly) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.leavingEarly,
@@ -123,10 +134,12 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.leavingEarly,
                                       ),
+                                      groupId: groupId,
                                       group: groupProfile,
+                                      scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (_isBehindTime) {
+                                  } else if (isBehindTime) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.behindTime,
@@ -134,10 +147,12 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.behindTime,
                                       ),
+                                      groupId: groupId,
                                       group: groupProfile,
+                                      scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (_isAbsence) {
+                                  } else if (isAbsence) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.absence,
@@ -145,14 +160,18 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.absence,
                                       ),
+                                      groupId: groupId,
                                       group: groupProfile,
+                                      scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
                                   } else {
                                     return ScheduleDetailConfirm(
                                       responseIcon: null,
                                       responseText: null,
+                                      groupId: groupId,
                                       group: groupProfile,
+                                      scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
                                   }
@@ -193,19 +212,15 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         // Attendance
                         GestureDetector(
                           onTap: () async {
-                            setState(() {
-                              _isAttendance = !_isAttendance;
-                              _isLeavingEarly = false;
-                              _isBehindTime = false;
-                              _isAbsence = false;
-                            });
-
-                            await UpdateGroupMemberSchedule.update(
-                              docId: groupScheduleId,
-                              attendance: _isAttendance,
-                              leaveEarly: _isLeavingEarly,
-                              lateness: _isBehindTime,
-                              absence: _isAbsence,
+                            userScheduleNotifier.setAttendance(
+                              attendance: userSchedule.attendance!,
+                            );
+                            await GroupMemberScheduleSetting.update(
+                              scheduleId: groupScheduleId,
+                              attendance: isAttendance,
+                              leaveEarly: isLeavingEarly,
+                              lateness: isBehindTime,
+                              absence: isAbsence,
                               startAt: null,
                               endAt: null,
                             );
@@ -215,7 +230,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isAttendance
+                              color: isAttendance
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
@@ -238,13 +253,22 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         // LeavingEarly
                         GestureDetector(
                           onTap: () async {
-                            setState(() {
-                              _isAttendance = false;
-                              _isLeavingEarly = !_isLeavingEarly;
-                              _isBehindTime = false;
-                              _isAbsence = false;
-                            });
-                            if (_isLeavingEarly) {
+                            userScheduleNotifier.setLeavingEarly(
+                              leavingEarly: userSchedule.leavingEarly!,
+                            );
+                            await GroupMemberScheduleSetting.update(
+                              scheduleId: groupScheduleId,
+                              attendance: isAttendance,
+                              leaveEarly: isLeavingEarly,
+                              lateness: isBehindTime,
+                              absence: isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
+                            if (!mounted) {
+                              return;
+                            }
+                            if (isLeavingEarly) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
@@ -262,22 +286,13 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 },
                               );
                             }
-                            await UpdateGroupMemberSchedule.update(
-                              docId: groupScheduleId,
-                              attendance: _isAttendance,
-                              leaveEarly: _isLeavingEarly,
-                              lateness: _isBehindTime,
-                              absence: _isAbsence,
-                              startAt: null,
-                              endAt: null,
-                            );
                           },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isLeavingEarly
+                              color: isLeavingEarly
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
@@ -300,13 +315,22 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         // BehindTime (lateness)
                         GestureDetector(
                           onTap: () async {
-                            setState(() {
-                              _isAttendance = false;
-                              _isLeavingEarly = false;
-                              _isBehindTime = !_isBehindTime;
-                              _isAbsence = false;
-                            });
-                            if (_isBehindTime) {
+                            userScheduleNotifier.setLateness(
+                              lateness: userSchedule.lateness!,
+                            );
+                            await GroupMemberScheduleSetting.update(
+                              scheduleId: groupScheduleId,
+                              attendance: isAttendance,
+                              leaveEarly: isLeavingEarly,
+                              lateness: isBehindTime,
+                              absence: isAbsence,
+                              startAt: null,
+                              endAt: null,
+                            );
+                            if (!mounted) {
+                              return;
+                            }
+                            if (isBehindTime) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
@@ -324,22 +348,13 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 },
                               );
                             }
-                            await UpdateGroupMemberSchedule.update(
-                              docId: groupScheduleId,
-                              attendance: _isAttendance,
-                              leaveEarly: _isLeavingEarly,
-                              lateness: _isBehindTime,
-                              absence: _isAbsence,
-                              startAt: null,
-                              endAt: null,
-                            );
                           },
                           child: Container(
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isBehindTime
+                              color: isBehindTime
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),
@@ -362,19 +377,16 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         // Absence
                         GestureDetector(
                           onTap: () async {
-                            setState(() {
-                              _isAttendance = false;
-                              _isLeavingEarly = false;
-                              _isBehindTime = false;
-                              _isAbsence = !_isAbsence;
-                            });
+                            userScheduleNotifier.setAbsence(
+                              absence: userSchedule.absence!,
+                            );
 
-                            await UpdateGroupMemberSchedule.update(
-                              docId: groupScheduleId,
-                              attendance: _isAttendance,
-                              leaveEarly: _isLeavingEarly,
-                              lateness: _isBehindTime,
-                              absence: _isAbsence,
+                            await GroupMemberScheduleSetting.update(
+                              scheduleId: groupScheduleId,
+                              attendance: isAttendance,
+                              leaveEarly: isLeavingEarly,
+                              lateness: isBehindTime,
+                              absence: isAbsence,
                               startAt: null,
                               endAt: null,
                             );
@@ -384,7 +396,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
-                              color: _isAbsence
+                              color: isAbsence
                                   ? const Color(0xFFFBCEFF)
                                   : Colors.white,
                             ),

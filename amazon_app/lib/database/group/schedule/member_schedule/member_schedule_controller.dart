@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import 'member_schedule.dart';
 
@@ -15,10 +16,10 @@ class GroupMemberScheduleController {
   static Future<void> create({
     required String scheduleId,
     required String userId,
-    bool? attendance,
-    bool? leaveEarly,
-    bool? lateness,
-    bool? absence,
+    bool attendance = false,
+    bool leaveEarly = false,
+    bool lateness = false,
+    bool absence = false,
     DateTime? startAt,
     DateTime? endAt,
   }) async {
@@ -40,27 +41,51 @@ class GroupMemberScheduleController {
   }
 
   /// Read GroupMemberSchedule.
-  static Future<GroupMemberSchedule> read(String docId) async {
+  static Future<GroupMemberSchedule?> read(String docId) async {
     final groupMemberScheduleDoc =
         await db.collection(collectionPath).doc(docId).get();
     final groupMemberScheduleRef = groupMemberScheduleDoc.data();
     if (groupMemberScheduleRef == null) {
       throw Exception('Error : No found document data.');
     }
+    final scheduleId = groupMemberScheduleRef['schedule_id'] as String;
+    final userId = groupMemberScheduleRef['user_id'] as String;
+    final attendance = groupMemberScheduleRef['attendance'] as bool;
+    final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
+    final lateness = groupMemberScheduleRef['lateness'] as bool;
+    final absence = groupMemberScheduleRef['absence'] as bool;
+    final startAt = groupMemberScheduleRef['start_at'] as DateTime?;
+    final endAt = groupMemberScheduleRef['end_at'] as DateTime?;
+    final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
+    final createdAt = groupMemberScheduleRef['created_at'] as Timestamp?;
+    if (createdAt == null) {
+      return null;
+    }
 
-    return GroupMemberSchedule.fromMap(groupMemberScheduleRef);
+    return GroupMemberSchedule(
+      scheduleId: scheduleId,
+      userId: userId,
+      attendance: attendance,
+      leaveEarly: leaveEarly,
+      lateness: lateness,
+      absence: absence,
+      startAt: startAt,
+      endAt: endAt,
+      updatedAt: updatedAt,
+      createdAt: createdAt,
+    );
   }
 
   /// Read GroupMembershipSchedule's doc ID.
-  static Future<String?> readDocIdWithScheduleIdAndUserId(
-    String scheduleDocId,
-    String userDocId,
-  ) async {
+  static Future<String?> readDocIdWithScheduleIdAndUserId({
+    required String scheduleId,
+    required String userDocId,
+  }) async {
     final groupMemberScheduleSnapshot = await db
         .collection(collectionPath)
         .where(
           'schedule_id',
-          isEqualTo: scheduleDocId,
+          isEqualTo: scheduleId,
         )
         .where(
           'user_id',
@@ -73,22 +98,22 @@ class GroupMemberScheduleController {
       if (groupMembershipScheduleRef == null) {
         return null;
       }
-      
+
       return doc.id;
     }).first;
     return groupMemberSchedule;
   }
-   
-  /// Read GroupMembershipSchedule by GroupSchedule, UserDocID.
+
+  /// Read GroupMembershipSchedule by GroupScheduleID, UserDocID.
   static Future<GroupMemberSchedule?> readWithScheduleIdAndUserId(
-    String scheduleDocId,
+    String scheduleId,
     String userDocId,
   ) async {
     final groupMemberScheduleSnapshot = await db
         .collection(collectionPath)
         .where(
           'schedule_id',
-          isEqualTo: scheduleDocId,
+          isEqualTo: scheduleId,
         )
         .where(
           'user_id',
@@ -132,6 +157,46 @@ class GroupMemberScheduleController {
     return groupMemberSchedule;
   }
 
+  // Read AlMemberships's UserDocId under conditions
+  // absence != null, absence == false.
+  static Stream<List<String?>> readAllMembershipUserDocIdByTerm(
+    String scheduleId,
+    String userDocId,
+  ) async* {
+    final groupMemberScheduleStream = db
+        .collection(collectionPath)
+        .where(
+          'schedule_id',
+          isEqualTo: scheduleId,
+        )
+        .where(
+          'user_id',
+          isEqualTo: userDocId,
+        )
+        .snapshots();
+
+    await for (final groupMemberSchedules in groupMemberScheduleStream) {
+      final groupMemberSchedulesUserDocIds = groupMemberSchedules.docs
+          .map((doc) {
+            final groupMemberSchedulesRef = doc.data() as Map<String, dynamic>?;
+            if (groupMemberSchedulesRef == null) {
+              debugPrint('Error : No found document data.');
+              return null;
+            }
+            final absence = groupMemberSchedulesRef['absence'] as bool?;
+            if (absence == null || !absence) {
+              final userDocId = groupMemberSchedulesRef['user_id'] as String;
+              return userDocId;
+            }
+            return null;
+          })
+          .whereType<String>()
+          .toList();
+
+      yield groupMemberSchedulesUserDocIds;
+    }
+  }
+
   /// Update GroupMembershipSchedule.
   static Future<void> update({
     required String docId,
@@ -146,9 +211,26 @@ class GroupMemberScheduleController {
 
     final updateData = <String, dynamic>{
       'attendance': attendance,
-      'leaveEarly': leaveEarly,
+      'leave_early': leaveEarly,
       'lateness': lateness,
       'absence': absence,
+      'start_at': startAt,
+      'end_at': endAt,
+      'updated_at': updatedAt,
+    };
+
+    await db.collection(collectionPath).doc(docId).update(updateData);
+  }
+
+  /// Update GroupMembershipSchedule.
+  static Future<void> updateTime({
+    required String docId,
+    required DateTime? startAt,
+    required DateTime? endAt,
+  }) async {
+    final updatedAt = FieldValue.serverTimestamp();
+
+    final updateData = <String, dynamic>{
       'start_at': startAt,
       'end_at': endAt,
       'updated_at': updatedAt,

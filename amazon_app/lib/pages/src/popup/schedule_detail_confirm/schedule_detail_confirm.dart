@@ -12,12 +12,16 @@ class ScheduleDetailConfirm extends ConsumerStatefulWidget {
     super.key,
     required this.responseIcon,
     required this.responseText,
+    required this.groupId,
     required this.group,
+    required this.scheduleId,
     required this.schedule,
   });
   final Icon? responseIcon;
   final Text? responseText;
+  final String groupId;
   final GroupProfile group;
+  final String scheduleId;
   final GroupSchedule schedule;
   @override
   ConsumerState createState() => _ScheduleDetailConfirmState();
@@ -30,8 +34,10 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
 
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
+    final groupId = widget.groupId;
     final group = widget.group;
     final groupSchedule = widget.schedule;
+    final groupScheduleId = widget.scheduleId;
 
     return Center(
       child: Padding(
@@ -151,7 +157,11 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                           ],
                         ),
                         // Responsed members
-                        const ResponsedMembers(),
+                        ResponsedMembers(
+                          groupProfile: group,
+                          scheduleId: groupScheduleId,
+                          schedule: groupSchedule,
+                        ),
                         Container(
                           margin: const EdgeInsets.only(top: 15),
                           child: Column(

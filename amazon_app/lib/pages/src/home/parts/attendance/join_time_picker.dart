@@ -1,10 +1,18 @@
-import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
+import 'package:amazon_app/pages/src/home/parts/attendance/user_schedule_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JoinScheduleStartDateTimePicker extends ConsumerStatefulWidget {
-  const JoinScheduleStartDateTimePicker({super.key});
+  const JoinScheduleStartDateTimePicker({
+    super.key,
+    required this.groupSchedule,
+    required this.groupScheduleId,
+  });
+
+  final GroupSchedule groupSchedule;
+  final String groupScheduleId;
   @override
   ConsumerState createState() => _JoinScheduleStartDateTimePickerState();
 }
@@ -13,7 +21,12 @@ class _JoinScheduleStartDateTimePickerState
     extends ConsumerState<JoinScheduleStartDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    final groupSchedule = widget.groupSchedule;
+    final groupScheduleId = widget.groupScheduleId;
+    final schedule =
+        ref.watch(setMemberScheduleProvider(groupScheduleId));
+    final scheduleNotifier =
+        ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
     return Container(
       height: 300,
       color: Colors.white,
@@ -55,15 +68,23 @@ class _JoinScheduleStartDateTimePickerState
               ),
             ],
           ),
+          /// Maximum is endAt -1 min.
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
-              // initialDateTime: schedule!.startAt,
+              initialDateTime: schedule!.startAt,
               backgroundColor: Colors.white,
               use24hFormat: true,
-              minimumDate: DateTime.now(),
+              minimumDate: groupSchedule.startAt,
+              maximumDate: groupSchedule.endAt.add(
+                const Duration(minutes: -1),
+              ),
               onDateTimeChanged: (newDateTime) async {
                 scheduleNotifier.setStartAt(newDateTime);
+                await GroupMemberScheduleSetting.updateTime(
+                  scheduleId: groupScheduleId,
+                  startAt: newDateTime,
+                );
               },
             ),
           ),
@@ -74,7 +95,14 @@ class _JoinScheduleStartDateTimePickerState
 }
 
 class JoinScheduleEndDateTimePicker extends ConsumerStatefulWidget {
-  const JoinScheduleEndDateTimePicker({super.key});
+  const JoinScheduleEndDateTimePicker({
+    super.key,
+    required this.groupSchedule,
+    required this.groupScheduleId,
+  });
+
+  final GroupSchedule groupSchedule;
+  final String groupScheduleId;
   @override
   ConsumerState createState() => _JoinScheduleEndDateTimePickerState();
 }
@@ -83,8 +111,11 @@ class _JoinScheduleEndDateTimePickerState
     extends ConsumerState<JoinScheduleEndDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(createGroupScheduleProvider);
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    final groupSchedule = widget.groupSchedule;
+    final groupScheduleId = widget.groupScheduleId;
+    final schedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
+    final scheduleNotifier =
+        ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
     return Container(
       height: 300,
       color: Colors.white,
@@ -126,20 +157,20 @@ class _JoinScheduleEndDateTimePickerState
               ),
             ],
           ),
-          // Delayed 10minutes with StartAt.
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
-              initialDateTime: schedule!.startAt.add(
-                const Duration(minutes: 10),
-              ),
+              initialDateTime: groupSchedule.endAt,
               backgroundColor: Colors.white,
               use24hFormat: true,
-              minimumDate: schedule.startAt.add(
-                const Duration(minutes: 10),
-              ),
+              minimumDate: schedule!.startAt,
+              maximumDate: groupSchedule.endAt,
               onDateTimeChanged: (newDateTime) async {
                 scheduleNotifier.setEndAt(newDateTime);
+                await GroupMemberScheduleSetting.updateTime(
+                  scheduleId: groupScheduleId,
+                  endAt: newDateTime,
+                );
               },
             ),
           ),
