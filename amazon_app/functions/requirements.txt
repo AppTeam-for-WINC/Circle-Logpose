@@ -1,5 +1,0 @@
-firebase_functions~=0.1.0
-firestore
-langchain==0.1.0
-langchain-community==0.0.12
-openai==1.7.2
