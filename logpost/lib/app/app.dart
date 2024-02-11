@@ -19,6 +19,12 @@ class LogpostApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
+      theme: const CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(
+          primaryColor: CupertinoColors.white,
+          textStyle: TextStyle(color: CupertinoColors.black),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale('ja'),
