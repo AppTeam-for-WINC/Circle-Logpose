@@ -8,14 +8,15 @@ import 'utils/range.dart';
 
 /// Widget based on [TabController]. Can simply replace [TabBar].
 ///
-/// Requires [TabController], witch can be read from [context] with
-/// [DefaultTabController] using. Or you can provide controller in the constructor.
+/// Requires [TabController], witch can be read from context with
+/// [DefaultTabController] using.
+/// Or you can provide controller in the constructor.
 class SegmentedTabControl extends StatelessWidget {
   const SegmentedTabControl({
-    Key? key,
+    super.key,
     this.height = 46,
     required this.tabs,
-    this.controller,
+    // this.controller,
     this.backgroundColor,
     this.backgroundGradient,
     this.tabTextColor,
@@ -30,18 +31,18 @@ class SegmentedTabControl extends StatelessWidget {
     this.radius = const Radius.circular(20),
     this.splashColor,
     this.splashHighlightColor,
-  }) : super(key: key);
+  });
 
   /// Height of the widget.
   ///
-  /// [preferredSize] returns this value.
+  /// preferredSize returns this value.
   final double height;
 
   /// Selection options.
   final List<SegmentTab> tabs;
 
   /// Can be provided by [DefaultTabController].
-  final TabController? controller;
+  // final TabController? controller;
 
   /// The color of the area beyond the indicator.
   final Color? backgroundColor;
@@ -102,7 +103,7 @@ class SegmentedTabControl extends StatelessWidget {
         return _SegmentedTabControl(
           tabs: tabs,
           height: height,
-          controller: controller,
+          // controller: controller,
           backgroundColor: backgroundColor,
           backgroundGradient: backgroundGradient,
           tabTextColor: tabTextColor,
@@ -127,7 +128,6 @@ class SegmentedTabControl extends StatelessWidget {
 class _SegmentedTabControl extends StatefulWidget
     implements PreferredSizeWidget {
   const _SegmentedTabControl({
-    Key? key,
     this.height = 46,
     required this.tabs,
     this.controller,
@@ -146,7 +146,7 @@ class _SegmentedTabControl extends StatefulWidget
     this.splashColor,
     this.splashHighlightColor,
     required this.maxWidth,
-  }) : super(key: key);
+  });
 
   final double height;
   final List<SegmentTab> tabs;
@@ -212,8 +212,9 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
 
   @override
   void dispose() {
-    _internalAnimationController.removeListener(_handleInternalAnimationTick);
-    _internalAnimationController.dispose();
+    _internalAnimationController
+      ..removeListener(_handleInternalAnimationTick)
+      ..dispose();
     super.dispose();
   }
 
@@ -229,8 +230,8 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 
   void _calculateFlexFactors() {
-    int collectedFlex = 0;
-    for (int i = 0; i < widget.tabs.length; i++) {
+    var collectedFlex = 0;
+    for (var i = 0; i < widget.tabs.length; i++) {
       collectedFlex += widget.tabs[i].flex;
       flexFactors.add(collectedFlex / _totalFlex);
     }
@@ -247,20 +248,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 
   void _updateTabController() {
-    final TabController? newController =
-        widget.controller ?? DefaultTabController.of(context);
-    assert(() {
-      if (newController == null) {
-        throw FlutterError(
-          'No TabController for ${widget.runtimeType}.\n'
-          'When creating a ${widget.runtimeType}, you must either provide an explicit '
-          'TabController using the "controller" property, or you must ensure that there '
-          'is a DefaultTabController above the ${widget.runtimeType}.\n'
-          'In this case, there was neither an explicit controller nor a default controller.',
-        );
-      }
-      return true;
-    }());
+    final newController = widget.controller ?? DefaultTabController.of(context);
 
     if (newController == _controller) {
       return;
@@ -286,10 +274,10 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 
   void _calculateTabIndicatorAlignmentRanges() {
-    double computedWidth = 0;
-    double alignmentStartX = 0;
+    var computedWidth = 0.0;
+    var alignmentStartX = 0.0;
 
-    for (int index = 0; index < _controller!.length - 1; index++) {
+    for (var index = 0; index < _controller!.length - 1; index++) {
       final tab = widget.tabs[index];
       final nextTab = widget.tabs[index + 1];
 
@@ -313,7 +301,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
 
   Alignment _animationValueToAlignment(double? value) {
     if (value == null) {
-      return const Alignment(-1, 0);
+      return Alignment.centerLeft;
     }
 
     final index = value.round();
@@ -350,10 +338,12 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 
   TickerFuture _animateIndicatorTo(Alignment target) {
-    _internalAnimation = _internalAnimationController.drive(AlignmentTween(
-      begin: _currentIndicatorAlignment,
-      end: target,
-    ));
+    _internalAnimation = _internalAnimationController.drive(
+      AlignmentTween(
+        begin: _currentIndicatorAlignment,
+        end: target,
+      ),
+    );
 
     return _internalAnimationController.fling();
   }
@@ -390,116 +380,119 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
 
     return DefaultTextStyle(
       style: widget.textStyle ?? DefaultTextStyle.of(context).style,
-      child: LayoutBuilder(builder: (context, constraints) {
-        _maxWidth = constraints.maxWidth;
-        final indicatorWidth =
-            ((constraints.maxWidth - widget.indicatorPadding.horizontal) /
-                    _totalFlex) *
-                widget.tabs[_internalIndex].flex;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          _maxWidth = constraints.maxWidth;
+          final indicatorWidth =
+              ((constraints.maxWidth - widget.indicatorPadding.horizontal) /
+                      _totalFlex) *
+                  widget.tabs[_internalIndex].flex;
 
-        return ClipRRect(
-          borderRadius: BorderRadius.all(widget.radius),
-          child: SizedBox(
-            height: widget.height,
-            child: GestureDetector(
-              onTap: () => onTapSegmentTab(
-                context,
-                currentTab,
-                currentTab.name,
-                _internalIndex,
-              ),
-              child: Stack(
-                children: [
-                  AnimatedContainer(
-                    duration: kTabScrollDuration,
-                    curve: Curves.ease,
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      gradient: backgroundGradient,
-                      borderRadius: borderRadius,
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Labels(
-                        radius: widget.radius,
-                        splashColor: widget.splashColor,
-                        splashHighlightColor: widget.splashHighlightColor,
-                        callbackBuilder: _onTabTap(currentTab),
-                        tabs: widget.tabs,
-                        currentIndex: _internalIndex,
-                        textStyle: textStyle.copyWith(
-                          color: tabTextColor,
-                        ),
-                        tabPadding: widget.tabPadding,
+          return ClipRRect(
+            borderRadius: BorderRadius.all(widget.radius),
+            child: SizedBox(
+              height: widget.height,
+              child: GestureDetector(
+                onTap: () => onTapSegmentTab(
+                  context,
+                  currentTab,
+                  currentTab.name,
+                  _internalIndex,
+                ),
+                child: Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: kTabScrollDuration,
+                      curve: Curves.ease,
+                      decoration: BoxDecoration(
+                        color: backgroundColor,
+                        gradient: backgroundGradient,
+                        borderRadius: borderRadius,
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: _currentIndicatorAlignment,
-                    child: GestureDetector(
-                      onPanDown: _onPanDown(),
-                      onPanUpdate: _onPanUpdate(constraints),
-                      onPanEnd: _onPanEnd(constraints),
-                      child: Padding(
-                        padding: widget.indicatorPadding,
-                        child: _SqueezeAnimated(
-                          currentTilePadding: _currentTilePadding,
-                          squeezeDuration: widget.squeezeDuration,
-                          builder: (_) => AnimatedContainer(
-                            duration: kTabScrollDuration,
-                            curve: Curves.ease,
-                            width: indicatorWidth,
-                            height: widget.height -
-                                widget.indicatorPadding.vertical,
-                            decoration: BoxDecoration(
-                              color: indicatorColor,
-                              gradient: indicatorGradient,
-                              borderRadius: BorderRadius.all(widget.radius),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  _SqueezeAnimated(
-                    currentTilePadding: _currentTilePadding,
-                    squeezeDuration: widget.squeezeDuration,
-                    builder: (squeezePadding) => ClipPath(
-                      clipper: RRectRevealClipper(
-                        radius: widget.radius,
-                        size: Size(
-                          indicatorWidth,
-                          widget.height -
-                              widget.indicatorPadding.vertical -
-                              squeezePadding.vertical,
-                        ),
-                        offset: Offset(
-                          _xToPercentsCoefficient(_currentIndicatorAlignment) *
-                              (constraints.maxWidth - indicatorWidth),
-                          0,
-                        ),
-                      ),
-                      child: IgnorePointer(
+                      child: Material(
+                        color: Colors.transparent,
                         child: Labels(
                           radius: widget.radius,
                           splashColor: widget.splashColor,
                           splashHighlightColor: widget.splashHighlightColor,
+                          callbackBuilder: _onTabTap(currentTab),
                           tabs: widget.tabs,
                           currentIndex: _internalIndex,
                           textStyle: textStyle.copyWith(
-                            color: selectedTabTextColor,
+                            color: tabTextColor,
                           ),
                           tabPadding: widget.tabPadding,
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Align(
+                      alignment: _currentIndicatorAlignment,
+                      child: GestureDetector(
+                        onPanDown: _onPanDown(),
+                        onPanUpdate: _onPanUpdate(constraints),
+                        onPanEnd: _onPanEnd(constraints),
+                        child: Padding(
+                          padding: widget.indicatorPadding,
+                          child: _SqueezeAnimated(
+                            currentTilePadding: _currentTilePadding,
+                            squeezeDuration: widget.squeezeDuration,
+                            builder: (_) => AnimatedContainer(
+                              duration: kTabScrollDuration,
+                              curve: Curves.ease,
+                              width: indicatorWidth,
+                              height: widget.height -
+                                  widget.indicatorPadding.vertical,
+                              decoration: BoxDecoration(
+                                color: indicatorColor,
+                                gradient: indicatorGradient,
+                                borderRadius: BorderRadius.all(widget.radius),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _SqueezeAnimated(
+                      currentTilePadding: _currentTilePadding,
+                      squeezeDuration: widget.squeezeDuration,
+                      builder: (squeezePadding) => ClipPath(
+                        clipper: RRectRevealClipper(
+                          radius: widget.radius,
+                          size: Size(
+                            indicatorWidth,
+                            widget.height -
+                                widget.indicatorPadding.vertical -
+                                squeezePadding.vertical,
+                          ),
+                          offset: Offset(
+                            _xToPercentsCoefficient(
+                                    _currentIndicatorAlignment,) *
+                                (constraints.maxWidth - indicatorWidth),
+                            0,
+                          ),
+                        ),
+                        child: IgnorePointer(
+                          child: Labels(
+                            radius: widget.radius,
+                            splashColor: widget.splashColor,
+                            splashHighlightColor: widget.splashHighlightColor,
+                            tabs: widget.tabs,
+                            currentIndex: _internalIndex,
+                            textStyle: textStyle.copyWith(
+                              color: selectedTabTextColor,
+                            ),
+                            tabPadding: widget.tabPadding,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 
@@ -509,9 +502,8 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
     }
 
     return (int index) => () {
-          final currentTab = widget.tabs[index];
-          debugPrint(currentTab.name);
-
+          // final currentTab = widget.tabs[index];
+          // debugPrint(currentTab.name);
           _internalAnimationController.stop();
           _controller!.animateTo(index);
         };
@@ -535,7 +527,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
       return null;
     }
     return (details) {
-      double x = _currentIndicatorAlignment.x +
+      var x = _currentIndicatorAlignment.x +
           details.delta.dx / (constraints.maxWidth / 2);
       if (x < -1) {
         x = -1;
@@ -579,13 +571,13 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
   }
 
   TickerFuture _animateIndicatorToNearest(
-      Offset pixelsPerSecond, double width) {
+      Offset pixelsPerSecond, double width,) {
     final nearest = _internalIndex;
     final target = _animationValueToAlignment(nearest.toDouble());
     _internalAnimation = _internalAnimationController.drive(AlignmentTween(
       begin: _currentIndicatorAlignment,
       end: target,
-    ));
+    ),);
     final unitsPerSecondX = pixelsPerSecond.dx / width;
     final unitsPerSecond = Offset(unitsPerSecondX, 0);
     final unitVelocity = unitsPerSecond.distance;
@@ -608,7 +600,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
 
 class Labels extends StatelessWidget {
   const Labels({
-    Key? key,
+    super.key,
     this.callbackBuilder,
     required this.tabs,
     required this.currentIndex,
@@ -617,7 +609,7 @@ class Labels extends StatelessWidget {
     this.splashColor,
     this.splashHighlightColor,
     this.tabPadding = const EdgeInsets.symmetric(horizontal: 8),
-  }) : super(key: key);
+  });
 
   final VoidCallback Function(int index)? callbackBuilder;
   final List<SegmentTab> tabs;
@@ -669,12 +661,11 @@ class Labels extends StatelessWidget {
 
 class _SqueezeAnimated extends StatelessWidget {
   const _SqueezeAnimated({
-    Key? key,
     required this.builder,
     required this.currentTilePadding,
     this.squeezeDuration = const Duration(milliseconds: 500),
-  }) : super(key: key);
-
+  });
+  
   final Widget Function(EdgeInsets) builder;
   final EdgeInsets currentTilePadding;
   final Duration squeezeDuration;

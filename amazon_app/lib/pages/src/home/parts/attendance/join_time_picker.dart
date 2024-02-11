@@ -68,7 +68,6 @@ class _JoinScheduleStartDateTimePickerState
               ),
             ],
           ),
-          /// Maximum is endAt -1 min.
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
@@ -81,7 +80,7 @@ class _JoinScheduleStartDateTimePickerState
               ),
               onDateTimeChanged: (newDateTime) async {
                 scheduleNotifier.setStartAt(newDateTime);
-                await GroupMemberScheduleSetting.updateTime(
+                await GroupMemberScheduleSetting.update(
                   scheduleId: groupScheduleId,
                   startAt: newDateTime,
                 );
@@ -160,14 +159,14 @@ class _JoinScheduleEndDateTimePickerState
           SizedBox(
             height: 200,
             child: CupertinoDatePicker(
-              initialDateTime: groupSchedule.endAt,
+              initialDateTime: schedule!.endAt,
               backgroundColor: Colors.white,
               use24hFormat: true,
-              minimumDate: schedule!.startAt,
+              minimumDate: schedule.startAt,
               maximumDate: groupSchedule.endAt,
               onDateTimeChanged: (newDateTime) async {
                 scheduleNotifier.setEndAt(newDateTime);
-                await GroupMemberScheduleSetting.updateTime(
+                await GroupMemberScheduleSetting.update(
                   scheduleId: groupScheduleId,
                   endAt: newDateTime,
                 );

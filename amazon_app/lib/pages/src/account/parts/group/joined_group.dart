@@ -23,21 +23,18 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
 
     return GestureDetector(
       onTap: () {},
-      child: Expanded(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(
-              216,
-              235,
-              97,
-              0.29,
-            ),
-            borderRadius: BorderRadius.circular(80),
-          ),
-          child: Expanded(
-            child: Row(
-              children: [
-                CachedNetworkImage(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 244, 219, 251),
+          borderRadius: BorderRadius.circular(80),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: CachedNetworkImage(
                   imageUrl: group.image,
                   placeholder: (context, url) =>
                       const CupertinoActivityIndicator(),
@@ -54,17 +51,17 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    group.name,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              ),
+              Expanded(
+                child: Text(
+                  group.name,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

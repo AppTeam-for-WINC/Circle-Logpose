@@ -12,14 +12,12 @@ class ScheduleDetailConfirm extends ConsumerStatefulWidget {
     super.key,
     required this.responseIcon,
     required this.responseText,
-    required this.groupId,
     required this.group,
     required this.scheduleId,
     required this.schedule,
   });
   final Icon? responseIcon;
   final Text? responseText;
-  final String groupId;
   final GroupProfile group;
   final String scheduleId;
   final GroupSchedule schedule;
@@ -34,7 +32,6 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
 
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
-    final groupId = widget.groupId;
     final group = widget.group;
     final groupSchedule = widget.schedule;
     final groupScheduleId = widget.scheduleId;
@@ -192,8 +189,7 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                                     ? Text(
                                         groupSchedule.place!,
                                         style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15,
+                                          fontSize: 18,
                                         ),
                                         maxLines: 7,
                                         overflow: TextOverflow.ellipsis,
@@ -226,20 +222,26 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                padding: const EdgeInsets.only(right: 30),
-                                child: groupSchedule.detail != null
-                                    ? Text(
-                                        groupSchedule.detail!,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15,
-                                        ),
-                                        maxLines: 7,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : const SizedBox.shrink(),
+                              ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxHeight: 100,
+                                ), // 最大高さを設定
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    padding: const EdgeInsets.only(right: 30),
+                                    child: groupSchedule.detail != null
+                                        ? Text(
+                                            groupSchedule.detail!,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                            maxLines: 7,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                ),
                               ),
                             ],
                           ),

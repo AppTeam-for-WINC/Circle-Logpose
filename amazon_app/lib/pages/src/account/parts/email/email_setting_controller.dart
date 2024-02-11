@@ -45,7 +45,6 @@ class UserEmail extends StateNotifier<String?> {
     const typeValidation = EmailValidation();
     const minLength8Validation = MinLength8Validation();
     const maxLength32Validation = MaxLength32Validation();
-    print('newEmail: $newEmail');
 
     final emailTypeValidation = typeValidation.validate(
       newEmail,

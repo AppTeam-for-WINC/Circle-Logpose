@@ -1,9 +1,9 @@
 import 'package:amazon_app/pages/common/src/color/color_palette.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
-import 'package:amazon_app/pages/src/popup/schedule_setting/change_activity_time.dart';
-import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change_controller.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/parts/group_picker/button.dart';
 import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/change_activity_time.dart';
+import 'package:amazon_app/pages/src/popup/schedule_setting/schedule_change_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -121,6 +121,7 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
+                    autofocus: true,
                   ),
                 ),
               ),

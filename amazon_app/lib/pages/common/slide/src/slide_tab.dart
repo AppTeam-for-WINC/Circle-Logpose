@@ -1,3 +1,5 @@
+import 'package:amazon_app/pages/common/slide/src/slide_tab_bar.dart';
+
 import 'package:flutter/material.dart';
 
 @immutable
@@ -34,7 +36,7 @@ class SegmentTab {
   /// Text color when this option is selected.
   final Color? selectedTextColor;
 
-  /// [SegmentedTabControl] color when this option is selected.
+  /// SegmentedTabControl color when this option is selected.
   ///
   /// Overrides [backgroundColor] from [SegmentedTabControl].
   final Color? backgroundColor;
@@ -47,6 +49,7 @@ class SegmentTab {
 
   /// Text color when this option is selected.
   ///
+  // ignore: comment_references
   /// Overrides [tabTextColor] from [SegmentedTabControl].
   final Color? textColor;
 

@@ -23,7 +23,7 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
     final groupScheduleId =
         widget.groupProfileWithScheduleWithId.groupScheduleId;
     final schedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
-
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,7 +91,6 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
                 builder: (context, watch, child) {
                   return Text(
                     formatDateTimeExcYear(schedule!.endAt!),
-                    // formatDateTimeExcYear(schedule!.endAt!),
                   );
                 },
               ),

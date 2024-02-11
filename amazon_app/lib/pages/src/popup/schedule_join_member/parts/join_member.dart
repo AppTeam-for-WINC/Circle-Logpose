@@ -1,4 +1,5 @@
 import 'package:amazon_app/database/user/user.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,7 +29,7 @@ class _JoinMemberState extends ConsumerState<JoinMember> {
         borderRadius: BorderRadius.circular(40),
         color: const Color.fromARGB(255, 248, 233, 255),
       ),
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.only(left: 3),
         child: Row(
           children: [
@@ -48,11 +49,13 @@ class _JoinMemberState extends ConsumerState<JoinMember> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                userProfile.name,
-                style: const TextStyle(color: Colors.grey),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  userProfile.name,
+                  style: const TextStyle(color: Colors.grey),
+                ),
               ),
             ),
           ],

@@ -42,10 +42,11 @@ class GroupContentsState extends ConsumerState<GroupContents> {
 
   @override
   Widget build(BuildContext context) {
-    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
-    final groupAddData = ref.watch(groupAddMemberDataProvider.notifier);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+    
+    final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
+    final groupAddData = ref.watch(groupAddMemberDataProvider.notifier);
 
     return Container(
       width: double.infinity,
@@ -57,7 +58,6 @@ class GroupContentsState extends ConsumerState<GroupContents> {
             top: deviceHeight * 0.12,
             left: deviceWidth * 0.1,
             child: Container(
-              //中央トピック
               width: 350,
               height: 210,
               margin: const EdgeInsets.only(top: 50),
@@ -77,7 +77,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 20, 60, 10),
+                    padding: const EdgeInsets.fromLTRB(60, 20, 60, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -136,14 +136,14 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                     width: 272,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 244, 253, 194),
+                      color: const Color.fromARGB(255, 244, 219, 251),
                       borderRadius: BorderRadius.circular(40),
                       boxShadow: const [
                         BoxShadow(
-                          blurRadius: 3,
-                          spreadRadius: 2,
-                          offset: Offset(0, 3),
-                          color: Color.fromARGB(225, 127, 145, 145),
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 2),
+                          blurRadius: 2,
+                          spreadRadius: 1,
                         ),
                       ],
                     ),
@@ -159,6 +159,7 @@ class GroupContentsState extends ConsumerState<GroupContents> {
                         decoration: const BoxDecoration(
                           color: Colors.transparent,
                         ),
+                        autofocus: true,
                       ),
                     ),
                   ),

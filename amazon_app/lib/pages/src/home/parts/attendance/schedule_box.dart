@@ -18,15 +18,9 @@ class GroupScheduleCard extends ConsumerStatefulWidget {
 }
 
 class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
-  // bool _isAttendance = false;
-  // bool _isLeavingEarly = false;
-  // bool _isBehindTime = false;
-  // bool _isAbsence = false;
-
   @override
   Widget build(BuildContext context) {
     final groupProfileWithScheduleWithId = widget.groupData;
-    final groupId = groupProfileWithScheduleWithId.groupId;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
     final groupSchedule = widget.groupData.groupSchedule;
@@ -35,10 +29,10 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
     final userScheduleNotifier =
         ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
 
-    final isAttendance = userSchedule!.attendance!;
-    final isLeavingEarly = userSchedule.leavingEarly!;
-    final isBehindTime = userSchedule.lateness!;
-    final isAbsence = userSchedule.absence!;
+    final isAttendance = userSchedule!.attendance ?? false;
+    final isLeavingEarly = userSchedule.leavingEarly ?? false;
+    final isBehindTime = userSchedule.lateness ?? false;
+    final isAbsence = userSchedule.absence ?? false;
 
     return Container(
       width: 375,
@@ -113,7 +107,13 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                   ScheduleDetailConfirm>(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  if (isAttendance) {
+                                  if (ref
+                                      .read(
+                                        setMemberScheduleProvider(
+                                          groupScheduleId,
+                                        ),
+                                      )!
+                                      .attendance!) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.attendance,
@@ -121,12 +121,17 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.attendance,
                                       ),
-                                      groupId: groupId,
                                       group: groupProfile,
                                       scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (isLeavingEarly) {
+                                  } else if (ref
+                                      .read(
+                                        setMemberScheduleProvider(
+                                          groupScheduleId,
+                                        ),
+                                      )!
+                                      .leavingEarly!) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.leavingEarly,
@@ -134,12 +139,17 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.leavingEarly,
                                       ),
-                                      groupId: groupId,
                                       group: groupProfile,
                                       scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (isBehindTime) {
+                                  } else if (ref
+                                      .read(
+                                        setMemberScheduleProvider(
+                                          groupScheduleId,
+                                        ),
+                                      )!
+                                      .lateness!) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.behindTime,
@@ -147,12 +157,17 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.behindTime,
                                       ),
-                                      groupId: groupId,
                                       group: groupProfile,
                                       scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
                                     );
-                                  } else if (isAbsence) {
+                                  } else if (ref
+                                      .read(
+                                        setMemberScheduleProvider(
+                                          groupScheduleId,
+                                        ),
+                                      )!
+                                      .absence!) {
                                     return ScheduleDetailConfirm(
                                       responseIcon: ScheduleResponse.getIcon(
                                         ResponseType.absence,
@@ -160,7 +175,6 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                       responseText: ScheduleResponse.getText(
                                         ResponseType.absence,
                                       ),
-                                      groupId: groupId,
                                       group: groupProfile,
                                       scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
@@ -169,7 +183,6 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                     return ScheduleDetailConfirm(
                                       responseIcon: null,
                                       responseText: null,
-                                      groupId: groupId,
                                       group: groupProfile,
                                       scheduleId: groupScheduleId,
                                       schedule: groupSchedule,
@@ -213,16 +226,44 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             userScheduleNotifier.setAttendance(
-                              attendance: userSchedule.attendance!,
+                              attendance: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .attendance!,
                             );
                             await GroupMemberScheduleSetting.update(
                               scheduleId: groupScheduleId,
-                              attendance: isAttendance,
-                              leaveEarly: isLeavingEarly,
-                              lateness: isBehindTime,
-                              absence: isAbsence,
-                              startAt: null,
-                              endAt: null,
+                              attendance: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .attendance,
+                              leaveEarly: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .leavingEarly,
+                              lateness: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .lateness,
+                              absence: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .absence,
                             );
                           },
                           child: Container(
@@ -254,21 +295,55 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             userScheduleNotifier.setLeavingEarly(
-                              leavingEarly: userSchedule.leavingEarly!,
+                              leavingEarly: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .leavingEarly!,
                             );
                             await GroupMemberScheduleSetting.update(
                               scheduleId: groupScheduleId,
-                              attendance: isAttendance,
-                              leaveEarly: isLeavingEarly,
-                              lateness: isBehindTime,
-                              absence: isAbsence,
-                              startAt: null,
-                              endAt: null,
+                              attendance: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .attendance,
+                              leaveEarly: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .leavingEarly,
+                              lateness: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .lateness,
+                              absence: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .absence,
                             );
                             if (!mounted) {
                               return;
                             }
-                            if (isLeavingEarly) {
+                            if (ref
+                                .read(
+                                  setMemberScheduleProvider(
+                                    groupScheduleId,
+                                  ),
+                                )!
+                                .leavingEarly!) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
@@ -316,21 +391,53 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             userScheduleNotifier.setLateness(
-                              lateness: userSchedule.lateness!,
+                              lateness: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .lateness!,
                             );
                             await GroupMemberScheduleSetting.update(
                               scheduleId: groupScheduleId,
-                              attendance: isAttendance,
-                              leaveEarly: isLeavingEarly,
-                              lateness: isBehindTime,
-                              absence: isAbsence,
-                              startAt: null,
-                              endAt: null,
+                              attendance: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .attendance,
+                              leaveEarly: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .leavingEarly,
+                              lateness: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .lateness,
+                              absence: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .absence,
                             );
                             if (!mounted) {
                               return;
                             }
-                            if (isBehindTime) {
+                            if (ref
+                                .read(
+                                  setMemberScheduleProvider(groupScheduleId),
+                                )!
+                                .lateness!) {
                               await showCupertinoModalPopup<
                                   BehindAndEarlySetting>(
                                 context: context,
@@ -378,17 +485,45 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                         GestureDetector(
                           onTap: () async {
                             userScheduleNotifier.setAbsence(
-                              absence: userSchedule.absence!,
+                              absence: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .absence!,
                             );
 
                             await GroupMemberScheduleSetting.update(
                               scheduleId: groupScheduleId,
-                              attendance: isAttendance,
-                              leaveEarly: isLeavingEarly,
-                              lateness: isBehindTime,
-                              absence: isAbsence,
-                              startAt: null,
-                              endAt: null,
+                              attendance: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .attendance,
+                              leaveEarly: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .leavingEarly,
+                              lateness: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .lateness,
+                              absence: ref
+                                  .read(
+                                    setMemberScheduleProvider(
+                                      groupScheduleId,
+                                    ),
+                                  )!
+                                  .absence,
                             );
                           },
                           child: Container(

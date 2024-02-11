@@ -1,15 +1,20 @@
+import 'package:amazon_app/pages/src/home/parts/attendance/schedule_box.dart';
 import 'package:amazon_app/pages/src/home/parts/attendance/user_schedule_controller.dart';
+import 'package:amazon_app/pages/src/popup/schedule_create/schedule_create.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../popup/schedule_create/schedule_create.dart';
-import 'schedule_box.dart';
 
-class ScheduleManagement extends ConsumerWidget {
+class ScheduleManagement extends ConsumerStatefulWidget {
   const ScheduleManagement({super.key});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _ScheduleManagementState();
+}
+
+class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
+  @override
+  Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
@@ -30,33 +35,28 @@ class ScheduleManagement extends ConsumerWidget {
               height: deviceHeight,
               color: const Color(0xFFF5F3FE),
               padding: const EdgeInsets.only(top: 45),
-              child: TabBarView(
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Column(
-                          children: groupsDataeList.when(
-                            data: (groupData) {
-                              if (groupData.isEmpty) {
-                                return const [SizedBox.shrink()];
-                              }
-                              return groupData.map((group) {
-                                return GroupScheduleCard(groupData: group);
-                              }).toList();
-                            },
-                            loading: () => const [SizedBox.shrink()],
-                            error: (error, stack) => [Text('$error')],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 200,
-                        ),
-                      ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      children: groupsDataeList.when(
+                        data: (groupData) {
+                          if (groupData.isEmpty) {
+                            return const [SizedBox.shrink()];
+                          }
+                          return groupData.map((group) {
+                            return GroupScheduleCard(groupData: group);
+                          }).toList();
+                        },
+                        loading: () => const [SizedBox.shrink()],
+                        error: (error, stack) => [Text('$error')],
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 200,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

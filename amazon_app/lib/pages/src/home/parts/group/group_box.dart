@@ -29,45 +29,43 @@ class GroupBoxState extends ConsumerState<GroupBox> {
           ),
         );
       },
-      child: Expanded(
-        child: Container(
-          padding: const EdgeInsets.all(36),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            color: Colors.white,
-          ),
-          child: Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: group.image,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
+      child: Container(
+        padding: const EdgeInsets.all(36),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CachedNetworkImage(
+              imageUrl: group.image,
+              placeholder: (context, url) =>
+                  const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
                   ),
+                  borderRadius: BorderRadius.circular(999),
                 ),
-                Text(
-                  group.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Expanded(
+              child: Text(
+                group.name,
+                style: const TextStyle(
+                  fontSize: 20,
+                  overflow: TextOverflow.clip,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:amazon_app/database/group/membership/group_membership_controller
 import 'package:amazon_app/database/group/schedule/member_schedule/member_schedule_controller.dart';
 import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
 import 'package:amazon_app/database/group/schedule/schedule/schedule_controller.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -53,7 +54,7 @@ class _SetMemberScheduleViewer {
   }) {
     return _SetMemberScheduleViewer(
       startAt: startAt ?? this.startAt,
-      endAt: endAt ?? this.startAt,
+      endAt: endAt ?? this.endAt,
       attendance: attendance ?? this.attendance,
       leavingEarly: leavingEarly ?? this.leavingEarly,
       lateness: lateness ?? this.lateness,
@@ -64,9 +65,8 @@ class _SetMemberScheduleViewer {
 
 class _SetMemberScheduleNotifier
     extends StateNotifier<_SetMemberScheduleViewer?> {
-  _SetMemberScheduleNotifier(
-    String groupScheduleId,
-  ) : super(null) {
+  _SetMemberScheduleNotifier(String groupScheduleId)
+      : super(_SetMemberScheduleViewer()) {
     _initSchedule(groupScheduleId);
   }
 
@@ -95,9 +95,22 @@ class _SetMemberScheduleNotifier
       return;
     }
 
+    DateTime initStartAt;
+    if (memberSchedule.startAt == null) {
+      initStartAt = groupSchedule.startAt;
+    } else {
+      initStartAt = memberSchedule.startAt!;
+    }
+    DateTime initEndAt;
+    if (memberSchedule.endAt == null) {
+      initEndAt = groupSchedule.endAt;
+    } else {
+      initEndAt = memberSchedule.endAt!;
+    }
+
     state = _SetMemberScheduleViewer(
-      startAt: groupSchedule.startAt,
-      endAt: groupSchedule.endAt,
+      startAt: initStartAt,
+      endAt: initEndAt,
       attendance: memberSchedule.attendance,
       leavingEarly: memberSchedule.leaveEarly,
       lateness: memberSchedule.lateness,
@@ -121,6 +134,7 @@ class _SetMemberScheduleNotifier
       absence: false,
     );
   }
+
   void setLeavingEarly({required bool leavingEarly}) {
     state = state!.copyWith(
       attendance: false,
@@ -129,6 +143,7 @@ class _SetMemberScheduleNotifier
       absence: false,
     );
   }
+
   void setLateness({required bool lateness}) {
     state = state!.copyWith(
       attendance: false,
@@ -137,6 +152,7 @@ class _SetMemberScheduleNotifier
       absence: false,
     );
   }
+
   void setAbsence({required bool absence}) {
     state = state!.copyWith(
       attendance: false,
@@ -155,12 +171,12 @@ class GroupMemberScheduleSetting {
 
   static Future<void> update({
     required String scheduleId,
-    required bool attendance,
-    required bool leaveEarly,
-    required bool lateness,
-    required bool absence,
-    required DateTime? startAt,
-    required DateTime? endAt,
+    bool? attendance,
+    bool? leaveEarly,
+    bool? lateness,
+    bool? absence,
+    DateTime? startAt,
+    DateTime? endAt,
   }) async {
     try {
       final userDocId = await AuthController.getCurrentUserId();
@@ -177,30 +193,6 @@ class GroupMemberScheduleSetting {
         leaveEarly: leaveEarly,
         lateness: lateness,
         absence: absence,
-        startAt: startAt,
-        endAt: endAt,
-      );
-    } on FirebaseException catch (e) {
-      throw Exception('Failed to update database. $e');
-    }
-  }
-
-  static Future<void> updateTime({
-    required String scheduleId,
-    DateTime? startAt,
-    DateTime? endAt,
-  }) async {
-    try {
-      final userDocId = await AuthController.getCurrentUserId();
-      if (userDocId == null) {
-        throw Exception('User not logged in.');
-      }
-      final docId = await readDocId(scheduleId, userDocId);
-      if (docId == null) {
-        return;
-      }
-      await GroupMemberScheduleController.updateTime(
-        docId: docId,
         startAt: startAt,
         endAt: endAt,
       );
@@ -253,7 +245,7 @@ final readUserScheduleProvider =
   final groupMemberships =
       await GroupMembershipController.readAllWithUserId(userDocId).first;
 
-  List<GroupProfileWithScheduleWithId> combinedSchedules = [];
+  var combinedSchedules = <GroupProfileWithScheduleWithId>[];
 
   for (final membership in groupMemberships) {
     if (membership == null) {
@@ -291,58 +283,3 @@ final readUserScheduleProvider =
 
   yield combinedSchedules;
 });
-
-
-//   final groupMemberships =
-//       GroupMembershipController.readAllWithUserId(userDocId);
-
-//   await for (final memberships in groupMemberships) {
-//     final futures =
-//         memberships.whereType<GroupMembership>().map((membership) async {
-//       final schedulesStream =
-//           GroupScheduleController.readAll(membership.groupId);
-//       final groupStream = GroupController.read(membership.groupId);
-//       final scheduleIdStream =
-//           GroupScheduleController.readAllScheduleId(membership.groupId);
-//       await for (final scheduleIdList in scheduleIdStream) {
-//         await Future.wait(
-//           scheduleIdList.map((scheduleId) async {
-//             if (scheduleId == null) {
-//               return null;
-//             }
-//             await for (final group in groupStream) {
-//               if (group == null) {
-//                 continue;
-//               }
-//               await for (final schedules in schedulesStream) {
-//                 final scheduleList = await Future.wait(
-//                   schedules.map((schedule) async {
-//                     if (schedule == null) {
-//                       return null;
-//                     }
-//                     final scheduleWithId = GroupProfileWithScheduleWithId(
-//                       groupScheduleId: scheduleId,
-//                       groupSchedule: schedule,
-//                       groupId: membership.groupId,
-//                       groupProfile: group,
-//                     );
-//                     return scheduleWithId;
-//                   }),
-//                 );
-//                 return scheduleList
-//                     .whereType<GroupProfileWithScheduleWithId>()
-//                     .toList();
-//               }
-//             }
-//           }),
-//         );
-//       }
-//     });
-
-//     final scheduleLists = await Future.wait(futures);
-//     yield scheduleLists
-//         .whereType<List<GroupProfileWithScheduleWithId>>()
-//         .expand((x) => x)
-//         .toList();
-//   }
-// });

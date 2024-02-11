@@ -8,10 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<dynamic> filteringPopupController(BuildContext context) async {
   await showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) {
-        return const GroupFilteringPopup();
-      });
+    context: context,
+    builder: (BuildContext context) {
+      return const GroupFilteringPopup();
+    },
+  );
 }
 
 class GroupFilteringPopup extends ConsumerStatefulWidget {
@@ -45,10 +46,11 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                     width: deviceW * 0.4,
                     height: 50,
                     decoration: BoxDecoration(
-                        color: const Color.fromRGBO(88, 42, 231, 1),
-                        borderRadius: BorderRadius.circular(25)),
+                      color: const Color.fromRGBO(88, 42, 231, 1),
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                     child: CupertinoButton(
-                      padding: const EdgeInsets.all(0),
+                      padding: EdgeInsets.zero,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
@@ -72,11 +74,13 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                           ),
                         ],
                       ),
-                      onPressed: () async{
+                      onPressed: () async {
                         await Navigator.push(
-                            context,
-                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                                builder: (context) => const HomePage()));
+                          context,
+                          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -114,7 +118,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -136,7 +139,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {
@@ -159,7 +162,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -181,7 +183,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {
@@ -204,7 +206,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -226,7 +227,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {
@@ -249,7 +250,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -271,7 +271,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {
@@ -294,7 +294,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -316,7 +315,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {
@@ -339,7 +338,6 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                   ),
                   child: CupertinoButton(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           width: 50,
@@ -361,7 +359,7 @@ class _FilteringScreenState extends ConsumerState<GroupFilteringPopup> {
                             fontSize: 22,
                             color: Colors.black,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     onPressed: () {

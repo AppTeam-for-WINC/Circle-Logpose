@@ -89,7 +89,9 @@ class UserController {
         .get();
 
     if (userSnapshot.docs.isEmpty) {
-      throw ControllerException(DBErrorMessages.userAccountNotFound + accountId);
+      throw ControllerException(
+        DBErrorMessages.userAccountNotFound + accountId,
+      );
     }
 
     final userDoc = userSnapshot.docs.first;
