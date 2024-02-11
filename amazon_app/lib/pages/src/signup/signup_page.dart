@@ -101,34 +101,32 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   //Icon
                   Container(
                     margin: const EdgeInsets.all(23),
-                    child: const Column(
+                    child: Column(
                       children: <Widget>[
-                        Icon(
-                          CupertinoIcons.calendar_today,
-                          color: Colors.white,
-                          size: 103,
+                        Image.asset(
+                          'src/logpost/Logpost.png',
+                          width: 100,
+                          height: 100,
                         ),
-      
-                        //App name
-                        Text(
-                          'Amazon',
+                        const Text(
+                          'Logpost',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 40,
-                            fontStyle: FontStyle.normal,
+                            fontFamily: 'Shippori_Mincho_B1',
                           ),
                         ),
                       ],
                     ),
                   ),
-      
+
                   //エラーメッセージ
                   if (errorMessage != null)
                     Text(
                       errorMessage,
                       style: const TextStyle(color: Colors.red, fontSize: 20),
                     ),
-      
+
                   Container(
                     width: 346,
                     margin: const EdgeInsets.all(13.5),
@@ -141,7 +139,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-      
+
                   //Email form
                   SizedBox(
                     width: 346,
@@ -189,7 +187,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-      
+
                   //Password form
                   SizedBox(
                     width: 346,
@@ -226,12 +224,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-                  
+
                   Container(
-                    height: 47,
+                    height: 55,
                     width: 195,
                     margin: const EdgeInsets.all(23),
                     child: CupertinoButton(
+                      padding: EdgeInsets.zero,
                       color: const Color.fromRGBO(80, 49, 238, 0.9),
                       borderRadius: BorderRadius.circular(30),
                       onPressed: isLoading
@@ -239,7 +238,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           : () async {
                               await _signup();
                             },
-                      child: const Text('Sign up'),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          fontFamily: 'Shippori_Mincho_B1',
+                          letterSpacing: 1.1,
+                        ),
+                      ),
                     ),
                   ),
                 ],
