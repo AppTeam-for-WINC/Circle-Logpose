@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../login/login_page.dart';
 import '../signup/signup_page.dart';
 
-//担当：　ichiro
-
 class StartPage extends ConsumerWidget {
   const StartPage({super.key});
 
