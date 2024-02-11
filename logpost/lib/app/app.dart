@@ -20,7 +20,10 @@ class LogpostApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       theme: const CupertinoThemeData(
-        barBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+        textTheme: CupertinoTextThemeData(
+          primaryColor: CupertinoColors.white,
+          textStyle: TextStyle(color: CupertinoColors.black),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       supportedLocales: const [
