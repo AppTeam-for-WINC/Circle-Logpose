@@ -31,7 +31,7 @@ class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
           Positioned(
             top: deviceHeight * 0.1,
             child: Container(
-              width: deviceWidth * 0.9,
+              width: deviceWidth * 0.95,
               height: deviceHeight,
               color: const Color(0xFFF5F3FE),
               padding: const EdgeInsets.only(top: 45),
