@@ -29,17 +29,17 @@ class StartPage extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Icon(
-            CupertinoIcons.calendar_today,
-            color: Colors.white,
-            size: 103,
+          Image.asset(
+            'src/logpost/Logpost.png',
+            width: 100,
+            height: 100,
           ),
           const Text(
-            'Amazon',
+            'Logpost',
             style: TextStyle(
               color: Colors.white,
               fontSize: 40,
-              fontStyle: FontStyle.normal,
+              fontFamily: 'Shippori_Mincho_B1',
             ),
           ),
           const SizedBox(
@@ -74,6 +74,7 @@ class StartPage extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
+                    fontFamily: 'Shippori_Mincho_B1',
                   ),
                 ),
               ),
@@ -88,7 +89,7 @@ class StartPage extends ConsumerWidget {
                 padding: const EdgeInsets.all(8),
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
-                onPressed: () async{
+                onPressed: () async {
                   await Navigator.push(
                     context,
                     CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -101,6 +102,7 @@ class StartPage extends ConsumerWidget {
                   style: TextStyle(
                     color: Color.fromRGBO(80, 49, 238, 1),
                     fontSize: 18,
+                    fontFamily: 'Shippori_Mincho_B1',
                   ),
                 ),
               ),
