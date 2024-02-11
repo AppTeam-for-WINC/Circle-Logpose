@@ -22,8 +22,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  debugPrint('HELLO WORLD');
-
   // const question = 'ichiroはイチローなのか';
   // await postChatGPT(question);
 

@@ -1,17 +1,20 @@
 import 'dart:io';
+
 import 'package:amazon_app/controller/entities/device/image_controller.dart';
 import 'package:amazon_app/database/auth/auth_controller.dart';
 import 'package:amazon_app/pages/src/account/account_setting_controller.dart';
 import 'package:amazon_app/pages/src/account/parts/group/joined_group.dart';
 import 'package:amazon_app/pages/src/account/parts/id/id_setting.dart';
+import 'package:amazon_app/pages/src/home/home_page.dart';
 import 'package:amazon_app/pages/src/home/parts/group/controller/joined_group_controller.dart';
 import 'package:amazon_app/pages/src/start/start_page.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../home/home_page.dart';
+
 import 'parts/email/email_setting.dart';
 import 'parts/password/password_setting.dart';
 
@@ -105,7 +108,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                               spreadRadius: 1,
                             ),
                           ],
-                          color: const Color(0xFFD8EB61),
+                          color: const Color(0xFF7B61FF),
                           borderRadius: BorderRadius.circular(80),
                         ),
                         child: Container(
@@ -113,15 +116,18 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                             left: 10,
                             right: 10,
                           ),
-                          child: Row(
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.manage_accounts,
-                                color: Colors.grey,
+                                color: Colors.white,
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 30),
-                                child: const Text('ユーザ設定'),
+                              Text(
+                                'ユーザー設定',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
@@ -262,7 +268,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                           ],
                         ),
                       ),
-                      //ユーザーネーム変更
+                      // Username
                       Container(
                         width: 256,
                         height: 38,
@@ -280,13 +286,13 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                               spreadRadius: 1,
                             ),
                           ],
-                          color: const Color.fromARGB(255, 231, 238, 189),
+                          color: const Color.fromARGB(255, 244, 219, 251),
                           borderRadius: BorderRadius.circular(80),
                         ),
                         child: CupertinoTextField(
                           controller: userProfileNotifier.nameController,
                           decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 106, 114, 61),
+                            color: Colors.white,
                             backgroundBlendMode: BlendMode.dstIn,
                           ),
                           prefix: const Padding(
@@ -302,7 +308,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     ],
                   ),
                 ),
-                //Account ID
+                // Account ID
                 Container(
                   margin: const EdgeInsets.only(top: 30),
                   width: 350,
@@ -317,7 +323,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         spreadRadius: 1,
                       ),
                     ],
-                    color: const Color.fromARGB(255, 231, 238, 189),
+                    color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(60)),
                     border: Border.all(
                       color: const Color(0xFFD9D9D9),
@@ -380,7 +386,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         spreadRadius: 1,
                       ),
                     ],
-                    color: const Color.fromARGB(255, 231, 238, 189),
+                    color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(60)),
                     border: Border.all(
                       color: const Color(0xFFD9D9D9),
@@ -441,7 +447,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         spreadRadius: 1,
                       ),
                     ],
-                    color: const Color.fromARGB(255, 231, 238, 189),
+                    color: Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(60)),
                     border: Border.all(
                       color: const Color(0xFFD9D9D9),
@@ -516,10 +522,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                 padding: EdgeInsets.only(left: 15, top: 15),
                                 child: Row(
                                   children: [
-                                    Text(
-                                      '所属団体',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
+                                    Text('所属団体'),
                                   ],
                                 ),
                               ),

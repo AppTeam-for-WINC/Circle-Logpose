@@ -3,6 +3,7 @@ import 'package:amazon_app/database/group/schedule/schedule/schedule.dart';
 import 'package:amazon_app/pages/src/group/setting/parts/group_member_image.dart';
 import 'package:amazon_app/pages/src/popup/schedule_detail_confirm/parts/reaponsed_member_controller.dart';
 import 'package:amazon_app/pages/src/popup/schedule_join_member/schedule_join_member.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,14 +71,17 @@ class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
             ),
             groupMember.when(
               data: (membershipProfiles) {
-                return Column(
-                  children: membershipProfiles.map((membershipProfile) {
-                    return membershipProfile != null
-                        ? GroupMemberImage(
-                            userProfile: membershipProfile,
-                          )
-                        : const SizedBox.shrink();
-                  }).toList(),
+                return Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: Column(
+                    children: membershipProfiles.map((membershipProfile) {
+                      return membershipProfile != null
+                          ? GroupMemberImage(
+                              userProfile: membershipProfile,
+                            )
+                          : const SizedBox.shrink();
+                    }).toList(),
+                  ),
                 );
               },
               loading: () => const SizedBox.shrink(),

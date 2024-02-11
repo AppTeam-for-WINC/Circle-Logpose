@@ -90,13 +90,23 @@ class AuthController {
   }
 
   /// Update email.
-  static Future<bool> updateUserEmail(String oldEmail, String email) async {
+  static Future<bool> updateUserEmail(
+    String oldEmail,
+    String email,
+    // String password,
+  ) async {
     try {
       final user = auth.currentUser;
+      // final credential = await _checkSignInWithCredential(
+      //   email,
+      //   password,
+      // );
+      // await user.reauthenticateWithCredential(credential);
       if (user == null) {
         debugPrint('Email not found.');
         return false;
       } else if (user.email == oldEmail && user.email != email) {
+        await user.verifyBeforeUpdateEmail(email);
         await user.updateEmail(email);
         debugPrint('Email updated successfully to $email');
         return true;
@@ -211,7 +221,8 @@ class AuthController {
 
   // static Future<String>getUpHello() async {
   //   //引数は、 call()の中に書く。
-  //   final happy_result = await FirebaseFunctions.instance.httpsCallable('on_call_happy').call<String>();
+  //   final happy_result = await FirebaseFunctions
+  // .instance.httpsCallable('on_call_happy').call<String>();
   //   return happy_result.data;
   // }
 }

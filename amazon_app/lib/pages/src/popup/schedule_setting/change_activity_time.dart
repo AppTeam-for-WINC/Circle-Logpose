@@ -34,7 +34,9 @@ class _ChangeScheduleActivityTimeState
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
-                return ChangeActivityStartDateTimePicker(scheduleId: scheduleId);
+                return ChangeActivityStartDateTimePicker(
+                  scheduleId: scheduleId,
+                );
               },
             );
           },

@@ -4,16 +4,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GroupPickerModal extends ConsumerWidget {
+class GroupPickerModal extends ConsumerStatefulWidget {
   const GroupPickerModal({
     super.key,
     required this.groups,
   });
   final List<GroupWithId> groups;
+  @override
+  ConsumerState createState() => _GroupPickerModalState();
+}
+
+class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
+  @override
+  void initState() {
+    super.initState();
+    // 選択肢が1つだけの場合、自動的にその選択肢を選択。
+    if (widget.groups.length == 1) {
+      final id = widget.groups[0].groupId;
+      final name = widget.groups[0].group.name;
+      final scheduleNotifier = ref.read(createGroupScheduleProvider.notifier);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        scheduleNotifier.setGroupId(id);
+        ref.read(groupNameProvider.notifier).state = name;
+      });
+    }
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final groups = widget.groups;
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+
     return Container(
       height: 200,
       width: 360,

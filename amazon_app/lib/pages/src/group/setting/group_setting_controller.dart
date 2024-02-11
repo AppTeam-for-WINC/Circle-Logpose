@@ -13,11 +13,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-///Controller of group setting.
+/// Group setting provider.
 final groupSettingProvider =
     StateNotifierProvider.family<GroupSettingNotifier, GroupProfile?, String>(
   (ref, groupId) => GroupSettingNotifier(groupId),
 );
+
+/// Switch mode of delete schedule.
+final scheduleDeleteModeProvider = StateProvider<bool>((ref) => false);
 
 /// Group of notifier.
 class GroupSettingNotifier extends StateNotifier<GroupProfile?> {
@@ -178,7 +181,7 @@ final readGroupScheduleAndIdProvider =
     final scheduleIds =
         await GroupScheduleController.readAllScheduleId(groupId).first;
 
-    List<GroupScheduleAndId> schedulesAndIds = [];
+    var schedulesAndIds = <GroupScheduleAndId>[];
     for (final scheduleId in scheduleIds) {
       if (scheduleId == null) {
         continue;
@@ -197,23 +200,3 @@ final readGroupScheduleAndIdProvider =
     yield schedulesAndIds;
   },
 );
-
-// /// Read group schedule and schedule ID.
-// final readGroupScheduleProvider =
-//     StreamProvider.family.autoDispose<List<GroupSchedule>, String>(
-//   (ref, groupId) async* {
-//     final schedulesStream = GroupScheduleController.readAll(groupId);
-
-//     await for (final schedules in schedulesStream) {
-//       final scheduleList = await Future.wait(
-//         schedules.map((schedule) async {
-//           if (schedule == null) {
-//             return null;
-//           }
-//           return schedule;
-//         }),
-//       );
-//       yield scheduleList.whereType<GroupSchedule>().toList();
-//     }
-//   },
-// );

@@ -3,18 +3,28 @@ import 'package:amazon_app/database/group/invitation/invitation_controller.dart'
 import 'package:amazon_app/database/user/user.dart';
 import 'package:amazon_app/database/user/user_controller.dart';
 import 'package:amazon_app/validation/validation.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<String?> getGroupInvitationLink(String groupId) async {
-  final invitationData = await GroupInvitationController.create(groupId);
-  final invitationLink = invitationData.invitationLink;
-  return invitationLink;
+class GroupInvitationLink {
+  GroupInvitationLink._internal();
+  static final GroupInvitationLink _instance = GroupInvitationLink._internal();
+  static GroupInvitationLink get instance => _instance;
+
+  static Future<String?> readGroupInvitationLink(String groupId) async {
+    try {
+      final invitationData = await GroupInvitationController.create(groupId);
+      final invitationLink = invitationData.invitationLink;
+      return invitationLink;
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to read invitation link. $e');
+    }
+  }
 }
 
-
-final memberAddProvider =
-    StateNotifierProvider<MemberAddData, UserProfile?>(
+final memberAddProvider = StateNotifierProvider<MemberAddData, UserProfile?>(
   (ref) => MemberAddData(),
 );
 

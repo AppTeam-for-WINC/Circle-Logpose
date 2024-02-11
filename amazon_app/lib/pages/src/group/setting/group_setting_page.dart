@@ -69,13 +69,17 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                top: 100,
+                top: 80,
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () async {
+                      // init
                       await groupProfileNotifier.initProfile();
+                      ref.watch(scheduleDeleteModeProvider.notifier).state =
+                          false;
                       if (!mounted) {
                         return;
                       }
@@ -86,78 +90,89 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         ),
                       );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 6, left: 15),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            CupertinoIcons.back,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 3),
-                            child: const Text(
-                              '戻る',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          CupertinoIcons.back,
+                          size: 25,
+                          color: Color(0xFF7B61FF),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 3),
+                          child: const Text(
+                            '戻る',
+                            style: TextStyle(
+                              fontSize: 20,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        '団体編集',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                  Container(
+                    width: 140,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xFFD9D9D9),
+                          offset: Offset(0, 2),
+                          blurRadius: 2,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                      color: const Color(0xFF7B61FF),
+                      borderRadius: BorderRadius.circular(80),
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          '団体編集',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    child: CupertinoButton(
-                      onPressed: () async {
-                        await showCupertinoModalPopup<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CupertinoAlertDialog(
-                              title: const Text('団体を削除しますか?'),
-                              content: const Text('削除後、元に戻すことはできません。'),
-                              actions: <CupertinoDialogAction>[
-                                CupertinoDialogAction(
-                                  isDefaultAction: true,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('No'),
-                                ),
-                                CupertinoDialogAction(
-                                  isDefaultAction: true,
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Yes'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: const Icon(
-                        Icons.delete_forever,
-                        color: Colors.black,
-                        size: 30,
-                      ),
+                  CupertinoButton(
+                    onPressed: () async {
+                      await showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            title: const Text('団体を削除しますか?'),
+                            content: const Text('削除後、元に戻すことはできません。'),
+                            actions: <CupertinoDialogAction>[
+                              CupertinoDialogAction(
+                                isDefaultAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('No'),
+                              ),
+                              CupertinoDialogAction(
+                                isDefaultAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Yes'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(
+                      Icons.delete_forever,
+                      color: Color(0xFF7B61FF),
+                      size: 30,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 60,
                   ),
                 ],
               ),
@@ -239,7 +254,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                     width: 272,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFD8EB61),
+                      color: const Color.fromARGB(255, 244, 219, 251),
                       borderRadius: BorderRadius.circular(80),
                       boxShadow: const [
                         BoxShadow(
@@ -264,7 +279,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         style: const TextStyle(fontSize: 16),
                         placeholder: '団体名',
                         decoration: const BoxDecoration(
-                          color: Color(0xFFD8EB61),
+                          color: Color.fromARGB(255, 244, 219, 251),
                         ),
                       ),
                     ),
@@ -417,7 +432,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       width: 374,
                       height: 220,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(left: 15, top: 15),
@@ -432,7 +447,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           ),
                           SingleChildScrollView(
                             child: Container(
-                              width: 354,
+                              width: 330,
                               height: 180,
                               padding: const EdgeInsets.only(
                                 right: 5,
@@ -443,20 +458,27 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                 padding: EdgeInsets.zero,
                                 primary: false,
                                 shrinkWrap: true,
-                                crossAxisCount: 2,
-                                childAspectRatio: 3,
-                                mainAxisSpacing: 20,
-                                crossAxisSpacing: 20,
+                                crossAxisCount: 1,
+                                childAspectRatio: 6,
+                                mainAxisSpacing: 12,
                                 children: groupSchedules.when(
                                   data: (groupSchedule) {
                                     if (groupSchedule.isEmpty) {
                                       return const [SizedBox.shrink()];
                                     }
                                     return groupSchedule.map((schedule) {
-                                      return ScheduleCard(
-                                        schedule: schedule,
-                                        groupName: groupProfileNotifier
-                                            .groupNameController.text,
+                                      return groupAdminProfileList.when(
+                                        data: (membershipProfiles) {
+                                          return ScheduleCard(
+                                            groupId: groupId,
+                                            schedule: schedule,
+                                            groupName: groupProfileNotifier
+                                                .groupNameController.text,
+                                            groupMemberList: membershipProfiles,
+                                          );
+                                        },
+                                        loading: () => const SizedBox.shrink(),
+                                        error: (error, stack) => Text('$error'),
                                       );
                                     }).toList();
                                   },
@@ -505,7 +527,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       top: 60,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          ref.watch(scheduleDeleteModeProvider.notifier).state =
+                              !ref.watch(scheduleDeleteModeProvider);
+                        },
                         child: Container(
                           width: 44,
                           height: 44,
@@ -542,6 +567,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 if (!success) {
                   return;
                 }
+                // init
+                ref.watch(scheduleDeleteModeProvider.notifier).state = false;
 
                 if (!mounted) {
                   return;

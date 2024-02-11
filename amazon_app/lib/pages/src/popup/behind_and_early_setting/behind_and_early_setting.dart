@@ -37,10 +37,8 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
           height: 320,
           child: Stack(
             children: [
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.white),
-                ),
+              Container(
+                decoration: const BoxDecoration(color: Colors.white),
               ),
               Container(
                 width: double.infinity,
@@ -70,85 +68,81 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                   ),
                 ),
               ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(top: 100),
-                                  width: 220,
-                                  child: Expanded(
-                                    child: Text(
-                                      groupSchedule.title,
-                                      style: const TextStyle(
-                                        fontSize: 30,
-                                        overflow: TextOverflow.clip,
-                                      ),
-                                    ),
+              Container(
+                margin: const EdgeInsets.only(left: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 100),
+                                width: 220,
+                                child: Text(
+                                  groupSchedule.title,
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    overflow: TextOverflow.clip,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: Text(
-                                          formatDateTimeExcYearHourMinuteDay(
-                                            groupSchedule.startAt,
-                                          ),
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        formatDateTimeExcYearMonthDay(
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10),
+                                      child: Text(
+                                        formatDateTimeExcYearHourMinuteDay(
                                           groupSchedule.startAt,
                                         ),
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ),
                                       ),
-                                      const Text(
-                                        '-',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                    ),
+                                    Text(
+                                      formatDateTimeExcYearMonthDay(
+                                        groupSchedule.startAt,
                                       ),
-                                      Text(
-                                        formatDateTimeExcYearMonthDay(
-                                          groupSchedule.endAt,
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                      style: const TextStyle(
+                                        fontSize: 18,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    const Text(
+                                      '-',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    Text(
+                                      formatDateTimeExcYearMonthDay(
+                                        groupSchedule.endAt,
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: ScheduleJoinTime(
-                          groupProfileWithScheduleWithId: groupData,
                         ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: ScheduleJoinTime(
+                        groupProfileWithScheduleWithId: groupData,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

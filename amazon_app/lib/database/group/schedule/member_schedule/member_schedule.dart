@@ -15,7 +15,7 @@ class GroupMemberSchedule {
   });
 
   factory GroupMemberSchedule.fromMap(
-      Map<String, dynamic> groupMemberScheduleRef) {
+      Map<String, dynamic> groupMemberScheduleRef,) {
     final scheduleId = groupMemberScheduleRef['schedule_id'] as String;
     final userId = groupMemberScheduleRef['user_id'] as String;
     final attendance = groupMemberScheduleRef['attendance'] as bool;

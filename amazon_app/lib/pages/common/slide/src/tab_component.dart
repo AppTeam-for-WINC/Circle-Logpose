@@ -27,17 +27,17 @@ class TabComponentState extends ConsumerState<TabComponent> {
       ),
       child: Column(
         children: [
-          if (tabName == '出席簿') ... const [
-            UserSettingTab(),
-            SizedBox(height: 20),
+          if (tabName == '出席簿') ...const [
             GroupCreateTab(),
+            SizedBox(height: 20),
+            UserSettingTab(),
           ],
-          if (tabName == '団体作成') ... const [
+          if (tabName == '団体作成') ...const [
             AttendanceTab(),
             SizedBox(height: 20),
             UserSettingTab(),
           ],
-          if (tabName == 'ユーザー設定') ... const [
+          if (tabName == 'ユーザー設定') ...const [
             AttendanceTab(),
             SizedBox(height: 20),
             GroupCreateTab(),

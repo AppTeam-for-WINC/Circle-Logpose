@@ -50,3 +50,8 @@ DateTime formatStringExcYearMonthDay(String datetime) {
 DateTime? convertTimestampToDateTime(dynamic timestamp) {
   return timestamp is Timestamp ? timestamp.toDate() : null;
 }
+
+/// Convert DateTime to Timestamp.
+Timestamp convertTimestampToTimestamp(DateTime datetime) {
+  return Timestamp.fromDate(datetime);
+}

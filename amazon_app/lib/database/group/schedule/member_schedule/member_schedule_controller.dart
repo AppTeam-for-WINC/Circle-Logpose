@@ -1,3 +1,4 @@
+import 'package:amazon_app/controller/common/time_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -54,8 +55,10 @@ class GroupMemberScheduleController {
     final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
     final lateness = groupMemberScheduleRef['lateness'] as bool;
     final absence = groupMemberScheduleRef['absence'] as bool;
-    final startAt = groupMemberScheduleRef['start_at'] as DateTime?;
-    final endAt = groupMemberScheduleRef['end_at'] as DateTime?;
+    final startAt = convertTimestampToDateTime(
+      groupMemberScheduleRef['start_at'],
+    );
+    final endAt = convertTimestampToDateTime(groupMemberScheduleRef['end_at']);
     final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
     final createdAt = groupMemberScheduleRef['created_at'] as Timestamp?;
     if (createdAt == null) {
@@ -184,7 +187,21 @@ class GroupMemberScheduleController {
               return null;
             }
             final absence = groupMemberSchedulesRef['absence'] as bool?;
-            if (absence == null || !absence) {
+            final lateness = groupMemberSchedulesRef['lateness'] as bool?;
+            final attendance = groupMemberSchedulesRef['attendance'] as bool?;
+            final leaveEarly = groupMemberSchedulesRef['leave_early'] as bool?;
+
+            if (absence == null ||
+                lateness == null ||
+                attendance == null ||
+                leaveEarly == null) {
+              return null;
+            }
+            if (!absence && !lateness && !attendance && !leaveEarly) {
+              return null;
+            }
+
+            if (!absence) {
               final userDocId = groupMemberSchedulesRef['user_id'] as String;
               return userDocId;
             }
@@ -200,46 +217,45 @@ class GroupMemberScheduleController {
   /// Update GroupMembershipSchedule.
   static Future<void> update({
     required String docId,
-    required bool attendance,
-    required bool leaveEarly,
-    required bool lateness,
-    required bool absence,
-    required DateTime? startAt,
-    required DateTime? endAt,
+    bool? attendance,
+    bool? leaveEarly,
+    bool? lateness,
+    bool? absence,
+    DateTime? startAt,
+    DateTime? endAt,
   }) async {
     final updatedAt = FieldValue.serverTimestamp();
 
-    final updateData = <String, dynamic>{
-      'attendance': attendance,
-      'leave_early': leaveEarly,
-      'lateness': lateness,
-      'absence': absence,
-      'start_at': startAt,
-      'end_at': endAt,
-      'updated_at': updatedAt,
-    };
+    final updateData = <String, dynamic>{'updated_at': updatedAt};
+    if (attendance != null) {
+      updateData['attendance'] = attendance;
+    }
 
-    await db.collection(collectionPath).doc(docId).update(updateData);
-  }
+    if (leaveEarly != null) {
+      updateData['leave_early'] = leaveEarly;
+    }
 
-  /// Update GroupMembershipSchedule.
-  static Future<void> updateTime({
-    required String docId,
-    required DateTime? startAt,
-    required DateTime? endAt,
-  }) async {
-    final updatedAt = FieldValue.serverTimestamp();
+    if (lateness != null) {
+      updateData['lateness'] = lateness;
+    }
 
-    final updateData = <String, dynamic>{
-      'start_at': startAt,
-      'end_at': endAt,
-      'updated_at': updatedAt,
-    };
+    if (absence != null) {
+      updateData['absence'] = absence;
+    }
+
+    if (startAt != null) {
+      updateData['start_at'] = startAt;
+    }
+
+    if (endAt != null) {
+      updateData['end_at'] = endAt;
+    }
 
     await db.collection(collectionPath).doc(docId).update(updateData);
   }
 
   static Future<void> delete(String docId) async {
     await db.collection(collectionPath).doc(docId).delete();
+
   }
 }

@@ -43,18 +43,18 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(34),
           child: SizedBox(
-            width: 360,
+            width: 450,
             height: 500,
             child: Stack(
               children: [
                 Column(
                   children: [
                     Container(
-                      height: 99,
+                      height: 100,
                       color: hexToColor(schedule.color),
                     ),
                     Container(
-                      height: 401,
+                      height: 400,
                       color: Colors.white,
                     ),
                   ],
@@ -145,20 +145,18 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: GridView.count(
-                          crossAxisSpacing: 26,
-                          mainAxisSpacing: 14,
-                          childAspectRatio: 2.5,
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.all(10),
-                          children: memberProfiles
-                              .whereType<UserProfile>()
-                              .map((userProfile) {
-                            return JoinMember(userProfile: userProfile);
-                          }).toList(),
-                        ),
+                      GridView.count(
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 4,
+                        childAspectRatio: 5.5,
+                        crossAxisCount: 1,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(10),
+                        children: memberProfiles
+                            .whereType<UserProfile>()
+                            .map((userProfile) {
+                          return JoinMember(userProfile: userProfile);
+                        }).toList(),
                       ),
                     ],
                   ),

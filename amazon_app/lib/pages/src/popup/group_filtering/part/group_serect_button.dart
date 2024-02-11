@@ -41,7 +41,7 @@ class GroupSerectButton extends ConsumerState<GroupFilteringPopup> {
                 fontSize: 22,
                 color: Colors.black,
               ),
-            )
+            ),
           ],
         ),
         onPressed: () {

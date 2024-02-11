@@ -7,11 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'parts/attendance/user_schedules.dart';
 import 'parts/group/joined_groups.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: DefaultTabController(
@@ -67,29 +72,31 @@ class HomePage extends ConsumerWidget {
                           label: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 33,
                                 height: 33,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(
-                                    255,
-                                    255,
-                                    255,
-                                    0.20,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromRGBO(
+                                      255,
+                                      255,
+                                      255,
+                                      0.20,
+                                    ),
+                                    borderRadius: BorderRadius.circular(33),
                                   ),
-                                  borderRadius: BorderRadius.circular(33),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'all',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color.fromRGBO(
-                                        255,
-                                        255,
-                                        255,
-                                        0.80,
+                                  child: const Center(
+                                    child: Text(
+                                      'all',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromRGBO(
+                                          255,
+                                          255,
+                                          255,
+                                          0.80,
+                                        ),
                                       ),
                                     ),
                                   ),

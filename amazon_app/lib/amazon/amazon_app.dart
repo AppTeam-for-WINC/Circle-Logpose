@@ -1,7 +1,6 @@
 import 'package:amazon_app/amazon/amazon_app_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../pages/src/group/create/group_create_page.dart';
 import '../pages/src/home/home_page.dart';
 import '../pages/src/login/login_page.dart';
@@ -24,7 +23,7 @@ class AmazonApp extends StatelessWidget {
       ],
       locale: const Locale('ja'),
       // home: const StartPage(),
-      home: FutureBuilder<ConsumerWidget>(
+      home: FutureBuilder(
         future: firstPage(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

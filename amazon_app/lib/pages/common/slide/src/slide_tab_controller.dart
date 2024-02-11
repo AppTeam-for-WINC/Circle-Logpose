@@ -3,7 +3,11 @@ import 'package:amazon_app/pages/common/slide/src/tab_component.dart';
 import 'package:flutter/cupertino.dart';
 
 Future<void> onTapSegmentTab(
-    BuildContext context, SegmentTab tab, String? tabName, int slideNum) async {
+  BuildContext context,
+  SegmentTab tab,
+  String? tabName,
+  int slideNum,
+) async {
   if (tabName == null) {
     return;
   }

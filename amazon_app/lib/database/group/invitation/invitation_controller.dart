@@ -1,9 +1,14 @@
+import 'package:amazon_app/controller/common/time_controller.dart';
 import 'package:amazon_app/database/group/invitation/invitation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class GroupInvitationController {
-  const GroupInvitationController();
+  GroupInvitationController._internal();
+  static final GroupInvitationController _instance =
+      GroupInvitationController._internal();
+  static GroupInvitationController get instance => _instance;
+
   static final db = FirebaseFirestore.instance;
 
   static const collectionPath = 'group_invitations';
@@ -29,7 +34,9 @@ class GroupInvitationController {
     final invitationLink = '$baseURL?code=$link';
 
     ///Set Expires limit.
-    final expiresAt = DateTime.now().add(const Duration(days: 7)) as Timestamp;
+    final expiresAt = convertTimestampToTimestamp(
+      DateTime.now().add(const Duration(days: 7)),
+    );
 
     final createdAt = FieldValue.serverTimestamp();
 

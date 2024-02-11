@@ -1,9 +1,10 @@
-import 'package:amazon_app/pages/src/account/account_setting_page.dart';
+import 'package:amazon_app/controller/common/copy_to_clipboard.dart';
 import 'package:amazon_app/pages/src/account/account_setting_controller.dart';
+import 'package:amazon_app/pages/src/account/account_setting_page.dart';
 import 'package:amazon_app/pages/src/account/parts/id/id_setting_controller.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class IdSettingPage extends ConsumerStatefulWidget {
@@ -13,10 +14,6 @@ class IdSettingPage extends ConsumerStatefulWidget {
 }
 
 class IdSettingPageState extends ConsumerState<IdSettingPage> {
-  void copyToClipboard(String textToCopy) {
-    Clipboard.setData(ClipboardData(text: textToCopy));
-  }
-
   @override
   Widget build(BuildContext context) {
     final accountId = ref.watch(userProfileProvider);
