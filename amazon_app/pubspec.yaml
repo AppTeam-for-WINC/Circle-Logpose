@@ -39,3 +39,8 @@ flutter:
   uses-material-design: true
   assets:
     - src/images/
+    - src/logpost/
+  fonts:
+    - family: Shippori_Mincho_B1
+      fonts: 
+        - asset: fonts/Shippori_Mincho_B1/ShipporiMinchoB1-SemiBold.ttf

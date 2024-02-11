@@ -107,26 +107,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.all(23),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            //↓アイコン
-                            Icon(
-                              CupertinoIcons.calendar_today,
-                              color: Colors.white,
-                              size: 103,
+                            Image.asset(
+                              'src/logpost/Logpost.png',
+                              width: 100,
+                              height: 100,
                             ),
-                            //↑アイコン
-                            //↓アプリ名
-                            Text(
-                              'Amazon',
+                            const Text(
+                              'Logpost',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
-                                fontStyle: FontStyle.normal,
+                                fontFamily: 'Shippori_Mincho_B1',
                               ),
                             ),
-                            //↑アプリ名
                           ],
                         ),
                       ),
@@ -240,9 +236,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-
                       Container(
-                        height: 47,
+                        height: 55,
                         width: 195,
                         margin: const EdgeInsets.all(23),
                         child: CupertinoButton(
@@ -253,7 +248,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               : () async {
                                   await _login();
                                 },
-                          child: const Text('login'),
+                          child: const Text(
+                            'login',
+                            style: TextStyle(
+                              fontFamily: 'Shippori_Mincho_B1',
+                              letterSpacing: 1.1,
+                            ),
+                          ),
                         ),
                       ),
                     ],

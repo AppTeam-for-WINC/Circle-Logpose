@@ -18,6 +18,7 @@ class AmazonApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
+      debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale('ja'),
       ],
