@@ -53,7 +53,7 @@ class _GroupMemberState extends ConsumerState<GroupMember> {
                   child: Text(
                     userProfile.name,
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Colors.black,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
