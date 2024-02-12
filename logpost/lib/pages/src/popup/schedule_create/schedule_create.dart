@@ -161,7 +161,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ],
                       ),
                     ),
-                    //Detail
+                    // Detail
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Column(
@@ -200,7 +200,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ],
                       ),
                     ),
-                    //Button of creation
+                    // Button of creation
                     Container(
                       margin: EdgeInsets.only(
                         left: deviceWidth * 0.15,
@@ -213,6 +213,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         color: const Color(0xFF7B61FF),
                       ),
                       child: CupertinoButton(
+                        padding: EdgeInsets.zero,
                         child: const Text(
                           '保存',
                           style: TextStyle(

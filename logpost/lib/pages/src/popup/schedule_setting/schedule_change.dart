@@ -221,6 +221,7 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                         color: const Color(0xFF7B61FF),
                       ),
                       child: CupertinoButton(
+                        padding: EdgeInsets.zero,
                         child: const Text(
                           '変更を保存',
                           style: TextStyle(

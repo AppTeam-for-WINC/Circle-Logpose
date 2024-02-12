@@ -19,7 +19,7 @@ class GroupAdminMember extends ConsumerWidget {
           ),
         ],
         borderRadius: BorderRadius.circular(40),
-        color: const Color.fromARGB(255, 231, 180, 255),
+        color: const Color.fromARGB(255, 233, 200, 248),
       ),
       child: Padding(
         padding: const EdgeInsets.only(left: 3),
@@ -47,7 +47,7 @@ class GroupAdminMember extends ConsumerWidget {
                 child: Text(
                   adminUserProfile.name,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.black),
                 ),
               ),
             ),
