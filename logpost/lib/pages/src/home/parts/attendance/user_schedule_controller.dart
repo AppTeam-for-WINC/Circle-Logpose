@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../../database/auth/auth_controller.dart';
 import '../../../../../database/group/group/group.dart';
@@ -242,44 +243,66 @@ final readUserScheduleProvider =
     throw Exception('User not logged in.');
   }
 
-  final groupMemberships =
-      await GroupMembershipController.readAllWithUserId(userDocId).first;
+  final groupMembershipsStream =
+      GroupMembershipController.readAllWithUserId(userDocId);
 
-  var combinedSchedules = <GroupProfileWithScheduleWithId>[];
-
-  for (final membership in groupMemberships) {
-    if (membership == null) {
-      continue;
-    }
-
-    final groupProfile = await GroupController.read(membership.groupId).first;
-    final scheduleIds =
-        await GroupScheduleController.readAllScheduleId(membership.groupId)
-            .first;
-
-    if (groupProfile == null) {
-      continue;
-    }
-
-    for (final scheduleId in scheduleIds) {
-      if (scheduleId == null) {
+  await for (final groupMembershipList in groupMembershipsStream) {
+    final scheduleIdListStreamList =
+        <Stream<(List<String?>, String, GroupProfile)>>[];
+    for (final membership in groupMembershipList) {
+      if (membership == null) {
         continue;
       }
 
-      final schedule = await GroupScheduleController.read(scheduleId);
-
-      if (schedule != null) {
-        combinedSchedules.add(
-          GroupProfileWithScheduleWithId(
-            groupScheduleId: scheduleId,
-            groupSchedule: schedule,
-            groupId: membership.groupId,
-            groupProfile: groupProfile,
-          ),
-        );
+      final groupProfile = await GroupController.readFuture(membership.groupId);
+      if (groupProfile == null) {
+        continue;
       }
+
+      final scheduleIdList = GroupScheduleController.readAllScheduleId(
+        membership.groupId,
+      ).map(
+        (scheduleIdList) => (
+          scheduleIdList,
+          membership.groupId,
+          groupProfile,
+        ),
+      );
+      scheduleIdListStreamList.add(scheduleIdList);
+    }
+
+    /// <()> is named 'Record type' or 'Turple type'.
+    /// To access element by $index.
+    /// Example $1 is [0].
+    final combStream =
+        CombineLatestStream.list<(List<String?>, String, GroupProfile)>(
+      scheduleIdListStreamList,
+    );
+    await for (final combList in combStream) {
+      final combinedSchedules = <GroupProfileWithScheduleWithId>[];
+      for (final record in combList) {
+        final scheduleIdList = record.$1;
+        final groupId = record.$2;
+        final groupProfile = record.$3;
+        for (final scheduleId in scheduleIdList) {
+          if (scheduleId == null) {
+            continue;
+          }
+          final schedule = await GroupScheduleController.read(scheduleId);
+
+          if (schedule != null) {
+            combinedSchedules.add(
+              GroupProfileWithScheduleWithId(
+                groupScheduleId: scheduleId,
+                groupSchedule: schedule,
+                groupId: groupId,
+                groupProfile: groupProfile,
+              ),
+            );
+          }
+        }
+      }
+      yield combinedSchedules;
     }
   }
-
-  yield combinedSchedules;
 });

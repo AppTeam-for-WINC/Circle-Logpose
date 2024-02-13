@@ -47,6 +47,9 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     final groupId = widget.groupId;
     final groupAdminProfileList =
         ref.watch(groupAdminProfileListProvider(groupId));
@@ -61,123 +64,103 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final groupScheduleNotifier =
         ref.watch(createGroupScheduleProvider.notifier);
 
-    return ColoredBox(
-      color: const Color.fromARGB(255, 233, 233, 246),
+    return CupertinoPageScaffold(
+      backgroundColor: const Color.fromARGB(255, 233, 233, 246),
+      navigationBar: CupertinoNavigationBar(
+        leading: CupertinoButton(
+          onPressed: () async {
+            // init
+            await groupProfileNotifier.initProfile();
+            ref.watch(scheduleDeleteModeProvider.notifier).state = false;
+            if (!mounted) {
+              return;
+            }
+            Navigator.pop(
+              context,
+              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 246),
+        border: const Border(bottom: BorderSide(color: Colors.transparent)),
+        middle: Container(
+          width: 178,
+          height: 38,
+          margin: const EdgeInsets.only(top: 10),
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0xFFD9D9D9),
+                offset: Offset(0, 2),
+                blurRadius: 2,
+                spreadRadius: 1,
+              ),
+            ],
+            color: const Color(0xFF7B61FF),
+            borderRadius: BorderRadius.circular(80),
+          ),
+          child: Container(
+            margin: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+            ),
+            child: const Center(
+              child: Text(
+                '団体編集',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+        trailing: CupertinoButton(
+          onPressed: () async {
+            await showCupertinoModalPopup<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
+                  title: const Text('団体を削除しますか?'),
+                  content: const Text('削除後、元に戻すことはできません。'),
+                  actions: <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('No'),
+                    ),
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: const Icon(
+            Icons.delete_forever,
+            color: Color(0xFF7B61FF),
+            size: 30,
+          ),
+        ),
+      ),
       child: Center(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 80,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      // init
-                      await groupProfileNotifier.initProfile();
-                      ref.watch(scheduleDeleteModeProvider.notifier).state =
-                          false;
-                      if (!mounted) {
-                        return;
-                      }
-                      Navigator.pop(
-                        context,
-                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.back,
-                          size: 25,
-                          color: Color(0xFF7B61FF),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 3),
-                          child: const Text(
-                            '戻る',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 140,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFFD9D9D9),
-                          offset: Offset(0, 2),
-                          blurRadius: 2,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                      color: const Color(0xFF7B61FF),
-                      borderRadius: BorderRadius.circular(80),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '団体編集',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  CupertinoButton(
-                    onPressed: () async {
-                      await showCupertinoModalPopup<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
-                            title: const Text('団体を削除しますか?'),
-                            content: const Text('削除後、元に戻すことはできません。'),
-                            actions: <CupertinoDialogAction>[
-                              CupertinoDialogAction(
-                                isDefaultAction: true,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('No'),
-                              ),
-                              CupertinoDialogAction(
-                                isDefaultAction: true,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Yes'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.delete_forever,
-                      color: Color(0xFF7B61FF),
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
             Container(
+              margin: const EdgeInsets.only(top: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.white,
@@ -190,8 +173,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                   ),
                 ],
               ),
-              width: 375,
-              height: 203,
+              width: deviceWidth * 0.85,
+              height: deviceHeight * 0.215,
               child: Column(
                 children: [
                   Padding(
@@ -250,8 +233,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                     ),
                   ),
                   Container(
-                    width: 272,
-                    height: 50,
+                    width: deviceWidth * 0.65,
+                    height: deviceHeight * 0.05,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 244, 219, 251),
                       borderRadius: BorderRadius.circular(80),
@@ -290,13 +273,13 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               height: 10,
             ),
             SizedBox(
-              height: 95,
-              width: 383,
+              width: deviceWidth * 0.88,
+              height: deviceHeight * 0.1,
               child: Stack(
                 children: [
                   Container(
-                    width: 371,
-                    height: 77,
+                    width: deviceWidth * 0.85,
+                    height: deviceHeight * 0.08,
                     margin: const EdgeInsets.only(top: 10, left: 6),
                     padding: const EdgeInsets.only(top: 5),
                     decoration: BoxDecoration(
@@ -304,10 +287,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       borderRadius: BorderRadius.circular(40),
                       boxShadow: const [
                         BoxShadow(
-                          blurRadius: 4,
-                          spreadRadius: 3,
-                          offset: Offset(0, 3),
                           color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 3),
+                          blurRadius: 3,
+                          spreadRadius: 1,
                         ),
                       ],
                     ),
@@ -319,7 +302,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           const Text(
                             'メンバー',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               color: Color(0xFF9A9A9A),
                             ),
                           ),
@@ -409,13 +392,15 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
               ),
             ),
             const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: SizedBox(
-                width: 390,
-                child: Stack(
-                  children: [
-                    Container(
+            SizedBox(
+              width: deviceWidth * 0.89,
+              height: deviceHeight * 0.36,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      width: deviceWidth * 0.85,
+                      height: deviceHeight * 0.36,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -428,8 +413,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           ),
                         ],
                       ),
-                      width: 374,
-                      height: 220,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -439,7 +422,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                               children: [
                                 Text(
                                   '予定一覧',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ],
                             ),
@@ -490,65 +476,65 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      top: 10,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () async {
-                          groupScheduleNotifier.setGroupId(groupId);
-                          ref.watch(groupNameProvider.notifier).state =
-                              groupProfileNotifier.groupNameController.text;
-                          await showCupertinoModalPopup<ScheduleCreate>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const ScheduleCreate();
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFD8EB61),
-                            borderRadius: BorderRadius.circular(44),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              CupertinoIcons.calendar_badge_plus,
-                              size: 25,
-                              color: Colors.black,
-                            ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () async {
+                        groupScheduleNotifier.setGroupId(groupId);
+                        ref.watch(groupNameProvider.notifier).state =
+                            groupProfileNotifier.groupNameController.text;
+                        await showCupertinoModalPopup<ScheduleCreate>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const ScheduleCreate();
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD8EB61),
+                          borderRadius: BorderRadius.circular(44),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            CupertinoIcons.calendar_badge_plus,
+                            size: 25,
+                            color: Colors.black,
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 60,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          ref.watch(scheduleDeleteModeProvider.notifier).state =
-                              !ref.watch(scheduleDeleteModeProvider);
-                        },
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEB6161),
-                            borderRadius: BorderRadius.circular(44),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              CupertinoIcons.calendar_badge_minus,
-                              size: 25,
-                              color: Colors.black,
-                            ),
+                  ),
+                  Positioned(
+                    top: 60,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.watch(scheduleDeleteModeProvider.notifier).state =
+                            !ref.watch(scheduleDeleteModeProvider);
+                      },
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEB6161),
+                          borderRadius: BorderRadius.circular(44),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            CupertinoIcons.calendar_badge_minus,
+                            size: 25,
+                            color: Colors.black,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(

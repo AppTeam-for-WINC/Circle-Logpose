@@ -34,7 +34,7 @@ class _GroupMemberState extends ConsumerState<GroupMember> {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 5),
+                  padding: const EdgeInsets.only(left: 5, right: 10),
                   child: Container(
                     width: 37,
                     height: 37,

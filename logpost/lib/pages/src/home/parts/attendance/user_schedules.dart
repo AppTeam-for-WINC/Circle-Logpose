@@ -15,12 +15,11 @@ class ScheduleManagement extends ConsumerStatefulWidget {
 class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
 
     final groupExist = ref.watch(checkGroupExistProvider);
-    final groupsDataeList = ref.watch(readUserScheduleProvider);
-
+    final asyncGroupsDataList = ref.watch(readUserScheduleProvider);
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -29,37 +28,41 @@ class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
         alignment: AlignmentDirectional.center,
         children: [
           Positioned(
-            top: deviceHeight * 0.1,
+            top: deviceHeight * 0.14,
             child: Container(
-              width: deviceWidth * 0.95,
+              width: deviceWidth * 0.9,
               height: deviceHeight,
               color: const Color(0xFFF5F3FE),
-              padding: const EdgeInsets.only(top: 45),
               child: SingleChildScrollView(
+                // 後ほど、ListView.builder を用いると良い。
                 child: Column(
                   children: [
-                    Column(
-                      children: groupsDataeList.when(
-                        data: (groupData) {
-                          if (groupData.isEmpty) {
-                            return const [SizedBox.shrink()];
-                          }
-                          return groupData.map((group) {
-                            return GroupScheduleCard(groupData: group);
-                          }).toList();
-                        },
-                        loading: () => const [SizedBox.shrink()],
-                        error: (error, stack) => [Text('$error')],
-                      ),
+                    asyncGroupsDataList.when(
+                      data: (groupDataList) {
+                        if (groupDataList.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+                        return Column(
+                          children: [
+                            ...groupDataList.map((groupData) {
+                              return GroupScheduleCard(groupData: groupData);
+                            }),
+                            const SizedBox(
+                              height: 200,
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stack) => Text('$error'),
                     ),
-                    const SizedBox(
-                      height: 200,
-                    ),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
             ),
           ),
+
           Positioned(
             bottom: 0, // 画面の底部に配置
             child: Container(

@@ -26,7 +26,7 @@ class GroupAdminMember extends ConsumerWidget {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 5, right: 10),
               child: Container(
                 width: 37,
                 height: 37,
