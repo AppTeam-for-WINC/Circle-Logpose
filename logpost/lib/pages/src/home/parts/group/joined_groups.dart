@@ -41,8 +41,8 @@ class GroupPage extends ConsumerWidget {
                           if (groupProfile.isEmpty) {
                             return const [SizedBox.shrink()];
                           }
-                          return groupProfile.map((groupWithId) {
-                            return GroupBox(groupWithId: groupWithId);
+                          return groupProfile.map((groupId) {
+                            return GroupBox(groupId: groupId);
                           }).toList();
                         },
                         loading: () => const [SizedBox.shrink()],

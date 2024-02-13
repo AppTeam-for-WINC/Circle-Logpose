@@ -78,7 +78,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                             await userProfileNotifier.initUserProfile();
                             userProfileNotifier.nameController.text =
                                 userProfile!.name;
-              
+
                             if (!mounted) {
                               return;
                             }
@@ -218,10 +218,11 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                   height: 70,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: userProfile!.image.startsWith('http')
-                                          ? NetworkImage(userProfile.image)
-                                          : AssetImage(userProfile.image)
-                                              as ImageProvider,
+                                      image:
+                                          userProfile!.image.startsWith('http')
+                                              ? NetworkImage(userProfile.image)
+                                              : AssetImage(userProfile.image)
+                                                  as ImageProvider,
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: BorderRadius.circular(999),
@@ -369,7 +370,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                       ),
                     ),
                   ),
-              
+
                   //Email
                   Container(
                     margin: const EdgeInsets.only(top: 30),
@@ -548,14 +549,16 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                           if (groupProfile.isEmpty) {
                                             return const [SizedBox.shrink()];
                                           }
-                                          return groupProfile.map((groupWithId) {
+                                          return groupProfile.map((groupId) {
                                             return JoinedGroupComponent(
-                                              groupWithId: groupWithId,
+                                              groupId: groupId,
                                             );
                                           }).toList();
                                         },
-                                        loading: () => const [SizedBox.shrink()],
-                                        error: (error, stack) => [Text('$error')],
+                                        loading: () =>
+                                            const [SizedBox.shrink()],
+                                        error: (error, stack) =>
+                                            [Text('$error')],
                                       ),
                                     ),
                                   ),
@@ -580,7 +583,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         if (!success) {
                           return;
                         }
-              
+
                         if (!mounted) {
                           return;
                         }

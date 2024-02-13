@@ -19,8 +19,7 @@ class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     final groupExist = ref.watch(checkGroupExistProvider);
-    final groupsDataeList = ref.watch(readUserScheduleProvider);
-
+    final asyncGroupsDataList = ref.watch(readUserScheduleProvider);
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -36,30 +35,30 @@ class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
               color: const Color(0xFFF5F3FE),
               padding: const EdgeInsets.only(top: 45),
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Column(
-                      children: groupsDataeList.when(
-                        data: (groupData) {
-                          if (groupData.isEmpty) {
-                            return const [SizedBox.shrink()];
-                          }
-                          return groupData.map((group) {
-                            return GroupScheduleCard(groupData: group);
-                          }).toList();
-                        },
-                        loading: () => const [SizedBox.shrink()],
-                        error: (error, stack) => [Text('$error')],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 200,
-                    ),
-                  ],
+                // 後ほど、ListView.builder を用いると良い。
+                child: asyncGroupsDataList.when(
+                  data: (groupDataList) {
+                    if (groupDataList.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return Column(
+                      children: [
+                        ...groupDataList.map((groupData) {
+                          return GroupScheduleCard(groupData: groupData);
+                        }),
+                        const SizedBox(
+                          height: 200,
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () => const SizedBox.shrink(),
+                  error: (error, stack) => Text('$error'),
                 ),
               ),
             ),
           ),
+
           Positioned(
             bottom: 0, // 画面の底部に配置
             child: Container(

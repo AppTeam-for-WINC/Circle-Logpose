@@ -124,7 +124,13 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Select group
-                    GroupPickerButton(groupsProfile: groupsProfile),
+                    groupsProfile.when(
+                      data: (data) {
+                        return GroupPickerButton(groupIdList: data);
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stack) => Text('$error'),
+                    ),
                     // Activity time
                     const ScheduleActivityTime(),
                     // Place

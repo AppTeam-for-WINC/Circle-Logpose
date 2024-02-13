@@ -7,9 +7,9 @@ import '../../../group/setting/group_setting_page.dart';
 import 'controller/joined_group_controller.dart';
 
 class GroupBox extends ConsumerStatefulWidget {
-  const GroupBox({super.key, required this.groupWithId});
+  const GroupBox({super.key, required this.groupId});
 
-  final GroupWithId groupWithId;
+  final String groupId;
   @override
   ConsumerState createState() => GroupBoxState();
 }
@@ -17,9 +17,8 @@ class GroupBox extends ConsumerStatefulWidget {
 class GroupBoxState extends ConsumerState<GroupBox> {
   @override
   Widget build(BuildContext context) {
-    final groupWithId = widget.groupWithId;
-    final group = groupWithId.group;
-    final groupId = groupWithId.groupId;
+    final groupId = widget.groupId;
+    final asyncGroupProfileList = ref.watch(readGroupWithIdProvider(groupId));
 
     return GestureDetector(
       onTap: () async {
@@ -36,37 +35,43 @@ class GroupBoxState extends ConsumerState<GroupBox> {
           borderRadius: BorderRadius.circular(28),
           color: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImage(
-              imageUrl: group.image,
-              placeholder: (context, url) =>
-                  const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              imageBuilder: (context, imageProvider) => Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+        child: asyncGroupProfileList.when(
+          data: (groupData) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: groupData.groupProfile.image,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(999),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                group.name,
-                style: const TextStyle(
-                  fontSize: 20,
-                  overflow: TextOverflow.clip,
+                Expanded(
+                  child: Text(
+                    groupData.groupProfile.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
+          loading: () => const SizedBox.shrink(),
+          error: (error, stack) => Text('$error'),
         ),
       ),
     );

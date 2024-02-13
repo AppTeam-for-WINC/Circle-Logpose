@@ -24,12 +24,12 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    
+
     final groupScheduleId = widget.groupScheduleId;
     final schedule = ref.watch(changeGroupScheduleProvider(groupScheduleId));
     final scheduleNotifier =
         ref.watch(changeGroupScheduleProvider(groupScheduleId).notifier);
-    final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
+    final asyncGroupsIdList = ref.watch(readJoinedGroupsProfileProvider);
 
     return Center(
       child: ClipRRect(
@@ -131,8 +131,17 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Select group
-                    GroupPickerButton(groupsProfile: groupsProfile),
+                    asyncGroupsIdList.when(
+                      data: (groupIdList) {
+                        if (groupIdList.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+                        // Select group
+                        return GroupPickerButton(groupIdList: groupIdList);
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stack) => Text('$error'),
+                    ),
                     // Activity time
                     ChangeScheduleActivityTime(scheduleId: groupScheduleId),
                     // Place

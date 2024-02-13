@@ -25,7 +25,7 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
           onPressed: () async {
             //Init
             accountIdNotifier.accountIdController.clear();
-
+    
             await Navigator.pushAndRemoveUntil(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -149,7 +149,7 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
                     );
                     //Init
                     accountIdNotifier.accountIdController.clear();
-
+    
                     if (!mounted) {
                       return;
                     }
