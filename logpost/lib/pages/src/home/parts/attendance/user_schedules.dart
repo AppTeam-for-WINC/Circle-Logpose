@@ -19,7 +19,7 @@ class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     final groupExist = ref.watch(checkGroupExistProvider);
-    final asyncGroupsDataList = ref.watch(readUserScheduleProvider);
+    final asyncGroupsDataList = ref.watch(watchUserScheduleProvider);
     return Container(
       width: double.infinity,
       height: double.infinity,

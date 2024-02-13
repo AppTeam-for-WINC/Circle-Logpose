@@ -236,7 +236,7 @@ class GroupProfileWithScheduleWithId {
   final GroupProfile groupProfile;
 }
 
-final readUserScheduleProvider =
+final watchUserScheduleProvider =
     StreamProvider<List<GroupProfileWithScheduleWithId>>((ref) async* {
   final userDocId = await AuthController.getCurrentUserId();
   if (userDocId == null) {

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../../../controller/common/time_controller.dart';
 import 'member_schedule.dart';
@@ -104,6 +103,7 @@ class GroupMemberScheduleController {
 
       return doc.id;
     }).first;
+
     return groupMemberSchedule;
   }
 
@@ -160,58 +160,108 @@ class GroupMemberScheduleController {
     return groupMemberSchedule;
   }
 
-  // Read AlMemberships's UserDocId under conditions
+  // Read All Memberships's UserDocId under conditions
   // absence != null, absence == false.
-  static Stream<List<String?>> readAllMembershipUserDocIdByTerm(
+  static Future<List<String?>> readAllUserDocIdByTerm(
     String scheduleId,
     String userDocId,
-  ) async* {
-    final groupMemberScheduleStream = db
+  ) async {
+    final snapshot = await db
         .collection(collectionPath)
-        .where(
-          'schedule_id',
-          isEqualTo: scheduleId,
-        )
-        .where(
-          'user_id',
-          isEqualTo: userDocId,
-        )
-        .snapshots();
+        .where('schedule_id', isEqualTo: scheduleId)
+        .where('user_id', isEqualTo: userDocId)
+        .get();
 
-    await for (final groupMemberSchedules in groupMemberScheduleStream) {
-      final groupMemberSchedulesUserDocIds = groupMemberSchedules.docs
-          .map((doc) {
-            final groupMemberSchedulesRef = doc.data() as Map<String, dynamic>?;
-            if (groupMemberSchedulesRef == null) {
-              debugPrint('Error : No found document data.');
-              return null;
-            }
-            final absence = groupMemberSchedulesRef['absence'] as bool?;
-            final lateness = groupMemberSchedulesRef['lateness'] as bool?;
-            final attendance = groupMemberSchedulesRef['attendance'] as bool?;
-            final leaveEarly = groupMemberSchedulesRef['leave_early'] as bool?;
+    final userIdList = snapshot.docs.map((doc) {
+      final memberScheduleData = doc.data() as Map<String, dynamic>?;
+      if (memberScheduleData == null) {
+        return null;
+      }
+      final absence = memberScheduleData['absence'] as bool?;
+      final lateness = memberScheduleData['lateness'] as bool?;
+      final attendance = memberScheduleData['attendance'] as bool?;
+      final leaveEarly = memberScheduleData['leave_early'] as bool?;
 
-            if (absence == null ||
-                lateness == null ||
-                attendance == null ||
-                leaveEarly == null) {
-              return null;
-            }
-            if (!absence && !lateness && !attendance && !leaveEarly) {
-              return null;
-            }
+      if (absence == null ||
+          lateness == null ||
+          attendance == null ||
+          leaveEarly == null) {
+        return null;
+      }
+      if (!absence && !lateness && !attendance && !leaveEarly) {
+        return null;
+      }
 
-            if (!absence) {
-              final userDocId = groupMemberSchedulesRef['user_id'] as String;
-              return userDocId;
-            }
-            return null;
-          })
-          .whereType<String>()
-          .toList();
+      if (!absence) {
+        final userDocId = memberScheduleData['user_id'] as String;
+        return userDocId;
+      }
+      return null;
+    }).toList();
 
-      yield groupMemberSchedulesUserDocIds;
-    }
+    return userIdList;
+  }
+
+  // Read All Memberships's Group member schedules under conditions
+  // absence != null, absence == false.
+  static Future<List<GroupMemberSchedule?>> readAllMemberScheduleByTerm(
+    String scheduleId,
+    String userDocId,
+  ) async {
+    final snapshot = await db
+        .collection(collectionPath)
+        .where('schedule_id', isEqualTo: scheduleId)
+        .where('user_id', isEqualTo: userDocId)
+        .get();
+
+    final groupMemberScheduleList = snapshot.docs.map((doc) {
+      final memberScheduleData = doc.data() as Map<String, dynamic>?;
+      if (memberScheduleData == null) {
+        return null;
+      }
+      final absence = memberScheduleData['absence'] as bool?;
+      final lateness = memberScheduleData['lateness'] as bool?;
+      final attendance = memberScheduleData['attendance'] as bool?;
+      final leaveEarly = memberScheduleData['leave_early'] as bool?;
+
+      if (absence == null ||
+          lateness == null ||
+          attendance == null ||
+          leaveEarly == null) {
+        return null;
+      }
+      if (!absence && !lateness && !attendance && !leaveEarly) {
+        return null;
+      }
+
+      if (!absence) {
+        final userId = memberScheduleData['user_id'] as String;
+        final startAt =
+            convertTimestampToDateTime(memberScheduleData['start_at']);
+        final endAt = convertTimestampToDateTime(memberScheduleData['end_at']);
+        final updatedAt = memberScheduleData['updated_at'] as Timestamp?;
+        final createdAt = memberScheduleData['created_at'] as Timestamp?;
+        if (createdAt == null) {
+          return null;
+        }
+
+        return GroupMemberSchedule(
+          scheduleId: scheduleId,
+          userId: userId,
+          attendance: attendance,
+          leaveEarly: leaveEarly,
+          lateness: lateness,
+          absence: absence,
+          startAt: startAt,
+          endAt: endAt,
+          updatedAt: updatedAt,
+          createdAt: createdAt,
+        );
+      }
+      return null;
+    }).toList();
+
+    return groupMemberScheduleList;
   }
 
   /// Update GroupMembershipSchedule.
@@ -256,6 +306,5 @@ class GroupMemberScheduleController {
 
   static Future<void> delete(String docId) async {
     await db.collection(collectionPath).doc(docId).delete();
-
   }
 }

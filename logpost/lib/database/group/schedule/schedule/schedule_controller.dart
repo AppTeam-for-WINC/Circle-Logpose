@@ -129,16 +129,16 @@ class GroupScheduleController {
         )
         .get();
 
-      final schedulesRefs = schedulesSnapshot.docs.map((doc) {
-        final scheduleData = doc.data() as Map<String, dynamic>?;
-        if (scheduleData == null) {
-          return null;
-        }
+    final schedulesRefs = schedulesSnapshot.docs.map((doc) {
+      final scheduleData = doc.data() as Map<String, dynamic>?;
+      if (scheduleData == null) {
+        return null;
+      }
 
-        return doc.id;
-      }).toList();
+      return doc.id;
+    }).toList();
 
-      return schedulesRefs;
+    return schedulesRefs;
   }
 
   // Get selected schedule database.
@@ -171,6 +171,20 @@ class GroupScheduleController {
       updatedAt: updatedAt,
       createdAt: createdAt!,
     );
+  }
+  
+  /// Read GroupId.
+  static Future<String?> readGroupId(String docId) async {
+    final snapshot =
+        await db.collection(collectionPath).doc(docId).get();
+    final grouopScheduleData = snapshot.data();
+    if (grouopScheduleData == null) {
+      return null;
+    }
+
+    final groupId = grouopScheduleData['group_id'] as String;
+
+    return groupId;
   }
 
   /// Update scheule database.

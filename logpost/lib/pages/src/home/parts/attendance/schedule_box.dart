@@ -219,10 +219,12 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(
-                      top: 30,
-                      left: 25,
+                      top: 25,
+                      left: 15,
+                      right: 15,
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // Attendance
                         GestureDetector(
@@ -269,8 +271,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             );
                           },
                           child: Container(
-                            width: 80,
-                            height: 80,
+                            width: deviceWidth * 0.185,
+                            height: deviceHeight * 0.085,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               color: isAttendance
@@ -365,8 +367,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             }
                           },
                           child: Container(
-                            width: 80,
-                            height: 80,
+                            width: deviceWidth * 0.185,
+                            height: deviceHeight * 0.085,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               color: isLeavingEarly
@@ -459,8 +461,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             }
                           },
                           child: Container(
-                            width: 80,
-                            height: 80,
+                            width: deviceWidth * 0.185,
+                            height: deviceHeight * 0.085,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               color: isBehindTime
@@ -529,8 +531,8 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             );
                           },
                           child: Container(
-                            width: 80,
-                            height: 80,
+                            width: deviceWidth * 0.185,
+                            height: deviceHeight * 0.085,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80),
                               color: isAbsence

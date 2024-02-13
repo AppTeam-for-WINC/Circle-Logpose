@@ -10,13 +10,15 @@ import 'parts/join_member.dart';
 class ScheduleJoinMember extends ConsumerStatefulWidget {
   const ScheduleJoinMember({
     super.key,
-    required this.memberProfiles,
     required this.groupProfile,
+    required this.memberProfiles,
+    required this.scheduleId,
     required this.schedule,
   });
 
-  final List<UserProfile?> memberProfiles;
+  final String scheduleId;
   final GroupProfile groupProfile;
+  final List<UserProfile?> memberProfiles;
   final GroupSchedule schedule;
   @override
   ConsumerState<ScheduleJoinMember> createState() {
@@ -27,10 +29,12 @@ class ScheduleJoinMember extends ConsumerStatefulWidget {
 class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    final memberProfiles = widget.memberProfiles;
     final groupProfile = widget.groupProfile;
+    final memberProfiles = widget.memberProfiles;
+    final scheduleId = widget.scheduleId;
     final schedule = widget.schedule;
 
     return Padding(
@@ -43,18 +47,18 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(34),
           child: SizedBox(
-            width: 450,
-            height: 500,
+            width: deviceWidth * 0.9,
+            height: deviceHeight * 0.55,
             child: Stack(
               children: [
                 Column(
                   children: [
                     Container(
-                      height: 100,
+                      height: deviceHeight * 0.11,
                       color: hexToColor(schedule.color),
                     ),
                     Container(
-                      height: 400,
+                      height: deviceHeight * 0.44,
                       color: Colors.white,
                     ),
                   ],
@@ -77,7 +81,7 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 24, right: 24),
+                  margin: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -126,9 +130,7 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                         ],
                       ),
                       Container(
-                        margin: const EdgeInsets.only(
-                          top: 15,
-                        ),
+                        margin: const EdgeInsets.only(top: 15),
                         child: const Row(
                           children: [
                             Icon(
@@ -146,16 +148,18 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                         ),
                       ),
                       GridView.count(
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 4,
+                        mainAxisSpacing: 8,
                         childAspectRatio: 5.5,
                         crossAxisCount: 1,
                         shrinkWrap: true,
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(top: 10),
                         children: memberProfiles
                             .whereType<UserProfile>()
                             .map((userProfile) {
-                          return JoinMember(userProfile: userProfile);
+                          return JoinMember(
+                            scheduleId: scheduleId,
+                            userProfile: userProfile,
+                          );
                         }).toList(),
                       ),
                     ],
