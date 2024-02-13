@@ -24,6 +24,7 @@ class LogpostApp extends StatelessWidget {
           primaryColor: CupertinoColors.white,
           textStyle: TextStyle(color: CupertinoColors.black),
           dateTimePickerTextStyle: TextStyle(color: CupertinoColors.black),
+          pickerTextStyle: TextStyle(color: CupertinoColors.black,),
         ),
       ),
       debugShowCheckedModeBanner: false,

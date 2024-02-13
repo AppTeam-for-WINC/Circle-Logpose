@@ -2,17 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../home/parts/group/controller/joined_group_controller.dart';
 import '../../schedule_create_controller.dart';
 import 'modal.dart';
 
 class GroupPickerButton extends ConsumerStatefulWidget {
   const GroupPickerButton({
     super.key,
-    required this.groupsProfile,
+    required this.groupIdList,
   });
 
-  final AsyncValue<List<GroupWithId>> groupsProfile;
+  final List<String> groupIdList;
   @override
   ConsumerState<GroupPickerButton> createState() => _GroupPickerButtonState();
 }
@@ -20,13 +19,13 @@ class GroupPickerButton extends ConsumerStatefulWidget {
 class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
   void _showGroupPicker(
     BuildContext context,
-    List<GroupWithId> groupWithId,
+    List<String> groupIdList,
   ) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
         return GroupPickerModal(
-          groups: groupWithId,
+          groupIdList: groupIdList,
         );
       },
     );
@@ -34,8 +33,8 @@ class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
 
   @override
   Widget build(BuildContext context) {
+    final groupIdList = widget.groupIdList;
     final groupName = ref.watch(groupNameProvider);
-    final groupsProfile = widget.groupsProfile;
 
     return Row(
       children: [
@@ -43,16 +42,12 @@ class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
           Icons.group_add,
           color: Colors.grey,
         ),
-        groupsProfile.when(
-          data: (groups) => CupertinoButton(
-            onPressed: () => _showGroupPicker(context, groups),
-            child: Text(
-              groupName,
-              style: const TextStyle(fontSize: 18, color: Color(0xFF7B61FF)),
-            ),
+        CupertinoButton(
+          onPressed: () => _showGroupPicker(context, groupIdList),
+          child: Text(
+            groupName,
+            style: const TextStyle(fontSize: 18, color: Color(0xFF7B61FF)),
           ),
-          loading: () => const CupertinoActivityIndicator(),
-          error: (error, _) => Text('Error: $error'),
         ),
       ],
     );

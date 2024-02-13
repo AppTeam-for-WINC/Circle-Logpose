@@ -119,6 +119,28 @@ class GroupScheduleController {
     }
   }
 
+  /// Read list of schedule ID.
+  static Future<List<String?>> readAllScheduleIdFuture(String groupId) async {
+    final schedulesSnapshot = await db
+        .collection(collectionPath)
+        .where(
+          'group_id',
+          isEqualTo: groupId,
+        )
+        .get();
+
+      final schedulesRefs = schedulesSnapshot.docs.map((doc) {
+        final scheduleData = doc.data() as Map<String, dynamic>?;
+        if (scheduleData == null) {
+          return null;
+        }
+
+        return doc.id;
+      }).toList();
+
+      return schedulesRefs;
+  }
+
   // Get selected schedule database.
   static Future<GroupSchedule?> read(String docId) async {
     final snapshot = await db.collection(collectionPath).doc(docId).get();
