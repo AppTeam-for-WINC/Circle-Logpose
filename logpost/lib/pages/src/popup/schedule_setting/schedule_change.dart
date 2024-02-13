@@ -122,7 +122,6 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
-                    autofocus: true,
                   ),
                 ),
               ),

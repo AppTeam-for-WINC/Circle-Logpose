@@ -30,10 +30,18 @@ class GroupBoxState extends ConsumerState<GroupBox> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(36),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(30),
           color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 2,
+              spreadRadius: 1,
+              offset: Offset(0, 2),
+              color: Color.fromRGBO(0, 0, 0, 0.15),
+            ),
+          ],
         ),
         child: asyncGroupProfileList.when(
           data: (groupData) {
@@ -47,8 +55,8 @@ class GroupBoxState extends ConsumerState<GroupBox> {
                       const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   imageBuilder: (context, imageProvider) => Container(
-                    width: 48,
-                    height: 48,
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: imageProvider,
@@ -59,11 +67,14 @@ class GroupBoxState extends ConsumerState<GroupBox> {
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    groupData.groupProfile.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      overflow: TextOverflow.clip,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      groupData.groupProfile.name,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        overflow: TextOverflow.clip,
+                      ),
                     ),
                   ),
                 ),

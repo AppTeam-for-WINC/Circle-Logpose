@@ -114,7 +114,6 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
-                    autofocus: true,
                   ),
                 ),
               ),

@@ -44,582 +44,549 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
     final userProfile = ref.watch(userProfileProvider);
     final userProfileNotifier = ref.watch(userProfileProvider.notifier);
 
     return CupertinoPageScaffold(
+      backgroundColor: const Color(0xFFF5F3FE),
+      navigationBar: CupertinoNavigationBar(
+        leading: CupertinoButton(
+          onPressed: () async {
+            // init
+            await userProfileNotifier.initUserProfile();
+            userProfileNotifier.nameController.text = userProfile!.name;
+
+            if (!mounted) {
+              return;
+            }
+            await Navigator.push(
+              context,
+              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: const Color(0xFFF5F3FE),
+        border: const Border(bottom: BorderSide(color: Colors.transparent)),
+        middle: Container(
+          width: 178,
+          height: 38,
+          margin: const EdgeInsets.only(top: 10),
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0xFFD9D9D9),
+                offset: Offset(0, 2),
+                blurRadius: 2,
+                spreadRadius: 1,
+              ),
+            ],
+            color: const Color(0xFF7B61FF),
+            borderRadius: BorderRadius.circular(80),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.manage_accounts,
+                color: Colors.white,
+              ),
+              Text(
+                'ユーザー設定',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+        trailing: CupertinoButton(
+          onPressed: () async {
+            await showCupertinoModalPopup<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
+                  title: const Text('ログアウトしますか?'),
+                  actions: <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('No'),
+                    ),
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+                      onPressed: () async {
+                        await AuthController.logout();
+                        if (!mounted) {
+                          return;
+                        }
+                        await Navigator.push(
+                          context,
+                          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                            builder: (context) => const StartPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: const Icon(
+            Icons.logout,
+            color: Colors.black,
+            size: 30,
+          ),
+        ),
+      ),
       child: Center(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: const Color(0xFFF5F3FE),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 55,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
+        child: SizedBox.expand(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 10),
+                  width: deviceWidth * 0.88,
+                  height: deviceHeight * 0.2,
+                  alignment: Alignment.topCenter,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xFFD9D9D9),
+                        offset: Offset(1, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(60)),
+                    border: Border.all(
+                      color: const Color(0xFFD9D9D9),
+                    ),
+                  ),
+                  child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                        ),
-                        child: CupertinoButton(
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                          onPressed: () async {
-                            // init
-                            await userProfileNotifier.initUserProfile();
-                            userProfileNotifier.nameController.text =
-                                userProfile!.name;
-
-                            if (!mounted) {
-                              return;
-                            }
-                            await Navigator.push(
-                              context,
-                              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 45,
-                        ),
-                        child: Container(
-                          width: 178,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xFFD9D9D9),
-                                offset: Offset(0, 2),
-                                blurRadius: 2,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                            color: const Color(0xFF7B61FF),
-                            borderRadius: BorderRadius.circular(80),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.manage_accounts,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'ユーザー設定',
-                                  style: TextStyle(
-                                    color: Colors.white,
+                        padding: const EdgeInsets.only(left: 60, right: 50),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (userProfile?.image != null)
+                              Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: userProfile!.image.startsWith('http')
+                                        ? NetworkImage(userProfile.image)
+                                        : AssetImage(userProfile.image)
+                                            as ImageProvider,
+                                    fit: BoxFit.cover,
                                   ),
+                                  borderRadius: BorderRadius.circular(999),
                                 ),
-                              ],
+                              )
+                            else
+                              const Icon(
+                                Icons.face,
+                                size: 70,
+                                color: Colors.grey,
+                              ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                left: 20,
+                              ),
+                              child: const Icon(
+                                Icons.cached_sharp,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
+                            CupertinoButton(
+                              onPressed: () async {
+                                final imageGetResult = await pickImage();
+                                if (imageGetResult == 'Failed') {
+                                  if (!mounted) {
+                                    return;
+                                  }
+                                  await showPhotoAccessDeniedDialog(context);
+                                }
+                                if (image != null) {
+                                  userProfileNotifier.changeImage(image!);
+                                }
+                              },
+                              child: const SizedBox(
+                                child: Icon(
+                                  Icons.image,
+                                  size: 70,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
+                      // Username
+                      Container(
+                        width: deviceWidth * 0.65,
+                        height: deviceHeight * 0.05,
+                        margin: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 20,
                         ),
-                        child: CupertinoButton(
-                          onPressed: () async {
-                            await showCupertinoModalPopup<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CupertinoAlertDialog(
-                                  title: const Text('ログアウトしますか?'),
-                                  actions: <CupertinoDialogAction>[
-                                    CupertinoDialogAction(
-                                      isDefaultAction: true,
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('No'),
-                                    ),
-                                    CupertinoDialogAction(
-                                      isDefaultAction: true,
-                                      onPressed: () async {
-                                        await AuthController.logout();
-                                        if (!mounted) {
-                                          return;
-                                        }
-                                        await Navigator.push(
-                                          context,
-                                          CupertinoPageRoute<
-                                              CupertinoPageRoute<dynamic>>(
-                                            builder: (context) =>
-                                                const StartPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text('Yes'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: const Icon(
-                            Icons.logout,
+                        padding: const EdgeInsets.only(left: 3),
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xFFD9D9D9),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                          color: const Color.fromARGB(255, 244, 219, 251),
+                          borderRadius: BorderRadius.circular(80),
+                        ),
+                        child: CupertinoTextField(
+                          controller: userProfileNotifier.nameController,
+                          decoration: const BoxDecoration(
                             color: Colors.black,
-                            size: 30,
+                            backgroundBlendMode: BlendMode.dstIn,
                           ),
+                          prefix: const Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Icon(
+                              Icons.create_sharp,
+                              color: Colors.black,
+                            ),
+                          ),
+                          placeholder: 'username',
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    padding: const EdgeInsets.only(top: 10),
-                    width: 360,
-                    height: 180,
-                    alignment: Alignment.topCenter,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFFD9D9D9),
-                          offset: Offset(1, 3),
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
+                ),
+                // Account ID
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  width: deviceWidth * 0.88,
+                  height: deviceHeight * 0.06,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xFFD9D9D9),
+                        offset: Offset(1, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 60, right: 50),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (userProfile?.image != null)
-                                Container(
-                                  width: 70,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          userProfile!.image.startsWith('http')
-                                              ? NetworkImage(userProfile.image)
-                                              : AssetImage(userProfile.image)
-                                                  as ImageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
-                                )
-                              else
-                                const Icon(
-                                  Icons.face,
-                                  size: 70,
-                                  color: Colors.grey,
-                                ),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  left: 20,
-                                ),
-                                child: const Icon(
-                                  Icons.cached_sharp,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              CupertinoButton(
-                                onPressed: () async {
-                                  final imageGetResult = await pickImage();
-                                  if (imageGetResult == 'Failed') {
-                                    if (!mounted) {
-                                      return;
-                                    }
-                                    await showPhotoAccessDeniedDialog(context);
-                                  }
-                                  if (image != null) {
-                                    userProfileNotifier.changeImage(image!);
-                                  }
-                                },
-                                child: const SizedBox(
-                                  child: Icon(
-                                    Icons.image,
-                                    size: 70,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Username
-                        Container(
-                          width: 256,
-                          height: 38,
-                          margin: const EdgeInsets.only(
-                            top: 5,
-                            bottom: 20,
-                          ),
-                          padding: const EdgeInsets.only(left: 3),
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xFFD9D9D9),
-                                offset: Offset(0, 2),
-                                blurRadius: 2,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                            color: const Color.fromARGB(255, 244, 219, 251),
-                            borderRadius: BorderRadius.circular(80),
-                          ),
-                          child: CupertinoTextField(
-                            controller: userProfileNotifier.nameController,
-                            decoration: const BoxDecoration(
-                              color: Colors.black,
-                              backgroundBlendMode: BlendMode.dstIn,
-                            ),
-                            prefix: const Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Icon(
-                                Icons.create_sharp,
-                                color: Colors.black,
-                              ),
-                            ),
-                            placeholder: 'username',
-                          ),
-                        ),
-                      ],
+                    ],
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(60)),
+                    border: Border.all(
+                      color: const Color(0xFFD9D9D9),
                     ),
                   ),
-                  // Account ID
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    width: 350,
-                    height: 54,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFFD9D9D9),
-                          offset: Offset(1, 3),
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: CupertinoButton(
-                        onPressed: () async {
-                          await Navigator.pushAndRemoveUntil(
-                            context,
-                            CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                              builder: (context) => const IdSettingPage(),
-                            ),
-                            (_) => false,
-                          );
-                        },
-                        child: const Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.info,
-                              color: Colors.black,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                'Account ID',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 160),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //Email
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    width: 350,
-                    height: 54,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFFD9D9D9),
-                          offset: Offset(1, 3),
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10,
                     ),
                     child: CupertinoButton(
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.mail_outline,
-                              color: Colors.black,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                'メールアドレス',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 130),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       onPressed: () async {
                         await Navigator.pushAndRemoveUntil(
                           context,
                           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => const EmailSettingPage(),
+                            builder: (context) => const IdSettingPage(),
                           ),
                           (_) => false,
                         );
                       },
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    width: 350,
-                    height: 54,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xFFD9D9D9),
-                          offset: Offset(1, 3),
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
-                      ),
-                    ),
-                    child: CupertinoButton(
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.key,
-                              color: Colors.black,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                'パスワード',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 162),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
+                      child: const Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.info,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'Account ID',
+                              style: TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () async {
-                        await Navigator.pushAndRemoveUntil(
-                          context,
-                          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => const PasswordSettingPage(),
                           ),
-                          (_) => false,
-                        );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 15),
-                    child: SizedBox(
-                      width: 390,
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                                  offset: Offset(0, 3),
-                                  blurRadius: 3,
-                                  spreadRadius: 1,
-                                ),
-                              ],
-                            ),
-                            width: 374,
-                            height: 220,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 15, top: 15),
-                                  child: Row(
-                                    children: [
-                                      Text('所属団体'),
-                                    ],
-                                  ),
-                                ),
-                                SingleChildScrollView(
-                                  child: Container(
-                                    width: 354,
-                                    height: 180,
-                                    padding: const EdgeInsets.only(
-                                      top: 5,
-                                      right: 5,
-                                      left: 5,
-                                      bottom: 5,
-                                    ),
-                                    child: GridView.count(
-                                      padding: EdgeInsets.zero,
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 3,
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 20,
-                                      children: groupsProfile.when(
-                                        data: (groupProfile) {
-                                          if (groupProfile.isEmpty) {
-                                            return const [SizedBox.shrink()];
-                                          }
-                                          return groupProfile.map((groupId) {
-                                            return JoinedGroupComponent(
-                                              groupId: groupId,
-                                            );
-                                          }).toList();
-                                        },
-                                        loading: () =>
-                                            const [SizedBox.shrink()],
-                                        error: (error, stack) =>
-                                            [Text('$error')],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          Padding(
+                            padding: EdgeInsets.only(left: 198),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.black,
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: CupertinoButton(
-                      onPressed: () async {
-                        final success = await changeUserProfile(
-                          userProfileNotifier.nameController.text,
-                          image,
-                          null,
-                          ref,
-                        );
-                        if (!success) {
-                          return;
-                        }
+                ),
 
-                        if (!mounted) {
-                          return;
-                        }
-                        await Navigator.pushAndRemoveUntil(
-                          context,
-                          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => const HomePage(),
+                //Email
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  width: deviceWidth * 0.88,
+                  height: deviceHeight * 0.06,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xFFD9D9D9),
+                        offset: Offset(1, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(60)),
+                    border: Border.all(
+                      color: const Color(0xFFD9D9D9),
+                    ),
+                  ),
+                  child: CupertinoButton(
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.mail_outline,
+                            color: Colors.black,
                           ),
-                          (_) => false,
-                        );
-                      },
-                      color: const Color(0xFF7B61FF),
-                      borderRadius: BorderRadius.circular(30),
-                      child: SizedBox(
-                        width: 117,
-                        child: Row(
-                          children: [
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.white,
-                              ),
-                              child: const Icon(
-                                Icons.download,
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'メールアドレス',
+                              style: TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            const Text('変更を保存'),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 175),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () async {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const EmailSettingPage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  width: deviceWidth * 0.88,
+                  height: deviceHeight * 0.06,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xFFD9D9D9),
+                        offset: Offset(1, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(60)),
+                    border: Border.all(
+                      color: const Color(0xFFD9D9D9),
+                    ),
+                  ),
+                  child: CupertinoButton(
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.key,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'パスワード',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 200),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () async {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const PasswordSettingPage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  width: deviceWidth * 0.88,
+                  height: deviceHeight * 0.24,
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Stack(
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                              offset: Offset(0, 3),
+                              blurRadius: 3,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 15, top: 15),
+                              child: Row(
+                                children: [
+                                  Text('所属団体'),
+                                ],
+                              ),
+                            ),
+                            SingleChildScrollView(
+                              child: Container(
+                                width: 354,
+                                height: 180,
+                                padding: const EdgeInsets.only(
+                                  top: 5,
+                                  right: 5,
+                                  left: 5,
+                                  bottom: 5,
+                                ),
+                                child: GridView.count(
+                                  padding: EdgeInsets.zero,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 3,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 20,
+                                  children: groupsProfile.when(
+                                    data: (groupProfile) {
+                                      if (groupProfile.isEmpty) {
+                                        return const [SizedBox.shrink()];
+                                      }
+                                      return groupProfile.map((groupId) {
+                                        return JoinedGroupComponent(
+                                          groupId: groupId,
+                                        );
+                                      }).toList();
+                                    },
+                                    loading: () => const [SizedBox.shrink()],
+                                    error: (error, stack) => [Text('$error')],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: CupertinoButton(
+                    onPressed: () async {
+                      final success = await changeUserProfile(
+                        userProfileNotifier.nameController.text,
+                        image,
+                        null,
+                        ref,
+                      );
+                      if (!success) {
+                        return;
+                      }
+
+                      if (!mounted) {
+                        return;
+                      }
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const HomePage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
+                    color: const Color(0xFF7B61FF),
+                    borderRadius: BorderRadius.circular(30),
+                    child: SizedBox(
+                      width: 117,
+                      child: Row(
+                        children: [
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: const Icon(
+                              Icons.download,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text('変更を保存'),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

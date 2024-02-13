@@ -6,8 +6,8 @@ import '../../../group/create/group_create_page.dart';
 import 'controller/joined_group_controller.dart';
 import 'group_box.dart';
 
-class GroupPage extends ConsumerWidget {
-  const GroupPage({super.key});
+class JoinedGroupPage extends ConsumerWidget {
+  const JoinedGroupPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +32,7 @@ class GroupPage extends ConsumerWidget {
                     GridView.count(
                       primary: false,
                       shrinkWrap: true,
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(24),
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                       crossAxisCount: 2,
@@ -49,9 +49,7 @@ class GroupPage extends ConsumerWidget {
                         error: (error, stack) => [Text('Error: $error')],
                       ),
                     ),
-                    const SizedBox(
-                      height: 200,
-                    ),
+                    const SizedBox(height: 200),
                   ],
                 ),
               ),
