@@ -46,7 +46,7 @@ class _EmailSettingPageState extends ConsumerState<EmailSettingPage> {
           children: [
             Container(
               width: deviceWidth * 0.8,
-              margin: const EdgeInsets.only(top: 100),
+              margin: const EdgeInsets.only(top: 60),
               child: Column(
                 children: [
                   DecoratedBox(

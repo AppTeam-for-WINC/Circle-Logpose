@@ -28,6 +28,7 @@ class ScheduleDetailConfirm extends ConsumerStatefulWidget {
 class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
     final responseIcon = widget.responseIcon;
@@ -47,18 +48,18 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
           borderRadius: BorderRadius.circular(34),
           child: CupertinoPopupSurface(
             child: SizedBox(
-              width: 360,
-              height: 500,
+              width: deviceWidth * 0.9,
+              height: deviceHeight * 0.55,
               child: Stack(
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 500,
+                    height: double.infinity,
                     decoration: const BoxDecoration(color: Colors.white),
                   ),
                   Container(
                     width: double.infinity,
-                    height: 100,
+                    height: deviceHeight * 0.11,
                     decoration: BoxDecoration(
                       color: hexToColor(groupSchedule.color),
                     ),

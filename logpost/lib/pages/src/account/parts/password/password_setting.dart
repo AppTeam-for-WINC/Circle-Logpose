@@ -101,7 +101,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
             Container(
               width: 196,
               height: 58,
-              margin: const EdgeInsets.only(top: 100),
+              margin: const EdgeInsets.only(top: 60),
               child: FloatingActionButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),

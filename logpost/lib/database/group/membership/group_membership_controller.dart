@@ -62,6 +62,29 @@ class GroupMembershipController {
     return userDocIds;
   }
 
+  /// Watch all memgber's doc ID.
+  static Stream<List<String?>> watchAllUserDocIdWithGroupIdStream(
+    String groupId,
+  ) async* {
+    final groupMemberStream = db
+        .collection(collectionPath)
+        .where('group_id', isEqualTo: groupId)
+        .snapshots();
+
+    await for (final groupMembers in groupMemberStream) {
+      final userDocIdsFuture = groupMembers.docs.map((doc) async {
+        final groupMembershipData = doc.data() as Map<String, dynamic>?;
+        if (groupMembershipData == null) {
+          throw Exception('No found document data.');
+        }
+        final userDocId = groupMembershipData['user_id'] as String;
+        return userDocId;
+      }).toList();
+      final userDocIds = await Future.wait(userDocIdsFuture);
+      yield userDocIds;
+    }
+  }
+
   /// Read all role(Please selected 'admin', or 'membership') member's profiles.
   static Stream<List<UserProfile?>> readAllRoleByProfileWithGroupId(
     String groupId,
@@ -85,6 +108,7 @@ class GroupMembershipController {
         return UserController.read(userId);
       }).toList();
       final groupMemberRefs = await Future.wait(groupMemberRefsFuture);
+
       yield groupMemberRefs;
     }
   }

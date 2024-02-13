@@ -72,7 +72,7 @@ class GroupBoxState extends ConsumerState<GroupBox> {
                     child: Text(
                       groupData.groupProfile.name,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         overflow: TextOverflow.clip,
                       ),
                     ),
