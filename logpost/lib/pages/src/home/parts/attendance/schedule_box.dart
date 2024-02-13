@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../../controller/common/color_exchanger.dart';
 import '../../../../../controller/common/time_controller.dart';
 import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
@@ -20,6 +21,9 @@ class GroupScheduleCard extends ConsumerStatefulWidget {
 class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     final groupProfileWithScheduleWithId = widget.groupData;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
@@ -35,10 +39,10 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
     final isAbsence = userSchedule.absence ?? false;
 
     return Container(
-      width: 375,
-      height: 215,
+      width: deviceWidth * 0.88,
+      height: deviceHeight * 0.215,
       margin: const EdgeInsets.only(
-        top: 10,
+        top: 20,
       ),
       child: Stack(
         children: [
@@ -47,8 +51,6 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
               margin: const EdgeInsets.only(
                 top: 19,
               ),
-              height: 182,
-              width: 370,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,

@@ -25,18 +25,18 @@ class GroupProfile {
     );
   }
 
-  ///name
+  /// name
   final String name;
 
-  ///description
+  /// description
   final String? description;
 
-  ///image
+  /// image
   final String image;
 
-  ///updated_at
+  /// updated_at
   final Timestamp? updatedAt;
 
-  ///created time
+  /// created time
   final Timestamp createdAt;
 }

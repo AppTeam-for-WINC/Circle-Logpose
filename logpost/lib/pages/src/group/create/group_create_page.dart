@@ -11,6 +11,7 @@ class GroupCreatePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: DefaultTabController(
@@ -21,8 +22,8 @@ class GroupCreatePage extends ConsumerWidget {
               padding: EdgeInsets.zero,
               child: TabBarView(
                 children: [
-                  GroupContents(),
-                  GroupPage(),
+                  GroupCreateContents(),
+                  JoinedGroupPage(),
                 ],
               ),
             ),
@@ -34,18 +35,18 @@ class GroupCreatePage extends ConsumerWidget {
                     top: deviceHeight * 0.065,
                   ),
                   child: Container(
-                    padding: const EdgeInsets.only(left: 14, right: 14),
-                    width: 375,
-                    height: 77,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    width: deviceWidth * 0.88,
+                    height: deviceHeight * 0.08,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(999),
                       boxShadow: const [
                         BoxShadow(
-                          blurRadius: 4,
-                          spreadRadius: 3,
+                          blurRadius: 2.5,
+                          spreadRadius: 2.5,
                           offset: Offset(0, 3),
-                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          color: Color.fromRGBO(0, 0, 0, 0.2),
                         ),
                       ],
                       border: Border.all(

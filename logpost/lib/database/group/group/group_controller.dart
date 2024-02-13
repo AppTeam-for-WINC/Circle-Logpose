@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../storage/storage.dart';
 import 'group.dart';
 
+/// Stream型をwatchで書く。
+/// Future型はreadで書く。
+
 class GroupController {
   // シングルトンパターンにしています。
   GroupController._internal();
@@ -68,6 +71,18 @@ class GroupController {
 
       return GroupProfile.fromMap(snapshot.data()!);
     });
+  }
+
+  /// Get the group database.
+  static Future<GroupProfile?> readFuture(String docId) async {
+    final groupProfileSnapshot =
+        await db.collection(collectionPath).doc(docId).get();
+
+    final groupProfileData = groupProfileSnapshot.data();
+    if (groupProfileData == null) {
+      return null;
+    }
+    return GroupProfile.fromMap(groupProfileData);
   }
 
   ///後で、名前、説明、画像其々個別で変更できるような関数を作成する。

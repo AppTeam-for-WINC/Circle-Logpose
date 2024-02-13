@@ -114,7 +114,6 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
-                    autofocus: true,
                   ),
                 ),
               ),
@@ -124,7 +123,13 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Select group
-                    GroupPickerButton(groupsProfile: groupsProfile),
+                    groupsProfile.when(
+                      data: (data) {
+                        return GroupPickerButton(groupIdList: data);
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (error, stack) => Text('$error'),
+                    ),
                     // Activity time
                     const ScheduleActivityTime(),
                     // Place
@@ -161,7 +166,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ],
                       ),
                     ),
-                    //Detail
+                    // Detail
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Column(
@@ -200,7 +205,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ],
                       ),
                     ),
-                    //Button of creation
+                    // Button of creation
                     Container(
                       margin: EdgeInsets.only(
                         left: deviceWidth * 0.15,
@@ -213,6 +218,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         color: const Color(0xFF7B61FF),
                       ),
                       child: CupertinoButton(
+                        padding: EdgeInsets.zero,
                         child: const Text(
                           '保存',
                           style: TextStyle(

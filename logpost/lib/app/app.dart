@@ -23,6 +23,8 @@ class LogpostApp extends StatelessWidget {
         textTheme: CupertinoTextThemeData(
           primaryColor: CupertinoColors.white,
           textStyle: TextStyle(color: CupertinoColors.black),
+          dateTimePickerTextStyle: TextStyle(color: CupertinoColors.black),
+          pickerTextStyle: TextStyle(color: CupertinoColors.black,),
         ),
       ),
       debugShowCheckedModeBanner: false,
@@ -30,7 +32,6 @@ class LogpostApp extends StatelessWidget {
         Locale('ja'),
       ],
       locale: const Locale('ja'),
-      // home: const StartPage(),
       home: FutureBuilder(
         future: firstPage(),
         builder: (context, snapshot) {

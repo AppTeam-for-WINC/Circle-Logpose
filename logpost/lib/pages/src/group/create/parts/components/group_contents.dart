@@ -14,13 +14,14 @@ import '../membership/group_member.dart';
 import '../membership/group_member_controller.dart';
 import 'group_contents_controller.dart';
 
-class GroupContents extends ConsumerStatefulWidget {
-  const GroupContents({super.key});
+class GroupCreateContents extends ConsumerStatefulWidget {
+  const GroupCreateContents({super.key});
   @override
-  ConsumerState<GroupContents> createState() => GroupContentsState();
+  ConsumerState<GroupCreateContents> createState() =>
+      _GroupCreateContentsState();
 }
 
-class GroupContentsState extends ConsumerState<GroupContents> {
+class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
   File? image;
 
   ///画像を選択する関数。
@@ -43,328 +44,325 @@ class GroupContentsState extends ConsumerState<GroupContents> {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-    
+
     final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
     final groupAddData = ref.watch(groupAddMemberDataProvider.notifier);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: const Color(0xFFF5F3FE),
-      child: Stack(
-        children: [
-          Positioned(
-            top: deviceHeight * 0.12,
-            left: deviceWidth * 0.1,
-            child: Container(
-              width: 350,
-              height: 210,
-              margin: const EdgeInsets.only(top: 50),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(225, 127, 145, 145),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 3),
+    return CupertinoPageScaffold(
+      backgroundColor: const Color(0xFFF5F3FE),
+      child: Center(
+        child: SizedBox.expand(
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Positioned(
+                top: deviceHeight * 0.176,
+                child: Container(
+                  width: deviceWidth * 0.85,
+                  height: deviceHeight * 0.215,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                        offset: Offset(0, 2),
+                        color: Color.fromRGBO(0, 0, 0, 0.15),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 20, 60, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        image == null
-                            ? const Icon(
-                                Icons.group,
-                                size: 70,
-                                color: Colors.grey,
-                              )
-                            : Container(
-                                width: 80,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: FileImage(image!),
-                                    fit: BoxFit.cover, // 画像のフィットを指定
-                                  ),
-                                  borderRadius: BorderRadius.circular(999),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: const Offset(0, 1), // 影のオフセット
-                                    ),
-                                  ],
-                                ),
-                              ),
-                        const Icon(
-                          Icons.cached_sharp,
-                          size: 30,
-                          color: Colors.grey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          right: 60,
+                          bottom: 20,
                         ),
-                        CupertinoButton(
-                          onPressed: () async {
-                            final imageGetResult = await pickImage();
-                            if (imageGetResult == 'Failed') {
-                              if (!mounted) {
-                                return;
-                              }
-                              await showPhotoAccessDeniedDialog(context);
-                            }
-                          },
-                          child: const SizedBox(
-                            child: Icon(
-                              Icons.image,
-                              size: 70,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            image == null
+                                ? const Icon(
+                                    Icons.group,
+                                    size: 70,
+                                    color: Colors.grey,
+                                  )
+                                : Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: FileImage(image!),
+                                        fit: BoxFit.cover, // 画像のフィットを指定
+                                      ),
+                                      borderRadius: BorderRadius.circular(999),
+                                    ),
+                                  ),
+                            const Icon(
+                              Icons.cached_sharp,
+                              size: 30,
                               color: Colors.grey,
                             ),
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () async {
+                                final imageGetResult = await pickImage();
+                                if (imageGetResult == 'Failed') {
+                                  if (!mounted) {
+                                    return;
+                                  }
+                                  await showPhotoAccessDeniedDialog(context);
+                                }
+                              },
+                              child: const SizedBox(
+                                child: Icon(
+                                  Icons.image,
+                                  size: 70,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: deviceWidth * 0.65,
+                        height: deviceHeight * 0.05,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 244, 219, 251),
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 2.5,
+                              spreadRadius: 2.5,
+                              offset: Offset(0, 2),
+                              color: Color.fromRGBO(0, 0, 0, 0.2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 13),
+                          child: CupertinoTextField(
+                            controller: groupAddData.groupNameController,
+                            prefix: const Icon(
+                              Icons.create_sharp,
+                            ),
+                            style: const TextStyle(fontSize: 18),
+                            placeholder: '団体名',
+                            decoration: const BoxDecoration(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: deviceHeight * 0.38,
+                child: Container(
+                  width: deviceWidth * 0.85,
+                  height: deviceHeight * 0.41,
+                  margin: const EdgeInsets.only(top: 50),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 2.2,
+                        spreadRadius: 2.2,
+                        offset: Offset(0, 3),
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                          left: 30,
+                          bottom: 10,
+                        ),
+                        child: const Text(
+                          'メンバー',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Center(
+                            child: GridView.count(
+                              crossAxisSpacing: 26,
+                              mainAxisSpacing: 14,
+                              childAspectRatio: 2.5,
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(10),
+                              children: <Widget>[
+                                groupAdminMemberProfile.when(
+                                  data: (adminUserProfile) {
+                                    return GroupAdminMember(
+                                      adminUserProfile: adminUserProfile,
+                                    );
+                                  },
+                                  loading: () => const SizedBox.shrink(),
+                                  error: (error, stack) => Text('$error'),
+                                ),
+                                //追加したユーザーを表示しています。
+                                ...ref.watch(setGroupMemberListProvider).map(
+                                      (member) =>
+                                          GroupMember(userProfile: member),
+                                    ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: deviceHeight * 0.86,
+                left: deviceWidth * 0.26,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 25),
+                  width: 200,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(70),
+                    color: const Color.fromARGB(255, 107, 88, 252),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(225, 127, 145, 145),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                      final success = await CreateGroup.createGroup(
+                        groupAddData.groupNameController.text,
+                        image,
+                        null,
+                        ref,
+                      );
+                      if (!success) {
+                        return;
+                      }
+                      if (!mounted) {
+                        return;
+                      }
+
+                      //init group name.
+                      groupAddData.groupNameController.clear();
+
+                      //init group member list.
+                      ref
+                          .watch(setGroupMemberListProvider.notifier)
+                          .resetMemberList();
+
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) {
+                            return const HomePage();
+                          },
+                        ),
+                        (_) => false,
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(60),
+                            color: Colors.white,
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.add,
+                              size: 25,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        const Text(
+                          '団体を作成',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    width: 272,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 244, 219, 251),
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                          offset: Offset(0, 2),
-                          blurRadius: 2,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 13),
-                      child: CupertinoTextField(
-                        controller: groupAddData.groupNameController,
-                        prefix: const Icon(
-                          Icons.create_sharp,
-                        ),
-                        style: const TextStyle(fontSize: 18),
-                        placeholder: '団体名',
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        autofocus: true,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            top: deviceHeight * 0.38,
-            left: deviceWidth * 0.1,
-            child: Container(
-              width: 350,
-              height: 400,
-              margin: const EdgeInsets.only(top: 50),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(225, 147, 145, 145),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      left: 30,
-                      bottom: 10,
+              Positioned(
+                top: deviceHeight * 0.45,
+                left: deviceWidth * 0.84,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      const CircleBorder(),
                     ),
-                    child: const Text(
-                      'メンバー',
-                      style: TextStyle(color: Colors.grey),
-                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(const Color(0xFFD8EB61)),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Center(
-                        child: GridView.count(
-                          crossAxisSpacing: 26,
-                          mainAxisSpacing: 14,
-                          childAspectRatio: 2.5,
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.all(10),
-                          children: <Widget>[
-                            groupAdminMemberProfile.when(
-                              data: (adminUserProfile) {
-                                return GroupAdminMember(
-                                  adminUserProfile: adminUserProfile,
-                                );
-                              },
-                              loading: () => const SizedBox.shrink(),
-                              error: (error, stack) => Text('$error'),
-                            ),
-                            //追加したユーザーを表示しています。
-                            ...ref.watch(setGroupMemberListProvider).map(
-                                  (member) => GroupMember(userProfile: member),
-                                ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  child: const Icon(
+                    Icons.person_remove,
+                    color: Colors.black,
+                    size: 20,
                   ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: deviceHeight * 0.86,
-            left: deviceWidth * 0.26,
-            child: Container(
-              margin: const EdgeInsets.only(top: 25),
-              width: 200,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(70),
-                color: const Color.fromARGB(255, 107, 88, 252),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(225, 127, 145, 145),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TextButton(
-                onPressed: () async {
-                  final success = await CreateGroup.createGroup(
-                    groupAddData.groupNameController.text,
-                    image,
-                    null,
-                    ref,
-                  );
-                  if (!success) {
-                    return;
-                  }
-                  if (!mounted) {
-                    return;
-                  }
-
-                  //init group name.
-                  groupAddData.groupNameController.clear();
-
-                  //init group member list.
-                  ref
-                      .watch(setGroupMemberListProvider.notifier)
-                      .resetMemberList();
-
-                  await Navigator.pushAndRemoveUntil(
-                    context,
-                    CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                      builder: (context) {
-                        return const HomePage();
+                  onPressed: () async {
+                    await showCupertinoModalPopup<AddMember>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const Center(
+                          child: AddMember(
+                            groupId: null,
+                          ),
+                        );
                       },
-                    ),
-                    (_) => false,
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        color: Colors.white,
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.add,
-                          size: 25,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    const Text(
-                      '団体を作成',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: deviceHeight * 0.45,
-            left: deviceWidth * 0.84,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<OutlinedBorder>(
-                  const CircleBorder(),
-                ),
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFFD8EB61)),
-              ),
-              child: const Icon(
-                Icons.person_remove,
-                color: Colors.black,
-                size: 20,
-              ),
-              onPressed: () async {
-                await showCupertinoModalPopup<AddMember>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const Center(
-                      child: AddMember(
-                        groupId: null,
-                      ),
                     );
                   },
-                );
-              },
-            ),
-          ),
-          Positioned(
-            top: deviceHeight * 0.5,
-            left: deviceWidth * 0.84,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<OutlinedBorder>(
-                  const CircleBorder(),
                 ),
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFFEB6161)),
               ),
-              child: const Icon(
-                Icons.person_remove,
-                color: Colors.black,
-                size: 20,
+              Positioned(
+                top: deviceHeight * 0.5,
+                left: deviceWidth * 0.84,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      const CircleBorder(),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(const Color(0xFFEB6161)),
+                  ),
+                  child: const Icon(
+                    Icons.person_remove,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                  onPressed: () async {},
+                ),
               ),
-              onPressed: () async {},
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
