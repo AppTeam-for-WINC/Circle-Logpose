@@ -47,6 +47,8 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    final imageIconSize = deviceWidth * 0.15;
+
     final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
     final userProfile = ref.watch(userProfileProvider);
     final userProfileNotifier = ref.watch(userProfileProvider.notifier);
@@ -188,8 +190,8 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                           children: [
                             if (userProfile?.image != null)
                               Container(
-                                width: 70,
-                                height: 70,
+                                width: deviceWidth * 0.17,
+                                height: deviceHeight * 0.0765,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: userProfile!.image.startsWith('http')
@@ -204,7 +206,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                             else
                               const Icon(
                                 Icons.face,
-                                size: 70,
+                                size: 50,
                                 color: Colors.grey,
                               ),
                             Container(
@@ -230,10 +232,10 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                                   userProfileNotifier.changeImage(image!);
                                 }
                               },
-                              child: const SizedBox(
+                              child: SizedBox(
                                 child: Icon(
                                   Icons.image,
-                                  size: 70,
+                                  size: imageIconSize,
                                   color: Colors.grey,
                                 ),
                               ),
@@ -302,41 +304,42 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                       color: const Color(0xFFD9D9D9),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                    ),
-                    child: CupertinoButton(
-                      onPressed: () async {
-                        await Navigator.pushAndRemoveUntil(
-                          context,
-                          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => const IdSettingPage(),
-                          ),
-                          (_) => false,
-                        );
-                      },
-                      child: const Row(
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () async {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const IdSettingPage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(
-                            Icons.info,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              'Account ID',
-                              style: TextStyle(
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.info,
                                 color: Colors.black,
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'Account ID',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 198),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.black,
-                            ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
                           ),
                         ],
                       ),
@@ -366,35 +369,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     ),
                   ),
                   child: CupertinoButton(
-                    child: const Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.mail_outline,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              'メールアドレス',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 175),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    padding: EdgeInsets.zero,
                     onPressed: () async {
                       await Navigator.pushAndRemoveUntil(
                         context,
@@ -404,6 +379,35 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         (_) => false,
                       );
                     },
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.mail_outline,
+                                color: Colors.black,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'メールアドレス',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Container(
@@ -427,24 +431,37 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                     ),
                   ),
                   child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () async {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+                          builder: (context) => const PasswordSettingPage(),
+                        ),
+                        (_) => false,
+                      );
+                    },
                     child: const Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
+                      padding: EdgeInsets.only(left: 20, right: 20),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(
-                            Icons.key,
-                            color: Colors.black,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              'パスワード',
-                              style: TextStyle(
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.key,
                                 color: Colors.black,
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'パスワード',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 200),
@@ -456,15 +473,6 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         ],
                       ),
                     ),
-                    onPressed: () async {
-                      await Navigator.pushAndRemoveUntil(
-                        context,
-                        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                          builder: (context) => const PasswordSettingPage(),
-                        ),
-                        (_) => false,
-                      );
-                    },
                   ),
                 ),
                 Container(

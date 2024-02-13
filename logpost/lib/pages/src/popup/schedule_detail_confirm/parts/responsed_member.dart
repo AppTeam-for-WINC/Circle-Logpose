@@ -29,7 +29,7 @@ class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
     final groupProfile = widget.groupProfile;
     final scheduleId = widget.scheduleId;
     final schedule = widget.schedule;
-    final groupMember =
+    final asyncGroupMember =
         ref.watch(groupMembershipProfileListNotAbsenceProvider(scheduleId));
 
     return GestureDetector(
@@ -37,11 +37,12 @@ class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
         await showCupertinoModalPopup<ScheduleJoinMember>(
           context: context,
           builder: (BuildContext context) {
-            return groupMember.when(
-              data: (membershipProfiles) {
+            return asyncGroupMember.when(
+              data: (membershipProfileList) {
                 return ScheduleJoinMember(
-                  memberProfiles: membershipProfiles,
                   groupProfile: groupProfile,
+                  memberProfiles: membershipProfileList,
+                  scheduleId: scheduleId,
                   schedule: schedule,
                 );
               },
@@ -69,12 +70,12 @@ class _ResponsedMemberState extends ConsumerState<ResponsedMembers> {
                 ),
               ),
             ),
-            groupMember.when(
-              data: (membershipProfiles) {
+            asyncGroupMember.when(
+              data: (membershipProfileList) {
                 return Padding(
                   padding: const EdgeInsets.only(left: 4, right: 4),
-                  child: Column(
-                    children: membershipProfiles.map((membershipProfile) {
+                  child: Row(
+                    children: membershipProfileList.map((membershipProfile) {
                       return membershipProfile != null
                           ? GroupMemberImage(
                               userProfile: membershipProfile,
