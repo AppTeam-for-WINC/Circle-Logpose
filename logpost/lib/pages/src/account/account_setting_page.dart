@@ -463,12 +463,9 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 200),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.black,
-                            ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
                           ),
                         ],
                       ),
@@ -479,71 +476,67 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                   width: deviceWidth * 0.88,
                   height: deviceHeight * 0.24,
                   margin: const EdgeInsets.only(top: 20),
-                  child: Stack(
-                    children: [
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.25),
-                              offset: Offset(0, 3),
-                              blurRadius: 3,
-                              spreadRadius: 1,
-                            ),
-                          ],
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 3),
+                          blurRadius: 3,
+                          spreadRadius: 1,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 15, top: 15),
-                              child: Row(
-                                children: [
-                                  Text('所属団体'),
-                                ],
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15, top: 15),
+                          child: Row(
+                            children: [
+                              Text('所属団体'),
+                            ],
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          child: Container(
+                            width: 354,
+                            height: 180,
+                            padding: const EdgeInsets.only(
+                              top: 5,
+                              right: 5,
+                              left: 5,
+                              bottom: 5,
+                            ),
+                            child: GridView.count(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              shrinkWrap: true,
+                              crossAxisCount: 2,
+                              childAspectRatio: 3,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                              children: groupsProfile.when(
+                                data: (groupProfile) {
+                                  if (groupProfile.isEmpty) {
+                                    return const [SizedBox.shrink()];
+                                  }
+                                  return groupProfile.map((groupId) {
+                                    return JoinedGroupComponent(
+                                      groupId: groupId,
+                                    );
+                                  }).toList();
+                                },
+                                loading: () => const [SizedBox.shrink()],
+                                error: (error, stack) => [Text('$error')],
                               ),
                             ),
-                            SingleChildScrollView(
-                              child: Container(
-                                width: 354,
-                                height: 180,
-                                padding: const EdgeInsets.only(
-                                  top: 5,
-                                  right: 5,
-                                  left: 5,
-                                  bottom: 5,
-                                ),
-                                child: GridView.count(
-                                  padding: EdgeInsets.zero,
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
-                                  children: groupsProfile.when(
-                                    data: (groupProfile) {
-                                      if (groupProfile.isEmpty) {
-                                        return const [SizedBox.shrink()];
-                                      }
-                                      return groupProfile.map((groupId) {
-                                        return JoinedGroupComponent(
-                                          groupId: groupId,
-                                        );
-                                      }).toList();
-                                    },
-                                    loading: () => const [SizedBox.shrink()],
-                                    error: (error, stack) => [Text('$error')],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
