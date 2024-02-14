@@ -76,64 +76,62 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 100),
-                                width: 220,
-                                child: Text(
-                                  groupSchedule.title,
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    overflow: TextOverflow.clip,
-                                  ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 100),
+                              width: 220,
+                              child: Text(
+                                groupSchedule.title,
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  overflow: TextOverflow.clip,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 10),
-                                      child: Text(
-                                        formatDateTimeExcYearHourMinuteDay(
-                                          groupSchedule.startAt,
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      formatDateTimeExcYearMonthDay(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(right: 10),
+                                    child: Text(
+                                      formatDateTimeExcYearHourMinuteDay(
                                         groupSchedule.startAt,
                                       ),
                                       style: const TextStyle(
                                         fontSize: 18,
                                       ),
                                     ),
-                                    const Text(
-                                      '-',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
+                                  ),
+                                  Text(
+                                    formatDateTimeExcYearMonthDay(
+                                      groupSchedule.startAt,
                                     ),
-                                    Text(
-                                      formatDateTimeExcYearMonthDay(
-                                        groupSchedule.endAt,
-                                      ),
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                      ),
+                                    style: const TextStyle(
+                                      fontSize: 18,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  const Text(
+                                    '-',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Text(
+                                    formatDateTimeExcYearMonthDay(
+                                      groupSchedule.endAt,
+                                    ),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

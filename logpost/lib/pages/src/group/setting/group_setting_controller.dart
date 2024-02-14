@@ -12,7 +12,7 @@ import '../../../../database/group/schedule/schedule/schedule_controller.dart';
 import '../../../../database/user/user.dart';
 import '../../../../database/user/user_controller.dart';
 import '../../../../validation/validation.dart';
-import '../create/parts/components/group_contents_controller.dart';
+import '../create/parts/components/set_member_controller.dart';
 
 /// Group setting provider.
 final groupSettingProvider =

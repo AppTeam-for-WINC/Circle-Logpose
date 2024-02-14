@@ -1,15 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../controller/common/loading_progress.dart';
 import '../login/login_page.dart';
 import '/database/auth/auth_controller.dart';
 import '/validation/validation.dart';
-
-final loadingJudgeProvider = StateProvider<bool>((ref) => false);
-
-void loadingJugeFunc(WidgetRef ref, {required bool judge}) {
-  ref.watch(loadingJudgeProvider.notifier).state = judge;
-}
 
 Future<String?> signupController(
   BuildContext context,

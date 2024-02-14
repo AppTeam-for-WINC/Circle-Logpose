@@ -9,9 +9,7 @@ import '../../../../database/group/membership/group_membership_controller.dart';
 import '../../../../database/user/user.dart';
 import '../../../../database/user/user_controller.dart';
 import '../../../../validation/validation.dart';
-import 'parts/components/group_contents_controller.dart';
-
-final loadingJudgeProvider = StateProvider<bool>((ref) => false);
+import 'parts/components/set_member_controller.dart';
 
 class CreateGroup {
   CreateGroup._internal();

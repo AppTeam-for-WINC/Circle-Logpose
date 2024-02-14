@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../login_controller.dart';
+import '../../../../controller/common/loading_progress.dart';
 
-class LoginProgressIndicator extends ConsumerStatefulWidget {
-  const LoginProgressIndicator({super.key});
+class PageProgressIndicator extends ConsumerStatefulWidget {
+  const PageProgressIndicator({super.key});
 
   @override
-  LoginProgressIndicatorState createState() => LoginProgressIndicatorState();
+  ConsumerState createState() => _ProgressIndicatorState();
 }
 
-class LoginProgressIndicatorState
-    extends ConsumerState<LoginProgressIndicator> {
+class _ProgressIndicatorState
+    extends ConsumerState<PageProgressIndicator> {
   bool isLoading = false;
 
   @override

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../controller/common/loading_progress.dart';
+import '../../common/progress/progress_indicator.dart';
 import '../start/start_page.dart';
-import 'parts/progress_indicator.dart';
 import 'signup_controller.dart';
 
 class SignupPage extends ConsumerWidget {
@@ -94,7 +96,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     },
                   ),
                 ),
-                const SignupProgressIndicator(),
+                const PageProgressIndicator(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

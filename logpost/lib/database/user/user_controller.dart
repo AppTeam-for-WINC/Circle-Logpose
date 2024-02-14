@@ -66,13 +66,14 @@ class UserController {
     return UserProfile.fromMap(userRef);
   }
 
-  static Future<List<UserProfile>> readWithAccountId(String accountId) async {
-    final userSnapshot = await db
+  /// Read userProfile's list with accountId.
+  static Future<List<UserProfile>> readWithAccountIdList(String accountId) async {
+    final snapshot = await db
         .collection(collectionPath)
         .where('account_id', isEqualTo: accountId)
         .get();
 
-    final userRefs = userSnapshot.docs.map((doc) {
+    final userProfile = snapshot.docs.map((doc) {
       final userDocRef = doc.data() as Map<String, dynamic>?;
       if (userDocRef == null) {
         throw ControllerException(DBErrorMessages.noDocumentData + accountId);
@@ -80,9 +81,32 @@ class UserController {
       return UserProfile.fromMap(userDocRef);
     }).toList();
 
-    return userRefs;
+    return userProfile;
   }
 
+  /// Read userProfile with accountId.
+  static Future<UserProfile?> readWithAccountId(String accountId) async {
+    final snapshot = await db
+        .collection(collectionPath)
+        .where('account_id', isEqualTo: accountId)
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      return null;
+    }
+
+    return snapshot.docs.map((doc) {
+      final userProfileData = doc.data() as Map<String, dynamic>?;
+      if (userProfileData == null) {
+        return null;
+      }
+
+      return UserProfile.fromMap(userProfileData);
+    }).whereType<UserProfile>().firstOrNull;
+  }
+
+
+  /// Read userDocId with accountId.
   static Future<String> readUserDocIdWithAccountId(String accountId) async {
     final userSnapshot = await db
         .collection(collectionPath)
