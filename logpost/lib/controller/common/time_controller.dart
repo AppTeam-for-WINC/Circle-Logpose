@@ -55,3 +55,8 @@ DateTime? convertTimestampToDateTime(dynamic timestamp) {
 Timestamp convertTimestampToTimestamp(DateTime datetime) {
   return Timestamp.fromDate(datetime);
 }
+
+/// Check if the start time is before the end time.
+bool checkStartAtAfterEndAt(DateTime startAt, DateTime endAt) {
+  return startAt.isBefore(endAt);
+}

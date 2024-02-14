@@ -219,7 +219,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(
-                      top: 25,
+                      top: 20,
                       left: 15,
                       right: 15,
                     ),

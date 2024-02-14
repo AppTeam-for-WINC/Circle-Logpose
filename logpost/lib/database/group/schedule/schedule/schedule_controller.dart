@@ -48,7 +48,7 @@ class GroupScheduleController {
     return doc.id;
   }
 
-  ///Get all schedule database.
+  /// Get all schedule database.
   static Stream<List<GroupSchedule?>> readAll(String groupId) async* {
     final schedulesStream = db
         .collection(collectionPath)
@@ -95,8 +95,8 @@ class GroupScheduleController {
     }
   }
 
-  /// Read list of schedule ID.
-  static Stream<List<String?>> readAllScheduleId(String groupId) async* {
+  /// Watch list of schedule ID.
+  static Stream<List<String?>> watchAllScheduleId(String groupId) async* {
     final schedulesStream = db
         .collection(collectionPath)
         .where(
@@ -159,6 +159,9 @@ class GroupScheduleController {
     final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
     final updatedAt = scheduleRef['updated_at'] as Timestamp?;
     final createdAt = scheduleRef['created_at'] as Timestamp?;
+    if (createdAt == null) {
+      return null;
+    }
 
     return GroupSchedule(
       groupId: groupId,
@@ -169,10 +172,10 @@ class GroupScheduleController {
       startAt: startAt!,
       endAt: endAt!,
       updatedAt: updatedAt,
-      createdAt: createdAt!,
+      createdAt: createdAt,
     );
   }
-  
+
   /// Read GroupId.
   static Future<String?> readGroupId(String docId) async {
     final snapshot =

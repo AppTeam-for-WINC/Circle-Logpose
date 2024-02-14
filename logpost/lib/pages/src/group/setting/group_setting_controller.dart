@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logpost/database/group/schedule/member_schedule/member_schedule_controller.dart';
 
 import '../../../../database/group/group/group.dart';
 import '../../../../database/group/group/group_controller.dart';
@@ -120,6 +121,29 @@ class UpdateGroupSettings {
           'membership',
           groupId,
         );
+
+        final groupScheduleIdsStream =
+            GroupScheduleController.watchAllScheduleId(groupId);
+        await for (final scheduleIdList in groupScheduleIdsStream) {
+          for (final scheduleId in scheduleIdList) {
+            if (scheduleId == null) {
+              continue;
+            }
+
+            final memberScheduleList =
+                await GroupMemberScheduleController.readAllGroupMemberSchedule(
+              memberDocId,
+              scheduleId,
+            );
+
+            if (memberScheduleList.isEmpty) {
+              return GroupMemberScheduleController.create(
+                scheduleId: scheduleId,
+                userId: memberDocId,
+              );
+            }
+          }
+        }
       });
     } on FirebaseException catch (e) {
       throw Exception('Failed to add member. $e');
@@ -174,29 +198,32 @@ class GroupScheduleAndId {
   final String groupScheduleId;
 }
 
-/// Read group schedule and schedule ID.
-final readGroupScheduleAndIdProvider =
-    StreamProvider.family.autoDispose<List<GroupScheduleAndId>, String>(
+/// Watch group schedule and schedule ID.
+final watchGroupScheduleAndIdProvider =
+    StreamProvider.family<List<GroupScheduleAndId?>, String>(
   (ref, groupId) async* {
-    final scheduleIds =
-        await GroupScheduleController.readAllScheduleId(groupId).first;
+    final scheduleIdStream =
+        GroupScheduleController.watchAllScheduleId(groupId);
 
-    var schedulesAndIds = <GroupScheduleAndId>[];
-    for (final scheduleId in scheduleIds) {
-      if (scheduleId == null) {
-        continue;
-      }
-      final schedule = await GroupScheduleController.read(scheduleId);
-      if (schedule != null) {
-        schedulesAndIds.add(
-          GroupScheduleAndId(
-            groupSchedule: schedule,
-            groupScheduleId: scheduleId,
-          ),
+    await for (final scheduleIdList in scheduleIdStream) {
+      final groupScheduleAndIdList = <GroupScheduleAndId?>[];
+      for (final scheduleId in scheduleIdList) {
+        if (scheduleId == null) {
+          continue;
+        }
+
+        final groupSchedule = await GroupScheduleController.read(scheduleId);
+        if (groupSchedule == null) {
+          continue;
+        }
+        final groupScheduleAndId = GroupScheduleAndId(
+          groupSchedule: groupSchedule,
+          groupScheduleId: scheduleId,
         );
+        groupScheduleAndIdList.add(groupScheduleAndId);
       }
-    }
 
-    yield schedulesAndIds;
+      yield groupScheduleAndIdList;
+    }
   },
 );

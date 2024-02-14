@@ -18,7 +18,7 @@ final groupMembershipProfileListNotAbsenceProvider =
       GroupMembershipController.watchAllUserDocIdWithGroupIdStream(groupId);
 
   await for (final userDocIdList in userDocIdStream) {
-    final userProfileList = <UserProfile>[];
+    final userProfileList = <UserProfile?>[];
 
     for (final userDocId in userDocIdList) {
       if (userDocId == null) {
