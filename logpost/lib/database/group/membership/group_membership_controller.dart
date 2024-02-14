@@ -85,6 +85,27 @@ class GroupMembershipController {
     }
   }
 
+  /// Check member is Exist by groupId, userDocId.
+  static Future<bool> checkMemberIsExist({
+    required String groupId,
+    required String userDocId,
+  }) async {
+    final snapshot = await db
+        .collection(collectionPath)
+        .where('group_id', isEqualTo: groupId)
+        .where('user_id', isEqualTo: userDocId)
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      return false;
+    }
+
+    return snapshot.docs.any((doc) {
+      final memberProfileData = doc.data() as Map<String, dynamic>?;
+      return memberProfileData != null;
+    });
+  }
+
   /// Read all role(Please selected 'admin', or 'membership') member's profiles.
   static Stream<List<UserProfile?>> readAllRoleByProfileWithGroupId(
     String groupId,

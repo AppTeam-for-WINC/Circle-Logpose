@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../controller/common/loading_progress.dart';
+import '../../common/progress/progress_indicator.dart';
 import '../start/start_page.dart';
 import 'login_controller.dart';
-import 'parts/progress_indicator.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
@@ -74,7 +75,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             child: Stack(
               children: [
-                //↓戻るボタン
                 Positioned(
                   top: 30,
                   left: 0,
@@ -96,13 +96,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                   ),
                 ),
-      
-                //↑戻るボタン
-                const LoginProgressIndicator(),
-      
                 Stack(
                   children: <Widget>[
-                    Container(),
+                    const PageProgressIndicator(),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -127,7 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ],
                           ),
                         ),
-      
+
                         if (errorMessage != null)
                           Text(
                             errorMessage,
@@ -136,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               fontSize: 20,
                             ),
                           ),
-      
+
                         //↓メールアドレス文字
                         Container(
                           width: 346,
@@ -187,7 +183,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                         //↑Email form
-      
+
                         Container(
                           width: 346,
                           margin: const EdgeInsets.all(13.5),
@@ -200,7 +196,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
                         ),
-      
+
                         //Password form
                         SizedBox(
                           width: 346,

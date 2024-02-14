@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controller/common/copy_to_clipboard.dart';
-import '../../group/create/parts/components/group_contents_controller.dart';
+import '../../group/create/parts/components/set_member_controller.dart';
 import 'member_add_controller.dart';
 
 class AddMember extends ConsumerStatefulWidget {
@@ -26,10 +26,11 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
     final groupId = widget.groupId;
 
     //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
-    final userProfile = ref.watch(memberAddProvider);
+    final userProfile = ref.watch(memberAddProvider(groupId));
 
     //userProfileNotifierは、値の変更を行うが、追跡は行わない。
-    final userProfileNotifier = ref.watch(memberAddProvider.notifier);
+    final userProfileNotifier = ref.watch(memberAddProvider(groupId).notifier);
+    
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(60),
@@ -118,7 +119,9 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                               padding: EdgeInsets.zero,
                               onPressed: () {
                                 //後で、OOを追加しました。をalert()などで通知させる。
-                                ref.read(memberAddProvider.notifier).resetState();
+                                ref
+                                    .read(memberAddProvider(groupId).notifier)
+                                    .resetState();
                                 ref
                                     .read(setGroupMemberListProvider.notifier)
                                     .addMember(userProfile);
@@ -131,11 +134,11 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                                     height: 40,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image:
-                                            userProfile.image.startsWith('http')
-                                                ? NetworkImage(userProfile.image)
-                                                : AssetImage(userProfile.image)
-                                                    as ImageProvider,
+                                        image: userProfile.image
+                                                .startsWith('http')
+                                            ? NetworkImage(userProfile.image)
+                                            : AssetImage(userProfile.image)
+                                                as ImageProvider,
                                         fit: BoxFit.cover,
                                       ),
                                       borderRadius: BorderRadius.circular(999),

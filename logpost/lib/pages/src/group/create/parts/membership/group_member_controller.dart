@@ -28,7 +28,7 @@ class GroupAddData extends StateNotifier<UserProfile?> {
     if (accountId == null || accountId.isEmpty) {
       return;
     }
-    users = await UserController.readWithAccountId(accountId);
+    users = await UserController.readWithAccountIdList(accountId);
     if (users != null && users!.isNotEmpty) {
       user = users!.first;
       username = user!.name;

@@ -55,13 +55,11 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Text(
-                      data.groupProfile.name,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                  Text(
+                    data.groupProfile.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

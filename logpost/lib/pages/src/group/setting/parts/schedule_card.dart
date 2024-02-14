@@ -59,14 +59,12 @@ class _ScheduleCardState extends ConsumerState<ScheduleCard> {
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    groupSchedule.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Color.fromARGB(255, 69, 68, 68),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                Text(
+                  groupSchedule.title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 69, 68, 68),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
