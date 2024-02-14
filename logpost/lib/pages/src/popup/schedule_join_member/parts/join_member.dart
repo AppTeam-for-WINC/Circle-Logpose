@@ -95,6 +95,12 @@ class _JoinMemberState extends ConsumerState<JoinMember> {
                       }
                       if (memberSchedule.lateness ||
                           memberSchedule.leaveEarly) {
+                        if (memberSchedule.startAt == null) {
+                          return const SizedBox.shrink();
+                        }
+                        if (memberSchedule.endAt == null) {
+                          return const SizedBox.shrink();
+                        }
                         return Column(
                           children: [
                             Text(

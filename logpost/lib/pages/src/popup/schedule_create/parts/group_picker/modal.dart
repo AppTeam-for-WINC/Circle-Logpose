@@ -53,34 +53,32 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
       ),
       child: Column(
         children: [
-          Expanded(
-            child: asyncGroupWithIdList.when(
-              data: (groupDataList) {
-                if (groupDataList.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                return CupertinoPicker(
-                  itemExtent: 40,
-                  onSelectedItemChanged: (int index) {
-                    final id = groupDataList[index].groupId;
-                    final name = groupDataList[index].groupProfile.name;
-                    scheduleNotifier.setGroupId(id);
-                    ref.watch(groupNameProvider.notifier).state = name;
-                  },
-                  children: groupDataList
-                      .map(
-                        (groupWithId) => Center(
-                          child: Text(
-                            groupWithId.groupProfile.name,
-                          ),
+          asyncGroupWithIdList.when(
+            data: (groupDataList) {
+              if (groupDataList.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return CupertinoPicker(
+                itemExtent: 40,
+                onSelectedItemChanged: (int index) {
+                  final id = groupDataList[index].groupId;
+                  final name = groupDataList[index].groupProfile.name;
+                  scheduleNotifier.setGroupId(id);
+                  ref.watch(groupNameProvider.notifier).state = name;
+                },
+                children: groupDataList
+                    .map(
+                      (groupWithId) => Center(
+                        child: Text(
+                          groupWithId.groupProfile.name,
                         ),
-                      )
-                      .toList(),
-                );
-              },
-              loading: () => const SizedBox.shrink(),
-              error: (error, stack) => Text('$error'),
-            ),
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (error, stack) => Text('$error'),
           ),
           CupertinoButton(
             child: const Text('Close'),

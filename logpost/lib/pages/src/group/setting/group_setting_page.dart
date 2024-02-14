@@ -11,6 +11,7 @@ import '../../popup/member_add/member_add.dart';
 import '../../popup/schedule_create/schedule_create.dart';
 import '../../popup/schedule_create/schedule_create_controller.dart';
 import '../create/parts/components/group_contents_controller.dart';
+import '../create/parts/components/set_member_controller.dart';
 import 'group_setting_controller.dart';
 import 'parts/group_member_image.dart';
 import 'parts/schedule_card.dart';
@@ -50,8 +51,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    final imageIconSize = deviceWidth * 0.15;
-
     final groupId = widget.groupId;
     final groupAdminProfileList =
         ref.watch(groupAdminProfileListProvider(groupId));
@@ -62,7 +61,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final groupProfileNotifier =
         ref.watch(groupSettingProvider(groupId).notifier);
 
-    final groupSchedules = ref.watch(readGroupScheduleAndIdProvider(groupId));
+    final asyncGroupScheduleList =
+        ref.watch(watchGroupScheduleAndIdProvider(groupId));
     final groupScheduleNotifier =
         ref.watch(createGroupScheduleProvider.notifier);
 
@@ -92,8 +92,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
         backgroundColor: const Color.fromARGB(255, 233, 233, 246),
         border: const Border(bottom: BorderSide(color: Colors.transparent)),
         middle: Container(
-          width: 178,
-          height: 38,
+          width: deviceWidth * 0.4,
           margin: const EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             boxShadow: const [
@@ -107,18 +106,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
             color: const Color(0xFF7B61FF),
             borderRadius: BorderRadius.circular(80),
           ),
-          child: Container(
-            margin: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-            ),
-            child: const Center(
-              child: Text(
-                '団体編集',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
+          child: const Center(
+            child: Text(
+              '団体編集',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
               ),
             ),
           ),
@@ -163,6 +156,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
           child: Column(
             children: [
               Container(
+                width: deviceWidth * 0.85,
+                height: deviceHeight * 0.215,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: Colors.white,
@@ -175,12 +170,11 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                     ),
                   ],
                 ),
-                width: deviceWidth * 0.85,
-                height: deviceHeight * 0.215,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 20, 60, 10),
+                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -190,10 +184,11 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                               height: deviceHeight * 0.0765,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: groupProfile!.image.startsWith('http')
-                                      ? NetworkImage(groupProfile.image)
-                                      : AssetImage(groupProfile.image)
-                                          as ImageProvider,
+                                  image:
+                                      groupProfile!.image.startsWith('http')
+                                          ? NetworkImage(groupProfile.image)
+                                          : AssetImage(groupProfile.image)
+                                              as ImageProvider,
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(999),
@@ -211,6 +206,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             color: Colors.grey,
                           ),
                           CupertinoButton(
+                            padding: EdgeInsets.zero,
                             onPressed: () async {
                               final imageGetResult = await pickImage();
                               if (imageGetResult == 'Failed') {
@@ -224,10 +220,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                     .changeProfile(image!);
                               }
                             },
-                            child: SizedBox(
+                            child: const SizedBox(
                               child: Icon(
                                 Icons.image,
-                                size: imageIconSize,
+                                size: 70,
                                 color: Colors.grey,
                               ),
                             ),
@@ -256,7 +252,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           horizontal: 10,
                         ),
                         child: CupertinoTextField(
-                          controller: groupProfileNotifier.groupNameController,
+                          controller:
+                              groupProfileNotifier.groupNameController,
                           prefix: const Icon(
                             Icons.create_sharp,
                             color: Color(0xFF6D6D6D),
@@ -459,17 +456,21 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                   crossAxisCount: 1,
                                   childAspectRatio: 6,
                                   mainAxisSpacing: 12,
-                                  children: groupSchedules.when(
-                                    data: (groupSchedule) {
-                                      if (groupSchedule.isEmpty) {
+                                  children: asyncGroupScheduleList.when(
+                                    data: (groupScheduleList) {
+                                      if (groupScheduleList.isEmpty) {
                                         return const [SizedBox.shrink()];
                                       }
-                                      return groupSchedule.map((schedule) {
+                                      return groupScheduleList
+                                          .map((groupScheduleData) {
+                                        if (groupScheduleData == null) {
+                                          return const SizedBox.shrink();
+                                        }
                                         return groupAdminProfileList.when(
                                           data: (membershipProfiles) {
                                             return ScheduleCard(
                                               groupId: groupId,
-                                              schedule: schedule,
+                                              schedule: groupScheduleData,
                                               groupName: groupProfileNotifier
                                                   .groupNameController.text,
                                               groupMemberList:
@@ -568,6 +569,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                   if (!success) {
                     return;
                   }
+
                   // init
                   ref.watch(scheduleDeleteModeProvider.notifier).state = false;
 

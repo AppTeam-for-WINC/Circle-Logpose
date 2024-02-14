@@ -102,116 +102,112 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             ),
                           ],
                         ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              await showCupertinoModalPopup<
-                                  ScheduleDetailConfirm>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  if (ref
-                                      .read(
-                                        setMemberScheduleProvider(
-                                          groupScheduleId,
-                                        ),
-                                      )!
-                                      .attendance!) {
-                                    return ScheduleDetailConfirm(
-                                      responseIcon: ScheduleResponse.getIcon(
-                                        ResponseType.attendance,
+                        GestureDetector(
+                          onTap: () async {
+                            await showCupertinoModalPopup<
+                                ScheduleDetailConfirm>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                if (ref
+                                    .read(
+                                      setMemberScheduleProvider(
+                                        groupScheduleId,
                                       ),
-                                      responseText: ScheduleResponse.getText(
-                                        ResponseType.attendance,
-                                      ),
-                                      group: groupProfile,
-                                      scheduleId: groupScheduleId,
-                                      schedule: groupSchedule,
-                                    );
-                                  } else if (ref
-                                      .read(
-                                        setMemberScheduleProvider(
-                                          groupScheduleId,
-                                        ),
-                                      )!
-                                      .leavingEarly!) {
-                                    return ScheduleDetailConfirm(
-                                      responseIcon: ScheduleResponse.getIcon(
-                                        ResponseType.leavingEarly,
-                                      ),
-                                      responseText: ScheduleResponse.getText(
-                                        ResponseType.leavingEarly,
-                                      ),
-                                      group: groupProfile,
-                                      scheduleId: groupScheduleId,
-                                      schedule: groupSchedule,
-                                    );
-                                  } else if (ref
-                                      .read(
-                                        setMemberScheduleProvider(
-                                          groupScheduleId,
-                                        ),
-                                      )!
-                                      .lateness!) {
-                                    return ScheduleDetailConfirm(
-                                      responseIcon: ScheduleResponse.getIcon(
-                                        ResponseType.behindTime,
-                                      ),
-                                      responseText: ScheduleResponse.getText(
-                                        ResponseType.behindTime,
-                                      ),
-                                      group: groupProfile,
-                                      scheduleId: groupScheduleId,
-                                      schedule: groupSchedule,
-                                    );
-                                  } else if (ref
-                                      .read(
-                                        setMemberScheduleProvider(
-                                          groupScheduleId,
-                                        ),
-                                      )!
-                                      .absence!) {
-                                    return ScheduleDetailConfirm(
-                                      responseIcon: ScheduleResponse.getIcon(
-                                        ResponseType.absence,
-                                      ),
-                                      responseText: ScheduleResponse.getText(
-                                        ResponseType.absence,
-                                      ),
-                                      group: groupProfile,
-                                      scheduleId: groupScheduleId,
-                                      schedule: groupSchedule,
-                                    );
-                                  } else {
-                                    return ScheduleDetailConfirm(
-                                      responseIcon: null,
-                                      responseText: null,
-                                      group: groupProfile,
-                                      scheduleId: groupScheduleId,
-                                      schedule: groupSchedule,
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    groupSchedule.title,
-                                    textAlign: TextAlign.end,
-                                    style: const TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 16,
+                                    )!
+                                    .attendance!) {
+                                  return ScheduleDetailConfirm(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.attendance,
                                     ),
-                                  ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.attendance,
+                                    ),
+                                    group: groupProfile,
+                                    scheduleId: groupScheduleId,
+                                    schedule: groupSchedule,
+                                  );
+                                } else if (ref
+                                    .read(
+                                      setMemberScheduleProvider(
+                                        groupScheduleId,
+                                      ),
+                                    )!
+                                    .leavingEarly!) {
+                                  return ScheduleDetailConfirm(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.leavingEarly,
+                                    ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.leavingEarly,
+                                    ),
+                                    group: groupProfile,
+                                    scheduleId: groupScheduleId,
+                                    schedule: groupSchedule,
+                                  );
+                                } else if (ref
+                                    .read(
+                                      setMemberScheduleProvider(
+                                        groupScheduleId,
+                                      ),
+                                    )!
+                                    .lateness!) {
+                                  return ScheduleDetailConfirm(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.behindTime,
+                                    ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.behindTime,
+                                    ),
+                                    group: groupProfile,
+                                    scheduleId: groupScheduleId,
+                                    schedule: groupSchedule,
+                                  );
+                                } else if (ref
+                                    .read(
+                                      setMemberScheduleProvider(
+                                        groupScheduleId,
+                                      ),
+                                    )!
+                                    .absence!) {
+                                  return ScheduleDetailConfirm(
+                                    responseIcon: ScheduleResponse.getIcon(
+                                      ResponseType.absence,
+                                    ),
+                                    responseText: ScheduleResponse.getText(
+                                      ResponseType.absence,
+                                    ),
+                                    group: groupProfile,
+                                    scheduleId: groupScheduleId,
+                                    schedule: groupSchedule,
+                                  );
+                                } else {
+                                  return ScheduleDetailConfirm(
+                                    responseIcon: null,
+                                    responseText: null,
+                                    group: groupProfile,
+                                    scheduleId: groupScheduleId,
+                                    schedule: groupSchedule,
+                                  );
+                                }
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                groupSchedule.title,
+                                textAlign: TextAlign.end,
+                                style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 16,
                                 ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 20,
-                                  color: Color(0xFF7B61FF),
-                                ),
-                              ],
-                            ),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: Color(0xFF7B61FF),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -219,7 +215,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(
-                      top: 25,
+                      top: 20,
                       left: 15,
                       right: 15,
                     ),
