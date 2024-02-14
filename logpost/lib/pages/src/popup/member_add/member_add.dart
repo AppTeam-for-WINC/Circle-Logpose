@@ -148,14 +148,12 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                                         minWidth: 50,
                                         maxWidth: 120,
                                       ),
-                                      child: Expanded(
-                                        child: Text(
-                                          userProfileNotifier.username!,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                      child: Text(
+                                        userProfileNotifier.username!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),

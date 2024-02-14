@@ -50,8 +50,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    final imageIconSize = deviceWidth * 0.15;
-
     final groupId = widget.groupId;
     final groupAdminProfileList =
         ref.watch(groupAdminProfileListProvider(groupId));
@@ -62,7 +60,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final groupProfileNotifier =
         ref.watch(groupSettingProvider(groupId).notifier);
 
-    final groupSchedules = ref.watch(readGroupScheduleAndIdProvider(groupId));
+    final asyncGroupScheduleList =
+        ref.watch(watchGroupScheduleAndIdProvider(groupId));
     final groupScheduleNotifier =
         ref.watch(createGroupScheduleProvider.notifier);
 
@@ -107,18 +106,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
             color: const Color(0xFF7B61FF),
             borderRadius: BorderRadius.circular(80),
           ),
-          child: Container(
-            margin: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-            ),
-            child: const Center(
-              child: Text(
-                '団体編集',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
+          child: const Center(
+            child: Text(
+              '団体編集',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
               ),
             ),
           ),
@@ -162,114 +155,121 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                      offset: Offset(0, 3),
-                      blurRadius: 3,
-                      spreadRadius: 1,
-                    ),
-                  ],
-                ),
-                width: deviceWidth * 0.85,
-                height: deviceHeight * 0.215,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 20, 60, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (groupProfile?.image != null)
-                            Container(
-                              width: deviceWidth * 0.17,
-                              height: deviceHeight * 0.0765,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: groupProfile!.image.startsWith('http')
-                                      ? NetworkImage(groupProfile.image)
-                                      : AssetImage(groupProfile.image)
-                                          as ImageProvider,
-                                  fit: BoxFit.cover,
+              Positioned(
+                top: deviceHeight * 0.176,
+                child: Container(
+                  width: deviceWidth * 0.85,
+                  height: deviceHeight * 0.215,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                        offset: Offset(0, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(60, 0, 60, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            if (groupProfile?.image != null)
+                              Container(
+                                width: deviceWidth * 0.17,
+                                height: deviceHeight * 0.0765,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image:
+                                        groupProfile!.image.startsWith('http')
+                                            ? NetworkImage(groupProfile.image)
+                                            : AssetImage(groupProfile.image)
+                                                as ImageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(999),
                                 ),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                            )
-                          else
-                            const Icon(
-                              Icons.group,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                          const Icon(
-                            Icons.cached_sharp,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
-                          CupertinoButton(
-                            onPressed: () async {
-                              final imageGetResult = await pickImage();
-                              if (imageGetResult == 'Failed') {
-                                if (!mounted) {
-                                  return;
-                                }
-                                await showPhotoAccessDeniedDialog(context);
-                              }
-                              if (image != null) {
-                                await groupProfileNotifier
-                                    .changeProfile(image!);
-                              }
-                            },
-                            child: SizedBox(
-                              child: Icon(
-                                Icons.image,
-                                size: imageIconSize,
+                              )
+                            else
+                              const Icon(
+                                Icons.group,
+                                size: 50,
                                 color: Colors.grey,
                               ),
+                            const Icon(
+                              Icons.cached_sharp,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () async {
+                                final imageGetResult = await pickImage();
+                                if (imageGetResult == 'Failed') {
+                                  if (!mounted) {
+                                    return;
+                                  }
+                                  await showPhotoAccessDeniedDialog(context);
+                                }
+                                if (image != null) {
+                                  await groupProfileNotifier
+                                      .changeProfile(image!);
+                                }
+                              },
+                              child: const SizedBox(
+                                child: Icon(
+                                  Icons.image,
+                                  size: 70,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: deviceWidth * 0.65,
+                        height: deviceHeight * 0.05,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 244, 219, 251),
+                          borderRadius: BorderRadius.circular(80),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                            horizontal: 10,
+                          ),
+                          child: CupertinoTextField(
+                            controller:
+                                groupProfileNotifier.groupNameController,
+                            prefix: const Icon(
+                              Icons.create_sharp,
+                              color: Color(0xFF6D6D6D),
+                            ),
+                            style: const TextStyle(fontSize: 16),
+                            placeholder: '団体名',
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 244, 219, 251),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: deviceWidth * 0.65,
-                      height: deviceHeight * 0.05,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 244, 219, 251),
-                        borderRadius: BorderRadius.circular(80),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.25),
-                            offset: Offset(0, 2),
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 3,
-                          horizontal: 10,
-                        ),
-                        child: CupertinoTextField(
-                          controller: groupProfileNotifier.groupNameController,
-                          prefix: const Icon(
-                            Icons.create_sharp,
-                            color: Color(0xFF6D6D6D),
-                          ),
-                          style: const TextStyle(fontSize: 16),
-                          placeholder: '団体名',
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 244, 219, 251),
-                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
@@ -459,17 +459,21 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                   crossAxisCount: 1,
                                   childAspectRatio: 6,
                                   mainAxisSpacing: 12,
-                                  children: groupSchedules.when(
-                                    data: (groupSchedule) {
-                                      if (groupSchedule.isEmpty) {
+                                  children: asyncGroupScheduleList.when(
+                                    data: (groupScheduleList) {
+                                      if (groupScheduleList.isEmpty) {
                                         return const [SizedBox.shrink()];
                                       }
-                                      return groupSchedule.map((schedule) {
+                                      return groupScheduleList
+                                          .map((groupScheduleData) {
+                                        if (groupScheduleData == null) {
+                                          return const SizedBox.shrink();
+                                        }
                                         return groupAdminProfileList.when(
                                           data: (membershipProfiles) {
                                             return ScheduleCard(
                                               groupId: groupId,
-                                              schedule: schedule,
+                                              schedule: groupScheduleData,
                                               groupName: groupProfileNotifier
                                                   .groupNameController.text,
                                               groupMemberList:
@@ -568,6 +572,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                   if (!success) {
                     return;
                   }
+
                   // init
                   ref.watch(scheduleDeleteModeProvider.notifier).state = false;
 

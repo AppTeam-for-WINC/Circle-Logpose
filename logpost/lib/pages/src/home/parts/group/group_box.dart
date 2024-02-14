@@ -66,15 +66,13 @@ class GroupBoxState extends ConsumerState<GroupBox> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      groupData.groupProfile.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        overflow: TextOverflow.clip,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    groupData.groupProfile.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      overflow: TextOverflow.clip,
                     ),
                   ),
                 ),

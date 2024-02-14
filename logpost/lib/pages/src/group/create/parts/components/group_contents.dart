@@ -194,33 +194,31 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Center(
-                            child: GridView.count(
-                              crossAxisSpacing: 26,
-                              mainAxisSpacing: 14,
-                              childAspectRatio: 2.5,
-                              crossAxisCount: 2,
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.all(10),
-                              children: <Widget>[
-                                groupAdminMemberProfile.when(
-                                  data: (adminUserProfile) {
-                                    return GroupAdminMember(
-                                      adminUserProfile: adminUserProfile,
-                                    );
-                                  },
-                                  loading: () => const SizedBox.shrink(),
-                                  error: (error, stack) => Text('$error'),
-                                ),
-                                //追加したユーザーを表示しています。
-                                ...ref.watch(setGroupMemberListProvider).map(
-                                      (member) =>
-                                          GroupMember(userProfile: member),
-                                    ),
-                              ],
-                            ),
+                      SingleChildScrollView(
+                        child: Center(
+                          child: GridView.count(
+                            crossAxisSpacing: 26,
+                            mainAxisSpacing: 14,
+                            childAspectRatio: 2.5,
+                            crossAxisCount: 2,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(10),
+                            children: <Widget>[
+                              groupAdminMemberProfile.when(
+                                data: (adminUserProfile) {
+                                  return GroupAdminMember(
+                                    adminUserProfile: adminUserProfile,
+                                  );
+                                },
+                                loading: () => const SizedBox.shrink(),
+                                error: (error, stack) => Text('$error'),
+                              ),
+                              //追加したユーザーを表示しています。
+                              ...ref.watch(setGroupMemberListProvider).map(
+                                    (member) =>
+                                        GroupMember(userProfile: member),
+                                  ),
+                            ],
                           ),
                         ),
                       ),
@@ -323,7 +321,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                         MaterialStateProperty.all(const Color(0xFFD8EB61)),
                   ),
                   child: const Icon(
-                    Icons.person_remove,
+                    Icons.person_add,
                     color: Colors.black,
                     size: 20,
                   ),

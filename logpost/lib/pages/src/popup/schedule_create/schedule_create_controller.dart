@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controller/common/color_exchanger.dart';
+import '../../../../controller/common/time_controller.dart';
 import '../../../../database/group/membership/group_membership_controller.dart';
 import '../../../../database/group/schedule/member_schedule/member_schedule_controller.dart';
 import '../../../../database/group/schedule/schedule/schedule_controller.dart';
@@ -130,6 +131,10 @@ class CreateGroupSchedule {
         return false;
       }
       final colorToString = colorToHex(color);
+
+      if (!checkStartAtAfterEndAt(startAt, endAt)) {
+        return false;
+      }
 
       final scheduleId = await GroupScheduleController.create(
         groupId: groupId,

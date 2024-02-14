@@ -259,7 +259,7 @@ final watchUserScheduleProvider =
         continue;
       }
 
-      final scheduleIdList = GroupScheduleController.readAllScheduleId(
+      final scheduleIdList = GroupScheduleController.watchAllScheduleId(
         membership.groupId,
       ).map(
         (scheduleIdList) => (
