@@ -1,7 +1,7 @@
 <p align="center">
   <img src="logpost/src/logpost/logpost.png" width="50" />
 </p>
-<h1 align="center">Circle Logpost✨</h1>
+<h1 align="center">Circle Logpose✨</h1>
 <h3 align="center">Circle Management Application</h3>
 <p align="center">
     <img src="https://img.shields.io/badge/3.17.0-Flutter-02569B.svg?logo=flutter&style=flat-square">　
@@ -16,7 +16,7 @@
 </p>
 
 ## Overview
-Circle Logpost is designed for managing club activities. It primarily features AI-powered chat functionality, attendance management, visualization of attendance rates through charts, user profile capabilities, and the ability to form small teams within the club.
+Circle Logpose is designed for managing club activities. It primarily features AI-powered chat functionality, attendance management, visualization of attendance rates through charts, user profile capabilities, and the ability to form small teams within the club.
 
 ## 概要
 サークルの活動を管理するアプリです。主に、AIを用いたチャット機能、出席管理、出席率などをチャート化、ユーザーのプロフィール機能、サークル内での小規模チーム化などが可能です。
