@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logpost/src/logpost/Logpost.png" width="120" />
+  <img src="logpose/src/logpose/Logpose.png" width="50" />
 </p>
 <h1 align="center">Circle Logpose✨</h1>
 <h3 align="center">Circle Management Application</h3>
@@ -10,9 +10,9 @@
 
 <p align="center">
     <!-- 画面スクリーンショット何枚かここへ -->
-    <img width="20%" src="logpost/src/screenshot/start_screenshot.png" />
-    <img width="20%" src="logpost/src/screenshot/attendance_screenshot.png" />
-    <img width="20%" src="logpost/src/screenshot/join_time_screenshot.png" />
+    <img width="20%" src="logpose/src/screenshot/start_screenshot.png" />
+    <img width="20%" src="logpose/src/screenshot/attendance_screenshot.png" />
+    <img width="20%" src="logpose/src/screenshot/join_time_screenshot.png" />
 </p>
 
 ## Overview
@@ -23,7 +23,7 @@ Circle Logpose is designed for managing club activities. It primarily features A
 
 ## Architecture
 <p align="center">
-    <img src="logpost/src/architecture/circle_logpost_architecture.png" width="80%" />
+    <img src="logpose/src/architecture/circle_logpose_architecture.png" width="80%" />
 </p>
 
 
@@ -41,8 +41,8 @@ Circle Logpose is designed for managing club activities. It primarily features A
 ## OSサポート
 <table>
     <tr>
-        <td width="120"><img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Android_logo_2019_%28stacked%29.svg/2346px-Android_logo_2019_%28stacked%29.svg.png" /></td>
-        <td width="120"><img width="100%" src="https://w7.pngwing.com/pngs/885/869/png-transparent-apple-brand-brands-ios-logo-logos-logos-brands-icon.png" /></td>
+        <td><img width="10%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Android_logo_2019_%28stacked%29.svg/2346px-Android_logo_2019_%28stacked%29.svg.png" /></td>
+        <td><img width="30%" src="https://w7.pngwing.com/pngs/885/869/png-transparent-apple-brand-brands-ios-logo-logos-logos-brands-icon.png" /></td>
     </tr>
     <tr>
         <td>✅ Android</td>
