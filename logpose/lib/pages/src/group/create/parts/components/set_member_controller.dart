@@ -10,13 +10,13 @@ final setMemberDeleteModeProvider =
 
 /// Used to set group membership.
 final setGroupMemberListProvider = StateNotifierProvider.autoDispose<
-    GroupMemberListNotifier, List<UserProfile>>(
-  (ref) => GroupMemberListNotifier(),
+    _GroupMemberListNotifier, List<UserProfile>>(
+  (ref) => _GroupMemberListNotifier(),
 );
 
 /// グループ作成の際にメンバーリストを管理。
-class GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
-  GroupMemberListNotifier() : super([]);
+class _GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
+  _GroupMemberListNotifier() : super([]);
 
   void addMember(UserProfile newMember) {
     state = [...state, newMember];
@@ -31,20 +31,22 @@ class GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
   }
 }
 
-/// グループ作成におけるメンバーリストに追加する情報を管理。
-final groupAddMemberDataProvider =
-    StateNotifierProvider.autoDispose<GroupAddData, UserProfile?>(
-  (ref) => GroupAddData(),
+/// グループ作成画面におけるメンバーに表示されるメンバーリストに追加する情報を管理。
+final setGroupMemberDataAndGroupDataProvider = StateNotifierProvider
+    .autoDispose<_SetGroupMemberAndGroupData, UserProfile?>(
+  (ref) => _SetGroupMemberAndGroupData(),
 );
 
-class GroupAddData extends StateNotifier<UserProfile?> {
-  GroupAddData() : super(null) {
+class _SetGroupMemberAndGroupData extends StateNotifier<UserProfile?> {
+  _SetGroupMemberAndGroupData() : super(null) {
     groupNameController.addListener(() {
       memberController(groupNameController.text);
     });
   }
 
+  // リファクタリング時にgroupNameControllerを別のクラスで管理する必要がある。
   TextEditingController groupNameController = TextEditingController();
+
   String? accountId;
   List<UserProfile>? users;
   UserProfile? user;

@@ -19,6 +19,7 @@ class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
   @override
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
+    
     final groupProfile = ref.watch(readGroupWithIdProvider(groupId));
 
     return groupProfile.when(

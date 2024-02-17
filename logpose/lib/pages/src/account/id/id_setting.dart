@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controller/common/copy_to_clipboard.dart';
-import '../../account_setting_controller.dart';
-import '../../account_setting_page.dart';
+import '../../../../controller/common/copy_to_clipboard.dart';
+import '../account_setting_controller.dart';
+import '../account_setting_page.dart';
 import 'id_setting_controller.dart';
 
 class IdSettingPage extends ConsumerStatefulWidget {
@@ -18,15 +18,15 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    final accountId = ref.watch(userProfileProvider);
-    final accountIdNotifier = ref.watch(userProfileProvider.notifier);
+    final userProfile = ref.watch(userProfileProvider);
+    final userProfileNotifier = ref.watch(userProfileProvider.notifier);
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoButton(
           onPressed: () async {
             //Init
-            accountIdNotifier.accountIdController.clear();
+            userProfileNotifier.accountIdController.clear();
 
             await Navigator.pushAndRemoveUntil(
               context,
@@ -75,7 +75,8 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            final userRef = await readUserRef();
+                            final userRef =
+                                await userProfileNotifier.initUserProfile();
                             copyToClipboard(userRef.accountId);
                           },
                           style: TextButton.styleFrom(
@@ -84,7 +85,7 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
                           child: Row(
                             children: [
                               Text(
-                                accountId!.accountId,
+                                userProfile!.accountId,
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 124, 122, 122),
                                   fontSize: 14,
@@ -109,7 +110,7 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
                     ),
                   ),
                   CupertinoTextField(
-                    controller: accountIdNotifier.accountIdController,
+                    controller: userProfileNotifier.accountIdController,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 245, 243, 254),
                       border: Border(
@@ -132,17 +133,17 @@ class IdSettingPageState extends ConsumerState<IdSettingPage> {
                 backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                 onPressed: () async {
                   final success = await changeAccountId(
-                    accountIdNotifier.accountIdController.text,
+                    userProfileNotifier.accountIdController.text,
                   );
                   if (!success) {
                     return;
                   }
                   //Init
-                  accountIdNotifier.changeAccountId(
-                    accountIdNotifier.accountIdController.text,
+                  userProfileNotifier.setNewAccountId(
+                    userProfileNotifier.accountIdController.text,
                   );
                   //Init
-                  accountIdNotifier.accountIdController.clear();
+                  userProfileNotifier.accountIdController.clear();
 
                   if (!mounted) {
                     return;

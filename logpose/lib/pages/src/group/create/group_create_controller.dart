@@ -46,7 +46,6 @@ class CreateGroup {
     final groupMembersList = ref.watch(setGroupMemberListProvider);
     await _addMeberships(groupMembersList, groupId);
 
-    debugPrint('Success: Created group');
     return null;
   }
 

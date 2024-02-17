@@ -2,39 +2,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../database/auth/auth_controller.dart';
-import '../../../../../validation/validation.dart';
+import '../../../../database/auth/auth_controller.dart';
+import '../../../../validation/validation.dart';
+
+final passwordErrorMessageProvider =
+    StateProvider.autoDispose<String?>((ref) => null);
 
 final passwordSettingProvider =
-    StateNotifierProvider.autoDispose<UserPasswordSetting, String?>(
-  (ref) => UserPasswordSetting(),
+    StateNotifierProvider.autoDispose<_UserPasswordSetting, String?>(
+  (ref) => _UserPasswordSetting(),
 );
 
-class UserPasswordSetting extends StateNotifier<String?> {
-  UserPasswordSetting() : super(null) {
-    passwordController.text = '';
-    newPasswordController.text = '';
-  }
+class _UserPasswordSetting extends StateNotifier<String?> {
+  _UserPasswordSetting() : super(null);
+
   TextEditingController passwordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
 
-  Future<bool> update(String password, String newPassword) async {
+  Future<String?> update(String password, String newPassword) async {
     try {
-      final validation = _passwordValidation(newPassword);
-      if (!validation) {
-        return false;
-      }
-      final email = await _readUserEmail();
-      if (email == null) {
-        return false;
+      final validationErrorMessage = _passwordValidation(newPassword);
+      if (validationErrorMessage != null) {
+        return validationErrorMessage;
       }
 
-      await AuthController.updateUserPassword(
+      final email = await _readUserEmail();
+      if (email == null) {
+        throw Exception("Failed to read user's email.");
+      }
+
+      final updatePasswordErrorMessage =
+          await AuthController.updateUserPassword(
         email,
         password,
         newPassword,
       );
-      return true;
+      if (updatePasswordErrorMessage != null) {
+        return updatePasswordErrorMessage;
+      }
+
+      return null;
     } on FirebaseException catch (e) {
       throw Exception('Failed to update password. $e');
     }
@@ -45,7 +52,7 @@ class UserPasswordSetting extends StateNotifier<String?> {
     return email;
   }
 
-  bool _passwordValidation(String newPassword) {
+  String? _passwordValidation(String newPassword) {
     const minLength8Validation = MinLength8Validation();
     const maxLength64Validation = MaxLength64Validation();
     debugPrint('newPassword: $newPassword');
@@ -63,15 +70,15 @@ class UserPasswordSetting extends StateNotifier<String?> {
           const MinLength8Validation().getMinLengthInvalidMessage();
 
       debugPrint('passwordError: $errorMessage');
-      return false;
+      return errorMessage;
     }
     if (!passwordMaxLength64Validation) {
       final errorMessage =
           const MaxLength64Validation().getMaxLengthInvalidMessage();
 
       debugPrint('passwordError: $errorMessage');
-      return false;
+      return errorMessage;
     }
-    return true;
+    return null;
   }
 }

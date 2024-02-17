@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../database/auth/auth_controller.dart';
-import '../../../../../database/user/user_controller.dart';
-import '../../../../../validation/validation.dart';
+import '../../../../database/auth/auth_controller.dart';
+import '../../../../database/user/user_controller.dart';
+import '../../../../validation/validation.dart';
 
 Future<bool> changeAccountId(String newAccountId) async {
   final userId = await AuthController.getCurrentUserId();

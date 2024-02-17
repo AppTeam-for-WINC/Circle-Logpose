@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../database/auth/auth_controller.dart';
-import '../../../../../validation/validation.dart';
+import '../../../../database/auth/auth_controller.dart';
+import '../../../../validation/validation.dart';
 
 final userEmailProvider =
-    StateNotifierProvider.autoDispose<UserEmail, String?>((ref) => UserEmail());
+    StateNotifierProvider.autoDispose<_UserEmail, String?>(
+  (ref) => _UserEmail(),
+);
 
-class UserEmail extends StateNotifier<String?> {
-  UserEmail() : super(null) {
+class _UserEmail extends StateNotifier<String?> {
+  _UserEmail() : super(null) {
     readUserEmail();
-    emailController.text = '';
   }
 
   TextEditingController emailController = TextEditingController();
@@ -73,7 +74,7 @@ class UserEmail extends StateNotifier<String?> {
       return false;
     }
     if (!emailMaxLength32Validation) {
-       final errorMessage =
+      final errorMessage =
           const MaxLength32Validation().getMaxLengthInvalidMessage();
 
       debugPrint('emailError: $errorMessage');

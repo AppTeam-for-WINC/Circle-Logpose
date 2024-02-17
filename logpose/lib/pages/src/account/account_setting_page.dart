@@ -13,10 +13,10 @@ import '../home/home_page.dart';
 import '../home/parts/group/controller/joined_group_controller.dart';
 import '../start/start_page.dart';
 import 'account_setting_controller.dart';
-import 'parts/email/email_setting.dart';
+import 'email/email_setting.dart';
+import 'id/id_setting.dart';
 import 'parts/group/joined_group.dart';
-import 'parts/id/id_setting.dart';
-import 'parts/password/password_setting.dart';
+import 'password/password_setting.dart';
 
 class AccountSettingPage extends ConsumerStatefulWidget {
   const AccountSettingPage({super.key});
@@ -63,6 +63,12 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoButton(
           onPressed: () async {
+            // Init
+            await userProfileNotifier.readUserData();
+
+            if (!mounted) {
+              return;
+            }
             await Navigator.push(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
@@ -160,7 +166,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
               Container(
                 padding: const EdgeInsets.only(top: 10),
                 width: deviceWidth * 0.88,
-                height: deviceHeight * 0.2,
+                height: deviceHeight * 0.21,
                 alignment: Alignment.topCenter,
                 decoration: BoxDecoration(
                   boxShadow: const [
@@ -179,65 +185,62 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 60, right: 50),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (userProfile?.image != null)
-                            Container(
-                              width: deviceWidth * 0.17,
-                              height: deviceHeight * 0.0765,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: userProfile!.image.startsWith('http')
-                                      ? NetworkImage(userProfile.image)
-                                      : AssetImage(userProfile.image)
-                                          as ImageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                            )
-                          else
-                            const Icon(
-                              Icons.face,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (userProfile?.image != null)
                           Container(
-                            margin: const EdgeInsets.only(
-                              left: 20,
+                            width: deviceWidth * 0.17,
+                            height: deviceHeight * 0.0765,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: userProfile!.image.startsWith('http')
+                                    ? NetworkImage(userProfile.image)
+                                    : AssetImage(userProfile.image)
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(999),
                             ),
-                            child: const Icon(
-                              Icons.cached_sharp,
-                              size: 40,
+                          )
+                        else
+                          const Icon(
+                            Icons.face,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                            left: 20,
+                          ),
+                          child: const Icon(
+                            Icons.cached_sharp,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        CupertinoButton(
+                          onPressed: () async {
+                            final imageGetResult = await pickImage();
+                            if (imageGetResult == 'Failed') {
+                              if (!mounted) {
+                                return;
+                              }
+                              await showPhotoAccessDeniedDialog(context);
+                            }
+                            if (image != null) {
+                              userProfileNotifier.setNewImage(image!);
+                            }
+                          },
+                          child: SizedBox(
+                            child: Icon(
+                              Icons.image,
+                              size: imageIconSize,
                               color: Colors.grey,
                             ),
                           ),
-                          CupertinoButton(
-                            onPressed: () async {
-                              final imageGetResult = await pickImage();
-                              if (imageGetResult == 'Failed') {
-                                if (!mounted) {
-                                  return;
-                                }
-                                await showPhotoAccessDeniedDialog(context);
-                              }
-                              if (image != null) {
-                                userProfileNotifier.changeImage(image!);
-                              }
-                            },
-                            child: SizedBox(
-                              child: Icon(
-                                Icons.image,
-                                size: imageIconSize,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     // Username
                     Container(
@@ -471,7 +474,7 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
               Container(
                 width: deviceWidth * 0.88,
                 height: deviceHeight * 0.24,
-                margin: const EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 10),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
@@ -497,36 +500,40 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        child: Container(
-                          width: 354,
-                          height: 180,
-                          padding: const EdgeInsets.only(
-                            top: 5,
-                            right: 5,
-                            left: 5,
-                            bottom: 5,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: deviceWidth * 0.86,
+                            maxHeight: deviceHeight * 0.19,
                           ),
-                          child: GridView.count(
-                            padding: EdgeInsets.zero,
-                            primary: false,
-                            shrinkWrap: true,
-                            crossAxisCount: 2,
-                            childAspectRatio: 3,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 20,
-                            children: groupsProfile.when(
-                              data: (groupProfile) {
-                                if (groupProfile.isEmpty) {
-                                  return const [SizedBox.shrink()];
-                                }
-                                return groupProfile.map((groupId) {
-                                  return JoinedGroupComponent(
-                                    groupId: groupId,
-                                  );
-                                }).toList();
-                              },
-                              loading: () => const [SizedBox.shrink()],
-                              error: (error, stack) => [Text('$error')],
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              top: 5,
+                              right: 5,
+                              left: 5,
+                              bottom: 5,
+                            ),
+                            child: GridView.count(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              shrinkWrap: true,
+                              crossAxisCount: 2,
+                              childAspectRatio: 3,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                              children: groupsProfile.when(
+                                data: (groupProfile) {
+                                  if (groupProfile.isEmpty) {
+                                    return const [SizedBox.shrink()];
+                                  }
+                                  return groupProfile.map((groupId) {
+                                    return JoinedGroupComponent(
+                                      groupId: groupId,
+                                    );
+                                  }).toList();
+                                },
+                                loading: () => const [SizedBox.shrink()],
+                                error: (error, stack) => [Text('$error')],
+                              ),
                             ),
                           ),
                         ),
@@ -573,28 +580,6 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                             (_) => false,
                           );
                         },
-                  // onPressed: () async {
-                  //   final success = await changeUserProfile(
-                  //     userProfileNotifier.nameController.text,
-                  //     image,
-                  //     null,
-                  //     ref,
-                  //   );
-                  //   if (!success) {
-                  //     return;
-                  //   }
-
-                  //   if (!mounted) {
-                  //     return;
-                  //   }
-                  //   await Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                  //       builder: (context) => const HomePage(),
-                  //     ),
-                  //     (_) => false,
-                  //   );
-                  // },
                   color: const Color(0xFF7B61FF),
                   borderRadius: BorderRadius.circular(30),
                   child: SizedBox(

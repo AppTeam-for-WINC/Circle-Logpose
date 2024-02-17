@@ -25,13 +25,13 @@ class GroupInvitationLink {
   }
 }
 
-final memberAddProvider =
-    StateNotifierProvider.family<MemberAddData, UserProfile?, String?>(
-  (ref, groupId) => MemberAddData(groupId),
+final setSearchUserDataProvider =
+    StateNotifierProvider.family<_SearchUserData, UserProfile?, String?>(
+  (ref, groupId) => _SearchUserData(groupId),
 );
 
-class MemberAddData extends StateNotifier<UserProfile?> {
-  MemberAddData(String? groupId) : super(null) {
+class _SearchUserData extends StateNotifier<UserProfile?> {
+  _SearchUserData(String? groupId) : super(null) {
     accountIdController.addListener(() {
       _accountDataController(groupId);
     });
@@ -47,6 +47,12 @@ class MemberAddData extends StateNotifier<UserProfile?> {
   void resetState() {
     accountIdController.text = '';
     state = null;
+  }
+
+  // 追加するメンバーをセットに追加
+  void setMemberState() {
+    final accountId = accountIdController.text;
+    addedMemberIds.add(accountId);
   }
 
   Future<void> _accountDataController(String? groupId) async {
@@ -96,12 +102,13 @@ class MemberAddData extends StateNotifier<UserProfile?> {
     // 既にGroup memberの場合は何も返さない。
     if (groupId != null) {
       final userId = await UserController.readUserDocIdWithAccountId(accountId);
-      final isExistMember = await GroupMembershipController.checkMemberIsExist(
+      final isAlreadyMember =
+          await GroupMembershipController.checkMemberIsExist(
         groupId: groupId,
         userDocId: userId,
       );
 
-      if (isExistMember || addedMemberIds.contains(accountId)) {
+      if (isAlreadyMember) {
         username = null;
         userImage = null;
         userDescription = null;
@@ -110,8 +117,14 @@ class MemberAddData extends StateNotifier<UserProfile?> {
       }
     }
 
-    // 追加済みのメンバーをセットに追加
-    addedMemberIds.add(accountId);
+    // 既に追加済みのメンバーの場合は何も返さない。
+    if (addedMemberIds.contains(accountId)) {
+      username = null;
+      userImage = null;
+      userDescription = null;
+      state = null;
+      return;
+    }
 
     username = user!.name;
     userImage = user!.image;

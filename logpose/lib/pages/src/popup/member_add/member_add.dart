@@ -26,11 +26,12 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
     final groupId = widget.groupId;
 
     //userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
-    final userProfile = ref.watch(memberAddProvider(groupId));
+    final userProfile = ref.watch(setSearchUserDataProvider(groupId));
 
     //userProfileNotifierは、値の変更を行うが、追跡は行わない。
-    final userProfileNotifier = ref.watch(memberAddProvider(groupId).notifier);
-    
+    final userProfileNotifier =
+        ref.watch(setSearchUserDataProvider(groupId).notifier);
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(60),
@@ -117,9 +118,17 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                             child: CupertinoButton(
                               padding: EdgeInsets.zero,
                               onPressed: () {
-                                //後で、OOを追加しました。をalert()などで通知させる。
                                 ref
-                                    .read(memberAddProvider(groupId).notifier)
+                                    .read(
+                                      setSearchUserDataProvider(groupId)
+                                          .notifier,
+                                    )
+                                    .setMemberState();
+                                ref
+                                    .read(
+                                      setSearchUserDataProvider(groupId)
+                                          .notifier,
+                                    )
                                     .resetState();
                                 ref
                                     .read(setGroupMemberListProvider.notifier)
@@ -169,7 +178,7 @@ class ShowMemberAddState extends ConsumerState<AddMember> {
                   ),
                   if (groupId != null)
                     Padding(
-                      padding: const EdgeInsets.only(top: 60),
+                      padding: const EdgeInsets.only(top: 30),
                       child: Container(
                         width: 190,
                         height: 30,

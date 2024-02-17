@@ -56,6 +56,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final isLoading = ref.watch(loadingProgressProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
+    final groupNameErrorMessage = ref.watch(groupNameErrorMessageProvider);
+
     final groupId = widget.groupId;
     final groupAdminProfileList =
         ref.watch(groupAdminProfileListProvider(groupId));
@@ -249,6 +251,14 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         ],
                       ),
                     ),
+
+                    // Error message.
+                    if (groupNameErrorMessage != null)
+                      Text(
+                        groupNameErrorMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+
                     Container(
                       width: deviceWidth * 0.65,
                       height: deviceHeight * 0.05,
@@ -578,17 +588,20 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 onPressed: isLoading
                     ? null
                     : () async {
-                        final success = await UpdateGroupSettings.update(
+                        final errorMessage = await UpdateGroupSettings.update(
                           groupId,
                           groupProfileNotifier.groupNameController.text,
                           null,
                           image,
                           ref,
                         );
-                        if (!success) {
+                        if (errorMessage != null) {
+                          ref
+                              .watch(groupNameErrorMessageProvider.notifier)
+                              .state = errorMessage;
                           return;
                         }
-                        
+
                         if (!mounted) {
                           return;
                         }

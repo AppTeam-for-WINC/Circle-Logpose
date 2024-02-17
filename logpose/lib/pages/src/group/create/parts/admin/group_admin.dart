@@ -35,20 +35,17 @@ class GroupAdminMember extends ConsumerWidget {
                     image: NetworkImage(
                       adminUserProfile.image,
                     ),
-                    fit: BoxFit.cover, // 画像のフィットを指定
+                    fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  adminUserProfile.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.black),
-                ),
+              child: Text(
+                adminUserProfile.name,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.black),
               ),
             ),
           ],

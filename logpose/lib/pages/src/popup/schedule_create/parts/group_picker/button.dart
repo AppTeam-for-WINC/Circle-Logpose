@@ -33,6 +33,8 @@ class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     final groupIdList = widget.groupIdList;
     final groupName = ref.watch(groupNameProvider);
 
@@ -42,11 +44,21 @@ class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
           Icons.group_add,
           color: Colors.grey,
         ),
-        CupertinoButton(
-          onPressed: () => _showGroupPicker(context, groupIdList),
-          child: Text(
-            groupName,
-            style: const TextStyle(fontSize: 18, color: Color(0xFF7B61FF)),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: deviceWidth * 0.6,
+          ),
+          child: CupertinoButton(
+            padding: const EdgeInsets.only(left: 10),
+            onPressed: () => _showGroupPicker(context, groupIdList),
+            child: Text(
+              groupName,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color(0xFF7B61FF),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         ),
       ],

@@ -14,6 +14,9 @@ import '../../../../database/user/user_controller.dart';
 import '../../../../validation/validation.dart';
 import '../create/parts/components/set_member_controller.dart';
 
+final groupNameErrorMessageProvider =
+    StateProvider.autoDispose<String?>((ref) => null);
+
 /// Group setting provider.
 final groupSettingProvider = StateNotifierProvider.family
     .autoDispose<GroupSettingNotifier, GroupProfile?, String>(
@@ -75,7 +78,7 @@ class UpdateGroupSettings {
   static final UpdateGroupSettings _instance = UpdateGroupSettings._internal();
   static UpdateGroupSettings get instance => _instance;
 
-  static Future<bool> update(
+  static Future<String?> update(
     String groupId,
     String name,
     String? description,
@@ -83,10 +86,9 @@ class UpdateGroupSettings {
     WidgetRef ref,
   ) async {
     String? imagePath;
-    final nameValidation = GroupValidation.nameValidation(name);
-    if (!nameValidation) {
-      debugPrint('Failed to updated profile');
-      return false;
+    final nameValidationErrorMessage = GroupValidation.nameValidation(name);
+    if (nameValidationErrorMessage != null) {
+      return nameValidationErrorMessage;
     }
     if (image == null) {
       imagePath = null;
@@ -104,8 +106,7 @@ class UpdateGroupSettings {
     final groupMembersList = ref.watch(setGroupMemberListProvider);
     await _addMeberships(groupMembersList, groupId);
 
-    debugPrint('Success: Changed profile.');
-    return true;
+    return null;
   }
 
   static Future<void> _addMeberships(
@@ -159,7 +160,7 @@ class GroupValidation {
   static final GroupValidation _instance = GroupValidation._internal();
   static GroupValidation get instance => _instance;
 
-  static bool nameValidation(String name) {
+  static String? nameValidation(String name) {
     const requiredValidation = RequiredValidation();
     const maxLength32Validation = MaxLength32Validation();
 
@@ -167,26 +168,27 @@ class GroupValidation {
       name,
       'name',
     );
+
     final nameMaxLength32Validation = maxLength32Validation.validate(
       name,
       'name',
     );
+
     if (!nameRequiredValidation) {
       final errorMessage =
           const RequiredValidation().getStringInvalidRequiredMessage();
 
-      debugPrint('nameError: $errorMessage');
-      return false;
+      return errorMessage;
     }
+
     if (!nameMaxLength32Validation) {
       final errorMessage =
           const MaxLength32Validation().getMaxLengthInvalidMessage();
 
-      debugPrint('nameError: $errorMessage');
-      return false;
+      return errorMessage;
     }
 
-    return true;
+    return null;
   }
 }
 

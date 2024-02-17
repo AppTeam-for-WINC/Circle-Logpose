@@ -26,8 +26,9 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final groupScheduleId = widget.groupScheduleId;
+    
+    final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final schedule = ref.watch(changeGroupScheduleProvider(groupScheduleId));
     final scheduleNotifier =
         ref.watch(changeGroupScheduleProvider(groupScheduleId).notifier);
@@ -251,32 +252,16 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                         ),
                         child: CupertinoButton(
                           padding: EdgeInsets.zero,
-                          child: const Text(
-                            '変更を保存',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
                           onPressed: () async {
                             if (schedule.groupId == null) {
                               ref
                                   .watch(scheduleErrorMessageProvider.notifier)
                                   .state = 'No selected group.';
 
-                              debugPrint('No selected group.');
-                              return;
-                            }
-                            if (schedule.titleController.text.isEmpty) {
-                              ref
-                                  .watch(scheduleErrorMessageProvider.notifier)
-                                  .state = 'No entered title.';
-
-                              debugPrint('No entered title.');
                               return;
                             }
 
-                            final success =
+                            final errorMessage =
                                 await UpdateGroupSchedule.updateSchedule(
                               groupScheduleId,
                               schedule.groupId!,
@@ -287,16 +272,25 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
                               schedule.startAt,
                               schedule.endAt,
                             );
-                            if (!success) {
-                              debugPrint('Failed to create schedule.');
-                              return;
-                            }
-                            if (!mounted) {
+                            if (errorMessage != null) {
+                              ref
+                                  .watch(scheduleErrorMessageProvider.notifier)
+                                  .state = errorMessage;
                               return;
                             }
 
+                            if (!mounted) {
+                              return;
+                            }
                             Navigator.of(context).pop();
                           },
+                          child: const Text(
+                            '変更を保存',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
                     ),

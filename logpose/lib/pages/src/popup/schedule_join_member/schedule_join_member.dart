@@ -40,15 +40,14 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: deviceHeight * 0.02,
-        right: 32,
-        left: 32,
+        left: deviceWidth * 0.06,
+        right: deviceWidth * 0.06,
       ),
       child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(34),
           child: SizedBox(
-            width: deviceWidth * 0.9,
+            width: deviceWidth,
             height: deviceHeight * 0.55,
             child: Stack(
               children: [

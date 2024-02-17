@@ -67,7 +67,9 @@ class UserController {
   }
 
   /// Read userProfile's list with accountId.
-  static Future<List<UserProfile>> readWithAccountIdList(String accountId) async {
+  static Future<List<UserProfile>> readWithAccountIdList(
+    String accountId,
+  ) async {
     final snapshot = await db
         .collection(collectionPath)
         .where('account_id', isEqualTo: accountId)
@@ -95,16 +97,18 @@ class UserController {
       return null;
     }
 
-    return snapshot.docs.map((doc) {
-      final userProfileData = doc.data() as Map<String, dynamic>?;
-      if (userProfileData == null) {
-        return null;
-      }
+    return snapshot.docs
+        .map((doc) {
+          final userProfileData = doc.data() as Map<String, dynamic>?;
+          if (userProfileData == null) {
+            return null;
+          }
 
-      return UserProfile.fromMap(userProfileData);
-    }).whereType<UserProfile>().firstOrNull;
+          return UserProfile.fromMap(userProfileData);
+        })
+        .whereType<UserProfile>()
+        .firstOrNull;
   }
-
 
   /// Read userDocId with accountId.
   static Future<String> readUserDocIdWithAccountId(String accountId) async {

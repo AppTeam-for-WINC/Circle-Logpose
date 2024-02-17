@@ -12,13 +12,13 @@ import '../../../../validation/validation.dart';
 final groupNameProvider =
     StateProvider.autoDispose<String>((ref) => 'No selected group');
 
-final createGroupScheduleProvider = StateNotifierProvider.autoDispose<
-    _SetGroupScheduleNotifier, _GroupScheduleViewer?>(
-  (ref) => _SetGroupScheduleNotifier(),
-);
-
 final scheduleErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);
+
+final createGroupScheduleProvider =
+    StateNotifierProvider<_SetGroupScheduleNotifier, _GroupScheduleViewer?>(
+  (ref) => _SetGroupScheduleNotifier(),
+);
 
 /// Schedule Object.
 class _GroupScheduleViewer {
@@ -72,8 +72,6 @@ class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer> {
 
   void initSchedule() {
     state = _GroupScheduleViewer(
-      groupId: null,
-      color: const Color.fromARGB(255, 217, 0, 255),
       title: '',
       place: '',
       detail: '',
@@ -117,7 +115,7 @@ class CreateGroupSchedule {
   static final CreateGroupSchedule _instance = CreateGroupSchedule._internal();
   static CreateGroupSchedule get instance => _instance;
 
-  static Future<bool> createSchedule(
+  static Future<String?> createSchedule(
     String groupId,
     String title,
     Color color,
@@ -127,16 +125,29 @@ class CreateGroupSchedule {
     DateTime endAt,
   ) async {
     try {
-      final titleValidation = ScheduleValidation.titleValidation(title);
-      final placeValidation = ScheduleValidation.placeValidation(place);
-      final detailValidation = ScheduleValidation.detailValidation(detail);
-      if (!(titleValidation && placeValidation && detailValidation)) {
-        return false;
+      final titleValidationErrorMessage =
+          ScheduleValidation.titleValidation(title);
+      final placeValidationErrorMessage =
+          ScheduleValidation.placeValidation(place);
+      final detailValidationErrorMessage =
+          ScheduleValidation.detailValidation(detail);
+      if (titleValidationErrorMessage != null) {
+        return titleValidationErrorMessage;
       }
+
+      if (placeValidationErrorMessage != null) {
+        return placeValidationErrorMessage;
+      }
+
+      if (detailValidationErrorMessage != null) {
+        return detailValidationErrorMessage;
+      }
+
       final colorToString = colorToHex(color);
 
       if (!checkStartAtAfterEndAt(startAt, endAt)) {
-        return false;
+        const errorMessage = 'Start time must be set before end time';
+        return errorMessage;
       }
 
       final scheduleId = await GroupScheduleController.create(
@@ -159,8 +170,7 @@ class CreateGroupSchedule {
         );
       }
 
-      debugPrint('Success: create schedule.');
-      return true;
+      return null;
     } on FirebaseException catch (e) {
       throw Exception('Error: $e');
     }
@@ -195,7 +205,7 @@ class ScheduleValidation {
   static final ScheduleValidation _instance = ScheduleValidation._internal();
   static ScheduleValidation get instance => _instance;
 
-  static bool titleValidation(String title) {
+  static String? titleValidation(String title) {
     const requiredValidation = RequiredValidation();
     const maxLength32Validation = MaxLength32Validation();
 
@@ -211,23 +221,21 @@ class ScheduleValidation {
       final errorMessage =
           const RequiredValidation().getStringInvalidRequiredMessage();
 
-      debugPrint('titleError: $errorMessage');
-      return false;
+      return errorMessage;
     }
     if (!titleMaxLength32Validation) {
       final errorMessage =
           const MaxLength32Validation().getMaxLengthInvalidMessage();
 
-      debugPrint('titleError: $errorMessage');
-      return false;
+      return errorMessage;
     }
 
-    return true;
+    return null;
   }
 
-  static bool placeValidation(String place) {
+  static String? placeValidation(String place) {
     if (place.isEmpty) {
-      return true;
+      return null;
     }
     const maxLength64Validation = MaxLength64Validation();
 
@@ -239,16 +247,15 @@ class ScheduleValidation {
       final errorMessage =
           const MaxLength64Validation().getMaxLengthInvalidMessage();
 
-      debugPrint('placeError: $errorMessage');
-      return false;
+      return errorMessage;
     }
 
-    return true;
+    return null;
   }
 
-  static bool detailValidation(String detail) {
+  static String? detailValidation(String detail) {
     if (detail.isEmpty) {
-      return true;
+      return null;
     }
     const maxLength2048Validation = MaxLength2048Validation();
 
@@ -260,17 +267,15 @@ class ScheduleValidation {
       final errorMessage =
           const RequiredValidation().getStringInvalidRequiredMessage();
 
-      debugPrint('detailError: $errorMessage');
-      return false;
+      return errorMessage;
     }
     if (!detailMaxLength2048Validation) {
       final errorMessage =
           const MaxLength2048Validation().getMaxLengthInvalidMessage();
 
-      debugPrint('detailError: $errorMessage');
-      return false;
+      return errorMessage;
     }
 
-    return true;
+    return null;
   }
 }

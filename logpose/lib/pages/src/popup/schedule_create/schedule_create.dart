@@ -38,7 +38,12 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
             children: [
               CupertinoButton(
                 padding: const EdgeInsets.only(left: 15, top: 15),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  // Init
+                  scheduleNotifier.initSchedule();
+
+                  Navigator.of(context).pop();
+                },
                 child: const Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF7B61FF),
@@ -247,18 +252,11 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         ref.watch(scheduleErrorMessageProvider.notifier).state =
                             'No selected group.';
 
-                        debugPrint('No selected group.');
-                        return;
-                      }
-                      if (schedule.titleController.text.isEmpty) {
-                        ref.watch(scheduleErrorMessageProvider.notifier).state =
-                            'No entered title.';
-
-                        debugPrint('No entered title.');
                         return;
                       }
 
-                      final success = await CreateGroupSchedule.createSchedule(
+                      final errorMessage =
+                          await CreateGroupSchedule.createSchedule(
                         schedule.groupId!,
                         schedule.titleController.text,
                         schedule.color,
@@ -267,10 +265,15 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                         schedule.startAt,
                         schedule.endAt,
                       );
-                      if (!success) {
-                        debugPrint('Failed to create schedule.');
+                      if (errorMessage != null) {
+                        ref
+                            .watch(scheduleErrorMessageProvider.notifier)
+                            .state = errorMessage;
                         return;
                       }
+
+                      // Init
+                      scheduleNotifier.initSchedule();
 
                       if (!mounted) {
                         return;

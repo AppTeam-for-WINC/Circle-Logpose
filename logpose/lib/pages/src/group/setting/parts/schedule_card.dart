@@ -28,6 +28,7 @@ class ScheduleCard extends ConsumerStatefulWidget {
 class _ScheduleCardState extends ConsumerState<ScheduleCard> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final groupId = widget.groupId;
     final groupScheduleId = widget.schedule.groupScheduleId;
     final groupSchedule = widget.schedule.groupSchedule;
@@ -59,12 +60,17 @@ class _ScheduleCardState extends ConsumerState<ScheduleCard> {
             ),
             child: Row(
               children: [
-                Text(
-                  groupSchedule.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 69, 68, 68),
-                    overflow: TextOverflow.ellipsis,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: deviceWidth * 0.6,
+                  ),
+                  child: Text(
+                    groupSchedule.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Color.fromARGB(255, 69, 68, 68),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
@@ -73,12 +79,14 @@ class _ScheduleCardState extends ConsumerState<ScheduleCard> {
         ),
         if (ref.watch(scheduleDeleteModeProvider))
           Positioned(
-            top: 0,
+            top: -8,
             right: 0,
             child: CupertinoButton(
               onPressed: () async {
                 await DeleteSchedule.delete(
-                  groupId, groupScheduleId, groupMemberList,
+                  groupId,
+                  groupScheduleId,
+                  groupMemberList,
                 );
               },
               child: const DecoratedBox(

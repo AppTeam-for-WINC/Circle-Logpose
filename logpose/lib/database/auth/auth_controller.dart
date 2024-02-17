@@ -31,7 +31,7 @@ class AuthController {
         docId: docId,
         name: 'no name',
       );
-      debugPrint('Success: Created new account. doc_id: $docId');
+
       return true;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error: Failed to create account. $error');
@@ -156,30 +156,31 @@ class AuthController {
   }
 
   /// Update user's new password.
-  static Future<bool> updateUserPassword(
+  static Future<String?> updateUserPassword(
     String email,
     String password,
     String newPassword,
   ) async {
     try {
       final user = auth.currentUser;
-
       if (user == null) {
-        debugPrint('User is not currently signed in.');
-        return false;
+        const errorMessage = 'User is not currently signed in.';
+        return errorMessage;
       }
+
       final credential = await _checkSignInWithCredential(
         email,
         password,
       );
       await user.reauthenticateWithCredential(credential);
-
       await user.updatePassword(newPassword);
-      debugPrint('Password updated successfully.');
-      return true;
+
+      return null;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error updating password: $error');
-      return false;
+
+      const errorMessage = 'Password is not correctly.';
+      return errorMessage;
     }
   }
 

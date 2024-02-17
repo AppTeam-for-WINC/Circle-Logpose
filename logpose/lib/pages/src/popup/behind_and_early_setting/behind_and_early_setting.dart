@@ -35,7 +35,7 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
         borderRadius: BorderRadius.circular(34),
         child: SizedBox(
           width: 360,
-          height: 320,
+          height: 340,
           child: Stack(
             children: [
               Container(
@@ -95,8 +95,7 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.only(right: 10),
                                     child: Text(
                                       formatDateTimeExcYearHourMinuteDay(
                                         groupSchedule.startAt,

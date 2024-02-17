@@ -23,6 +23,7 @@ class _ScheduleJoinTimeState extends ConsumerState<ScheduleJoinTime> {
     final groupSchedule = widget.groupProfileWithScheduleWithId.groupSchedule;
     final groupScheduleId =
         widget.groupProfileWithScheduleWithId.groupScheduleId;
+        
     final schedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
     
     return Column(

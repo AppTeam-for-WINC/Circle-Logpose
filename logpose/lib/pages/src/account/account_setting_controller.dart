@@ -7,30 +7,44 @@ import '../../../database/user/user.dart';
 import '../../../database/user/user_controller.dart';
 import '../../../validation/validation.dart';
 
-Future<UserProfile> readUserRef() async {
-  final userId = await AuthController.getCurrentUserId();
-  if (userId == null) {
-    throw Exception('Error: No userId');
-  }
-  final userProfile = await UserController.read(userId);
-  return userProfile;
-}
+// Future<UserProfile> readUserRef() async {
+//   final userId = await AuthController.getCurrentUserId();
+//   if (userId == null) {
+//     throw Exception('Error: No userId');
+//   }
+//   final userProfile = await UserController.read(userId);
+//   return userProfile;
+// }
 
-///変更情報を取得するだけで、データベースには変更内容を適用しない。
-final userProfileProvider =
-    StateNotifierProvider.autoDispose<UserData, UserProfile?>((ref) => UserData());
+/// 変更情報を取得するだけで、データベースには変更内容を適用しない。
+final userProfileProvider = StateNotifierProvider<_UserData, UserProfile?>(
+  (ref) => _UserData(),
+);
 
-class UserData extends StateNotifier<UserProfile?> {
-  UserData() : super(null) {
+class _UserData extends StateNotifier<UserProfile?> {
+  _UserData() : super(null) {
     readUserData();
   }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController accountIdController = TextEditingController();
 
+  Future<UserProfile> initUserProfile() async {
+    try {
+      final userId = await AuthController.getCurrentUserId();
+      if (userId == null) {
+        throw Exception('User not logged in.');
+      }
+
+      return await UserController.read(userId);
+    } on Exception catch (e) {
+      throw Exception('Error read user data: $e');
+    }
+  }
+
   Future<void> readUserData() async {
     try {
-      final userProfile = await readUserRef();
+      final userProfile = await initUserProfile();
       nameController.text = userProfile.name;
       state = userProfile;
     } on Exception catch (e) {
@@ -38,7 +52,7 @@ class UserData extends StateNotifier<UserProfile?> {
     }
   }
 
-  void changeImage(File newImage) {
+  void setNewImage(File newImage) {
     if (state != null) {
       state = UserProfile(
         accountId: state!.accountId,
@@ -49,7 +63,7 @@ class UserData extends StateNotifier<UserProfile?> {
     }
   }
 
-  void changeAccountId(String newAccountId) {
+  void setNewAccountId(String newAccountId) {
     if (state != null) {
       state = UserProfile(
         accountId: newAccountId,
@@ -59,22 +73,12 @@ class UserData extends StateNotifier<UserProfile?> {
       );
     }
   }
-
-  Future<void> initUserProfile() async {
-    try {
-      final userProfile = await readUserRef();
-      state = userProfile;
-    } on Exception catch (e) {
-      debugPrint('Error read user data: $e');
-    }
-  }
 }
 
-///Changed userDB.
+/// Change user's database.
 Future<bool> changeUserProfile(
   String name,
   File? image,
-  // File? image,
   String? description,
   WidgetRef ref,
 ) async {
@@ -107,7 +111,7 @@ Future<bool> changeUserProfile(
   return true;
 }
 
-///User Validation
+/// User Validation
 bool userValidation(String name) {
   const requiredValidation = RequiredValidation();
   const maxLength32Validation = MaxLength32Validation();

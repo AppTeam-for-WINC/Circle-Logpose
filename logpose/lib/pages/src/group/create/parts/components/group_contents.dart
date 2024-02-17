@@ -51,7 +51,8 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
     final groupAdminMemberProfile = ref.watch(groupAdminMemberProfileProvider);
-    final groupAddData = ref.watch(groupAddMemberDataProvider.notifier);
+    final setGroupMemberAndGroupDataNotifier =
+        ref.watch(setGroupMemberDataAndGroupDataProvider.notifier);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFFF5F3FE),
@@ -132,6 +133,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                         ],
                       ),
                     ),
+
                     // Error message.
                     if (loadingErrorMessage != null)
                       Text(
@@ -157,7 +159,8 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 13),
                         child: CupertinoTextField(
-                          controller: groupAddData.groupNameController,
+                          controller: setGroupMemberAndGroupDataNotifier
+                              .groupNameController,
                           prefix: const Icon(
                             Icons.create_sharp,
                           ),
@@ -267,7 +270,8 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                           );
 
                           final errorMessage = await CreateGroup.createGroup(
-                            groupAddData.groupNameController.text,
+                            setGroupMemberAndGroupDataNotifier
+                                .groupNameController.text,
                             image,
                             null,
                             ref,
@@ -350,10 +354,8 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                   await showCupertinoModalPopup<AddMember>(
                     context: context,
                     builder: (BuildContext context) {
-                      return const Center(
-                        child: AddMember(
-                          groupId: null,
-                        ),
+                      return const AddMember(
+                        groupId: null,
                       );
                     },
                   );

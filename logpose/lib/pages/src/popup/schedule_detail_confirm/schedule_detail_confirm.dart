@@ -40,15 +40,14 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
     return Center(
       child: Padding(
         padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          bottom: deviceHeight * 0.02,
+          left: deviceWidth * 0.06,
+          right: deviceWidth * 0.06,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(34),
           child: CupertinoPopupSurface(
             child: SizedBox(
-              width: deviceWidth * 0.9,
+              width: deviceWidth,
               height: deviceHeight * 0.55,
               child: Stack(
                 children: [
@@ -86,8 +85,8 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                       top: 20,
                       right: 20,
                       child: Container(
-                        width: 80,
-                        height: 80,
+                        width: deviceWidth * 0.2,
+                        height: deviceHeight * 0.093,
                         margin: const EdgeInsets.only(top: 105, left: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(80),
@@ -111,7 +110,7 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(top: 120),
-                          width: 220,
+                          width: deviceWidth * 0.5,
                           child: Text(
                             groupSchedule.title,
                             style: const TextStyle(fontSize: 26),
@@ -224,8 +223,8 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                                 ],
                               ),
                               ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxHeight: 100,
+                                constraints: BoxConstraints(
+                                  maxHeight: deviceHeight * 0.08,
                                 ), // 最大高さを設定
                                 child: SingleChildScrollView(
                                   child: Container(

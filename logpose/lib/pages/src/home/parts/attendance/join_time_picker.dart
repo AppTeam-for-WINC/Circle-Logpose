@@ -8,12 +8,12 @@ import 'user_schedule_controller.dart';
 class JoinScheduleStartDateTimePicker extends ConsumerStatefulWidget {
   const JoinScheduleStartDateTimePicker({
     super.key,
-    required this.groupSchedule,
     required this.groupScheduleId,
+    required this.groupSchedule,
   });
 
-  final GroupSchedule groupSchedule;
   final String groupScheduleId;
+  final GroupSchedule groupSchedule;
   @override
   ConsumerState createState() => _JoinScheduleStartDateTimePickerState();
 }
@@ -22,14 +22,16 @@ class _JoinScheduleStartDateTimePickerState
     extends ConsumerState<JoinScheduleStartDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final groupSchedule = widget.groupSchedule;
     final groupScheduleId = widget.groupScheduleId;
+    final groupSchedule = widget.groupSchedule;
+
     final schedule =
         ref.watch(setMemberScheduleProvider(groupScheduleId));
     final scheduleNotifier =
         ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
+
     return Container(
-      height: 300,
+      height: 240,
       color: Colors.white,
       child: Column(
         children: [
@@ -70,7 +72,7 @@ class _JoinScheduleStartDateTimePickerState
             ],
           ),
           SizedBox(
-            height: 200,
+            height: 180,
             child: CupertinoDatePicker(
               initialDateTime: schedule!.startAt,
               backgroundColor: Colors.white,
@@ -97,12 +99,12 @@ class _JoinScheduleStartDateTimePickerState
 class JoinScheduleEndDateTimePicker extends ConsumerStatefulWidget {
   const JoinScheduleEndDateTimePicker({
     super.key,
-    required this.groupSchedule,
     required this.groupScheduleId,
+    required this.groupSchedule,
   });
 
-  final GroupSchedule groupSchedule;
   final String groupScheduleId;
+  final GroupSchedule groupSchedule;
   @override
   ConsumerState createState() => _JoinScheduleEndDateTimePickerState();
 }
@@ -111,13 +113,15 @@ class _JoinScheduleEndDateTimePickerState
     extends ConsumerState<JoinScheduleEndDateTimePicker> {
   @override
   Widget build(BuildContext context) {
-    final groupSchedule = widget.groupSchedule;
     final groupScheduleId = widget.groupScheduleId;
+    final groupSchedule = widget.groupSchedule;
+
     final schedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
     final scheduleNotifier =
         ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
+
     return Container(
-      height: 300,
+      height: 240,
       color: Colors.white,
       child: Column(
         children: [
@@ -158,7 +162,7 @@ class _JoinScheduleEndDateTimePickerState
             ],
           ),
           SizedBox(
-            height: 200,
+            height: 180,
             child: CupertinoDatePicker(
               initialDateTime: schedule!.endAt,
               backgroundColor: Colors.white,

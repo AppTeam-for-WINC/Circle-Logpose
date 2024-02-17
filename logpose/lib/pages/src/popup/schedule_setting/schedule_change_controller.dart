@@ -61,9 +61,19 @@ class _ChangeGroupScheduleViewer {
 class _SetChangeGroupScheduleNotifier
     extends StateNotifier<_ChangeGroupScheduleViewer?> {
   _SetChangeGroupScheduleNotifier(String scheduleId)
-      : super(null) {
+      : super(
+          _ChangeGroupScheduleViewer(
+            color: Colors.purple,
+            title: '',
+            startAt: DateTime.now(),
+            endAt: DateTime.now().add(const Duration(hours: 1)),
+            place: '',
+            detail: '',
+          ),
+        ) {
     _initSchedule(scheduleId);
   }
+
   Future<void> _initSchedule(String scheduleId) async {
     final schedule = await GroupScheduleController.read(scheduleId);
     if (schedule == null) {
@@ -115,7 +125,7 @@ class UpdateGroupSchedule {
   static final UpdateGroupSchedule _instance = UpdateGroupSchedule._internal();
   static UpdateGroupSchedule get instance => _instance;
 
-  static Future<bool> updateSchedule(
+  static Future<String?> updateSchedule(
     String docId,
     String groupId,
     String title,
@@ -126,11 +136,22 @@ class UpdateGroupSchedule {
     DateTime endAt,
   ) async {
     try {
-      final titleValidation = ScheduleValidation.titleValidation(title);
-      final placeValidation = ScheduleValidation.placeValidation(place);
-      final detailValidation = ScheduleValidation.detailValidation(detail);
-      if (!(titleValidation && placeValidation && detailValidation)) {
-        return false;
+      final titleValidationErrorMessage =
+          ScheduleValidation.titleValidation(title);
+      final placeValidationErrorMessage =
+          ScheduleValidation.placeValidation(place);
+      final detailValidationErrorMessage =
+          ScheduleValidation.detailValidation(detail);
+      if (titleValidationErrorMessage != null) {
+        return titleValidationErrorMessage;
+      }
+
+      if (placeValidationErrorMessage != null) {
+        return placeValidationErrorMessage;
+      }
+
+      if (detailValidationErrorMessage != null) {
+        return detailValidationErrorMessage;
       }
       final colorToString = colorToHex(color);
 
@@ -145,8 +166,7 @@ class UpdateGroupSchedule {
         endAt: endAt,
       );
 
-      debugPrint('Success: update schedule.');
-      return true;
+      return null;
     } on FirebaseException catch (e) {
       throw Exception('Error: $e');
     }

@@ -84,13 +84,13 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 groupSchedule.startAt,
                               ),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 17,
                               ),
                             ),
                             const Text(
                               '-',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 17,
                               ),
                             ),
                             Text(
@@ -98,7 +98,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                 groupSchedule.endAt,
                               ),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -195,12 +195,17 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                           },
                           child: Row(
                             children: [
-                              Text(
-                                groupSchedule.title,
-                                textAlign: TextAlign.end,
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 16,
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: deviceWidth * 0.35,
+                                ),
+                                child: Text(
+                                  groupSchedule.title,
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                               const Icon(
