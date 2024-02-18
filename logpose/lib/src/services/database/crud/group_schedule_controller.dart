@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import '../../utils/time/time_utils.dart';
-import '../../models/group/group_schedule.dart';
+import '../../../utils/time/time_utils.dart';
+import '../../../models/group/database/group_schedule.dart';
 
 class GroupScheduleController {
   // シングルトンパターンにしています。

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../models/user/user.dart';
-import '../../../../../../services/database/user_controller.dart';
+import '../../../../../../services/database/crud/user_controller.dart';
 
 /// Switch mode of delete set member.
 final setMemberDeleteModeProvider =

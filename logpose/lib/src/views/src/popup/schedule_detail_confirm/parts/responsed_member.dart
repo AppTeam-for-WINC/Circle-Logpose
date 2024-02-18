@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/group/group.dart';
-import '../../../../../models/group/group_schedule.dart';
+import '../../../../../models/group/database/group.dart';
+import '../../../../../models/group/database/group_schedule.dart';
 import '../../../group/setting/parts/group_member_image.dart';
 import '../../schedule_join_member/schedule_join_member.dart';
 import 'reaponsed_member_controller.dart';

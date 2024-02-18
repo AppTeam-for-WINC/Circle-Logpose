@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../services/database/group_controller.dart';
-import '../../../../home/parts/group/controller/joined_group_controller.dart';
+import '../../../../../../models/group/group_with_id.model.dart';
+
+import '../../../../../../services/database/crud/group_controller.dart';
 
 final readGroupWithIdModalProvider =
     FutureProvider.family<List<GroupWithId>, List<String>>((ref, groupIdList) {

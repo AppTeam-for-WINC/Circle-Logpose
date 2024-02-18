@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../models/user/user.dart';
+
 import '../../../popup/schedule_create/schedule_create_controller.dart';
 import '../../../popup/schedule_setting/schedule_change.dart';
 import '../group_setting_controller.dart';

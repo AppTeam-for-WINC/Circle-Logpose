@@ -2,12 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../utils/color/color_exchanger.dart';
-import '../../../../../utils/time/time_utils.dart';
-import '../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
-import '../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
-import 'schedule_response.dart';
-import 'user_schedule_controller.dart';
+import '../../../../../../controllers/providers/group/group_member_schedule_provider.dart';
+
+import '../../../../../../models/group/group_profile_with_schedule_with_id_model.dart';
+
+import '../../../../../../services/database/group_member_schedule_setting.dart';
+
+import '../../../../../../utils/color/color_exchanger.dart';
+import '../../../../../../utils/schedule/schedule_response.dart';
+import '../../../../../../utils/time/time_utils.dart';
+
+import '../../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
+import '../../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
 class GroupScheduleCard extends ConsumerStatefulWidget {
   const GroupScheduleCard({super.key, required this.groupData});
@@ -29,10 +35,11 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
     final groupImage = widget.groupData.groupProfile.image;
     final groupSchedule = widget.groupData.groupSchedule;
     final groupScheduleId = widget.groupData.groupScheduleId;
-    
-    final userSchedule = ref.watch(setMemberScheduleProvider(groupScheduleId));
+
+    final userSchedule =
+        ref.watch(groupMemberScheduleProvider(groupScheduleId));
     final userScheduleNotifier =
-        ref.watch(setMemberScheduleProvider(groupScheduleId).notifier);
+        ref.watch(groupMemberScheduleProvider(groupScheduleId).notifier);
 
     final isAttendance = userSchedule?.attendance ?? false;
     final isLeavingEarly = userSchedule?.leavingEarly ?? false;
@@ -111,7 +118,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                               builder: (BuildContext context) {
                                 if (ref
                                     .read(
-                                      setMemberScheduleProvider(
+                                      groupMemberScheduleProvider(
                                         groupScheduleId,
                                       ),
                                     )!
@@ -129,7 +136,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                   );
                                 } else if (ref
                                     .read(
-                                      setMemberScheduleProvider(
+                                      groupMemberScheduleProvider(
                                         groupScheduleId,
                                       ),
                                     )!
@@ -147,7 +154,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                   );
                                 } else if (ref
                                     .read(
-                                      setMemberScheduleProvider(
+                                      groupMemberScheduleProvider(
                                         groupScheduleId,
                                       ),
                                     )!
@@ -165,7 +172,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                                   );
                                 } else if (ref
                                     .read(
-                                      setMemberScheduleProvider(
+                                      groupMemberScheduleProvider(
                                         groupScheduleId,
                                       ),
                                     )!
@@ -234,7 +241,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             userScheduleNotifier.setAttendance(
                               attendance: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -244,28 +251,28 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                               scheduleId: groupScheduleId,
                               attendance: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .attendance,
                               leaveEarly: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .leavingEarly,
                               lateness: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .lateness,
                               absence: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -303,7 +310,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             userScheduleNotifier.setLeavingEarly(
                               leavingEarly: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -313,28 +320,28 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                               scheduleId: groupScheduleId,
                               attendance: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .attendance,
                               leaveEarly: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .leavingEarly,
                               lateness: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .lateness,
                               absence: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -345,7 +352,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             }
                             if (ref
                                 .read(
-                                  setMemberScheduleProvider(
+                                  groupMemberScheduleProvider(
                                     groupScheduleId,
                                   ),
                                 )!
@@ -399,7 +406,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             userScheduleNotifier.setLateness(
                               lateness: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -409,28 +416,28 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                               scheduleId: groupScheduleId,
                               attendance: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .attendance,
                               leaveEarly: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .leavingEarly,
                               lateness: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .lateness,
                               absence: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -441,7 +448,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             }
                             if (ref
                                 .read(
-                                  setMemberScheduleProvider(groupScheduleId),
+                                  groupMemberScheduleProvider(groupScheduleId),
                                 )!
                                 .lateness!) {
                               await showCupertinoModalPopup<
@@ -493,7 +500,7 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                             userScheduleNotifier.setAbsence(
                               absence: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
@@ -504,28 +511,28 @@ class _GroupScheduleCardState extends ConsumerState<GroupScheduleCard> {
                               scheduleId: groupScheduleId,
                               attendance: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .attendance,
                               leaveEarly: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .leavingEarly,
                               lateness: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!
                                   .lateness,
                               absence: ref
                                   .read(
-                                    setMemberScheduleProvider(
+                                    groupMemberScheduleProvider(
                                       groupScheduleId,
                                     ),
                                   )!

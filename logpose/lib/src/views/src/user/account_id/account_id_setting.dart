@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/providers/user/user_profile_provider.dart';
-import '../../../controllers/src/user/update_account_id.dart';
+import '../../../../controllers/providers/user/user_profile_provider.dart';
+import '../../../../controllers/src/user/update_account_id.dart';
 
-import '../../../utils/clipboard/copy_to_clipboard.dart';
+import '../../../../utils/clipboard/copy_to_clipboard.dart';
 
-import 'user_setting_page.dart';
+import '../user_setting_page.dart';
 
 class AccountIdSettingPage extends ConsumerStatefulWidget {
   const AccountIdSettingPage({super.key});

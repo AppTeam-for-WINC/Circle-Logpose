@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../models/user/user.dart';
+import '../../../models/group/database/group_membership.dart';
+import '../../../models/user/user.dart';
 import 'user_controller.dart';
-import '../../models/group/group_membership.dart';
 
 class GroupMembershipController {
   GroupMembershipController._internal();
