@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../validation/max_length_validation.dart';
 import '../../../../../validation/required_validation.dart';
-import '../../../../services/database/group_membership_controller.dart';
-import '../../../../services/database/group_schedule_controller.dart';
-import '../../../../services/database/member_schedule_controller.dart';
+import '../../../../services/database/crud/group_membership_controller.dart';
+import '../../../../services/database/crud/group_schedule_controller.dart';
+import '../../../../services/database/crud/member_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../../utils/time/time_utils.dart';
 

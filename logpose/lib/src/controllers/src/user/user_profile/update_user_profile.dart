@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../services/auth/auth_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../services/database/crud/user_controller.dart';
 
 import '../validation/user_validation.dart';
 

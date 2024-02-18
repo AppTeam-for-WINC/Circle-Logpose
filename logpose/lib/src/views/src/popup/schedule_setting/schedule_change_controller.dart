@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/color/color_exchanger.dart';
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../services/database/crud/group_schedule_controller.dart';
 import '../schedule_create/schedule_create_controller.dart';
 
 final changeGroupScheduleProvider = StateNotifierProvider.family<

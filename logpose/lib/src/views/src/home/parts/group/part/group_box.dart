@@ -3,22 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../group/setting/group_setting_page.dart';
-import 'controller/joined_group_controller.dart';
+import '../../../../../../controllers/providers/utils/group_with_id_provider.dart';
+
+import '../../../../group/setting/group_setting_page.dart';
 
 class GroupBox extends ConsumerStatefulWidget {
   const GroupBox({super.key, required this.groupId});
 
   final String groupId;
   @override
-  ConsumerState createState() => GroupBoxState();
+  ConsumerState createState() => _GroupBoxState();
 }
 
-class GroupBoxState extends ConsumerState<GroupBox> {
+class _GroupBoxState extends ConsumerState<GroupBox> {
   @override
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
-    final asyncGroupProfileList = ref.watch(readGroupWithIdProvider(groupId));
+
+    final asyncGroupProfileList = ref.watch(watchGroupWithIdProvider(groupId));
 
     return GestureDetector(
       onTap: () async {

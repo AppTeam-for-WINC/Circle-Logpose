@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../models/user/user.dart';
-import '../../common/error_messages.dart';
-import '../storage/storage.dart';
+import '../../../models/user/user.dart';
+import '../../../common/error_messages.dart';
+import '../../storage/storage.dart';
 
 class UserController {
   // Hoge constructor

@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../storage/storage.dart';
-import '../../models/group/group.dart';
+import '../../../models/group/database/group.dart';
+
+import '../../storage/storage.dart';
 
 /// Stream型をwatchで書く。
 /// Future型はreadで書く。

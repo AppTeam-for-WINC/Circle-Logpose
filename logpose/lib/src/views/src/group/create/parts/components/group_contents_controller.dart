@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../services/auth/auth_controller.dart';
-import '../../../../../../services/database/group_membership_controller.dart';
+import '../../../../../../services/database/crud/group_membership_controller.dart';
 import '../../../../../../models/user/user.dart';
-import '../../../../../../services/database/user_controller.dart';
+import '../../../../../../services/database/crud/user_controller.dart';
 
 /// Used to create new group.
 final groupAdminMemberProfileProvider =

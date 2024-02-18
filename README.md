@@ -140,178 +140,203 @@ Used: pedantic_mono
 ## Composition of Files, Folders.
 ```
 lib
-├── app
-│   ├── app.dart
-│   └── app_controller.dart
-├── controller
-│   ├── common
-│   │   ├── color_exchanger.dart
-│   │   ├── copy_to_clipboard.dart
-│   │   └── time_controller.dart
-│   └── entities
-│       └── device
-│           └── image_controller.dart
-├── database
-│   ├── auth
-│   │   ├── auth.dart
-│   │   └── auth_controller.dart
-│   ├── common
-│   │   └── error_messages.dart
-│   ├── group
-│   │   ├── group
-│   │   │   ├── group.dart
-│   │   │   └── group_controller.dart
-│   │   ├── invitation
-│   │   │   ├── invitation.dart
-│   │   │   └── invitation_controller.dart
-│   │   ├── membership
-│   │   │   ├── group_membership.dart
-│   │   │   └── group_membership_controller.dart
-│   │   └── schedule
-│   │       ├── member_schedule
-│   │       │   ├── member_schedule.dart
-│   │       │   └── member_schedule_controller.dart
-│   │       └── schedule
-│   │           ├── schedule.dart
-│   │           └── schedule_controller.dart
-│   └── user
-│       ├── user.dart
-│       └── user_controller.dart
 ├── firebase_options.dart
 ├── main.dart
-├── pages
+├── routes
+│   ├── app.dart
+│   └── app_controller.dart
+├── src
 │   ├── common
-│   │   ├── slide
-│   │   │   ├── slide_segmented_tab_control.dart
-│   │   │   ├── src
-│   │   │   │   ├── slide_tab.dart
-│   │   │   │   ├── slide_tab_bar.dart
-│   │   │   │   ├── slide_tab_controller.dart
-│   │   │   │   ├── tab_component.dart
-│   │   │   │   └── utils
-│   │   │   │       ├── clippers.dart
-│   │   │   │       └── range.dart
-│   │   │   └── tabs
-│   │   │       ├── attendance_tab.dart
-│   │   │       ├── group_create_tab.dart
-│   │   │       └── user_setting_tab.dart
-│   │   └── src
-│   │       └── color
-│   │           └── color_palette.dart
-│   └── src
-│       ├── account
-│       │   ├── account_setting_controller.dart
-│       │   ├── account_setting_page.dart
-│       │   └── parts
-│       │       ├── email
-│       │       │   ├── email_setting.dart
-│       │       │   ├── email_setting_controller.dart
-│       │       │   └── email_verification.dart
-│       │       ├── group
-│       │       │   └── joined_group.dart
-│       │       ├── id
-│       │       │   ├── id_setting.dart
-│       │       │   └── id_setting_controller.dart
-│       │       └── password
-│       │           ├── password_setting.dart
-│       │           └── password_setting_controller.dart
-│       ├── group
-│       │   ├── create
-│       │   │   ├── group_create_controller.dart
-│       │   │   ├── group_create_page.dart
+│   │   ├── color_palette.dart
+│   │   └── error_messages.dart
+│   ├── controllers
+│   │   ├── common
+│   │   │   └── loading
+│   │   │       └── loading_progress.dart
+│   │   ├── providers
+│   │   │   ├── group
+│   │   │   │   ├── check_joined_group_exist_provider.dart
+│   │   │   │   ├── group_member_schedule_provider.dart
+│   │   │   │   └── group_profile_provider.dart
+│   │   │   ├── user
+│   │   │   │   ├── email_provider.dart
+│   │   │   │   ├── password_provider.dart
+│   │   │   │   └── user_profile_provider.dart
+│   │   │   └── utils
+│   │   │       ├── group_profile_schedule_id_provider.dart
+│   │   │       └── group_with_id_provider.dart
+│   │   ├── src
+│   │   │   ├── login
+│   │   │   │   └── login_controller.dart
+│   │   │   ├── signup
+│   │   │   │   └── signup_controller.dart
+│   │   │   └── user
+│   │   │       ├── update_account_id.dart
+│   │   │       ├── user_profile
+│   │   │       │   └── update_user_profile.dart
+│   │   │       └── validation
+│   │   │           ├── account_id_validation.dart
+│   │   │           └── user_validation.dart
+│   │   └── validation
+│   │       ├── email_validation.dart
+│   │       └── password_validation.dart
+│   ├── entities
+│   │   └── device
+│   │       └── image_controller.dart
+│   ├── models
+│   │   ├── auth
+│   │   │   └── auth.dart
+│   │   ├── group
+│   │   │   ├── database
+│   │   │   │   ├── group.dart
+│   │   │   │   ├── group_membership.dart
+│   │   │   │   ├── group_schedule.dart
+│   │   │   │   ├── invitation.dart
+│   │   │   │   └── member_schedule.dart
+│   │   │   ├── group_profile_with_schedule_with_id_model.dart
+│   │   │   └── group_with_id.model.dart
+│   │   └── user
+│   │       └── user.dart
+│   ├── services
+│   │   ├── auth
+│   │   │   └── auth_controller.dart
+│   │   ├── database
+│   │   │   ├── crud
+│   │   │   │   ├── group_controller.dart
+│   │   │   │   ├── group_membership_controller.dart
+│   │   │   │   ├── group_schedule_controller.dart
+│   │   │   │   ├── invitation_controller.dart
+│   │   │   │   ├── member_schedule_controller.dart
+│   │   │   │   └── user_controller.dart
+│   │   │   └── group_member_schedule_setting.dart
+│   │   └── storage
+│   │       └── storage.dart
+│   ├── utils
+│   │   ├── clipboard
+│   │   │   └── copy_to_clipboard.dart
+│   │   ├── color
+│   │   │   └── color_exchanger.dart
+│   │   ├── schedule
+│   │   │   └── schedule_response.dart
+│   │   └── time
+│   │       └── time_utils.dart
+│   └── views
+│       ├── src
+│       │   ├── group
+│       │   │   ├── create
+│       │   │   │   ├── group_create_controller.dart
+│       │   │   │   ├── group_create_page.dart
+│       │   │   │   └── parts
+│       │   │   │       ├── admin
+│       │   │   │       │   └── group_admin.dart
+│       │   │   │       ├── components
+│       │   │   │       │   ├── group_contents.dart
+│       │   │   │       │   ├── group_contents_controller.dart
+│       │   │   │       │   └── set_member_controller.dart
+│       │   │   │       └── membership
+│       │   │   │           └── group_member.dart
+│       │   │   └── setting
+│       │   │       ├── group_setting_controller.dart
+│       │   │       ├── group_setting_page.dart
+│       │   │       └── parts
+│       │   │           ├── delete_schedulee_controller.dart
+│       │   │           ├── group_member_image.dart
+│       │   │           ├── schedule_card.dart
+│       │   │           └── schedule_card_controller.dart
+│       │   ├── home
+│       │   │   ├── home_page.dart
 │       │   │   └── parts
-│       │   │       ├── admin
-│       │   │       │   └── group_admin.dart
-│       │   │       ├── components
-│       │   │       │   ├── group_contents.dart
-│       │   │       │   └── group_contents_controller.dart
-│       │   │       ├── membership
-│       │   │       │   ├── group_member.dart
-│       │   │       │   └── group_member_controller.dart
-│       │   │       └── progress_indicator
-│       │   │           └── group_create_progress_indicator.dart
-│       │   └── setting
-│       │       ├── group_setting_controller.dart
-│       │       ├── group_setting_page.dart
-│       │       └── parts
-│       │           ├── group_member_image.dart
-│       │           ├── schedule_card.dart
-│       │           └── schedule_card_controller.dart
-│       ├── home
-│       │   ├── home_controller.dart
-│       │   ├── home_page.dart
-│       │   └── parts
-│       │       ├── attendance
-│       │       │   ├── join_time.dart
-│       │       │   ├── join_time_picker.dart
-│       │       │   ├── schedule_box.dart
-│       │       │   ├── schedule_box_controller.dart
-│       │       │   ├── schedule_response.dart
-│       │       │   ├── user_schedule_controller.dart
-│       │       │   └── user_schedules.dart
-│       │       └── group
-│       │           ├── controller
-│       │           │   ├── group_box_controller.dart
-│       │           │   └── joined_group_controller.dart
-│       │           ├── group_box.dart
-│       │           └── joined_groups.dart
-│       ├── login
-│       │   ├── login_controller.dart
-│       │   ├── login_page.dart
-│       │   └── parts
-│       │       └── progress_indicator.dart
-│       ├── popup
-│       │   ├── behind_and_early_setting
-│       │   │   ├── behind_and_early_setting.dart
-│       │   │   └── behind_and_early_setting_controller.dart
-│       │   ├── group_filtering
-│       │   │   ├── group_filtering_controller.dart
-│       │   │   ├── group_filtering_popup.dart
-│       │   │   └── part
-│       │   │       └── group_serect_button.dart
-│       │   ├── member_add
-│       │   │   ├── member_add.dart
-│       │   │   └── member_add_controller.dart
-│       │   ├── schedule_create
-│       │   │   ├── parts
-│       │   │   │   ├── activity_time.dart
-│       │   │   │   ├── group_picker
-│       │   │   │   │   ├── button.dart
-│       │   │   │   │   └── modal.dart
-│       │   │   │   └── time_picker.dart
-│       │   │   ├── schedule_create.dart
-│       │   │   └── schedule_create_controller.dart
-│       │   ├── schedule_detail_confirm
-│       │   │   ├── parts
-│       │   │   │   ├── reaponsed_member_controller.dart
-│       │   │   │   └── responsed_member.dart
-│       │   │   ├── schedule_detail_confirm.dart
-│       │   │   └── schedule_detail_confirm_controller.dart
-│       │   ├── schedule_join_member
-│       │   │   ├── parts
-│       │   │   │   └── join_member.dart
-│       │   │   ├── schedule_join_member.dart
-│       │   │   └── schedule_join_member_controller.dart
-│       │   └── schedule_setting
-│       │       ├── change_activity_time.dart
-│       │       ├── change_activity_time_picker.dart
-│       │       ├── schedule_change.dart
-│       │       └── schedule_change_controller.dart
-│       ├── signup
-│       │   ├── parts
-│       │   │   └── progress_indicator.dart
-│       │   ├── signup_controller.dart
-│       │   └── signup_page.dart
-│       └── start
-│           ├── start_controller.dart
-│           └── start_page.dart
-├── storage
-│   └── storage.dart
+│       │   │       ├── attendance
+│       │   │       │   ├── parts
+│       │   │       │   │   └── schedule_card.dart
+│       │   │       │   └── schedule_list_viewer.dart
+│       │   │       └── group
+│       │   │           ├── joined_group_list.dart
+│       │   │           └── part
+│       │   │               └── group_box.dart
+│       │   ├── login
+│       │   │   └── login_page.dart
+│       │   ├── popup
+│       │   │   ├── behind_and_early_setting
+│       │   │   │   ├── behind_and_early_setting.dart
+│       │   │   │   └── parts
+│       │   │   │       ├── join_time.dart
+│       │   │   │       └── picker
+│       │   │   │           ├── join_end_end_picker.dart
+│       │   │   │           └── join_start_picker.dart
+│       │   │   ├── group_filtering
+│       │   │   │   ├── group_filtering_controller.dart
+│       │   │   │   ├── group_filtering_popup.dart
+│       │   │   │   └── part
+│       │   │   │       └── group_serect_button.dart
+│       │   │   ├── member_add
+│       │   │   │   ├── member_add.dart
+│       │   │   │   └── member_add_controller.dart
+│       │   │   ├── schedule_create
+│       │   │   │   ├── parts
+│       │   │   │   │   ├── activity_time.dart
+│       │   │   │   │   ├── group_picker
+│       │   │   │   │   │   ├── button.dart
+│       │   │   │   │   │   ├── modal.dart
+│       │   │   │   │   │   └── modal_controller.dart
+│       │   │   │   │   └── time_picker.dart
+│       │   │   │   ├── schedule_create.dart
+│       │   │   │   └── schedule_create_controller.dart
+│       │   │   ├── schedule_detail_confirm
+│       │   │   │   ├── parts
+│       │   │   │   │   ├── reaponsed_member_controller.dart
+│       │   │   │   │   └── responsed_member.dart
+│       │   │   │   └── schedule_detail_confirm.dart
+│       │   │   ├── schedule_join_member
+│       │   │   │   ├── parts
+│       │   │   │   │   └── join_member.dart
+│       │   │   │   ├── schedule_join_member.dart
+│       │   │   │   └── schedule_join_member_controller.dart
+│       │   │   └── schedule_setting
+│       │   │       ├── change_activity_time.dart
+│       │   │       ├── change_activity_time_picker.dart
+│       │   │       ├── schedule_change.dart
+│       │   │       └── schedule_change_controller.dart
+│       │   ├── signup
+│       │   │   └── signup_page.dart
+│       │   ├── start
+│       │   │   └── start_page.dart
+│       │   └── user
+│       │       ├── account_id
+│       │       │   └── account_id_setting.dart
+│       │       ├── email
+│       │       │   └── email_setting.dart
+│       │       ├── parts
+│       │       │   └── joined_group.dart
+│       │       ├── password
+│       │       │   └── password_setting.dart
+│       │       └── user_setting_page.dart
+│       └── widgets
+│           ├── progress
+│           │   └── progress_indicator.dart
+│           └── slide
+│               ├── slide_segmented_tab_control.dart
+│               ├── src
+│               │   ├── slide_tab.dart
+│               │   ├── slide_tab_bar.dart
+│               │   ├── slide_tab_controller.dart
+│               │   ├── tab_component.dart
+│               │   └── utils
+│               │       ├── clippers.dart
+│               │       └── range.dart
+│               └── tabs
+│                   ├── attendance_tab.dart
+│                   ├── group_create_tab.dart
+│                   └── user_setting_tab.dart
 ├── test
 │   ├── test.dart
 │   └── test.py
 └── validation
+    ├── email_validation.dart
+    ├── max_length_validation.dart
+    ├── min_length_validation.dart
+    ├── required_validation.dart
     └── validation.dart
 
-67 directories, 106 files
+82 directories, 116 files
 ```
