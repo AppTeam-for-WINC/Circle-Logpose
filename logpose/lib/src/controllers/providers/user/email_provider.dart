@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../services/auth/auth_controller.dart';
-import '../../src/user/validation/email_validation.dart';
+import '../../validation/email_validation.dart';
 
 final userEmailProvider =
     StateNotifierProvider.autoDispose<_UserEmail, String?>(
@@ -28,13 +28,15 @@ class _UserEmail extends StateNotifier<String?> {
 
   Future<bool> changeEmail(String newEmail) async {
     final validation = UserEmailValidation.validation(newEmail);
-    if (!validation) {
+    if (validation != null) {
       return false;
     }
+
     final emailVerification = await AuthController.sendConfirmationEmail();
     if (!emailVerification) {
       return false;
     }
+    
     final success = await AuthController.updateUserEmail(userEmail!, newEmail);
     if (!success) {
       return false;

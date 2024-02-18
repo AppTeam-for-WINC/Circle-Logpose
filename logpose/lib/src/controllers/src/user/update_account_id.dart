@@ -1,5 +1,5 @@
 import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/user_controller.dart';
+import '../../../services/database/crud/user_controller.dart';
 
 import 'validation/account_id_validation.dart';
 

@@ -2,24 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../popup/schedule_create/schedule_create.dart';
-import 'schedule_box.dart';
-import 'user_schedule_controller.dart';
+import '../../../../../controllers/providers/group/check_joined_group_exist_provider.dart';
+import '../../../../../controllers/providers/utils/group_profile_schedule_id_provider.dart';
 
-class ScheduleManagement extends ConsumerStatefulWidget {
-  const ScheduleManagement({super.key});
+import '../../../popup/schedule_create/schedule_create.dart';
+import 'parts/schedule_card.dart';
+
+class ScheduleListViewer extends ConsumerStatefulWidget {
+  const ScheduleListViewer({super.key});
   @override
-  ConsumerState createState() => _ScheduleManagementState();
+  ConsumerState createState() => _ScheduleListViewerState();
 }
 
-class _ScheduleManagementState extends ConsumerState<ScheduleManagement> {
+class _ScheduleListViewerState extends ConsumerState<ScheduleListViewer> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    final groupExist = ref.watch(checkGroupExistProvider);
-    final asyncGroupsDataList = ref.watch(watchUserScheduleProvider);
+    final groupExist = ref.watch(checkJoinedGroupExistProvider);
+    final asyncGroupsDataList =
+        ref.watch(watchGroupProfileWithScheduleWithIdProvider);
+
     return Container(
       width: double.infinity,
       height: double.infinity,

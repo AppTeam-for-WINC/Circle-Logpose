@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../database/user_controller.dart';
+import '../database/crud/user_controller.dart';
 // import 'package:cloud_functions/cloud_functions.dart';
 
 ///How to manage email.

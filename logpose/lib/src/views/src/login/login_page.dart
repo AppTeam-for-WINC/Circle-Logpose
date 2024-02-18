@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
+
+import '../../../controllers/src/login/login_controller.dart';
 import '../../widgets/progress/progress_indicator.dart';
+
 import '../start/start_page.dart';
-import 'login_controller.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
@@ -29,6 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(loadingProgressProvider);
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
+
     return CupertinoPageScaffold(
       backgroundColor: Colors.black,
       navigationBar: CupertinoNavigationBar(
@@ -92,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ],
                       ),
                     ),
-                
+
                     // Error message.
                     if (loadingErrorMessage != null)
                       Text(
@@ -102,7 +105,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           fontSize: 20,
                         ),
                       ),
-                
+
                     Container(
                       width: 346,
                       margin: const EdgeInsets.all(13.5),
@@ -207,16 +210,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: isLoading
                             ? null
                             : () async {
-                                final errorMessage = await loginController(
+                                final errorMessage =
+                                    await LoginController.login(
                                   context,
                                   ref,
                                   emailController,
                                   passwordController,
                                 );
-                
+
                                 if (errorMessage != null) {
-                                  LoadingProgressController
-                                      .loadingErrorMessage(
+                                  LoadingProgressController.loadingErrorMessage(
                                     ref,
                                     errorMessage,
                                   );

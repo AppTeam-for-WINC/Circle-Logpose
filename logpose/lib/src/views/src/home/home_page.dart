@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/slide/src/slide_tab.dart';
 import '../../widgets/slide/src/slide_tab_bar.dart';
-import 'parts/attendance/user_schedules.dart';
-import 'parts/group/joined_groups.dart';
+
+import 'parts/attendance/schedule_list_viewer.dart';
+import 'parts/group/joined_group_list.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -28,7 +29,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               padding: EdgeInsets.zero,
               child: TabBarView(
                 children: [
-                  ScheduleManagement(),
+                  ScheduleListViewer(),
                   JoinedGroupPage(),
                 ],
               ),

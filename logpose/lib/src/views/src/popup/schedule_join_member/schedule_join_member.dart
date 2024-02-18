@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../../utils/time/time_utils.dart';
-import '../../../../models/group/group.dart';
-import '../../../../models/group/group_schedule.dart';
+import '../../../../models/group/database/group.dart';
+import '../../../../models/group/database/group_schedule.dart';
 import '../../../../models/user/user.dart';
 import 'parts/join_member.dart';
 

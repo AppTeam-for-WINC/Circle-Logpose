@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/color_palette.dart';
-import '../../home/parts/group/controller/joined_group_controller.dart';
+
+import '../../../../controllers/providers/group/group_profile_provider.dart';
+
 import '../schedule_create/parts/group_picker/button.dart';
 import '../schedule_create/schedule_create_controller.dart';
 import 'change_activity_time.dart';
@@ -32,7 +34,7 @@ class _ScheduleChangeState extends ConsumerState<ScheduleChange> {
     final schedule = ref.watch(changeGroupScheduleProvider(groupScheduleId));
     final scheduleNotifier =
         ref.watch(changeGroupScheduleProvider(groupScheduleId).notifier);
-    final asyncGroupsIdList = ref.watch(readJoinedGroupsProfileProvider);
+    final asyncGroupsIdList = ref.watch(watchJoinedGroupsProfileProvider);
 
     return Center(
       child: ClipRRect(

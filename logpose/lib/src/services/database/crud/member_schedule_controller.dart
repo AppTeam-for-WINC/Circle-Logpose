@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../utils/time/time_utils.dart';
-import '../../models/group/member_schedule.dart';
+import '../../../utils/time/time_utils.dart';
+import '../../../models/group/database/member_schedule.dart';
 
 class GroupMemberScheduleController {
   GroupMemberScheduleController._internal();

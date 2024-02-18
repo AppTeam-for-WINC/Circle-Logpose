@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../../utils/time/time_utils.dart';
-import '../../../../models/group/group.dart';
-import '../../../../models/group/group_schedule.dart';
+import '../../../../models/group/database/group.dart';
+import '../../../../models/group/database/group_schedule.dart';
 import 'parts/responsed_member.dart';
 
 class ScheduleDetailConfirm extends ConsumerStatefulWidget {

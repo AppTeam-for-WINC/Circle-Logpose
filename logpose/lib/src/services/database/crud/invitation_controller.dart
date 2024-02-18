@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../utils/time/time_utils.dart';
-import '../../models/group/invitation.dart';
+import '../../../utils/time/time_utils.dart';
+import '../../../models/group/database/invitation.dart';
 
 class GroupInvitationController {
   GroupInvitationController._internal();

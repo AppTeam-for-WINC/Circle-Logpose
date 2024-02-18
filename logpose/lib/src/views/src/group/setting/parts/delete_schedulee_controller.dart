@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../../../services/database/member_schedule_controller.dart';
-import '../../../../../services/database/group_schedule_controller.dart';
+import '../../../../../services/database/crud/member_schedule_controller.dart';
+import '../../../../../services/database/crud/group_schedule_controller.dart';
 import '../../../../../models/user/user.dart';
-import '../../../../../services/database/user_controller.dart';
+import '../../../../../services/database/crud/user_controller.dart';
 
 // Delete GroupSchedule, GroupMemberSchedule.
 class DeleteSchedule {

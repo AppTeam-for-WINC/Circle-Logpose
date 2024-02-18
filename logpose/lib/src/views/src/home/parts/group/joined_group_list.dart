@@ -2,18 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../controllers/providers/group/group_profile_provider.dart';
+
 import '../../../group/create/group_create_page.dart';
-import 'controller/joined_group_controller.dart';
-import 'group_box.dart';
+import 'part/group_box.dart';
 
 class JoinedGroupPage extends ConsumerWidget {
   const JoinedGroupPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
+    final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
+    
     return Container(
       width: double.infinity,
       height: double.infinity,

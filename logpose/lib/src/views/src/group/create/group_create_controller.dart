@@ -10,9 +10,9 @@ import '../../../../models/user/user.dart';
 
 import '../../../../services/auth/auth_controller.dart';
 
-import '../../../../services/database/group_controller.dart';
-import '../../../../services/database/group_membership_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../services/database/crud/group_controller.dart';
+import '../../../../services/database/crud/group_membership_controller.dart';
+import '../../../../services/database/crud/user_controller.dart';
 
 import 'parts/components/set_member_controller.dart';
 

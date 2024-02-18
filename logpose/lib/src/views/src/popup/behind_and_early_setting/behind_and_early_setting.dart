@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../models/group/group_profile_with_schedule_with_id_model.dart';
+
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../../utils/time/time_utils.dart';
-import '../../home/parts/attendance/join_time.dart';
-import '../../home/parts/attendance/user_schedule_controller.dart';
+
+import 'parts/join_time.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
@@ -28,8 +30,10 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   Widget build(BuildContext context) {
     final groupData = widget.groupProfileWithScheduleWithId;
     final groupSchedule = widget.groupProfileWithScheduleWithId.groupSchedule;
+
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(34),

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../widgets/slide/src/slide_tab.dart';
 import '../../../widgets/slide/src/slide_tab_bar.dart';
-import '../../home/parts/group/joined_groups.dart';
+import '../../home/parts/group/joined_group_list.dart';
 import 'parts/components/group_contents.dart';
 
 class GroupCreatePage extends ConsumerWidget {
