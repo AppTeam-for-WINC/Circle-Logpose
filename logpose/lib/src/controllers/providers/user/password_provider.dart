@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../services/auth/auth_controller.dart';
 
-import '../../src/user/validation/password_validation.dart';
+import '../../validation/password_validation.dart';
 
 final passwordErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);

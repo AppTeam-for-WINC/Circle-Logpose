@@ -3,23 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../home/parts/group/controller/joined_group_controller.dart';
+import '../../../../controllers/providers/utils/group_with_id_provider.dart';
 
 class JoinedGroupComponent extends ConsumerStatefulWidget {
   const JoinedGroupComponent({
     super.key,
     required this.groupId,
   });
+  
   final String groupId;
   @override
-  ConsumerState createState() => JoinedGroupComponentState();
+  ConsumerState createState() => _JoinedGroupComponentState();
 }
 
-class JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
+class _JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
   @override
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
-    final groupProfile = ref.watch(readGroupWithIdProvider(groupId));
+    final groupProfile = ref.watch(watchGroupWithIdProvider(groupId));
 
     return groupProfile.when(
       data: (data) {

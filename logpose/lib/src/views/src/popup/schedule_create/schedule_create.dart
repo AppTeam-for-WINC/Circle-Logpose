@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/color_palette.dart';
-import '../../home/parts/group/controller/joined_group_controller.dart';
+
+import '../../../../controllers/providers/group/group_profile_provider.dart';
+
 import 'parts/activity_time.dart';
 import 'parts/group_picker/button.dart';
 import 'schedule_create_controller.dart';
@@ -24,7 +26,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final schedule = ref.watch(createGroupScheduleProvider);
     final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
-    final groupsProfile = ref.watch(readJoinedGroupsProfileProvider);
+    final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
 
     return Center(
       child: ClipRRect(

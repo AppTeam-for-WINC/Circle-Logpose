@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
+import '../../../controllers/src/signup/signup_controller.dart';
+
 import '../../widgets/progress/progress_indicator.dart';
+
 import '../start/start_page.dart';
-import 'signup_controller.dart';
 
 class SignupPage extends ConsumerWidget {
   const SignupPage({super.key});
@@ -204,7 +206,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         onPressed: isLoading
                             ? null
                             : () async {
-                                final errorMessage = await signupController(
+                                final errorMessage =
+                                    await SignupController.signup(
                                   context,
                                   ref,
                                   emailController,
