@@ -6,21 +6,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
-import '../../../controllers/providers/group/group_profile_provider.dart';
+import '../../../controllers/providers/group/group/group_profile_provider.dart';
 import '../../../controllers/providers/user/user_profile_provider.dart';
 import '../../../controllers/src/user/user_profile/update_user_profile.dart';
 
 import '../../../entities/device/image_controller.dart';
-
 import '../../../services/auth/auth_controller.dart';
-
 // import '../../common/progress/progress_indicator.dart';
 
 import '../home/home_page.dart';
 import '../start/start_page.dart';
 import 'account_id/account_id_setting.dart';
+import 'components/joined_group.dart';
 import 'email/email_setting.dart';
-import 'parts/joined_group.dart';
 import 'password/password_setting.dart';
 
 class AccountSettingPage extends ConsumerStatefulWidget {
@@ -58,7 +56,6 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
 
     final isLoading = ref.watch(loadingProgressProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
-
     final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
     final userProfile = ref.watch(setUserProfileDataProvider);
     final userProfileNotifier = ref.watch(setUserProfileDataProvider.notifier);
@@ -505,40 +502,36 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: deviceWidth * 0.86,
-                            maxHeight: deviceHeight * 0.19,
+                        child: Container(
+                          width: deviceWidth * 0.86,
+                          height: deviceHeight * 0.19,
+                          padding: const EdgeInsets.only(
+                            top: 5,
+                            right: 5,
+                            left: 5,
+                            bottom: 5,
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              top: 5,
-                              right: 5,
-                              left: 5,
-                              bottom: 5,
-                            ),
-                            child: GridView.count(
-                              padding: EdgeInsets.zero,
-                              primary: false,
-                              shrinkWrap: true,
-                              crossAxisCount: 2,
-                              childAspectRatio: 3,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 20,
-                              children: groupsProfile.when(
-                                data: (groupProfile) {
-                                  if (groupProfile.isEmpty) {
-                                    return const [SizedBox.shrink()];
-                                  }
-                                  return groupProfile.map((groupId) {
-                                    return JoinedGroupComponent(
-                                      groupId: groupId,
-                                    );
-                                  }).toList();
-                                },
-                                loading: () => const [SizedBox.shrink()],
-                                error: (error, stack) => [Text('$error')],
-                              ),
+                          child: GridView.count(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            crossAxisCount: 2,
+                            childAspectRatio: 3,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            children: groupsProfile.when(
+                              data: (groupProfile) {
+                                if (groupProfile.isEmpty) {
+                                  return const [SizedBox.shrink()];
+                                }
+                                return groupProfile.map((groupId) {
+                                  return JoinedGroupComponent(
+                                    groupId: groupId,
+                                  );
+                                }).toList();
+                              },
+                              loading: () => const [SizedBox.shrink()],
+                              error: (error, stack) => [Text('$error')],
                             ),
                           ),
                         ),

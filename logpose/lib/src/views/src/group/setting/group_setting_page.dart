@@ -6,17 +6,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/common/loading/loading_progress.dart';
+import '../../../../controllers/providers/group/admin/group_admin_profile_list_provider.dart';
+import '../../../../controllers/providers/group/group/group_setting_provider.dart';
+import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';
+import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
+import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
+import '../../../../controllers/providers/group/msg/group_name_error_msg_provider.dart';
+import '../../../../controllers/providers/group/name/group_name_provider.dart';
+import '../../../../controllers/providers/group/schedule/group_schedule_and_id_provider.dart';
+import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../controllers/src/group/update/update_group_settings.dart';
+
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';
+
 import '../../home/home_page.dart';
-import '../../popup/member_add/member_add.dart';
+import '../../popup/add_member/add_member.dart';
 import '../../popup/schedule_create/schedule_create.dart';
-import '../../popup/schedule_create/schedule_create_controller.dart';
-import '../create/parts/components/group_contents_controller.dart';
-import '../create/parts/components/set_member_controller.dart';
-import 'group_setting_controller.dart';
-import 'parts/group_member_image.dart';
-import 'parts/schedule_card.dart';
+import 'components/group_member_image.dart';
+import 'components/schedule_component.dart';
 
 class GroupSettingPage extends ConsumerStatefulWidget {
   const GroupSettingPage({
@@ -53,25 +61,22 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    final groupId = widget.groupId;
+
     final isLoading = ref.watch(loadingProgressProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
-
     final groupNameErrorMessage = ref.watch(groupNameErrorMessageProvider);
-
-    final groupId = widget.groupId;
     final groupAdminProfileList =
-        ref.watch(groupAdminProfileListProvider(groupId));
+        ref.watch(watchGroupAdminProfileListProvider(groupId));
     final groupMembershipProfileList =
-        ref.watch(groupMembershipProfileListProvider(groupId));
-
+        ref.watch(watchGroupMembershipProfileListProvider(groupId));
     final groupProfile = ref.watch(groupSettingProvider(groupId));
     final groupProfileNotifier =
         ref.watch(groupSettingProvider(groupId).notifier);
-
     final asyncGroupScheduleList =
         ref.watch(watchGroupScheduleAndIdProvider(groupId));
     final groupScheduleNotifier =
-        ref.watch(createGroupScheduleProvider.notifier);
+        ref.watch(groupScheduleProvider.notifier);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
@@ -237,7 +242,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                               }
                               if (image != null) {
                                 await groupProfileNotifier
-                                    .changeProfile(image!);
+                                    .changeImage(image!);
                               }
                             },
                             child: const SizedBox(
@@ -495,7 +500,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                         }
                                         return groupAdminProfileList.when(
                                           data: (membershipProfiles) {
-                                            return ScheduleCard(
+                                            return ScheduleComponent(
                                               groupId: groupId,
                                               schedule: groupScheduleData,
                                               groupName: groupProfileNotifier
