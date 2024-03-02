@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 //Riverpodをインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'routes/app.dart';
 import 'firebase_options.dart';
+import 'routes/app.dart';
 
 // import 'test/test.dart';
 

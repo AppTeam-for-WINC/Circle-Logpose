@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../utils/color/color_exchanger.dart';
-import '../../../../utils/time/time_utils.dart';
 import '../../../../models/group/database/group.dart';
 import '../../../../models/group/database/group_schedule.dart';
 import '../../../../models/user/user.dart';
-import 'parts/join_member.dart';
+
+import '../../../../utils/color/color_exchanger.dart';
+import '../../../../utils/time/time_utils.dart';
+
+import 'components/join_member.dart';
 
 class ScheduleJoinMember extends ConsumerStatefulWidget {
   const ScheduleJoinMember({
@@ -147,22 +149,33 @@ class ScheduleJoinMemberState extends ConsumerState<ScheduleJoinMember> {
                           ],
                         ),
                       ),
-                      GridView.count(
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 5.5,
-                        crossAxisCount: 1,
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(top: 10),
-                        children: [
-                          ...memberProfiles
-                              .whereType<UserProfile>()
-                              .map((userProfile) {
-                            return JoinMember(
-                              scheduleId: scheduleId,
-                              userProfile: userProfile,
-                            );
-                          }),
-                        ],
+                      SingleChildScrollView(
+                        child: Container(
+                          width: deviceWidth * 0.7,
+                          height: deviceHeight * 0.2,
+                          padding: const EdgeInsets.only(
+                            right: 5,
+                            left: 5,
+                            bottom: 5,
+                          ),
+                          child: GridView.count(
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 5.5,
+                            crossAxisCount: 1,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(top: 10),
+                            children: [
+                              ...memberProfiles
+                                  .whereType<UserProfile>()
+                                  .map((userProfile) {
+                                return JoinMember(
+                                  scheduleId: scheduleId,
+                                  userProfile: userProfile,
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
