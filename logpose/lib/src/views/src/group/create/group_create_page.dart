@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../widgets/slide/src/slide_tab.dart';
 import '../../../widgets/slide/src/slide_tab_bar.dart';
-import '../../home/parts/group/joined_group_list.dart';
-import 'parts/components/group_contents.dart';
+
+import '../../home/components/group/joined_group_list.dart';
+import 'components/components/group_contents.dart';
 
 class GroupCreatePage extends ConsumerWidget {
   const GroupCreatePage({super.key});
@@ -13,6 +14,7 @@ class GroupCreatePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: DefaultTabController(
         length: 2,

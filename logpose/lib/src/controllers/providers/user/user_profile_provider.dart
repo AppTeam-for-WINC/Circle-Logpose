@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/user/user.dart';
 
 import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/crud/user_controller.dart';
+import '../../../services/database/user_controller.dart';
 
 /// Set user profile.
 final setUserProfileDataProvider =

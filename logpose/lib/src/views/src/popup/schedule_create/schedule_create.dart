@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/color_palette.dart';
 
-import '../../../../controllers/providers/group/group_profile_provider.dart';
+import '../../../../controllers/providers/group/group/group_profile_provider.dart';
+import '../../../../controllers/providers/group/msg/schedule_error_msg_provider.dart';
+import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../controllers/src/group/create/create_group_schedule.dart';
 
-import 'parts/activity_time.dart';
-import 'parts/group_picker/button.dart';
-import 'schedule_create_controller.dart';
+import 'components/group_picker/group_picker_button.dart';
+import 'components/schedule_activity_time.dart';
 
 class ScheduleCreate extends ConsumerStatefulWidget {
   const ScheduleCreate({super.key});
@@ -24,8 +26,8 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
-    final schedule = ref.watch(createGroupScheduleProvider);
-    final scheduleNotifier = ref.watch(createGroupScheduleProvider.notifier);
+    final schedule = ref.watch(groupScheduleProvider);
+    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
     final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
 
     return Center(
@@ -258,7 +260,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       }
 
                       final errorMessage =
-                          await CreateGroupSchedule.createSchedule(
+                          await CreateGroupSchedule.create(
                         schedule.groupId!,
                         schedule.titleController.text,
                         schedule.color,

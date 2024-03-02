@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/group/group_profile_with_schedule_with_id_model.dart';
+import '../../../../models/group/group_profile_and_schedule_and_id_model.dart';
 
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../../utils/time/time_utils.dart';
 
-import 'parts/join_time.dart';
+import 'components/join_time.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
     super.key,
-    required this.groupProfileWithScheduleWithId,
+    required this.groupProfileAndScheduleAndId,
     required this.responseIcon,
     required this.responseText,
   });
 
-  final GroupProfileWithScheduleWithId groupProfileWithScheduleWithId;
+  final GroupProfileAndScheduleAndId groupProfileAndScheduleAndId;
   final Icon responseIcon;
   final Text responseText;
   @override
@@ -28,9 +28,8 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
 class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
   @override
   Widget build(BuildContext context) {
-    final groupData = widget.groupProfileWithScheduleWithId;
-    final groupSchedule = widget.groupProfileWithScheduleWithId.groupSchedule;
-
+    final groupData = widget.groupProfileAndScheduleAndId;
+    final groupSchedule = widget.groupProfileAndScheduleAndId.groupSchedule;
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
 
@@ -141,7 +140,7 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: ScheduleJoinTime(
-                        groupProfileWithScheduleWithId: groupData,
+                        groupProfileAndScheduleAndId: groupData,
                       ),
                     ),
                   ],

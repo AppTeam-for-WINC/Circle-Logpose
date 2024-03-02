@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../widgets/slide/src/slide_tab.dart';
 import '../../widgets/slide/src/slide_tab_bar.dart';
 
-import 'parts/attendance/schedule_list_viewer.dart';
-import 'parts/group/joined_group_list.dart';
+import 'components/attendance/schedule_list_viewer.dart';
+import 'components/group/joined_group_list.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
