@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../services/auth/auth_controller.dart';
-import '../../../../services/database/crud/user_controller.dart';
+import '../../../../services/database/user_controller.dart';
 
-import '../validation/user_validation.dart';
+import '../../../validation/user/user_validation.dart';
 
 // 今回は、シングルトンパターンだが、Providerで管理した方が便利である。
 class UpdateUserProfile {
