@@ -9,7 +9,7 @@ final watchJoinedGroupExistProvider = StreamProvider<bool>((ref) async* {
     throw Exception('User not logged in.');
   }
   final groupIsExistStream =
-      GroupMembershipController.readAllWithUserId(userDocId);
+      GroupMembershipController.watchAllWithUserId(userDocId);
 
   await for (final groupIsExist in groupIsExistStream) {
     yield groupIsExist.isNotEmpty;

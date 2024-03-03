@@ -11,7 +11,7 @@ final watchJoinedGroupsProfileProvider = StreamProvider<List<String>>(
     }
 
     final membershipsStream =
-        GroupMembershipController.readAllWithUserId(userDocId);
+        GroupMembershipController.watchAllWithUserId(userDocId);
 
     await for (final memberships in membershipsStream) {
       yield memberships.map((e) => e?.groupId).whereType<String>().toList();

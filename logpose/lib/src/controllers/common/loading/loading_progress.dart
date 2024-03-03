@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loadingProgressProvider = StateProvider.autoDispose<bool>((ref) => false);
+
 final loadingErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 

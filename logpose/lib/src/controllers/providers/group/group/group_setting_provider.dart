@@ -27,7 +27,7 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
       return;
     }
     try {
-      final groupStream = GroupController.read(groupId);
+      final groupStream = GroupController.watch(groupId);
       await for (final groupData in groupStream) {
         if (groupData == null) {
           continue;

@@ -134,7 +134,7 @@ class GroupMembershipController {
     }
   }
 
-  static Stream<List<GroupMembership?>> readAllWithUserId(
+  static Stream<List<GroupMembership?>> watchAllWithUserId(
     String userDocId,
   ) async* {
     final groupMembershipsStream = db

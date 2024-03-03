@@ -12,7 +12,7 @@ import '../../../services/database/group_schedule_controller.dart';
 // このコードでは、BLoCパターンの構造をしたRxDartを使用している。以下リンクは参考サイトである。
 // https://qiita.com/tetsufe/items/521014ddc59f8d1df581
 
-final watchGroupProfileAndScheduleAndIdProvider =
+final watchGroupAndScheduleAndIdProvider =
     StreamProvider<List<GroupProfileAndScheduleAndId>>((ref) async* {
   final userDocId = await AuthController.getCurrentUserId();
   if (userDocId == null) {
@@ -20,7 +20,7 @@ final watchGroupProfileAndScheduleAndIdProvider =
   }
 
   final groupMembershipsStream =
-      GroupMembershipController.readAllWithUserId(userDocId);
+      GroupMembershipController.watchAllWithUserId(userDocId);
 
   await for (final groupMembershipList in groupMembershipsStream) {
     final scheduleIdListStreamList =

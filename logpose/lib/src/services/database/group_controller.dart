@@ -64,7 +64,7 @@ class GroupController {
   }
 
   /// Get the group database.
-  static Stream<GroupProfile?> read(String docId) {
+  static Stream<GroupProfile?> watch(String docId) {
     return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
       if (!snapshot.exists) {
         throw Exception('Error : No found document data.');

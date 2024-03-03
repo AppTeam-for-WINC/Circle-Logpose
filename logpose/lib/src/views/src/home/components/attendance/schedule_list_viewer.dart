@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../controllers/providers/group/group/watch_joined_group_exist_provider.dart';
-import '../../../../../controllers/providers/utils/group_profile_schedule_id_provider.dart';
+import '../../../../../controllers/providers/utils/group_and_schedule_id_provider.dart';
 
 import '../../../popup/schedule_create/schedule_create.dart';
 import 'components/schedule_card.dart';
@@ -22,7 +22,7 @@ class _ScheduleListViewerState extends ConsumerState<ScheduleListViewer> {
 
     final groupExist = ref.watch(watchJoinedGroupExistProvider);
     final asyncGroupsDataList =
-        ref.watch(watchGroupProfileAndScheduleAndIdProvider);
+        ref.watch(watchGroupAndScheduleAndIdProvider);
 
     return Container(
       width: double.infinity,
