@@ -27,22 +27,13 @@ class CreateGroupSchedule {
     DateTime endAt,
   ) async {
     try {
-      final titleValidationErrorMessage =
-          ScheduleValidation.titleValidation(title);
-      final placeValidationErrorMessage =
-          ScheduleValidation.placeValidation(place);
-      final detailValidationErrorMessage =
-          ScheduleValidation.detailValidation(detail);
-      if (titleValidationErrorMessage != null) {
-        return titleValidationErrorMessage;
-      }
-
-      if (placeValidationErrorMessage != null) {
-        return placeValidationErrorMessage;
-      }
-
-      if (detailValidationErrorMessage != null) {
-        return detailValidationErrorMessage;
+      final validateErrorMessage = _validate(
+        title: title,
+        place: place,
+        detail: detail,
+      );
+      if (validateErrorMessage != null) {
+        return validateErrorMessage;
       }
 
       final colorToString = colorToHex(color);
@@ -64,7 +55,7 @@ class CreateGroupSchedule {
 
       final userDocIds =
           await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
-
+          
       for (final userDocId in userDocIds) {
         await CreateMembersSchedule.create(
           scheduleId: scheduleId,
@@ -76,5 +67,31 @@ class CreateGroupSchedule {
     } on FirebaseException catch (e) {
       throw Exception('Error: $e');
     }
+  }
+
+  static String? _validate({
+    required String title,
+    required String place,
+    required String detail,
+  }) {
+    final titleValidationErrorMessage =
+        ScheduleValidation.titleValidation(title);
+    final placeValidationErrorMessage =
+        ScheduleValidation.placeValidation(place);
+    final detailValidationErrorMessage =
+        ScheduleValidation.detailValidation(detail);
+    if (titleValidationErrorMessage != null) {
+      return titleValidationErrorMessage;
+    }
+
+    if (placeValidationErrorMessage != null) {
+      return placeValidationErrorMessage;
+    }
+
+    if (detailValidationErrorMessage != null) {
+      return detailValidationErrorMessage;
+    }
+
+    return null;
   }
 }

@@ -63,7 +63,7 @@ class GroupMembershipController {
   }
 
   /// Watch all memgber's doc ID.
-  static Stream<List<String?>> watchAllUserDocIdWithGroupIdStream(
+  static Stream<List<String?>> watchAllUserDocIdWithGroupId(
     String groupId,
   ) async* {
     final groupMemberStream = db

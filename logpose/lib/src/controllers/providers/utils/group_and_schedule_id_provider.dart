@@ -30,7 +30,7 @@ final watchGroupAndScheduleAndIdProvider =
         continue;
       }
 
-      final groupProfile = await GroupController.readFuture(membership.groupId);
+      final groupProfile = await GroupController.read(membership.groupId);
       if (groupProfile == null) {
         continue;
       }

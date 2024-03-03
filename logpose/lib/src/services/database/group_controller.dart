@@ -75,7 +75,7 @@ class GroupController {
   }
 
   /// Get the group database.
-  static Future<GroupProfile?> readFuture(String docId) async {
+  static Future<GroupProfile?> read(String docId) async {
     final groupProfileSnapshot =
         await db.collection(collectionPath).doc(docId).get();
 

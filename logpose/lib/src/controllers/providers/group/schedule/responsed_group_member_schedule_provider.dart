@@ -14,7 +14,7 @@ final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
     return;
   }
   final userDocIdStream =
-      GroupMembershipController.watchAllUserDocIdWithGroupIdStream(groupId);
+      GroupMembershipController.watchAllUserDocIdWithGroupId(groupId);
   final currentUserDocId =
       await UserController.readUserDocIdWithAccountId(args.accountId);
   await for (final userDocIdList in userDocIdStream) {

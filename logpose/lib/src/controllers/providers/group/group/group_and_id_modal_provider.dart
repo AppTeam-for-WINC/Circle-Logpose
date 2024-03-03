@@ -8,7 +8,7 @@ final readGroupAndIdModalProvider =
   return Future.wait<GroupAndId?>(
     groupIdList.map(
       (groupId) async {
-        final groupProfile = await GroupController.readFuture(groupId);
+        final groupProfile = await GroupController.read(groupId);
         if (groupProfile == null) {
           return null;
         }
