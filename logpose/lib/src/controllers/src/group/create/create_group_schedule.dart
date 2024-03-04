@@ -35,14 +35,12 @@ class CreateGroupSchedule {
       if (validateErrorMessage != null) {
         return validateErrorMessage;
       }
-
-      final colorToString = colorToHex(color);
-
       if (!checkStartAtAfterEndAt(startAt, endAt)) {
         const errorMessage = 'Start time must be set before end time';
         return errorMessage;
       }
 
+      final colorToString = colorToHex(color);
       final scheduleId = await GroupScheduleController.create(
         groupId: groupId,
         title: title,
@@ -55,7 +53,6 @@ class CreateGroupSchedule {
 
       final userDocIds =
           await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
-          
       for (final userDocId in userDocIds) {
         await CreateMembersSchedule.create(
           scheduleId: scheduleId,
