@@ -16,9 +16,10 @@ final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
 
   await for (final userIdList in userDocIdStream) {
     final userProfiles = await _readUserProfilesNotAbsentList(
-      scheduleId: scheduleId,
-      userIdList: userIdList,
+      scheduleId,
+      userIdList,
     );
+
     yield userProfiles;
   }
 });
@@ -28,44 +29,46 @@ Future<String> _readGroupIdWithScheduleId(String scheduleId) async {
   if (groupId == null) {
     throw Exception('Group ID is null');
   }
+
   return groupId;
 }
 
-Future<List<UserProfile>> _readUserProfilesNotAbsentList({
-  required String scheduleId,
-  required List<String?> userIdList,
-}) async {
+Future<List<UserProfile>> _readUserProfilesNotAbsentList(
+  String scheduleId,
+  List<String?> userIdList,
+) async {
   final future = userIdList.map((userId) {
     if (userId == null) {
       throw Exception('User ID is null');
     }
-    return  _readUserProfilesNotAbsent(scheduleId: scheduleId, userId: userId);
+    return _readUserProfilesNotAbsent(scheduleId, userId);
   });
   final profiles = await Future.wait(future);
+
   return profiles.whereType<UserProfile>().toList();
 }
 
-Future<UserProfile?> _readUserProfilesNotAbsent({
-  required String scheduleId,
-  required String userId,
-}) async {
+Future<UserProfile> _readUserProfilesNotAbsent(
+  String scheduleId,
+  String userId,
+) async {
   final responsedUserIdList = await _readUserIdList(
-    scheduleId: scheduleId,
-    userId: userId,
+    scheduleId,
+    userId,
   );
   for (final responsedUserId in responsedUserIdList) {
     if (responsedUserId != null) {
-      final userProfile =  await UserController.read(responsedUserId);
+      final userProfile = await UserController.read(responsedUserId);
       return userProfile;
     }
   }
-  return null;
+  throw Exception('User profile not found or is absent.');
 }
 
-Future<List<String?>> _readUserIdList({
-  required String scheduleId,
-  required String userId,
-}) async {
+Future<List<String?>> _readUserIdList(
+  String scheduleId,
+  String userId,
+) async {
   final responsedUserIdList =
       await GroupMemberScheduleController.readAllUserDocIdByTerm(
     scheduleId,
