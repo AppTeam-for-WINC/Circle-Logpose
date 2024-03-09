@@ -19,7 +19,6 @@ final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
       scheduleId,
       userIdList,
     );
-
     yield userProfiles;
   }
 });
@@ -29,7 +28,6 @@ Future<String> _readGroupIdWithScheduleId(String scheduleId) async {
   if (groupId == null) {
     throw Exception('Group ID is null');
   }
-
   return groupId;
 }
 
@@ -44,11 +42,10 @@ Future<List<UserProfile>> _readUserProfilesNotAbsentList(
     return _readUserProfilesNotAbsent(scheduleId, userId);
   });
   final profiles = await Future.wait(future);
-
   return profiles.whereType<UserProfile>().toList();
 }
 
-Future<UserProfile> _readUserProfilesNotAbsent(
+Future<UserProfile?> _readUserProfilesNotAbsent(
   String scheduleId,
   String userId,
 ) async {
@@ -62,7 +59,7 @@ Future<UserProfile> _readUserProfilesNotAbsent(
       return userProfile;
     }
   }
-  throw Exception('User profile not found or is absent.');
+  return null;
 }
 
 Future<List<String?>> _readUserIdList(
