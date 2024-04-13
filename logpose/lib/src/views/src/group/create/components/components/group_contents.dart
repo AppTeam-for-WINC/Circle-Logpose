@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../controllers/common/loading/loading_progress.dart';
-import '../../../../../../controllers/providers/group/admin/group_admin_profile_provider.dart';
+import '../../../../../../controllers/providers/user/user_profile_provider.dart';
 import '../../../../../../controllers/providers/group/group/set_group_name_and_member_data_provider.dart';
 import '../../../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../../../controllers/providers/group/model/group_member_delete_mode_provider.dart';
@@ -54,7 +54,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
     final isLoading = ref.watch(loadingProgressProvider);
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
-    final groupAdminMemberProfile = ref.watch(readGroupAdminProfileProvider);
+    final groupAdminMemberProfile = ref.watch(readUserProfileProvider);
     final setGroupNameAndMemberDataNotifier =
         ref.watch(setGroupNameAndMemberDataProvider.notifier);
 

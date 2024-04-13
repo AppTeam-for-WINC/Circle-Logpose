@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
 import '../../../controllers/providers/group/group/joined_group_profile_provider.dart';
-import '../../../controllers/providers/user/user_profile_provider.dart';
+import '../../../controllers/providers/user/set_user_profile_provider.dart';
 import '../../../controllers/src/user/user_profile/update_user_profile.dart';
 
 import '../../../entities/device/image_controller.dart';
