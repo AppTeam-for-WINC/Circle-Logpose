@@ -1,25 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/user/user.dart';
-import '../../../../services/database/group_membership_controller.dart';
 
-/// Group adin users controller.
+import '../role/group_role_profile_stream_provider.dart';
+
+/// Provides a stream of admin profiles for a specific group ID.
 final watchGroupAdminProfileListProvider =
-    StreamProvider.family<List<UserProfile?>, String>((ref, groupId) async* {
-  final memebershipProfilesStream =
-      GroupMembershipController.readAllRoleByProfileWithGroupId(
-    groupId,
-    'admin',
-  );
-
-  await for (final membershipProfileList in memebershipProfilesStream) {
-    final membershipProfileStream =
-        membershipProfileList.map((membershipProfile) {
-      if (membershipProfile == null) {
-        return null;
-      }
-      return membershipProfile;
-    }).toList();
-    yield membershipProfileStream;
-  }
+    StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
+  final stream =
+      ref.read(groupRoleProfileStreamProvider).watchAdminProfile(groupId);
+  return stream;
 });

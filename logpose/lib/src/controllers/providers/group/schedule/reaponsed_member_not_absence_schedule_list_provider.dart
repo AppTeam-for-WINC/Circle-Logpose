@@ -71,6 +71,5 @@ Future<List<String?>> _readUserIdList(
     scheduleId,
     userId,
   );
-
   return responsedUserIdList;
 }

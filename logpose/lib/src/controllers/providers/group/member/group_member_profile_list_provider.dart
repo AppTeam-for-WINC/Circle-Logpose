@@ -7,7 +7,7 @@ import '../../../../services/database/group_membership_controller.dart';
 final watchGroupMembershipProfileListProvider =
     StreamProvider.family<List<UserProfile?>, String>((ref, groupId) async* {
   final memebershipProfilesStream =
-      GroupMembershipController.readAllRoleByProfileWithGroupId(
+      GroupMembershipController.watchAllRoleByProfileWithGroupId(
     groupId,
     'membership',
   );

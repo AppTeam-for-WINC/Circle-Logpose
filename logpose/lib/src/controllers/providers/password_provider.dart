@@ -9,42 +9,54 @@ import '../validation/password_validation.dart';
 final passwordErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
-final passwordSettingProvider =
-    StateNotifierProvider.autoDispose<_UserPasswordSetting, String?>(
+final passwordSettingProvider = Provider.autoDispose<_UserPasswordSetting>(
   (ref) => _UserPasswordSetting(),
 );
 
-class _UserPasswordSetting extends StateNotifier<String?> {
-  _UserPasswordSetting() : super(null);
-
+class _UserPasswordSetting {
   TextEditingController passwordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
 
-  Future<String?> update(String password, String newPassword) async {
+  Future<String?> update() async {
+    final validationErrorMessage =
+        _validationPassword(newPasswordController.text);
+    if (validationErrorMessage != null) {
+      return validationErrorMessage;
+    }
+
+    // Get user email
+    final email = await _readUserEmail();
+    if (email == null) {
+      return "Failed to read user's email.";
+    }
+
+    return _updateUserPassword(email);
+  }
+
+  // Validate new password
+  String? _validationPassword(String newPassword) {
+    final validationErrorMessage = PasswordValidation.validation(newPassword);
+    if (validationErrorMessage != null) {
+      return validationErrorMessage;
+    }
+    return null;
+  }
+
+  Future<String?> _updateUserPassword(String email) async {
+    final newPassword = newPasswordController.text;
+    final password = passwordController.text;
+
+    // Attempt to update password
     try {
-      final validationErrorMessage = PasswordValidation.validation(newPassword);
-      if (validationErrorMessage != null) {
-        return validationErrorMessage;
-      }
-
-      final email = await _readUserEmail();
-      if (email == null) {
-        throw Exception("Failed to read user's email.");
-      }
-
-      final updatePasswordErrorMessage =
-          await AuthController.updateUserPassword(
+      final updateErrorMessage = await AuthController.updateUserPassword(
         email,
         password,
         newPassword,
       );
-      if (updatePasswordErrorMessage != null) {
-        return updatePasswordErrorMessage;
-      }
-
-      return null;
+      // Returns null if no error
+      return updateErrorMessage;
     } on FirebaseException catch (e) {
-      throw Exception('Failed to update password. $e');
+      return 'Failed to update password: ${e.message}';
     }
   }
 

@@ -9,7 +9,7 @@ import '../../../../../../controllers/common/loading/loading_progress.dart';
 import '../../../../../../controllers/providers/group/admin/group_admin_profile_provider.dart';
 import '../../../../../../controllers/providers/group/group/set_group_name_and_member_data_provider.dart';
 import '../../../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
-import '../../../../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../../../../controllers/providers/group/model/group_member_delete_mode_provider.dart';
 import '../../../../../../controllers/src/group/create/create_group.dart';
 
 import '../../../../../../entities/device/image_controller.dart';

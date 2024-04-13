@@ -19,7 +19,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     final passwordErrorMessage = ref.watch(passwordErrorMessageProvider);
-    final passwordNotifier = ref.watch(passwordSettingProvider.notifier);
+    final passwordSetting = ref.watch(passwordSettingProvider);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
@@ -62,7 +62,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                     ),
                   ),
                   CupertinoTextField(
-                    controller: passwordNotifier.passwordController,
+                    controller: passwordSetting.passwordController,
                     obscureText: true,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 245, 243, 254),
@@ -85,7 +85,7 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                     ),
                   ),
                   CupertinoTextField(
-                    controller: passwordNotifier.newPasswordController,
+                    controller: passwordSetting.newPasswordController,
                     obscureText: true,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 245, 243, 254),
@@ -118,14 +118,10 @@ class _PasswordSettingPageState extends ConsumerState<PasswordSettingPage> {
                 ),
                 backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                 onPressed: () async {
-                  final errorMessage = await passwordNotifier.update(
-                    passwordNotifier.passwordController.text,
-                    passwordNotifier.newPasswordController.text,
-                  );
+                  final errorMessage = await passwordSetting.update();
                   if (errorMessage != null) {
-                    ref
-                        .watch(passwordErrorMessageProvider.notifier)
-                        .state = errorMessage;
+                    ref.watch(passwordErrorMessageProvider.notifier).state =
+                        errorMessage;
                     return;
                   }
 
