@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../common/color_palette.dart';
 
 import '../../../../controllers/providers/group/group/joined_group_profile_provider.dart';
-import '../../../../controllers/providers/group/msg/schedule_error_msg_provider.dart';
+import '../../../../controllers/providers/group/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../controllers/src/group/update/update_group_schedule.dart';
 

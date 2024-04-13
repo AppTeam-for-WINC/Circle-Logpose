@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
-import '../../../../../../controllers/providers/group/model/group_member_delete_mode_provider.dart';
+import '../../../../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
 
 import '../../../../../../models/user/user.dart';
 
@@ -68,7 +68,7 @@ class _GroupMemberState extends ConsumerState<SetGroupMember> {
             ),
           ),
         ),
-        if (ref.watch(setMemberDeleteModeProvider))
+        if (ref.watch(groupMemberDeleteModeProvider))
           Positioned(
             top: 0,
             right: 0,

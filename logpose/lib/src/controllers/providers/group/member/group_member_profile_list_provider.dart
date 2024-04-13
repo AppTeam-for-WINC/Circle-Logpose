@@ -1,25 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/user/user.dart';
-import '../../../../services/database/group_membership_controller.dart';
+import '../role/group_role_profile_stream_provider.dart';
 
 /// Group membership users controller.
 final watchGroupMembershipProfileListProvider =
-    StreamProvider.family<List<UserProfile?>, String>((ref, groupId) async* {
-  final memebershipProfilesStream =
-      GroupMembershipController.watchAllRoleByProfileWithGroupId(
-    groupId,
-    'membership',
-  );
+    StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
+  final stream =
+      ref.read(groupRoleProfileStreamProvider).watchMembershipProfile(groupId);
 
-  await for (final membershipProfileList in memebershipProfilesStream) {
-    final membershipProfileStream =
-        membershipProfileList.map((membershipProfile) {
-      if (membershipProfile == null) {
-        return null;
-      }
-      return membershipProfile;
-    }).toList();
-    yield membershipProfileStream;
-  }
+  return stream;
 });

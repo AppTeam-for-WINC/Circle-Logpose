@@ -11,7 +11,6 @@ final readUserProfileProvider =
   if (userDocId == null) {
     throw Exception('User not logged in.');
   }
-  final user = await UserController.read(userDocId);
 
-  return user;
+  return UserController.read(userDocId);
 });
