@@ -1,22 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/group/group_and_id_model.dart';
-import '../../../../services/database/group_controller.dart';
+import '../../../src/group/fetch/group_profile_fetcher.dart';
 
+/// Use 'Group ID List' to get 'List of Group and ID'.
 final readGroupAndIdModalProvider =
     FutureProvider.family<List<GroupAndId>, List<String>>((ref, groupIdList) {
-  return Future.wait<GroupAndId?>(
-    groupIdList.map(
-      (groupId) async {
-        final groupProfile = await GroupController.read(groupId);
-        if (groupProfile == null) {
-          return null;
-        }
-        return GroupAndId(
-          groupProfile: groupProfile,
-          groupId: groupId,
-        );
-      },
-    ),
-  ).then((data) => data.whereType<GroupAndId>().toList());
+  final futures = GroupProfileFetcher.fromMap(groupIdList);
+  return Future.wait<GroupAndId?>(futures)
+      .then((data) => data.whereType<GroupAndId>().toList());
 });
