@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/common/loading/loading_progress.dart';
-import '../../../../controllers/providers/group/admin/group_admin_profile_list_provider.dart';
+import '../../../../controllers/providers/group/admin/watch_group_admin_profile_list_provider.dart';
 import '../../../../controllers/providers/group/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';

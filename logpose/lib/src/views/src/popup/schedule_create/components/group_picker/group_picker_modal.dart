@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/group/group_and_id_modal_provider.dart';
+import '../../../../../../controllers/providers/group/group/read_group_and_id_modal_provider.dart';
 import '../../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
 
