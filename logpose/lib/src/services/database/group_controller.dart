@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../models/group/database/group.dart';
+import '../../models/group/database/group_profile.dart';
 
 import '../storage/storage.dart';
 

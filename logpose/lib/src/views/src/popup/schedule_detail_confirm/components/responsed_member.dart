@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../controllers/providers/group/schedule/reaponsed_member_not_absence_schedule_list_provider.dart';
 
-import '../../../../../models/group/database/group.dart';
+import '../../../../../models/group/database/group_profile.dart';
 import '../../../../../models/group/database/group_schedule.dart';
 
 import '../../../group/setting/components/group_member_image.dart';

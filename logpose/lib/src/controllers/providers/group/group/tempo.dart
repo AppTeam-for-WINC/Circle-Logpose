@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/group/database/group.dart';
+import '../../../../models/group/database/group_profile.dart';
 import '../../../../services/database/group_controller.dart';
 
 /// Group setting provider.

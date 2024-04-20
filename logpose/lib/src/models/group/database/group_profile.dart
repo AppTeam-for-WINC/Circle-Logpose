@@ -9,9 +9,10 @@ class GroupProfile {
     required this.createdAt,
   });
 
+  /// Convert type of map.
   factory GroupProfile.fromMap(Map<String, dynamic> groupRef) {
     final name = groupRef['name'] as String;
-    final description = groupRef['descrption'] as String?;
+    final description = groupRef['description'] as String?;
     final image = groupRef['image'] as String;
     final updatedAt = groupRef['updated_at'] as Timestamp?;
     final createdAt = groupRef['created_at'] as Timestamp;
@@ -37,6 +38,25 @@ class GroupProfile {
   /// updated_at
   final Timestamp? updatedAt;
 
-  /// created time
+  /// created_at
   final Timestamp createdAt;
+}
+
+/// Extension function of copyWith().
+extension CopyWith on GroupProfile {
+  GroupProfile copyWith({
+    String? name,
+    String? description,
+    String? image,
+    Timestamp? updatedAt,
+    Timestamp? createdAt,
+  }) {
+    return GroupProfile(
+      name: name ?? this.name,
+      description: description ?? this.description,
+      image: image ?? this.image,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
