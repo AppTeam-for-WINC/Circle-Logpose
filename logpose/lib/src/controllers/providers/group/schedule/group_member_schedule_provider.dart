@@ -106,12 +106,10 @@ class _UpdateMemberScheduleNotifier
     String userDocId,
   ) async {
     try {
-      final docId =
-          await GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
+      return GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
         scheduleId: scheduleId,
         userDocId: userDocId,
       );
-      return docId;
     } on FirebaseException catch (e) {
       throw Exception('Failed to read Doc ID. $e');
     }

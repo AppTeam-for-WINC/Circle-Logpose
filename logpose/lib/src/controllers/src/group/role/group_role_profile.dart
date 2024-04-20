@@ -8,14 +8,14 @@ class GroupRoleProfileStream {
   static GroupRoleProfileStream get instance => _instance;
 
   Stream<List<UserProfile?>> watchAdminProfile(String groupId) async* {
-    yield* GroupMembershipController.watchAllRoleByProfileWithGroupId(
+    yield* GroupMembershipController.watchAllUserProfileWithGroupIdAndRole(
       groupId,
       'admin',
     );
   }
 
   Stream<List<UserProfile?>> watchMembershipProfile(String groupId) async* {
-    yield* GroupMembershipController.watchAllRoleByProfileWithGroupId(
+    yield* GroupMembershipController.watchAllUserProfileWithGroupIdAndRole(
       groupId,
       'membership',
     );

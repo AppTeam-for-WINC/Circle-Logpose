@@ -106,9 +106,9 @@ class GroupMembershipController {
     });
   }
 
-  /// Watch all role(Please selected 'admin', or 'membership') 
+  /// Watch all role(Selected 'admin', or 'membership') 
   /// member's profiles.
-  static Stream<List<UserProfile?>> watchAllRoleByProfileWithGroupId(
+  static Stream<List<UserProfile?>> watchAllUserProfileWithGroupIdAndRole(
     String groupId,
     String role,
   ) async* {

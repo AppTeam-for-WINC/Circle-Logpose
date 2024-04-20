@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../controllers/common/loading/loading_progress.dart';
-import '../../../../../../controllers/providers/user/user_profile_provider.dart';
 import '../../../../../../controllers/providers/group/group/set_group_name_and_member_data_provider.dart';
 import '../../../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../../../../controllers/providers/user/user_profile_provider.dart';
 import '../../../../../../controllers/src/group/create/create_group.dart';
 
 import '../../../../../../entities/device/image_controller.dart';
@@ -54,9 +54,8 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
     final isLoading = ref.watch(loadingProgressProvider);
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
+    final groupNameController = ref.watch(groupNameEditingProvider(''));
     final groupAdminMemberProfile = ref.watch(readUserProfileProvider);
-    final setGroupNameAndMemberDataNotifier =
-        ref.watch(setGroupNameAndMemberDataProvider.notifier);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFFF5F3FE),
@@ -163,8 +162,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 13),
                         child: CupertinoTextField(
-                          controller: setGroupNameAndMemberDataNotifier
-                              .groupNameController,
+                          controller: groupNameController,
                           prefix: const Icon(
                             Icons.create_sharp,
                           ),
@@ -274,8 +272,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreateContents> {
                           );
 
                           final errorMessage = await CreateGroup.create(
-                            setGroupNameAndMemberDataNotifier
-                                .groupNameController.text,
+                            groupNameController.text,
                             image,
                             null,
                             ref,
