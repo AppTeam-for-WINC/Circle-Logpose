@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/name/group_name_provider.dart';
+import '../../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import 'group_picker_modal.dart';
 
 class GroupPickerButton extends ConsumerStatefulWidget {
@@ -36,7 +36,7 @@ class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     final groupIdList = widget.groupIdList;
-    final groupName = ref.watch(groupNameProvider);
+    final groupName = ref.watch(selectedGroupNameProvider);
 
     return Row(
       children: [

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/group/group_and_id_modal_provider.dart';
-import '../../../../../../controllers/providers/group/name/group_name_provider.dart';
+import '../../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
@@ -29,7 +29,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
         final asyncGroupWithIdList = await ref
             .read(readGroupAndIdModalProvider(widget.groupIdList).future);
 
-        ref.read(groupNameProvider.notifier).state =
+        ref.read(selectedGroupNameProvider.notifier).state =
             asyncGroupWithIdList[0].groupProfile.name;
       });
     }
@@ -38,7 +38,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   @override
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
-    
+
     final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
     final asyncGroupWithIdList =
         ref.watch(readGroupAndIdModalProvider(groupIdList));
@@ -66,7 +66,8 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
                       final id = groupDataList[index].groupId;
                       final name = groupDataList[index].groupProfile.name;
                       scheduleNotifier.setGroupId(id);
-                      ref.watch(groupNameProvider.notifier).state = name;
+                      ref.watch(selectedGroupNameProvider.notifier).state =
+                          name;
                     },
                     children: groupDataList
                         .map(

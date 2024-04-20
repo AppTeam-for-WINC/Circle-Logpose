@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
-import '../../../../../controllers/providers/group/name/group_name_provider.dart';
+import '../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../../controllers/src/group/delete/delete_schedule.dart';
 import '../../../../../models/group/group_schedule_and_id_model.dart';
 import '../../../../../models/user/user.dart';
@@ -42,7 +42,7 @@ class _ScheduleComponentState extends ConsumerState<ScheduleComponent> {
       children: [
         GestureDetector(
           onTap: () async {
-            ref.watch(groupNameProvider.notifier).state = groupName;
+            ref.watch(selectedGroupNameProvider.notifier).state = groupName;
             await showCupertinoModalPopup<ScheduleUpdate>(
               context: context,
               builder: (BuildContext context) {

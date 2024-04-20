@@ -7,12 +7,12 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/common/loading/loading_progress.dart';
 import '../../../../controllers/providers/group/admin/group_admin_profile_list_provider.dart';
+import '../../../../controllers/providers/group/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
-import '../../../../controllers/providers/group/error/group_name_error_msg_provider.dart';
-import '../../../../controllers/providers/group/name/group_name_provider.dart';
+import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../controllers/providers/group/schedule/group_schedule_and_id_provider.dart';
 import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
 import '../../../../controllers/src/group/update/update_group_settings.dart';
@@ -532,7 +532,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       child: GestureDetector(
                         onTap: () async {
                           groupScheduleNotifier.setGroupId(groupId);
-                          ref.watch(groupNameProvider.notifier).state =
+                          ref.watch(selectedGroupNameProvider.notifier).state =
                               groupProfileNotifier.groupNameController.text;
                           await showCupertinoModalPopup<ScheduleCreate>(
                             context: context,

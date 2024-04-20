@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../controllers/common/loading/loading_progress.dart';
-import '../../../../../../controllers/providers/group/group/set_group_name_and_member_data_provider.dart';
 import '../../../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../../../../controllers/providers/group/name/group_name_editing_provider.dart';
 import '../../../../../../controllers/providers/user/user_profile_provider.dart';
 import '../../../../../../controllers/src/group/create/create_group.dart';
 
