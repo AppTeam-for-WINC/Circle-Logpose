@@ -98,6 +98,7 @@ class _UpdateMemberScheduleNotifier
     return memberSchedule!;
   }
 
+  /// Update Group membership's schedule of startAt.
   Future<void> updateStartAt(DateTime startAt) async {
     try {
       final updatedState = state!.copyWith(startAt: startAt);
@@ -112,6 +113,7 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
+  /// Update Group membership's schedule of endAt.
   Future<void> updateEndAt(DateTime endAt) async {
     try {
       final updatedState = state!.copyWith(endAt: endAt);
@@ -126,6 +128,7 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
+  /// Update Group membership's schedule of attendance.
   Future<void> updateAttendance({required bool attendance}) async {
     try {
       final updatedState = state!.copyWith(
@@ -148,6 +151,7 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
+  /// Update Group membership's schedule of leaveEarly.
   Future<void> updateLeaveEarly({required bool leaveEarly}) async {
     try {
       final updatedState = state!.copyWith(
@@ -170,6 +174,7 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
+  /// Update Group membership's schedule of lateness.
   Future<void> updateLateness({required bool lateness}) async {
     try {
       final updatedState = state!.copyWith(
@@ -192,6 +197,7 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
+  /// Update Group membership's schedule of absence.
   Future<void> updateAbsence({required bool absence}) async {
     try {
       final updatedState = state!.copyWith(
