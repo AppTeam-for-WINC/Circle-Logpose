@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/models/group/database/member_schedule.dart';
 
+import '../../../../models/group/database/group_schedule.dart';
 import '../../../../services/auth/auth_controller.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';
@@ -20,34 +21,14 @@ class _UpdateMemberScheduleNotifier
 
   Future<void> _initSchedule(String groupScheduleId) async {
     try {
-      final groupSchedule = await GroupScheduleController.read(groupScheduleId);
-      if (groupSchedule == null) {
-        state = null;
-        return;
-      }
-
-      final userDocId = await AuthController.getCurrentUserId();
-      if (userDocId == null) {
-        state = null;
-        debugPrint('User not logged in.');
-        return;
-      }
-
-      final memberScheduleId = await _readDocId(groupScheduleId, userDocId);
-      if (memberScheduleId == null) {
-        state = null;
-        return;
-      }
-
-      final memberSchedule =
-          await GroupMemberScheduleController.read(memberScheduleId);
-      if (memberSchedule == null) {
-        state = null;
-        return;
-      }
+      final groupSchedule = await _fetchGroupSchedule(groupScheduleId);
+      final userDocId = await _fetchUserDocId();
+      final memberScheduleDocId =
+          await _fetchScheduleId(groupScheduleId, userDocId);
+      final memberSchedule = await _fetchMemberSchedule(memberScheduleDocId);
 
       state = GroupMemberSchedule(
-        scheduleId: memberScheduleId,
+        scheduleId: memberScheduleDocId,
         userId: userDocId,
         startAt: memberSchedule.startAt ?? groupSchedule.startAt,
         endAt: memberSchedule.endAt ?? groupSchedule.endAt,
@@ -63,7 +44,36 @@ class _UpdateMemberScheduleNotifier
     }
   }
 
-  static Future<String?> _readDocId(
+  Future<GroupSchedule> _fetchGroupSchedule(String groupScheduleId) async {
+    final groupSchedule = await GroupScheduleController.read(groupScheduleId);
+    if (groupSchedule == null) {
+      state = null;
+    }
+    return groupSchedule!;
+  }
+
+  Future<String> _fetchUserDocId() async {
+    final userDocId = await AuthController.getCurrentUserId();
+    if (userDocId == null) {
+      state = null;
+      debugPrint('User not logged in.');
+    }
+    return userDocId!;
+  }
+
+  Future<String> _fetchScheduleId(
+    String groupScheduleId,
+    String userDocId,
+  ) async {
+    final memberScheduleDocId =
+        await _fetchMemberScheduleDocId(groupScheduleId, userDocId);
+    if (memberScheduleDocId == null) {
+      state = null;
+    }
+    return memberScheduleDocId!;
+  }
+
+  static Future<String?> _fetchMemberScheduleDocId(
     String scheduleId,
     String userDocId,
   ) async {
@@ -75,6 +85,17 @@ class _UpdateMemberScheduleNotifier
     } on FirebaseException catch (e) {
       throw Exception('Failed to read Doc ID. $e');
     }
+  }
+
+  Future<GroupMemberSchedule> _fetchMemberSchedule(
+    String memberScheduleDocId,
+  ) async {
+    final memberSchedule =
+        await GroupMemberScheduleController.read(memberScheduleDocId);
+    if (memberSchedule == null) {
+      state = null;
+    }
+    return memberSchedule!;
   }
 
   Future<void> updateStartAt(DateTime startAt) async {
