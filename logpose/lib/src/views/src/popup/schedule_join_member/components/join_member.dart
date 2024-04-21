@@ -103,7 +103,7 @@ class _JoinMemberState extends ConsumerState<JoinMember> {
                             if (memberSchedule.startAt != null)
                               Text(
                                 formatDateTimeExcYear(memberSchedule.startAt!),
-                                style: const TextStyle(fontSize: 13),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             const Padding(
                               padding: EdgeInsets.only(
@@ -120,7 +120,7 @@ class _JoinMemberState extends ConsumerState<JoinMember> {
                             if (memberSchedule.endAt != null)
                               Text(
                                 formatDateTimeExcYear(memberSchedule.endAt!),
-                                style: const TextStyle(fontSize: 13),
+                                style: const TextStyle(fontSize: 12),
                               ),
                           ],
                         ),

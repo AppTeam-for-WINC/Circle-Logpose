@@ -16,7 +16,7 @@ class GroupProfile {
     final image = groupRef['image'] as String;
     final updatedAt = groupRef['updated_at'] as Timestamp?;
     final createdAt = groupRef['created_at'] as Timestamp;
-    
+
     return GroupProfile(
       name: name,
       image: image,
@@ -40,23 +40,40 @@ class GroupProfile {
 
   /// created_at
   final Timestamp createdAt;
-}
 
-/// Extension function of copyWith().
-extension CopyWith on GroupProfile {
+  /// Set GroupProfile.
   GroupProfile copyWith({
     String? name,
     String? description,
     String? image,
     Timestamp? updatedAt,
-    Timestamp? createdAt,
   }) {
     return GroupProfile(
       name: name ?? this.name,
       description: description ?? this.description,
       image: image ?? this.image,
       updatedAt: updatedAt ?? this.updatedAt,
-      createdAt: createdAt ?? this.createdAt,
+      createdAt: createdAt,
     );
   }
 }
+
+// <- Example, extension function. ->
+// extension CopyWith on GroupProfile {
+//   GroupProfile copyWith({
+//     String? name,
+//     String? description,
+//     String? image,
+//     Timestamp? updatedAt,
+//     Timestamp? createdAt,
+//   }) {
+//     return GroupProfile(
+//       name: name ?? this.name,
+//       description: description ?? this.description,
+//       image: image ?? this.image,
+//       updatedAt: updatedAt ?? this.updatedAt,
+//       createdAt: createdAt ?? this.createdAt,
+//     );
+//   }
+// }
+// < -- >
