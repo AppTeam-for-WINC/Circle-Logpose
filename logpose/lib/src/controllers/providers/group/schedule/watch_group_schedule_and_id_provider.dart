@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/group/group_schedule_and_id_model.dart';
@@ -8,11 +9,14 @@ import '../../../src/group/fetch/group_schedule_and_id_fetcher.dart';
 final watchGroupScheduleAndIdProvider =
     StreamProvider.family<List<GroupScheduleAndId?>, String>(
   (ref, groupId) async* {
-    yield* GroupScheduleController.watchAllScheduleId(groupId)
-        .map((scheduleIdList) async {
-      return Future.wait(
-        await GroupScheduleAndIdFetcher.fromMap(scheduleIdList),
+    try {
+      yield* GroupScheduleController.watchAllScheduleId(groupId).asyncMap(
+        (scheduleIdList) async =>
+            GroupScheduleAndIdFetcher.fromMap(scheduleIdList),
       );
-    }).asyncMap((event) => event);
+    } on Exception catch (e) {
+      debugPrint('Failed to fetch group schedules: $e');
+      yield [];
+    }
   },
 );

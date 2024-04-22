@@ -13,7 +13,7 @@ import '../../../../controllers/providers/group/member/group_member_profile_list
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
 import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
-import '../../../../controllers/providers/group/schedule/group_schedule_and_id_provider.dart';
+import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 import '../../../../controllers/src/group/update/update_group_settings.dart';
 
 import '../../../../entities/device/image_controller.dart';

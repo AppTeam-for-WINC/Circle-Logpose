@@ -7,16 +7,18 @@ class GroupScheduleAndIdFetcher {
       GroupScheduleAndIdFetcher._internal();
   static GroupScheduleAndIdFetcher get instance => _instance;
 
-  static Future<List<Future<GroupScheduleAndId?>>> fromMap(
+  static Future<List<GroupScheduleAndId?>> fromMap(
     List<String?> scheduleIdList,
   ) async {
-    return scheduleIdList.map((scheduleId) async {
-      if (scheduleId == null) {
-        return null;
-      }
+    return Future.wait(
+      scheduleIdList.map((scheduleId) async {
+        if (scheduleId == null) {
+          return null;
+        }
 
-      return _fromGroupScheduleAndId(scheduleId);
-    }).toList();
+        return _fromGroupScheduleAndId(scheduleId);
+      }).toList(),
+    );
   }
 
   static Future<GroupScheduleAndId?> _fromGroupScheduleAndId(

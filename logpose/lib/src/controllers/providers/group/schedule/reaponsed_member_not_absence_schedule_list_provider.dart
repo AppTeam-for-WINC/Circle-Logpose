@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/user/user.dart';
@@ -10,20 +11,15 @@ import '../../../../services/database/user_controller.dart';
 /// Group membership user list controller under condition not absence.
 final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
     .autoDispose<List<UserProfile?>, String>((ref, scheduleId) async* {
-  final groupId = await _readGroupIdWithScheduleId(scheduleId);
-  final userDocIdStream =
-      GroupMembershipController.watchAllUserDocIdWithGroupId(groupId);
+  final groupId = await _fetchGroupIdWithScheduleId(scheduleId);
 
-  await for (final userIdList in userDocIdStream) {
-    final userProfiles = await _readUserProfilesNotAbsentList(
-      scheduleId,
-      userIdList,
-    );
-    yield userProfiles;
-  }
+  yield* GroupMembershipController.watchAllUserDocIdWithGroupId(groupId)
+      .asyncMap(
+    (userIdList) => _fetchUserProfilesNotAbsentList(scheduleId, userIdList),
+  );
 });
 
-Future<String> _readGroupIdWithScheduleId(String scheduleId) async {
+Future<String> _fetchGroupIdWithScheduleId(String scheduleId) async {
   final groupId = await GroupScheduleController.readGroupId(scheduleId);
   if (groupId == null) {
     throw Exception('Group ID is null');
@@ -31,45 +27,44 @@ Future<String> _readGroupIdWithScheduleId(String scheduleId) async {
   return groupId;
 }
 
-Future<List<UserProfile>> _readUserProfilesNotAbsentList(
+Future<List<UserProfile?>> _fetchUserProfilesNotAbsentList(
   String scheduleId,
   List<String?> userIdList,
 ) async {
-  final future = userIdList.map((userId) {
-    if (userId == null) {
-      throw Exception('User ID is null');
-    }
-    return _readUserProfilesNotAbsent(scheduleId, userId);
-  });
-  final profiles = await Future.wait(future);
-  return profiles.whereType<UserProfile>().toList();
+  return Future.wait(
+    userIdList.where((id) => id != null).map((userId) {
+      return _fetchUserProfilesNotAbsent(scheduleId, userId!);
+    }).toList(),
+  );
 }
 
-Future<UserProfile?> _readUserProfilesNotAbsent(
+Future<UserProfile?> _fetchUserProfilesNotAbsent(
   String scheduleId,
   String userId,
 ) async {
-  final responsedUserIdList = await _readUserIdList(
-    scheduleId,
-    userId,
-  );
-  for (final responsedUserId in responsedUserIdList) {
-    if (responsedUserId != null) {
-      final userProfile = await UserController.read(responsedUserId);
-      return userProfile;
+  try {
+    final responsedUserIdList = await _fetchUserIdList(
+      scheduleId,
+      userId,
+    );
+    for (final responsedUserId in responsedUserIdList) {
+      if (responsedUserId != null) {
+        final userProfile = await UserController.read(responsedUserId);
+        return userProfile;
+      }
     }
+  } on Exception catch (e) {
+    debugPrint('Error fetching profiles: $e');
   }
   return null;
 }
 
-Future<List<String?>> _readUserIdList(
+Future<List<String?>> _fetchUserIdList(
   String scheduleId,
   String userId,
 ) async {
-  final responsedUserIdList =
-      await GroupMemberScheduleController.readAllUserDocIdByTerm(
+  return GroupMemberScheduleController.readAllUserDocIdByTerm(
     scheduleId,
     userId,
   );
-  return responsedUserIdList;
 }

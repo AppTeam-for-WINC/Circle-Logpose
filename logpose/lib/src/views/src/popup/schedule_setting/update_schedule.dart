@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common/color_palette.dart';
+import '../../../../common/schedule_color_palette.dart';
 
 import '../../../../controllers/providers/group/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
-import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
