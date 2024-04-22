@@ -38,7 +38,7 @@ class _UpdateMemberScheduleNotifier
         absence: memberSchedule.absence,
         createdAt: memberSchedule.createdAt,
       );
-    } on FirebaseException catch (e) {
+    } on Exception catch (e) {
       state = null;
       debugPrint('Error initializing member schedule $e');
     }
