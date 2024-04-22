@@ -17,7 +17,7 @@ class ScheduleActivityTime extends ConsumerStatefulWidget {
 class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(groupScheduleProvider);
+    final schedule = ref.watch(setGroupScheduleProvider(null));
     return Row(
       children: [
         Container(

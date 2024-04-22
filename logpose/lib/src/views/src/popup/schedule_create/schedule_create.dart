@@ -7,14 +7,18 @@ import '../../../../common/color_palette.dart';
 import '../../../../controllers/providers/group/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
 import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
 import '../../../../controllers/src/group/create/create_group_schedule.dart';
 
 import 'components/group_picker/group_picker_button.dart';
 import 'components/schedule_activity_time.dart';
 
 class ScheduleCreate extends ConsumerStatefulWidget {
-  const ScheduleCreate({super.key});
+  const ScheduleCreate({super.key, this.groupId});
 
+  final String? groupId;
   @override
   ConsumerState createState() => _ScheduleCreateState();
 }
@@ -25,9 +29,10 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    final groupId = widget.groupId;
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
-    final schedule = ref.watch(groupScheduleProvider);
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+    final schedule = ref.watch(setGroupScheduleProvider(null));
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
 
     return Center(
@@ -114,8 +119,10 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                 child: SizedBox(
                   width: deviceWidth * 0.7,
                   child: CupertinoTextField(
+                    controller: ref
+                        .watch(scheduleTitleControllerProvider.notifier)
+                        .state,
                     placeholder: 'タイトルを追加',
-                    controller: schedule.titleController,
                     placeholderStyle: const TextStyle(color: Colors.grey),
                     decoration: const BoxDecoration(
                       border: Border(
@@ -126,6 +133,12 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
+                    onChanged: (String text) {
+                      ref
+                          .read(scheduleTitleControllerProvider.notifier)
+                          .state
+                          .text = text;
+                    },
                   ),
                 ),
               ),
@@ -161,7 +174,12 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                                   padding: const EdgeInsets.only(left: 8),
                                   width: deviceWidth * 0.6,
                                   child: CupertinoTextField(
-                                    controller: schedule.placeController,
+                                    controller: ref
+                                        .watch(
+                                          schedulePlaceControllerProvider
+                                              .notifier,
+                                        )
+                                        .state,
                                     placeholder: '場所を追加',
                                     placeholderStyle:
                                         const TextStyle(color: Colors.grey),
@@ -176,6 +194,15 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                                       fontSize: 16,
                                       color: Colors.black,
                                     ),
+                                    onChanged: (String text) {
+                                      ref
+                                          .read(
+                                            schedulePlaceControllerProvider
+                                                .notifier,
+                                          )
+                                          .state
+                                          .text = text;
+                                    },
                                   ),
                                 ),
                               ],
@@ -198,7 +225,12 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                                       padding: const EdgeInsets.only(left: 8),
                                       width: deviceWidth * 0.6,
                                       child: CupertinoTextField(
-                                        controller: schedule.detailController,
+                                        controller: ref
+                                            .watch(
+                                              scheduleDetailControllerProvider
+                                                  .notifier,
+                                            )
+                                            .state,
                                         placeholder: '詳細を追加',
                                         placeholderStyle:
                                             const TextStyle(color: Colors.grey),
@@ -213,6 +245,15 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                                           fontSize: 16,
                                           color: Colors.black,
                                         ),
+                                        onChanged: (String text) {
+                                          ref
+                                              .watch(
+                                                scheduleDetailControllerProvider
+                                                    .notifier,
+                                              )
+                                              .state
+                                              .text = text;
+                                        },
                                       ),
                                     ),
                                   ],
@@ -252,27 +293,27 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                   child: CupertinoButton(
                     padding: EdgeInsets.zero,
                     onPressed: () async {
-                      if (schedule.groupId == null) {
+                      if (schedule.groupId == null && groupId == null) {
                         ref.watch(scheduleErrorMessageProvider.notifier).state =
                             'No selected group.';
 
                         return;
+                      } else if (schedule.groupId == null && groupId != null){
+                        scheduleNotifier.setGroupId(groupId);
                       }
 
-                      final errorMessage =
-                          await CreateGroupSchedule.create(
+                      final errorMessage = await CreateGroupSchedule.create(
                         schedule.groupId!,
-                        schedule.titleController.text,
-                        schedule.color,
-                        schedule.placeController.text,
-                        schedule.detailController.text,
+                        ref.read(scheduleTitleControllerProvider).text,
+                        schedule.color!,
+                        ref.read(schedulePlaceControllerProvider).text,
+                        ref.read(scheduleDetailControllerProvider).text,
                         schedule.startAt,
                         schedule.endAt,
                       );
                       if (errorMessage != null) {
-                        ref
-                            .watch(scheduleErrorMessageProvider.notifier)
-                            .state = errorMessage;
+                        ref.watch(scheduleErrorMessageProvider.notifier).state =
+                            errorMessage;
                         return;
                       }
 

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/group/group_and_id_model.dart';
-import '../../../src/group/fetch/group_profile_fetcher.dart';
+import '../../../src/group/fetch/group_and_id_fetcher.dart';
 
 /// Get 'List of Group and ID' by 'Group ID List'
 final readGroupAndIdModalProvider =

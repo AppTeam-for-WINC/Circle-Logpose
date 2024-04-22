@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
 import '../../../../utils/time/time_utils.dart';
 
 import 'update_activity_end_time.dart';

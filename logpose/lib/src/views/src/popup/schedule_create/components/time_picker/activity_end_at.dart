@@ -14,8 +14,8 @@ class _ActivityEndAtPickerState
     extends ConsumerState<ActivityEndAtPicker> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(groupScheduleProvider);
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+    final schedule = ref.watch(setGroupScheduleProvider(null));
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     
     return Container(
       height: 300,

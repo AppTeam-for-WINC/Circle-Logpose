@@ -14,7 +14,6 @@ import '../../../../controllers/providers/group/member/set_group_member_list_pro
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
 import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../controllers/providers/group/schedule/group_schedule_and_id_provider.dart';
-import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
 import '../../../../controllers/src/group/update/update_group_settings.dart';
 
 import '../../../../entities/device/image_controller.dart';
@@ -75,8 +74,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
         ref.watch(groupSettingProvider(groupId).notifier);
     final asyncGroupScheduleList =
         ref.watch(watchGroupScheduleAndIdProvider(groupId));
-    final groupScheduleNotifier =
-        ref.watch(groupScheduleProvider.notifier);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
@@ -531,13 +528,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       right: 0,
                       child: GestureDetector(
                         onTap: () async {
-                          groupScheduleNotifier.setGroupId(groupId);
                           ref.watch(selectedGroupNameProvider.notifier).state =
                               groupProfileNotifier.groupNameController.text;
                           await showCupertinoModalPopup<ScheduleCreate>(
                             context: context,
                             builder: (BuildContext context) {
-                              return const ScheduleCreate();
+                              return ScheduleCreate(groupId: groupId);
                             },
                           );
                         },

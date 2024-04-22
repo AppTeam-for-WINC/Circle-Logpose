@@ -14,7 +14,7 @@ class _ActivityStartAtPickerState
     extends ConsumerState<ActivityStartAtPicker> {
   @override
   Widget build(BuildContext context) {
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     
     return Container(
       height: 300,

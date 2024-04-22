@@ -23,7 +23,8 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
     // 選択肢が1つしかない場合、自動的にその選択肢を選択。
     if (widget.groupIdList.length == 1) {
       final id = widget.groupIdList[0];
-      final scheduleNotifier = ref.read(groupScheduleProvider.notifier);
+      final scheduleNotifier =
+          ref.read(setGroupScheduleProvider(null).notifier);
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         scheduleNotifier.setGroupId(id);
         final asyncGroupWithIdList = await ref
@@ -39,7 +40,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
 
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     final asyncGroupWithIdList =
         ref.watch(readGroupAndIdModalProvider(groupIdList));
 
