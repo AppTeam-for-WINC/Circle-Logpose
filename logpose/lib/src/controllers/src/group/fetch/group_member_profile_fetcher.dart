@@ -1,25 +1,18 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/user/user.dart';
-
-import '../../../../services/database/group_membership_controller.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';
 import '../../../../services/database/user_controller.dart';
 
-/// Group membership user list controller under condition not absence.
-final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
-    .autoDispose<List<UserProfile?>, String>((ref, scheduleId) async* {
-  final groupId = await _fetchGroupIdWithScheduleId(scheduleId);
+class GroupMemberProfileFetcher {
+    GroupMemberProfileFetcher._internal();
+  static final GroupMemberProfileFetcher _instance =
+      GroupMemberProfileFetcher._internal();
+  static GroupMemberProfileFetcher get instance => _instance;
 
-  yield* GroupMembershipController.watchAllUserDocIdWithGroupId(groupId)
-      .asyncMap(
-    (userIdList) => _fetchUserProfilesNotAbsentList(scheduleId, userIdList),
-  );
-});
 
-Future<String> _fetchGroupIdWithScheduleId(String scheduleId) async {
+static Future<String> fetchGroupIdWithScheduleId(String scheduleId) async {
   final groupId = await GroupScheduleController.readGroupId(scheduleId);
   if (groupId == null) {
     throw Exception('Group ID is null');
@@ -27,7 +20,7 @@ Future<String> _fetchGroupIdWithScheduleId(String scheduleId) async {
   return groupId;
 }
 
-Future<List<UserProfile?>> _fetchUserProfilesNotAbsentList(
+static Future<List<UserProfile?>> fetchUserProfilesNotAbsentList(
   String scheduleId,
   List<String?> userIdList,
 ) async {
@@ -38,7 +31,7 @@ Future<List<UserProfile?>> _fetchUserProfilesNotAbsentList(
   );
 }
 
-Future<UserProfile?> _fetchUserProfilesNotAbsent(
+static Future<UserProfile?> _fetchUserProfilesNotAbsent(
   String scheduleId,
   String userId,
 ) async {
@@ -59,7 +52,7 @@ Future<UserProfile?> _fetchUserProfilesNotAbsent(
   return null;
 }
 
-Future<List<String?>> _fetchUserIdList(
+static Future<List<String?>> _fetchUserIdList(
   String scheduleId,
   String userId,
 ) async {
@@ -67,4 +60,5 @@ Future<List<String?>> _fetchUserIdList(
     scheduleId,
     userId,
   );
+}
 }

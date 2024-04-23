@@ -95,7 +95,7 @@ class GroupMemberScheduleController {
         )
         .get();
 
-    final groupMemberSchedule = groupMemberScheduleSnapshot.docs.map((doc) {
+    final groupMemberScheduleId = groupMemberScheduleSnapshot.docs.map((doc) {
       final groupMembershipScheduleRef = doc.data() as Map<String, dynamic>?;
       if (groupMembershipScheduleRef == null) {
         return null;
@@ -104,7 +104,66 @@ class GroupMemberScheduleController {
       return doc.id;
     }).first;
 
-    return groupMemberSchedule;
+    return groupMemberScheduleId;
+  }
+
+  /// Read GroupMembershipSchedule.
+  static Future<GroupMemberSchedule?>
+      readGroupMemberScheduleWithScheduleIdAndUserId(
+    String scheduleId,
+    String userDocId,
+  ) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where(
+            'schedule_id',
+            isEqualTo: scheduleId,
+          )
+          .where(
+            'user_id',
+            isEqualTo: userDocId,
+          )
+          .get();
+
+      return snapshot.docs.map((doc) {
+        final groupMembershipScheduleRef = doc.data() as Map<String, dynamic>?;
+        if (groupMembershipScheduleRef == null) {
+          return null;
+        }
+
+        final attendance = groupMembershipScheduleRef['attendance'] as bool;
+        final leaveEarly = groupMembershipScheduleRef['leave_early'] as bool;
+        final lateness = groupMembershipScheduleRef['lateness'] as bool;
+        final absence = groupMembershipScheduleRef['absence'] as bool;
+        final startAt =
+            convertTimestampToDateTime(groupMembershipScheduleRef['start_at']);
+        final endAt =
+            convertTimestampToDateTime(groupMembershipScheduleRef['end_at']);
+        final updatedAt =
+            groupMembershipScheduleRef['updated_at'] as Timestamp?;
+        final createdAt =
+            groupMembershipScheduleRef['created_at'] as Timestamp?;
+        if (createdAt == null) {
+          return null;
+        }
+
+        return GroupMemberSchedule(
+          scheduleId: scheduleId,
+          userId: userDocId,
+          attendance: attendance,
+          leaveEarly: leaveEarly,
+          lateness: lateness,
+          absence: absence,
+          startAt: startAt,
+          endAt: endAt,
+          updatedAt: updatedAt,
+          createdAt: createdAt,
+        );
+      }).first;
+    } on FirebaseException catch (e) {
+      throw Exception('Error: Faild to read data. $e');
+    }
   }
 
   /// Read All GroupMembershipSchedule by GroupScheduleID, UserDocID.
@@ -118,39 +177,46 @@ class GroupMemberScheduleController {
         .where('user_id', isEqualTo: userDocId)
         .get();
 
-    final groupMemberScheduleList = snapshot.docs.map((doc) {
-      final groupMembershipScheduleRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipScheduleRef == null) {
-        return null;
-      }
+    final groupMemberScheduleList = snapshot.docs
+        .map((doc) {
+          final groupMembershipScheduleRef =
+              doc.data() as Map<String, dynamic>?;
+          if (groupMembershipScheduleRef == null) {
+            return null;
+          }
 
-      final attendance = groupMembershipScheduleRef['attendance'] as bool;
-      final leaveEarly = groupMembershipScheduleRef['leave_early'] as bool;
-      final lateness = groupMembershipScheduleRef['lateness'] as bool;
-      final absence = groupMembershipScheduleRef['absence'] as bool;
-      final startAt = 
-          convertTimestampToDateTime(groupMembershipScheduleRef['start_at']);
-      final endAt =
-          convertTimestampToDateTime(groupMembershipScheduleRef['end_at']);
-      final updatedAt = groupMembershipScheduleRef['updated_at'] as Timestamp?;
-      final createdAt = groupMembershipScheduleRef['created_at'] as Timestamp?;
-      if (createdAt == null) {
-        return null;
-      }
+          final attendance = groupMembershipScheduleRef['attendance'] as bool;
+          final leaveEarly = groupMembershipScheduleRef['leave_early'] as bool;
+          final lateness = groupMembershipScheduleRef['lateness'] as bool;
+          final absence = groupMembershipScheduleRef['absence'] as bool;
+          final startAt = convertTimestampToDateTime(
+            groupMembershipScheduleRef['start_at'],
+          );
+          final endAt =
+              convertTimestampToDateTime(groupMembershipScheduleRef['end_at']);
+          final updatedAt =
+              groupMembershipScheduleRef['updated_at'] as Timestamp?;
+          final createdAt =
+              groupMembershipScheduleRef['created_at'] as Timestamp?;
+          if (createdAt == null) {
+            return null;
+          }
 
-      return GroupMemberSchedule(
-        scheduleId: scheduleId,
-        userId: userDocId,
-        attendance: attendance,
-        leaveEarly: leaveEarly,
-        lateness: lateness,
-        absence: absence,
-        startAt: startAt,
-        endAt: endAt,
-        updatedAt: updatedAt,
-        createdAt: createdAt,
-      );
-    }).whereType<GroupMemberSchedule?>().toList();
+          return GroupMemberSchedule(
+            scheduleId: scheduleId,
+            userId: userDocId,
+            attendance: attendance,
+            leaveEarly: leaveEarly,
+            lateness: lateness,
+            absence: absence,
+            startAt: startAt,
+            endAt: endAt,
+            updatedAt: updatedAt,
+            createdAt: createdAt,
+          );
+        })
+        .whereType<GroupMemberSchedule?>()
+        .toList();
 
     return groupMemberScheduleList;
   }
@@ -187,7 +253,7 @@ class GroupMemberScheduleController {
         return null;
       }
 
-      if (!absence) { 
+      if (!absence) {
         return doc.id;
       }
       return null;

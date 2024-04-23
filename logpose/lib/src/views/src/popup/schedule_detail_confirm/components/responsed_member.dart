@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/schedule/reaponsed_member_not_absence_schedule_list_provider.dart';
+import '../../../../../controllers/providers/group/schedule/watch_group_member_profile_not_absence_list_provider.dart';
 
 import '../../../../../models/group/database/group_profile.dart';
 import '../../../../../models/group/database/group_schedule.dart';

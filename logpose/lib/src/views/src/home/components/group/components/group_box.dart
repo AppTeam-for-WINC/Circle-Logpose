@@ -47,6 +47,9 @@ class _GroupBoxState extends ConsumerState<GroupBox> {
         ),
         child: asyncGroupProfileList.when(
           data: (groupData) {
+            if (groupData == null) {
+              return const Text('No group data.');
+            }
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,

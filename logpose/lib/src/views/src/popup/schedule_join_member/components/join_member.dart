@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/schedule/responsed_group_member_schedule_provider.dart';
+import '../../../../../controllers/providers/group/schedule/watch_responesd_group_member_schedule_provider.dart';
 import '../../../../../models/user/user.dart';
 import '../../../../../utils/time/time_utils.dart';
 
