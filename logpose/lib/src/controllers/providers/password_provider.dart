@@ -6,9 +6,6 @@ import '../../services/auth/auth_controller.dart';
 
 import '../validation/password_validation.dart';
 
-final passwordErrorMessageProvider =
-    StateProvider.autoDispose<String?>((ref) => null);
-
 final passwordSettingProvider = Provider.autoDispose<_UserPasswordSetting>(
   (ref) => _UserPasswordSetting(),
 );
@@ -18,10 +15,10 @@ class _UserPasswordSetting {
   TextEditingController newPasswordController = TextEditingController();
 
   Future<String?> update() async {
-    final validationErrorMessage =
+    final validationPasswordError =
         _validationPassword(newPasswordController.text);
-    if (validationErrorMessage != null) {
-      return validationErrorMessage;
+    if (validationPasswordError != null) {
+      return validationPasswordError;
     }
 
     // Get user email
@@ -35,9 +32,9 @@ class _UserPasswordSetting {
 
   // Validate new password
   String? _validationPassword(String newPassword) {
-    final validationErrorMessage = PasswordValidation.validation(newPassword);
-    if (validationErrorMessage != null) {
-      return validationErrorMessage;
+    final passwordError = PasswordValidation.validation(newPassword);
+    if (passwordError != null) {
+      return passwordError;
     }
     return null;
   }
@@ -47,14 +44,13 @@ class _UserPasswordSetting {
     final password = passwordController.text;
 
     // Attempt to update password
+    // Returns null if no error
     try {
-      final updateErrorMessage = await AuthController.updateUserPassword(
+      return AuthController.updateUserPassword(
         email,
         password,
         newPassword,
       );
-      // Returns null if no error
-      return updateErrorMessage;
     } on FirebaseException catch (e) {
       return 'Failed to update password: ${e.message}';
     }

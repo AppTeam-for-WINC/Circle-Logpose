@@ -17,7 +17,7 @@ class GroupScheduleController {
   // schedule path
   static const collectionPath = 'group_schedules';
 
-  /// Create schudule database.
+  /// Create schudule database, return doc.id;
   static Future<String> create(
 
       // Named parameters

@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../../services/database/member_schedule_controller.dart';
 
+/// Create Group member's schedule.
 class CreateMembersSchedule {
   CreateMembersSchedule._internal();
   static final CreateMembersSchedule _instance =
@@ -19,7 +21,7 @@ class CreateMembersSchedule {
         userId: userId,
       );
     } on FirebaseException catch (e) {
-      throw Exception('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 }

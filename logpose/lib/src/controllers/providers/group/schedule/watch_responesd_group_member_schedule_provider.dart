@@ -14,10 +14,9 @@ final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
     final userDocId =
         await UserController.readUserDocIdWithAccountId(args.accountId);
 
-    yield await GroupMemberScheduleController
-        .readGroupMemberScheduleWithScheduleIdAndUserId(
-      args.scheduleId,
-      userDocId,
+    yield await GroupMemberScheduleController.readGroupMemberSchedule(
+      userDocId: userDocId,
+      scheduleId: args.scheduleId,
     );
   } on Exception catch (e) {
     debugPrint('Failed to fetch Group member schedule. $e');

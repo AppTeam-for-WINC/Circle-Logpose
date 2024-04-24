@@ -108,11 +108,10 @@ class GroupMemberScheduleController {
   }
 
   /// Read GroupMembershipSchedule.
-  static Future<GroupMemberSchedule?>
-      readGroupMemberScheduleWithScheduleIdAndUserId(
-    String scheduleId,
-    String userDocId,
-  ) async {
+  static Future<GroupMemberSchedule?> readGroupMemberSchedule({
+    required String userDocId,
+    required String scheduleId,
+  }) async {
     try {
       final snapshot = await db
           .collection(collectionPath)

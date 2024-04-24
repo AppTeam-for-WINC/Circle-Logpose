@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/group/read_group_and_id_modal_provider.dart';
+import '../../../../../../controllers/providers/group/group/fetch_group_and_id_modal_provider.dart';
 import '../../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
@@ -28,7 +28,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         scheduleNotifier.setGroupId(id);
         final asyncGroupWithIdList = await ref
-            .read(readGroupAndIdModalProvider(widget.groupIdList).future);
+            .read(fetchGroupAndIdModalProvider(widget.groupIdList).future);
 
         ref.read(selectedGroupNameProvider.notifier).state =
             asyncGroupWithIdList[0].groupProfile.name;
@@ -42,7 +42,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
 
     final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     final asyncGroupWithIdList =
-        ref.watch(readGroupAndIdModalProvider(groupIdList));
+        ref.watch(fetchGroupAndIdModalProvider(groupIdList));
 
     return Container(
       height: 200,

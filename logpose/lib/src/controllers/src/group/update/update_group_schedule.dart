@@ -22,39 +22,71 @@ class UpdateGroupSchedule {
     DateTime endAt,
   ) async {
     try {
-      final titleValidationErrorMessage =
-          ScheduleValidation.titleValidation(title);
-      final placeValidationErrorMessage =
-          ScheduleValidation.placeValidation(place);
-      final detailValidationErrorMessage =
-          ScheduleValidation.detailValidation(detail);
-      if (titleValidationErrorMessage != null) {
-        return titleValidationErrorMessage;
+      final scheduleValidation = _scheduleValidation(title, place, detail);
+      if (scheduleValidation != null) {
+        return scheduleValidation;
       }
 
-      if (placeValidationErrorMessage != null) {
-        return placeValidationErrorMessage;
-      }
-
-      if (detailValidationErrorMessage != null) {
-        return detailValidationErrorMessage;
-      }
-      final colorToString = colorToHex(color);
-
-      await GroupScheduleController.update(
-        docId: docId,
-        groupId: groupId,
-        title: title,
-        color: colorToString,
-        place: place,
-        detail: detail,
-        startAt: startAt,
-        endAt: endAt,
+      await _updateGroupSchedule(
+        docId,
+        groupId,
+        title,
+        color,
+        place,
+        detail,
+        startAt,
+        endAt,
       );
 
       return null;
     } on FirebaseException catch (e) {
       throw Exception('Error: $e');
     }
+  }
+
+  static String? _scheduleValidation(
+    String title,
+    String place,
+    String detail,
+  ) {
+    final titleError = ScheduleValidation.titleValidation(title);
+    final placeError = ScheduleValidation.placeValidation(place);
+    final detailError = ScheduleValidation.detailValidation(detail);
+    if (titleError != null) {
+      return titleError;
+    }
+
+    if (placeError != null) {
+      return placeError;
+    }
+
+    if (detailError != null) {
+      return detailError;
+    }
+
+    return null;
+  }
+
+  static Future<void> _updateGroupSchedule(
+    String docId,
+    String groupId,
+    String title,
+    Color color,
+    String? place,
+    String? detail,
+    DateTime startAt,
+    DateTime endAt,
+  ) async {
+    final colorToString = colorToHex(color);
+    await GroupScheduleController.update(
+      docId: docId,
+      groupId: groupId,
+      title: title,
+      color: colorToString,
+      place: place,
+      detail: detail,
+      startAt: startAt,
+      endAt: endAt,
+    );
   }
 }

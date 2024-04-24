@@ -1,3 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/widgets.dart';
+
+import '../../../../models/group/database/group_profile.dart';
 import '../../../../models/group/group_and_id_model.dart';
 import '../../../../services/database/group_controller.dart';
 
@@ -6,19 +10,31 @@ class GroupAndIdFetcher {
   static final GroupAndIdFetcher _instance = GroupAndIdFetcher._internal();
   static GroupAndIdFetcher get instance => _instance;
 
-  static List<Future<GroupAndId?>> fromMap(List<String> groupIdList) {
+  static Future<List<GroupAndId>> fetchGroupAndIdList(
+    List<String> groupIdList,
+  ) {
     /// tear-off system of Dart. (groupId) => fromGroupAndId(groupId)
-    return groupIdList.map(fromGroupAndId).toList();
+    return Future.wait(groupIdList.map(fetchGroupAndId).toList());
   }
 
-  static Future<GroupAndId?> fromGroupAndId(String groupId) async {
-    final groupProfile = await GroupController.read(groupId);
-    if (groupProfile == null) {
-      return null;
+  static Future<GroupAndId> fetchGroupAndId(String groupId) async {
+    try {
+      final groupProfile = await _readGroupProfile(groupId);
+      if (groupProfile == null) {
+        debugPrint('Failed to fetch Group profile.');
+        throw Exception('Group profile not found for ID: $groupId');
+      }
+
+      return GroupAndId(
+        groupProfile: groupProfile,
+        groupId: groupId,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to from GroupAndId. $e');
     }
-    return GroupAndId(
-      groupProfile: groupProfile,
-      groupId: groupId,
-    );
+  }
+
+  static Future<GroupProfile?> _readGroupProfile(String groupId) async {
+    return GroupController.read(groupId);
   }
 }

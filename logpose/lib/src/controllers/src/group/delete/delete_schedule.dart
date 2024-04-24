@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../../models/user/user.dart';
 
@@ -18,26 +19,46 @@ class DeleteSchedule {
     List<UserProfile?> groupMemberList,
   ) async {
     try {
-      await Future.forEach<UserProfile?>(groupMemberList, (member) async {
+      await Future.wait(groupMemberList.map((member) async {
         if (member == null) {
           return;
         }
-        final memberDocId = await UserController.readUserDocIdWithAccountId(
+        final memberScheduleId = await _fetchMemberScheduleId(
           member.accountId,
-        );
-        final memberScheduleId = await GroupMemberScheduleController
-            .readDocIdWithScheduleIdAndUserId(
-          scheduleId: groupScheduleId,
-          userDocId: memberDocId,
+          groupScheduleId,
         );
         if (memberScheduleId == null) {
-          throw Exception('Failed to reead memberSchedule ID.');
+          debugPrint('Failed to reead memberSchedule ID.');
+          return;
         }
-        await GroupMemberScheduleController.delete(memberScheduleId);
-      });
-      await GroupScheduleController.delete(groupScheduleId);
+        await _deleteMemberSchedule(memberScheduleId);
+      }),);
+      await _deleteGroupSchedule(groupScheduleId);
     } on FirebaseException catch (e) {
-      throw Exception('Failed to delete group schedule. $e');
+      throw Exception('Failed to delete group schedule. Error: $e');
     }
+  }
+
+  static Future<String?> _fetchMemberScheduleId(
+    String accountId,
+    String groupScheduleId,
+  ) async {
+    final userDocId = await _fetchUserDocId(accountId);
+    return GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
+      scheduleId: groupScheduleId,
+      userDocId: userDocId,
+    );
+  }
+
+  static Future<String> _fetchUserDocId(String accountId) async {
+    return UserController.readUserDocIdWithAccountId(accountId);
+  }
+
+  static Future<void> _deleteMemberSchedule(String memberScheduleId) async {
+    await GroupMemberScheduleController.delete(memberScheduleId);
+  }
+
+  static Future<void> _deleteGroupSchedule(String groupScheduleId) async {
+    await GroupScheduleController.delete(groupScheduleId);
   }
 }

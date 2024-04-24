@@ -12,7 +12,9 @@ final watchGroupScheduleAndIdProvider =
     try {
       yield* GroupScheduleController.watchAllScheduleId(groupId).asyncMap(
         (scheduleIdList) async =>
-            GroupScheduleAndIdFetcher.fromMap(scheduleIdList),
+            GroupScheduleAndIdFetcher.fetchGroupScheduleAndIdList(
+          scheduleIdList,
+        ),
       );
     } on Exception catch (e) {
       debugPrint('Failed to fetch group schedules: $e');

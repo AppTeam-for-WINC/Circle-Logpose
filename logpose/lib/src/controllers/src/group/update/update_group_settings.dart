@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../models/user/user.dart';
+import 'package:logpose/src/models/group/database/member_schedule.dart';
 
 import '../../../../services/database/group_controller.dart';
 import '../../../../services/database/group_membership_controller.dart';
@@ -27,70 +26,119 @@ class UpdateGroupSettings {
     WidgetRef ref,
   ) async {
     String? imagePath;
-    final nameValidationErrorMessage = GroupValidation.nameValidation(name);
-    if (nameValidationErrorMessage != null) {
-      return nameValidationErrorMessage;
-    }
-    if (image == null) {
-      imagePath = null;
-    } else {
-      imagePath = image.path;
-    }
+    try {
+      final nameValidation = GroupValidation.nameValidation(name);
+      if (nameValidation != null) {
+        return nameValidation;
+      }
+      if (image == null) {
+        imagePath = null;
+      } else {
+        imagePath = image.path;
+      }
 
-    await GroupController.update(
-      docId: groupId,
-      name: name,
-      description: description,
-      image: imagePath,
-    );
+      await _updateGroup(
+        groupId,
+        name,
+        description,
+        imagePath,
+      );
 
-    final groupMembersList = ref.watch(setGroupMemberListProvider);
-    await _addMeberships(groupMembersList, groupId);
+      await _addMemberships(ref, groupId);
+    } on FirebaseException catch (e) {
+      return 'Error: Failed to update group data. $e';
+    }
 
     return null;
   }
 
-  static Future<void> _addMeberships(
-    List<UserProfile> groupMemberList,
+  static Future<void> _updateGroup(
+    String docId,
+    String name,
+    String? description,
+    String? imagePath,
+  ) async {
+    await GroupController.update(
+      docId: docId,
+      name: name,
+      description: description,
+      image: imagePath,
+    );
+  }
+
+  static Future<void> _addMemberships(WidgetRef ref, String groupId) async {
+    final groupMemberList = ref.watch(setGroupMemberListProvider);
+    await Future.wait(
+      groupMemberList.map((member) async {
+        final memberDocId = await _fetchUserDocId(member.accountId);
+        await _createMembershipMember(memberDocId, groupId);
+
+        await _watchAllScheduleId(memberDocId, groupId);
+      }),
+    );
+  }
+
+  static Future<void> _watchAllScheduleId(
+    String memberDocId,
     String groupId,
   ) async {
-    try {
-      await Future.forEach<UserProfile>(groupMemberList, (member) async {
-        final memberDocId = await UserController.readUserDocIdWithAccountId(
-          member.accountId,
-        );
-        await GroupMembershipController.create(
-          memberDocId,
-          'membership',
-          groupId,
-        );
-
-        final groupScheduleIdsStream =
-            GroupScheduleController.watchAllScheduleId(groupId);
-        await for (final scheduleIdList in groupScheduleIdsStream) {
-          for (final scheduleId in scheduleIdList) {
-            if (scheduleId == null) {
-              continue;
-            }
-
-            final memberScheduleList =
-                await GroupMemberScheduleController.readAllGroupMemberSchedule(
-              memberDocId,
-              scheduleId,
-            );
-
-            if (memberScheduleList.isEmpty) {
-              await GroupMemberScheduleController.create(
-                scheduleId: scheduleId,
-                userId: memberDocId,
-              );
-            }
-          }
-          return;
-        }
-      });
-    } on FirebaseException catch (e) {
-      throw Exception('Failed to add member. $e');
+    await for (final scheduleIdList
+        in GroupScheduleController.watchAllScheduleId(groupId)) {
+      await _assignMemberSchedule(memberDocId, scheduleIdList);
     }
+  }
+
+  static Future<void> _assignMemberSchedule(
+    String memberDocId,
+    List<String?> scheduleIdList,
+  ) async {
+    for (final scheduleId in scheduleIdList) {
+      if (scheduleId == null) {
+        continue;
+      }
+
+      final memberSchedule = await _fetchGroupMemberSchedule(
+        memberDocId,
+        scheduleId,
+      );
+      if (memberSchedule == null) {
+        await _createMemberSchedule(scheduleId, memberDocId);
+      }
+    }
+  }
+
+  static Future<String> _fetchUserDocId(String accountId) async {
+    return UserController.readUserDocIdWithAccountId(accountId);
+  }
+
+  static Future<void> _createMembershipMember(
+    String memberDocId,
+    String groupId,
+  ) async {
+    await GroupMembershipController.create(
+      memberDocId,
+      'membership',
+      groupId,
+    );
+  }
+
+  static Future<GroupMemberSchedule?> _fetchGroupMemberSchedule(
+    String userDocId,
+    String scheduleId,
+  ) async {
+    return GroupMemberScheduleController.readGroupMemberSchedule(
+      userDocId: userDocId,
+      scheduleId: scheduleId,
+    );
+  }
+
+  static Future<void> _createMemberSchedule(
+    String scheduleId,
+    String userId,
+  ) async {
+    await GroupMemberScheduleController.create(
+      scheduleId: scheduleId,
+      userId: userId,
+    );
   }
 }

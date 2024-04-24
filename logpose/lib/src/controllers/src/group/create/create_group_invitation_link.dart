@@ -10,9 +10,7 @@ class CreateGroupInvitationLink {
 
   static Future<String?> readGroupInvitationLink(String groupId) async {
     try {
-      final invitationData = await GroupInvitationController.create(groupId);
-      final invitationLink = invitationData.invitationLink;
-      return invitationLink;
+      return (await GroupInvitationController.create(groupId)).invitationLink;
     } on FirebaseException catch (e) {
       throw Exception('Failed to read invitation link. $e');
     }

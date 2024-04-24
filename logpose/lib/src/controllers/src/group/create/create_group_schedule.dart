@@ -27,42 +27,31 @@ class CreateGroupSchedule {
     DateTime endAt,
   ) async {
     try {
-      final validateErrorMessage = _validate(
+      final validateError = _validate(
         title: title,
-        place: place,
-        detail: detail,
-      );
-      if (validateErrorMessage != null) {
-        return validateErrorMessage;
-      }
-      if (!checkStartAtAfterEndAt(startAt, endAt)) {
-        const errorMessage = 'Start time must be set before end time';
-        return errorMessage;
-      }
-
-      final colorToString = colorToHex(color);
-      final scheduleId = await GroupScheduleController.create(
-        groupId: groupId,
-        title: title,
-        color: colorToString,
         place: place,
         detail: detail,
         startAt: startAt,
         endAt: endAt,
       );
-
-      final userDocIds =
-          await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
-      for (final userDocId in userDocIds) {
-        await CreateMembersSchedule.create(
-          scheduleId: scheduleId,
-          userId: userDocId,
-        );
+      if (validateError != null) {
+        return validateError;
       }
+
+      final scheduleId = await _createSchedule(
+        groupId,
+        title,
+        color,
+        place,
+        detail,
+        startAt,
+        endAt,
+      );
+      await _createMemberSchedule(groupId, scheduleId);
 
       return null;
     } on FirebaseException catch (e) {
-      throw Exception('Error: $e');
+      return 'Error: $e';
     }
   }
 
@@ -70,25 +59,65 @@ class CreateGroupSchedule {
     required String title,
     required String place,
     required String detail,
+    required DateTime startAt,
+    required DateTime endAt,
   }) {
-    final titleValidationErrorMessage =
-        ScheduleValidation.titleValidation(title);
-    final placeValidationErrorMessage =
-        ScheduleValidation.placeValidation(place);
-    final detailValidationErrorMessage =
-        ScheduleValidation.detailValidation(detail);
-    if (titleValidationErrorMessage != null) {
-      return titleValidationErrorMessage;
+    final titleError = ScheduleValidation.titleValidation(title);
+    final placeError = ScheduleValidation.placeValidation(place);
+    final detailError = ScheduleValidation.detailValidation(detail);
+    if (titleError != null) {
+      return titleError;
     }
 
-    if (placeValidationErrorMessage != null) {
-      return placeValidationErrorMessage;
+    if (placeError != null) {
+      return placeError;
     }
 
-    if (detailValidationErrorMessage != null) {
-      return detailValidationErrorMessage;
+    if (detailError != null) {
+      return detailError;
+    }
+
+    if (!checkStartAtAfterEndAt(startAt, endAt)) {
+      const errorMessage = 'Start time must be set before end time';
+      return errorMessage;
     }
 
     return null;
+  }
+
+  static Future<String> _createSchedule(
+    String groupId,
+    String title,
+    Color color,
+    String place,
+    String detail,
+    DateTime startAt,
+    DateTime endAt,
+  ) async {
+    final colorToString = colorToHex(color);
+    // Create Group Schedule, return Group Schedule doc ID.
+    return GroupScheduleController.create(
+      groupId: groupId,
+      title: title,
+      color: colorToString,
+      place: place,
+      detail: detail,
+      startAt: startAt,
+      endAt: endAt,
+    );
+  }
+
+  static Future<void> _createMemberSchedule(
+    String groupId,
+    String scheduleId,
+  ) async {
+    final userDocIds =
+        await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
+    for (final userDocId in userDocIds) {
+      await CreateMembersSchedule.create(
+        scheduleId: scheduleId,
+        userId: userDocId,
+      );
+    }
   }
 }
