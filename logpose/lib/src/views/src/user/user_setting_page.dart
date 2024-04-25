@@ -6,9 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
-import '../../../controllers/providers/group/group/group_profile_provider.dart';
-import '../../../controllers/providers/user/user_profile_provider.dart';
-import '../../../controllers/src/user/user_profile/update_user_profile.dart';
+import '../../../controllers/controllers/user/update_user_profile.dart';
+import '../../../controllers/providers/error/update_user_profile_error_provider.dart';
+import '../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
+import '../../../controllers/providers/user/set_user_profile_provider.dart';
 
 import '../../../entities/device/image_controller.dart';
 import '../../../services/auth/auth_controller.dart';
@@ -54,6 +55,8 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
 
     final imageIconSize = deviceWidth * 0.15;
 
+    // final userProfileError = 
+    // ref.watch(updateUserProfileErrorMessageProvider);
     final isLoading = ref.watch(loadingProgressProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
     final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
@@ -551,13 +554,19 @@ class _AccountSettingPageState extends ConsumerState<AccountSettingPage> {
                             loading: true,
                           );
 
-                          final success = await UpdateUserProfile.update(
+                          final errorMessage = await UpdateUserProfile.update(
                             userProfileNotifier.nameController.text,
                             image,
                             null,
                             ref,
                           );
-                          if (!success) {
+                          if (errorMessage != null) {
+                            ref
+                                .watch(
+                                  updateUserProfileErrorMessageProvider
+                                      .notifier,
+                                )
+                                .state = errorMessage;
                             return;
                           }
 

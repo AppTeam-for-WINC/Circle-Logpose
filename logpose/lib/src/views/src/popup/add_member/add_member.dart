@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../controllers/controllers/group/create/create_group_invitation_link.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/user/set_search_user_data_provider.dart';
-import '../../../../controllers/src/group/create/create_group_invitation_link.dart';
 
 import '../../../../utils/clipboard/copy_to_clipboard.dart';
 

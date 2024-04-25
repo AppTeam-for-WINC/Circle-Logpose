@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/group/database/group.dart';
+import '../../../../models/group/database/group_profile.dart';
 import '../../../../services/database/group_controller.dart';
 
 /// Group setting provider.
@@ -12,47 +12,37 @@ final groupSettingProvider = StateNotifierProvider.family
   (ref, groupId) => _GroupSettingNotifier(groupId),
 );
 
-/// Group of notifier.
+/// Group notifier class.
 class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
   _GroupSettingNotifier(this.groupId) : super(null) {
     _initGroupProfile();
   }
   TextEditingController groupNameController = TextEditingController();
   String groupId;
-  GroupProfile? group;
 
   Future<void> _initGroupProfile() async {
-    if (groupId.isEmpty) {
-      state = null;
-      return;
-    }
     try {
-      final groupStream = GroupController.read(groupId);
-      await for (final groupData in groupStream) {
-        if (groupData == null) {
-          continue;
-        }
-        group = groupData;
-        if (group != null) {
-          state = group;
-          groupNameController.text = group!.name;
-        } else {
-          state = null;
-        }
-        return;
-      }
+      final groupData = await _fetchGroupProfile();
+      state = groupData;
+      groupNameController.text = groupData.name;
     } on Exception catch (e) {
-      throw Exception('Error: No found group $e');
+      state = null;
+      debugPrint('Error: No found group $e');
     }
   }
 
+  Future<GroupProfile> _fetchGroupProfile() async {
+    final groupData = await GroupController.watch(groupId).first;
+    if (groupData == null) {
+      state = null;
+    }
+    return groupData!;
+  }
+
+  /// Change GroupProfile image.
   Future<void> changeImage(File newImage) async {
     if (state != null) {
-      state = GroupProfile(
-        name: state!.name,
-        image: newImage.path,
-        createdAt: state!.createdAt,
-      );
+      state = state!.copyWith(image: newImage.path);
     }
   }
 }

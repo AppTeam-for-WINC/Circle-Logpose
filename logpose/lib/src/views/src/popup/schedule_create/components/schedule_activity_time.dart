@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../../utils/time/time_utils.dart';
 
 import 'time_picker/activity_end_at.dart';
@@ -17,7 +17,7 @@ class ScheduleActivityTime extends ConsumerStatefulWidget {
 class _ScheduleActivityTimeState extends ConsumerState<ScheduleActivityTime> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(groupScheduleProvider);
+    final schedule = ref.watch(setGroupScheduleProvider(null));
     return Row(
       children: [
         Container(

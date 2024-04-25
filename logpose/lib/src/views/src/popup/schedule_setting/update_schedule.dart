@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common/color_palette.dart';
+import '../../../../common/schedule_color_palette.dart';
 
-import '../../../../controllers/providers/group/group/group_profile_provider.dart';
-import '../../../../controllers/providers/group/msg/schedule_error_msg_provider.dart';
+import '../../../../controllers/controllers/group/update/update_group_schedule.dart';
+import '../../../../controllers/providers/error/schedule_error_msg_provider.dart';
+import '../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
-import '../../../../controllers/src/group/update/update_group_schedule.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
+import '../../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
 
 import '../schedule_create/components/group_picker/group_picker_button.dart';
 import 'update_activity_time.dart';
@@ -30,7 +33,7 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     final groupScheduleId = widget.groupScheduleId;
-    
+
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
     final scheduleNotifier =
@@ -117,7 +120,9 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                   width: deviceWidth * 0.7,
                   child: CupertinoTextField(
                     placeholder: 'タイトルを追加',
-                    controller: schedule.titleController,
+                    controller: ref
+                        .watch(scheduleTitleControllerProvider.notifier)
+                        .state,
                     placeholderStyle: const TextStyle(color: Colors.grey),
                     decoration: const BoxDecoration(
                       border: Border(
@@ -128,6 +133,10 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                       fontSize: 16,
                       color: Colors.black,
                     ),
+                    onChanged: (text) => ref
+                        .read(scheduleTitleControllerProvider.notifier)
+                        .state
+                        .text = text,
                   ),
                 ),
               ),
@@ -170,7 +179,12 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                                   padding: const EdgeInsets.only(left: 8),
                                   width: deviceWidth * 0.6,
                                   child: CupertinoTextField(
-                                    controller: schedule.placeController,
+                                    controller: ref
+                                        .watch(
+                                          schedulePlaceControllerProvider
+                                              .notifier,
+                                        )
+                                        .state,
                                     placeholder: '場所を追加',
                                     placeholderStyle:
                                         const TextStyle(color: Colors.grey),
@@ -185,6 +199,13 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                                       fontSize: 16,
                                       color: Colors.black,
                                     ),
+                                    onChanged: (text) => ref
+                                        .read(
+                                          schedulePlaceControllerProvider
+                                              .notifier,
+                                        )
+                                        .state
+                                        .text = text,
                                   ),
                                 ),
                               ],
@@ -207,7 +228,12 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                                       padding: const EdgeInsets.only(left: 8),
                                       width: deviceWidth * 0.6,
                                       child: CupertinoTextField(
-                                        controller: schedule.detailController,
+                                        controller: ref
+                                            .watch(
+                                              scheduleDetailControllerProvider
+                                                  .notifier,
+                                            )
+                                            .state,
                                         placeholder: '詳細を追加',
                                         placeholderStyle:
                                             const TextStyle(color: Colors.grey),
@@ -222,6 +248,13 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                                           fontSize: 16,
                                           color: Colors.black,
                                         ),
+                                        onChanged: (text) => ref
+                                            .read(
+                                              scheduleDetailControllerProvider
+                                                  .notifier,
+                                            )
+                                            .state
+                                            .text = text,
                                       ),
                                     ),
                                   ],
@@ -268,10 +301,10 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                                 await UpdateGroupSchedule.updateSchedule(
                               groupScheduleId,
                               schedule.groupId!,
-                              schedule.titleController.text,
+                              ref.read(scheduleTitleControllerProvider).text,
                               schedule.color!,
-                              schedule.placeController.text,
-                              schedule.detailController.text,
+                              ref.read(schedulePlaceControllerProvider).text,
+                              ref.read(scheduleDetailControllerProvider).text,
                               schedule.startAt,
                               schedule.endAt,
                             );

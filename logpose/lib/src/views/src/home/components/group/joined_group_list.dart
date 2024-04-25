@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/group/group_profile_provider.dart';
+import '../../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
 
 import '../../../group/create/group_create_page.dart';
 import 'components/group_box.dart';

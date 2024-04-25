@@ -24,6 +24,9 @@ class _JoinedGroupComponentState extends ConsumerState<JoinedGroupComponent> {
 
     return groupProfile.when(
       data: (data) {
+        if (data == null) {
+          return const Text('No group data.');
+        }
         return GestureDetector(
           onTap: () {},
           child: DecoratedBox(

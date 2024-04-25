@@ -39,45 +39,31 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _accountDataController(String? groupId) async {
-    await _accountIdLengthChecker();
+    _validateAccountId();
     await _memberAddController(groupId);
   }
 
-  Future<String?> _accountIdLengthChecker() async {
+  String? _validateAccountId() {
     final accountId = accountIdController.text;
-    const maxLength64Validation = MaxLength64Validation();
-
-    final accountIdMaxLength64Validation = maxLength64Validation.validate(
-      accountId,
-      'accountId',
-    );
-    if (accountIdMaxLength64Validation) {
-      return null;
-    }
-    return 'Maximum length is 64 characters.';
+    final validation =
+        const MaxLength64Validation().validate(accountId, 'accountId');
+    return validation ? null : 'Maximum length is 64 characters.';
   }
 
   Future<void> _memberAddController(String? groupId) async {
     final myDocId = await AuthController.getCurrentUserId();
     final myAccount = await UserController.read(myDocId!);
-
     final accountId = accountIdController.text;
     user = await UserController.readWithAccountId(accountId);
 
     // アカウントIDが見つからない場合は、nullを返す。
     if (user == null) {
-      username = null;
-      userImage = null;
-      userDescription = null;
       state = null;
       return;
     }
 
     // 自分のアカウントを検索した場合は、何も返さない。
     if (myAccount.accountId == user!.accountId) {
-      username = null;
-      userImage = null;
-      userDescription = null;
       state = null;
       return;
     }
@@ -92,9 +78,6 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
       );
 
       if (isAlreadyMember) {
-        username = null;
-        userImage = null;
-        userDescription = null;
         state = null;
         return;
       }
@@ -102,9 +85,6 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
 
     // 既に追加済みのメンバーの場合は何も返さない。
     if (addedMemberIds.contains(accountId)) {
-      username = null;
-      userImage = null;
-      userDescription = null;
       state = null;
       return;
     }

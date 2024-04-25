@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
-import '../../../../../../controllers/src/group/update/update_group_member_schedule_setting.dart';
 
 import '../../../../../../models/group/database/group_schedule.dart';
 
@@ -84,11 +83,7 @@ class _JoinScheduleStartAtPickerState
                 const Duration(minutes: -1),
               ),
               onDateTimeChanged: (newDateTime) async {
-                scheduleNotifier.setStartAt(newDateTime);
-                await UpdateGroupMemberSchedule.update(
-                  scheduleId: groupScheduleId,
-                  startAt: newDateTime,
-                );
+                await scheduleNotifier.updateStartAt(newDateTime);
               },
             ),
           ),
