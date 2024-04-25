@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
-import '../../../../../../controllers/src/group/update/update_group_member_schedule_setting.dart';
 
 import '../../../../../../models/group/database/group_schedule.dart';
 
@@ -81,11 +80,7 @@ class _JoinScheduleEndAtPickerState
               minimumDate: schedule.startAt,
               maximumDate: groupSchedule.endAt,
               onDateTimeChanged: (newDateTime) async {
-                scheduleNotifier.setEndAt(newDateTime);
-                await UpdateGroupMemberSchedule.update(
-                  scheduleId: groupScheduleId,
-                  endAt: newDateTime,
-                );
+                await scheduleNotifier.updateEndAt(newDateTime);
               },
             ),
           ),

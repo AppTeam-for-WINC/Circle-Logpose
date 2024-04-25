@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
 class ActivityEndAtPicker extends ConsumerStatefulWidget {
   const ActivityEndAtPicker({super.key});
@@ -14,8 +14,8 @@ class _ActivityEndAtPickerState
     extends ConsumerState<ActivityEndAtPicker> {
   @override
   Widget build(BuildContext context) {
-    final schedule = ref.watch(groupScheduleProvider);
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+    final schedule = ref.watch(setGroupScheduleProvider(null));
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     
     return Container(
       height: 300,

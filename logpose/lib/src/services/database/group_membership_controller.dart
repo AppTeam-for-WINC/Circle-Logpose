@@ -20,69 +20,70 @@ class GroupMembershipController {
     String role,
     String groupId,
   ) async {
-    final groupMembershipDoc = db.collection(collectionPath).doc();
-    final userDoc = await db.collection('users').doc(userDocId).get();
-    final userRef = userDoc.data();
-    if (userRef == null) {
-      throw Exception('Error : No found document data.');
+    try {
+      final groupMembershipDoc = db.collection(collectionPath).doc();
+      final data = (await db.collection('users').doc(userDocId).get()).data();
+      if (data == null) {
+        throw Exception('Error : No found document data.');
+      }
+
+      await groupMembershipDoc.set({
+        'user_id': userDocId,
+        'username': data['name'] as String,
+        'user_description': data['description'] as String?,
+        'group_id': groupId,
+        'role': role,
+        'created_at': FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to create group membership database. $e');
     }
-
-    final username = userRef['name'] as String;
-    final userDescription = userRef['description'] as String?;
-    final joinedAt = FieldValue.serverTimestamp();
-
-    await groupMembershipDoc.set({
-      'user_id': userDocId,
-      'username': username,
-      'user_description': userDescription,
-      'group_id': groupId,
-      'role': role,
-      'created_at': joinedAt,
-    });
   }
 
   /// Read all memgber's doc ID.
   static Future<List<String>> readAllUserDocIdWithGroupId(
     String groupId,
   ) async {
-    final groupMembershipSnapshot = await db
-        .collection(collectionPath)
-        .where('group_id', isEqualTo: groupId)
-        .get();
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .get();
 
-    final userDocIds = groupMembershipSnapshot.docs.map((doc) {
-      final groupMembershipRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipRef == null) {
-        throw Exception('No found document data.');
-      }
-      final userDocId = groupMembershipRef['user_id'] as String;
-      return userDocId;
-    }).toList();
-
-    return userDocIds;
+      return _fetchuserDocIdList(snapshot);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch group member docId. $e');
+    }
   }
 
   /// Watch all memgber's doc ID.
-  static Stream<List<String?>> watchAllUserDocIdWithGroupIdStream(
+  static Stream<List<String?>> watchAllUserDocIdWithGroupId(
     String groupId,
   ) async* {
-    final groupMemberStream = db
-        .collection(collectionPath)
-        .where('group_id', isEqualTo: groupId)
-        .snapshots();
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .snapshots();
 
-    await for (final groupMembers in groupMemberStream) {
-      final userDocIds = groupMembers.docs.map((doc) {
-        final groupMembershipData = doc.data() as Map<String, dynamic>?;
-        if (groupMembershipData == null) {
-          throw Exception('No found document data.');
-        }
-        final userDocId = groupMembershipData['user_id'] as String;
-        return userDocId;
-      }).toList();
-
-      yield userDocIds;
+      await for (final snapshot in stream) {
+        yield _fetchuserDocIdList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user docId list. $e');
     }
+  }
+
+  static List<String> _fetchuserDocIdList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) {
+      final userDocId = doc.data()['user_id'] as String?;
+      if (userDocId == null) {
+        throw Exception('No found document data.');
+      }
+      return userDocId;
+    }).toList();
   }
 
   /// Check member is Exist by groupId, userDocId.
@@ -90,106 +91,114 @@ class GroupMembershipController {
     required String groupId,
     required String userDocId,
   }) async {
-    final snapshot = await db
-        .collection(collectionPath)
-        .where('group_id', isEqualTo: groupId)
-        .where('user_id', isEqualTo: userDocId)
-        .get();
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .where('user_id', isEqualTo: userDocId)
+          .get();
 
-    if (snapshot.docs.isEmpty) {
-      return false;
+      if (snapshot.docs.isEmpty) {
+        return false;
+      }
+
+      return snapshot.docs.any((doc) {
+        final data = doc.data() as Map<String, dynamic>?;
+        return data != null;
+      });
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to check member. $e');
     }
-
-    return snapshot.docs.any((doc) {
-      final memberProfileData = doc.data() as Map<String, dynamic>?;
-      return memberProfileData != null;
-    });
   }
 
-  /// Read all role(Please selected 'admin', or 'membership') member's profiles.
-  static Stream<List<UserProfile?>> readAllRoleByProfileWithGroupId(
+  /// Watch all role(Selected 'admin', or 'membership')
+  /// member's profiles.
+  static Stream<List<UserProfile?>> watchAllUserProfileWithGroupIdAndRole(
     String groupId,
     String role,
   ) async* {
-    final groupMemberStream = db
-        .collection(collectionPath)
-        .where('group_id', isEqualTo: groupId)
-        .where('role', isEqualTo: role)
-        .snapshots();
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .where('role', isEqualTo: role)
+          .snapshots();
 
-    await for (final groupMembers in groupMemberStream) {
-      final groupMemberRefsFuture = groupMembers.docs.map((doc) async {
-        final groupMemberDocRef = doc.data() as Map<String, dynamic>?;
-        if (groupMemberDocRef == null) {
-          debugPrint('No found $role document data.');
-          return null;
-        }
-
-        final userId = groupMemberDocRef['user_id'] as String;
-        return UserController.read(userId);
-      }).toList();
-      final groupMemberRefs = await Future.wait(groupMemberRefsFuture);
-
-      yield groupMemberRefs;
+      await for (final snapshot in stream) {
+        yield await _fetchUserProfileList(snapshot, role);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. $e');
     }
   }
 
-  static Stream<List<GroupMembership?>> readAllWithUserId(
+  static Future<List<UserProfile?>> _fetchUserProfileList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+    String role,
+  ) async {
+    return Future.wait(
+      snapshot.docs.map((doc) async {
+        final userDocId = doc.data()['user_id'] as String?;
+        if (userDocId == null) {
+          debugPrint('No found $role document data.');
+          return null;
+        }
+        return _readUserProfile(userDocId);
+      }).toList(),
+    );
+  }
+
+  static Future<UserProfile> _readUserProfile(String userId) async {
+    return UserController.read(userId);
+  }
+
+  static Stream<List<GroupMembership?>> watchAllWithUserId(
     String userDocId,
   ) async* {
-    final groupMembershipsStream = db
-        .collection(collectionPath)
-        .where('user_id', isEqualTo: userDocId)
-        .snapshots();
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('user_id', isEqualTo: userDocId)
+          .snapshots();
 
-    await for (final groupMemberships in groupMembershipsStream) {
-      final groupMembershipsRefs = groupMemberships.docs.map((doc) {
-        final groupMembershipDocRef = doc.data() as Map<String, dynamic>?;
-        if (groupMembershipDocRef == null) {
-          debugPrint('Error : No found document data.');
-          return null;
-        }
-
-        final userId = groupMembershipDocRef['user_id'] as String;
-        final username = groupMembershipDocRef['username'] as String;
-        final userDescription =
-            groupMembershipDocRef['user_description'] as String?;
-        final role = groupMembershipDocRef['role'] as String;
-        final groupId = groupMembershipDocRef['group_id'] as String;
-        final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-        final joinedAt = groupMembershipDocRef['created_at'] as Timestamp?;
-        if (joinedAt == null) {
-          return null;
-        }
-        return GroupMembership(
-          userId: userId,
-          username: username,
-          userDescription: userDescription,
-          role: role,
-          groupId: groupId,
-          updatedAt: updatedAt,
-          joinedAt: joinedAt,
-        );
-      }).toList();
-
-      yield groupMembershipsRefs;
+      await for (final snapshot in stream) {
+        yield _fetchGroupMembershipList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch group member list. $e');
     }
+  }
+
+  static List<GroupMembership?> _fetchGroupMembershipList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data == null) {
+        debugPrint('Error : No found document data.');
+        return null;
+      }
+
+      return GroupMembership.fromMap(data);
+    }).toList();
   }
 
   /// Read specified member.
   static Future<GroupMembership> read(String docId) async {
-    final groupMembershipDoc =
-        await db.collection(collectionPath).doc(docId).get();
-    final groupMembershipDocRef = groupMembershipDoc.data();
-    if (groupMembershipDocRef == null) {
-      throw Exception('Error : No found document data.');
-    }
+    try {
+      final memberDoc = await db.collection(collectionPath).doc(docId).get();
+      final data = memberDoc.data();
+      if (data == null) {
+        throw Exception('Error : No found document data.');
+      }
 
-    return GroupMembership.fromMap(groupMembershipDocRef);
+      return GroupMembership.fromMap(data);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch group membership. $e');
+    }
   }
 
-  ///後で、ユーザー名、ユーザーの説明、ユーザーのロール其々を個別で変更できるような関数を作る。
-  ///Update membership users
+  /// Update membership users
   static Future<void> update({
     required String docId,
     required String userId,
@@ -198,21 +207,27 @@ class GroupMembershipController {
     required String role,
     required String groupId,
   }) async {
-    final updatedAt = FieldValue.serverTimestamp() as Timestamp;
-
-    final updateData = <String, dynamic>{
-      'user_id': userId,
-      'username': username,
-      'user_description': userDescription,
-      'role': role,
-      'group_id': groupId,
-      'updated_at': updatedAt,
-    };
-    await db.collection(collectionPath).doc(docId).update(updateData);
+    try {
+      final updateData = <String, dynamic>{
+        'user_id': userId,
+        'username': username,
+        'user_description': userDescription,
+        'role': role,
+        'group_id': groupId,
+        'updated_at': FieldValue.serverTimestamp() as Timestamp,
+      };
+      await db.collection(collectionPath).doc(docId).update(updateData);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to update group member database. $e');
+    }
   }
 
-  ///Delete specified member.
+  /// Delete specified member.
   static Future<void> delete(String docId) async {
-    await db.collection(collectionPath).doc(docId).delete();
+    try {
+      await db.collection(collectionPath).doc(docId).delete();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete group member. $e');
+    }
   }
 }

@@ -20,16 +20,10 @@ class ScheduleValidation {
       'title',
     );
     if (!titleRequiredValidation) {
-      final errorMessage =
-          const RequiredValidation().getStringInvalidRequiredMessage();
-
-      return errorMessage;
+      return const RequiredValidation().getStringInvalidRequiredMessage();
     }
     if (!titleMaxLength32Validation) {
-      final errorMessage =
-          const MaxLength32Validation().getMaxLengthInvalidMessage();
-
-      return errorMessage;
+      return const MaxLength32Validation().getMaxLengthInvalidMessage();
     }
 
     return null;
@@ -46,10 +40,7 @@ class ScheduleValidation {
       'place',
     );
     if (!placeMaxLength64Validation) {
-      final errorMessage =
-          const MaxLength64Validation().getMaxLengthInvalidMessage();
-
-      return errorMessage;
+      return const MaxLength64Validation().getMaxLengthInvalidMessage();
     }
 
     return null;
@@ -66,16 +57,10 @@ class ScheduleValidation {
       'detail',
     );
     if (!detailMaxLength2048Validation) {
-      final errorMessage =
-          const RequiredValidation().getStringInvalidRequiredMessage();
-
-      return errorMessage;
+      return const RequiredValidation().getStringInvalidRequiredMessage();
     }
     if (!detailMaxLength2048Validation) {
-      final errorMessage =
-          const MaxLength2048Validation().getMaxLengthInvalidMessage();
-
-      return errorMessage;
+      return const MaxLength2048Validation().getMaxLengthInvalidMessage();
     }
 
     return null;

@@ -22,17 +22,11 @@ class GroupValidation {
     );
 
     if (!nameRequiredValidation) {
-      final errorMessage =
-          const RequiredValidation().getStringInvalidRequiredMessage();
-
-      return errorMessage;
+      return const RequiredValidation().getStringInvalidRequiredMessage();
     }
 
     if (!nameMaxLength32Validation) {
-      final errorMessage =
-          const MaxLength32Validation().getMaxLengthInvalidMessage();
-
-      return errorMessage;
+      return const MaxLength32Validation().getMaxLengthInvalidMessage();
     }
 
     return null;

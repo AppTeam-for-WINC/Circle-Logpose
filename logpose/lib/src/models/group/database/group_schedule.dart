@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../utils/time/time_utils.dart';
+
 class GroupSchedule {
   const GroupSchedule({
     required this.groupId,
@@ -13,17 +15,17 @@ class GroupSchedule {
     required this.createdAt,
   });
 
-  factory GroupSchedule.fromMap(Map<String, dynamic> scheduleRef) {
+  factory GroupSchedule.fromMap(Map<String, dynamic> data) {
      ///Checked type of database variable;
-      final groupId = scheduleRef['group_id'] as String;
-      final title = scheduleRef['title'] as String;
-      final color = scheduleRef['color'] as String;
-      final place = scheduleRef['place'] as String?;
-      final detail = scheduleRef['detail'] as String?;
-      final startAt = scheduleRef['start_at'] as DateTime;
-      final endAt = scheduleRef['end_at'] as DateTime;
-      final updatedAt = scheduleRef['updated_at'] as Timestamp?;
-      final createdAt = scheduleRef['created_at'] as Timestamp;
+      final groupId = data['group_id'] as String;
+      final title = data['title'] as String;
+      final color = data['color'] as String;
+      final place = data['place'] as String?;
+      final detail = data['detail'] as String?;
+      final startAt = convertTimestampToDateTime(data['start_at']);
+      final endAt = convertTimestampToDateTime(data['end_at']);
+      final updatedAt = data['updated_at'] as Timestamp?;
+      final createdAt = data['created_at'] as Timestamp;
       
       return GroupSchedule(
         groupId: groupId,
@@ -31,8 +33,8 @@ class GroupSchedule {
         color: color,
         place: place,
         detail: detail,
-        startAt: startAt,
-        endAt: endAt,
+        startAt: startAt!,
+        endAt: endAt!,
         updatedAt: updatedAt,
         createdAt: createdAt,
       );

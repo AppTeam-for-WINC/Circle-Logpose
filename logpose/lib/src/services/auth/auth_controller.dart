@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -27,27 +28,35 @@ class AuthController {
         return false;
       }
 
-      await UserController.create(
-        docId: docId,
-        name: 'no name',
-      );
-
-      return true;
+      return await _createUserDatabase(docId, 'New user');
     } on FirebaseAuthException catch (error) {
       debugPrint('Error: Failed to create account. $error');
       return false;
     }
   }
 
-  ///Login user's account.
+  static Future<bool> _createUserDatabase(String docId, String name) async {
+    try {
+      await UserController.create(
+        docId: docId,
+        name: 'New user',
+      );
+      return true;
+    } on FirebaseFirestore catch (e) {
+      debugPrint('Error: Failed to create user Database. $e');
+      return false;
+    }
+  }
+
+  /// Login user's account.
   static Future<bool> loginToAccount(String email, String password) async {
     try {
       final userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final docId = userCredential.user?.uid ?? '';
-      if (docId == '') {
+
+      if (userCredential.user?.uid == null) {
         debugPrint('Error: Failed to create account.');
         return false;
       }
@@ -78,11 +87,10 @@ class AuthController {
 
   static Future<String?> readEmail() async {
     try {
-      final user = auth.currentUser;
-      if (user == null) {
+      if (auth.currentUser == null) {
         throw Exception('User not found.');
       }
-      return user.email;
+      return auth.currentUser?.email;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error: email not found.  $error');
       throw Exception('Email not found.');
@@ -124,20 +132,31 @@ class AuthController {
   static Future<bool> sendConfirmationEmail() async {
     try {
       /// Set auth code of language to japanese.
-      await auth.setLanguageCode('ja');
+      await _setLanguageCode();
 
-      final user = auth.currentUser;
-
-      if (user == null) {
+      if (auth.currentUser == null) {
         debugPrint('User is not currently signed in.');
         return false;
       } else {
-        await user.sendEmailVerification();
-        debugPrint('Confirmation email sent.');
-        return true;
+        return await _sendEmailVerification();
       }
     } on FirebaseAuthException catch (error) {
       debugPrint('Error sending confirmation email: $error');
+      return false;
+    }
+  }
+
+  static Future<void> _setLanguageCode() async {
+    await auth.setLanguageCode('ja');
+  }
+
+  static Future<bool> _sendEmailVerification() async {
+    try {
+      await auth.currentUser?.sendEmailVerification();
+      debugPrint('Confirmation email sent.');
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error: failed to send email. $e');
       return false;
     }
   }
@@ -164,51 +183,59 @@ class AuthController {
     try {
       final user = auth.currentUser;
       if (user == null) {
-        const errorMessage = 'User is not currently signed in.';
-        return errorMessage;
+        return 'User is not currently signed in.';
       }
 
-      final credential = await _checkSignInWithCredential(
-        email,
-        password,
-      );
-      await user.reauthenticateWithCredential(credential);
-      await user.updatePassword(newPassword);
+      final credential = await _checkSignInWithCredential(email, password);
+      await _reAuthenticateWithCredential(user, credential);
+      await _updatePassword(user, newPassword);
 
       return null;
     } on FirebaseAuthException catch (error) {
       debugPrint('Error updating password: $error');
-
-      const errorMessage = 'Password is not correctly.';
-      return errorMessage;
+      return 'Password is not correctly.';
     }
   }
 
-  /// Credential by email, password.
   static Future<AuthCredential> _checkSignInWithCredential(
     String email,
     String password,
   ) async {
     try {
-      final credential = EmailAuthProvider.credential(
+      return EmailAuthProvider.credential(
         email: email,
         password: password,
       );
-
-      return credential;
     } on FirebaseAuthException catch (e) {
       throw Exception('Error: $e');
     }
   }
 
+  static Future<void> _reAuthenticateWithCredential(
+    User user,
+    AuthCredential credential,
+  ) async {
+    await user.reauthenticateWithCredential(credential);
+  }
+
+  static Future<void> _updatePassword(User user, String newPassword) async {
+    await user.updatePassword(newPassword);
+  }
+
   static Future<String?> getCurrentUserId() async {
-    final user = FirebaseAuth.instance.currentUser;
-    return user?.uid;
+    try {
+      return FirebaseAuth.instance.currentUser?.uid;
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Error: failed to get current user ID. $e');
+    }
   }
 
   static Future<String?> getUserIdToken() async {
-    final user = auth.currentUser;
-    return await user?.getIdToken();
+    try {
+      return await auth.currentUser?.getIdToken();
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Error: failed to get ID token. $e');
+    }
   }
 
   /// Logout.

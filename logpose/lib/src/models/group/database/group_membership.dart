@@ -11,15 +11,14 @@ class GroupMembership {
     required this.joinedAt,
   });
 
-  factory GroupMembership.fromMap(Map<String, dynamic> groupMembershipDocRef) {
-    final userId = groupMembershipDocRef['user_id'] as String;
-    final username = groupMembershipDocRef['username'] as String;
-    final userDescription =
-        groupMembershipDocRef['user_description'] as String?;
-    final role = groupMembershipDocRef['role'] as String;
-    final groupId = groupMembershipDocRef['group_id'] as String;
-    final updatedAt = groupMembershipDocRef['updated_at'] as Timestamp?;
-    final joinedAt = groupMembershipDocRef['created_at'] as Timestamp;
+  factory GroupMembership.fromMap(Map<String, dynamic> data) {
+    final userId = data['user_id'] as String;
+    final username = data['username'] as String;
+    final userDescription = data['user_description'] as String?;
+    final role = data['role'] as String;
+    final groupId = data['group_id'] as String;
+    final updatedAt = data['updated_at'] as Timestamp?;
+    final joinedAt = data['created_at'] as Timestamp;
 
     return GroupMembership(
       userId: userId,

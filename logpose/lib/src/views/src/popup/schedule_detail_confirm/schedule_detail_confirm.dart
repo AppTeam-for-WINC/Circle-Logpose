@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/group/database/group.dart';
+import '../../../../models/group/database/group_profile.dart';
 import '../../../../models/group/database/group_schedule.dart';
 
 import '../../../../utils/color/color_exchanger.dart';

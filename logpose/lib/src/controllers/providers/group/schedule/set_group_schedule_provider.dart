@@ -1,91 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
+
+import '../../../../models/group/database/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 
+/// Set group schedule.
 final setGroupScheduleProvider = StateNotifierProvider.family<
-    _SetUpdateGroupScheduleNotifier, _SetGroupScheduleViewer?, String>(
-  (ref, scheduleId) => _SetUpdateGroupScheduleNotifier(scheduleId),
+    _SetGroupScheduleNotifier, _GroupScheduleViewer?, String?>(
+  // tear off -> (ref, scheduleId) => _SetGroupScheduleNotifier(ref, scheduleId)
+  _SetGroupScheduleNotifier.new,
 );
 
 /// Schedule Object.
-class _SetGroupScheduleViewer {
-  _SetGroupScheduleViewer({
+class _GroupScheduleViewer {
+  _GroupScheduleViewer({
     this.groupId,
     this.color,
-    String? title,
     DateTime? startAt,
     DateTime? endAt,
-    String? place,
-    String? detail,
-  })  : titleController = TextEditingController(text: title),
-        placeController = TextEditingController(text: place),
-        detailController = TextEditingController(text: detail),
-        startAt = startAt ?? DateTime.now(),
+  })  : startAt = startAt ?? DateTime.now(),
         endAt = endAt ?? DateTime.now().add(const Duration(hours: 1));
 
   final String? groupId;
   final Color? color;
-  final TextEditingController titleController;
   final DateTime startAt;
   final DateTime endAt;
-  final TextEditingController placeController;
-  final TextEditingController detailController;
 
-  // Set updated schedule data.
-  _SetGroupScheduleViewer copyWith({
+  // Update schedule data.
+  _GroupScheduleViewer copyWith({
     String? groupId,
     Color? color,
-    String? title,
     DateTime? startAt,
     DateTime? endAt,
-    String? place,
-    String? detail,
   }) {
-    return _SetGroupScheduleViewer(
+    return _GroupScheduleViewer(
       groupId: groupId ?? this.groupId,
       color: color ?? this.color,
-      title: title ?? titleController.text,
       startAt: startAt ?? this.startAt,
       endAt: endAt ?? this.endAt,
-      place: place ?? placeController.text,
-      detail: detail ?? detailController.text,
     );
   }
 }
 
-/// Set schedule to group.
-class _SetUpdateGroupScheduleNotifier
-    extends StateNotifier<_SetGroupScheduleViewer?> {
-  _SetUpdateGroupScheduleNotifier(String scheduleId)
-      : super(
-          _SetGroupScheduleViewer(
-            color: Colors.purple,
-            title: '',
-            startAt: DateTime.now(),
-            endAt: DateTime.now().add(const Duration(hours: 1)),
-            place: '',
-            detail: '',
-          ),
-        ) {
-    _initSchedule(scheduleId);
+/// Set a schedule to group.
+class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer?> {
+  _SetGroupScheduleNotifier(
+    StateNotifierProviderRef<_SetGroupScheduleNotifier, _GroupScheduleViewer?>
+        ref,
+    String? scheduleId,
+  ) : super(_GroupScheduleViewer()) {
+    if (scheduleId != null) {
+      _loadExistingSchedule(ref, scheduleId);
+    } else {
+      initSchedule();
+    }
   }
 
-  Future<void> _initSchedule(String scheduleId) async {
+  /// Initialize group schedule.
+  void initSchedule() {
+    state = _GroupScheduleViewer(
+      color: const Color.fromARGB(255, 217, 0, 255),
+      startAt: DateTime.now(),
+      endAt: DateTime.now().add(const Duration(hours: 1)),
+    );
+  }
+
+  /// Load existing a schedule.
+  Future<void> _loadExistingSchedule(
+    StateNotifierProviderRef<_SetGroupScheduleNotifier, _GroupScheduleViewer?>
+        ref,
+    String scheduleId,
+  ) async {
+    try {
+      final schedule = await _fetchSchedule(scheduleId);
+      _setTitleController(ref, schedule.title);
+      _setPlaceController(ref, schedule.place);
+      _setDetailController(ref, schedule.detail);
+      state = _GroupScheduleViewer(
+        groupId: schedule.groupId,
+        color: hexToColor(schedule.color),
+        startAt: schedule.startAt,
+        endAt: schedule.endAt,
+      );
+    } on Exception catch (e) {
+      debugPrint('Failed to load schedule. $e');
+    }
+  }
+
+  Future<GroupSchedule> _fetchSchedule(String scheduleId) async {
     final schedule = await GroupScheduleController.read(scheduleId);
     if (schedule == null) {
-      return;
+      debugPrint('Schedule ID is not found.: $scheduleId');
+      state = null;
     }
-    state = _SetGroupScheduleViewer(
-      groupId: schedule.groupId,
-      color: hexToColor(schedule.color),
-      title: schedule.title,
-      place: schedule.place,
-      detail: schedule.detail,
-      startAt: schedule.startAt,
-      endAt: schedule.endAt,
-    );
+    return schedule!;
+  }
+
+  void _setTitleController(
+    StateNotifierProviderRef<_SetGroupScheduleNotifier, _GroupScheduleViewer?>
+        ref,
+    String title,
+  ) {
+    ref.read(scheduleTitleControllerProvider.notifier).state.text = title;
+  }
+
+  void _setPlaceController(
+    StateNotifierProviderRef<_SetGroupScheduleNotifier, _GroupScheduleViewer?>
+        ref,
+    String? place,
+  ) {
+    ref.read(schedulePlaceControllerProvider.notifier).state.text = place ?? '';
+  }
+
+  void _setDetailController(
+    StateNotifierProviderRef<_SetGroupScheduleNotifier, _GroupScheduleViewer?>
+        ref,
+    String? detail,
+  ) {
+    ref.read(scheduleDetailControllerProvider.notifier).state.text =
+        detail ?? '';
   }
 
   void setGroupId(String groupId) {
@@ -96,23 +134,11 @@ class _SetUpdateGroupScheduleNotifier
     state = state!.copyWith(color: color);
   }
 
-  void setTitle(TextEditingController title) {
-    state = state!.copyWith(title: title.text);
-  }
-
   void setStartAt(DateTime startAt) {
     state = state!.copyWith(startAt: startAt);
   }
 
   void setEndAt(DateTime endAt) {
     state = state!.copyWith(endAt: endAt);
-  }
-
-  void setPlace(TextEditingController place) {
-    state = state!.copyWith(place: place.text);
-  }
-
-  void setDetail(TextEditingController detail) {
-    state = state!.copyWith(detail: detail.text);
   }
 }

@@ -68,7 +68,7 @@ class _GroupMemberState extends ConsumerState<SetGroupMember> {
             ),
           ),
         ),
-        if (ref.watch(setMemberDeleteModeProvider))
+        if (ref.watch(groupMemberDeleteModeProvider))
           Positioned(
             top: 0,
             right: 0,
