@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/password_provider.dart';
-
-import '../../../../controllers/providers/user/password_error_message_provider.dart';
+import '../../../../controllers/providers/error/password_error_message_provider.dart';
+import '../../../../controllers/providers/user/account/password_provider.dart';
 import '../user_setting_page.dart';
 
 class PasswordSettingPage extends ConsumerStatefulWidget {

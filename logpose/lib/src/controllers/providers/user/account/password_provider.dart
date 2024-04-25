@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../services/auth/auth_controller.dart';
+import '../../../../services/auth/auth_controller.dart';
 
-import '../validation/password_validation.dart';
+import '../../../validation/password_validation.dart';
 
 final passwordSettingProvider = Provider.autoDispose<_UserPasswordSetting>(
   (ref) => _UserPasswordSetting(),

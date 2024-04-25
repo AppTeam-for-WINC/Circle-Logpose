@@ -4,7 +4,7 @@ import '../../../../models/user/user.dart';
 
 import '../../../../services/database/group_membership_controller.dart';
 
-import '../../../src/group/fetch/group_member_profile_fetcher.dart';
+import '../../../controllers/group/fetch/group_member_profile_fetcher.dart';
 
 /// Group membership user list controller under condition not absence.
 final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family

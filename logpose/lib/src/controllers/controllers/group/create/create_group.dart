@@ -41,7 +41,7 @@ class CreateGroup {
         image?.path,
         groupDescription,
       );
-      await _createAdminMember(groupName, groupId);
+      await _createAdminMember(userDocId, groupId);
       await _addMemberships(ref, groupId);
 
       return null;

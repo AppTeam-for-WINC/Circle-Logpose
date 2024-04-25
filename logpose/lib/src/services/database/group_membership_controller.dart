@@ -27,17 +27,13 @@ class GroupMembershipController {
         throw Exception('Error : No found document data.');
       }
 
-      final username = data['name'] as String;
-      final userDescription = data['description'] as String?;
-      final joinedAt = FieldValue.serverTimestamp();
-
       await groupMembershipDoc.set({
         'user_id': userDocId,
-        'username': username,
-        'user_description': userDescription,
+        'username': data['name'] as String,
+        'user_description': data['description'] as String?,
         'group_id': groupId,
         'role': role,
-        'created_at': joinedAt,
+        'created_at': FieldValue.serverTimestamp(),
       });
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to create group membership database. $e');
@@ -183,31 +179,23 @@ class GroupMembershipController {
         return null;
       }
 
-      final joinedAt = data['created_at'] as Timestamp?;
-      if (joinedAt == null) {
-        return null;
-      }
-      return GroupMembership(
-        userId: data['user_id'] as String,
-        username: data['username'] as String,
-        userDescription: data['user_description'] as String?,
-        role: data['role'] as String,
-        groupId: data['group_id'] as String,
-        updatedAt: data['updated_at'] as Timestamp?,
-        joinedAt: joinedAt,
-      );
+      return GroupMembership.fromMap(data);
     }).toList();
   }
 
   /// Read specified member.
   static Future<GroupMembership> read(String docId) async {
-    final memberDoc = await db.collection(collectionPath).doc(docId).get();
-    final data = memberDoc.data();
-    if (data == null) {
-      throw Exception('Error : No found document data.');
-    }
+    try {
+      final memberDoc = await db.collection(collectionPath).doc(docId).get();
+      final data = memberDoc.data();
+      if (data == null) {
+        throw Exception('Error : No found document data.');
+      }
 
-    return GroupMembership.fromMap(data);
+      return GroupMembership.fromMap(data);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch group membership. $e');
+    }
   }
 
   /// Update membership users
@@ -220,14 +208,13 @@ class GroupMembershipController {
     required String groupId,
   }) async {
     try {
-      final updatedAt = FieldValue.serverTimestamp() as Timestamp;
       final updateData = <String, dynamic>{
         'user_id': userId,
         'username': username,
         'user_description': userDescription,
         'role': role,
         'group_id': groupId,
-        'updated_at': updatedAt,
+        'updated_at': FieldValue.serverTimestamp() as Timestamp,
       };
       await db.collection(collectionPath).doc(docId).update(updateData);
     } on FirebaseException catch (e) {

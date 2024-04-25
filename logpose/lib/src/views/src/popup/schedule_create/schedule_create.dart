@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/schedule_color_palette.dart';
 
-import '../../../../controllers/providers/group/error/schedule_error_msg_provider.dart';
+import '../../../../controllers/controllers/group/create/create_group_schedule.dart';
+import '../../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
 import '../../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
-import '../../../../controllers/src/group/create/create_group_schedule.dart';
 
 import 'components/group_picker/group_picker_button.dart';
 import 'components/schedule_activity_time.dart';
@@ -303,7 +303,7 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                       }
 
                       final errorMessage = await CreateGroupSchedule.create(
-                        schedule.groupId!,
+                        ref.read(setGroupScheduleProvider(null))!.groupId!,
                         ref.read(scheduleTitleControllerProvider).text,
                         schedule.color!,
                         ref.read(schedulePlaceControllerProvider).text,

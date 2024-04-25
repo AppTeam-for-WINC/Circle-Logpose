@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../utils/time/time_utils.dart';
+
 class GroupMemberSchedule {
   const GroupMemberSchedule({
     required this.scheduleId,
@@ -17,28 +19,17 @@ class GroupMemberSchedule {
   factory GroupMemberSchedule.fromMap(
     Map<String, dynamic> data,
   ) {
-    final scheduleId = data['schedule_id'] as String;
-    final userId = data['user_id'] as String;
-    final attendance = data['attendance'] as bool;
-    final leaveEarly = data['leave_early'] as bool;
-    final lateness = data['lateness'] as bool;
-    final absence = data['absence'] as bool;
-    final startAt = data['start_at'] as DateTime?;
-    final endAt = data['end_at'] as DateTime?;
-    final updatedAt = data['updated_at'] as Timestamp?;
-    final createdAt = data['created_at'] as Timestamp;
-
     return GroupMemberSchedule(
-      scheduleId: scheduleId,
-      userId: userId,
-      attendance: attendance,
-      leaveEarly: leaveEarly,
-      lateness: lateness,
-      absence: absence,
-      startAt: startAt,
-      endAt: endAt,
-      updatedAt: updatedAt,
-      createdAt: createdAt,
+      scheduleId: data['schedule_id'] as String,
+      userId: data['user_id'] as String,
+      attendance: data['attendance'] as bool,
+      leaveEarly: data['leave_early'] as bool,
+      lateness: data['lateness'] as bool,
+      absence: data['absence'] as bool,
+      startAt: convertTimestampToDateTime(data['start_at']),
+      endAt: convertTimestampToDateTime(data['end_at']),
+      updatedAt: data['updated_at'] as Timestamp?,
+      createdAt: data['created_at'] as Timestamp,
     );
   }
 

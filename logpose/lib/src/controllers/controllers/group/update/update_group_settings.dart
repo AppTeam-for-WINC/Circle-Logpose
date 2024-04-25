@@ -39,7 +39,6 @@ class UpdateGroupSettings {
         description,
         imagePath,
       );
-
       await _addMemberships(ref, groupId);
     } on FirebaseException catch (e) {
       return 'Error: Failed to update group data. $e';
@@ -68,7 +67,6 @@ class UpdateGroupSettings {
       groupMemberList.map((member) async {
         final memberDocId = await _fetchUserDocId(member.accountId);
         await _createMembershipMember(memberDocId, groupId);
-
         await _watchAllScheduleId(memberDocId, groupId);
       }),
     );
@@ -78,10 +76,9 @@ class UpdateGroupSettings {
     String memberDocId,
     String groupId,
   ) async {
-    await for (final scheduleIdList
-        in GroupScheduleController.watchAllScheduleId(groupId)) {
-      await _assignMemberSchedule(memberDocId, scheduleIdList);
-    }
+    final scheduleIdList =
+        await GroupScheduleController.readAllScheduleIdFuture(groupId);
+    await _assignMemberSchedule(memberDocId, scheduleIdList);
   }
 
   static Future<void> _assignMemberSchedule(

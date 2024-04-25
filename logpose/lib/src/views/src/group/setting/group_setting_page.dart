@@ -6,15 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/common/loading/loading_progress.dart';
+import '../../../../controllers/controllers/group/update/update_group_settings.dart';
+import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/admin/watch_group_admin_profile_list_provider.dart';
-import '../../../../controllers/providers/group/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
 import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
-import '../../../../controllers/src/group/update/update_group_settings.dart';
+
 
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';

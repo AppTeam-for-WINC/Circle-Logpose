@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../models/group/database/group_schedule.dart';
 
-import '../../utils/time/time_utils.dart';
-
 class GroupScheduleController {
   // シングルトンパターンにしています。
   GroupScheduleController._internal();
@@ -30,166 +28,149 @@ class GroupScheduleController {
     required DateTime startAt,
     required DateTime endAt,
   }) async {
-    // Create new document ID.
-    final doc = db.collection(collectionPath).doc();
+    try {
+      // Create new document ID.
+      final doc = db.collection(collectionPath).doc();
+      await doc.set({
+        'group_id': groupId,
+        'title': title,
+        'color': color,
+        'place': place,
+        'detail': detail,
+        'start_at': startAt,
+        'end_at': endAt,
+        'created_at': FieldValue.serverTimestamp(),
+      });
 
-    // Get created server time.
-    final createdAt = FieldValue.serverTimestamp();
-
-    await doc.set({
-      'group_id': groupId,
-      'title': title,
-      'color': color,
-      'place': place,
-      'detail': detail,
-      'start_at': startAt,
-      'end_at': endAt,
-      'created_at': createdAt,
-    });
-
-    return doc.id;
+      return doc.id;
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to create group schedule. $e');
+    }
   }
 
   /// Get all schedule database.
   static Stream<List<GroupSchedule?>> readAll(String groupId) async* {
-    final schedulesStream = db
-        .collection(collectionPath)
-        .where(
-          'group_id',
-          isEqualTo: groupId,
-        )
-        .snapshots();
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where(
+            'group_id',
+            isEqualTo: groupId,
+          )
+          .snapshots();
 
-    await for (final schedules in schedulesStream) {
-      final schedulesRefs = schedules.docs.map((doc) {
-        final scheduleRef = doc.data() as Map<String, dynamic>?;
-        if (scheduleRef == null) {
-          return null;
-        }
-        final groupId = scheduleRef['group_id'] as String;
-        final title = scheduleRef['title'] as String;
-        final color = scheduleRef['color'] as String;
-        final place = scheduleRef['place'] as String?;
-        final detail = scheduleRef['detail'] as String?;
-        final startAt = convertTimestampToDateTime(scheduleRef['start_at']);
-        final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
-        final updatedAt = scheduleRef['updated_at'] as Timestamp?;
-        final createdAt = scheduleRef['created_at'] as Timestamp?;
-        if (createdAt == null) {
-          return null;
-        }
-
-        return GroupSchedule(
-          groupId: groupId,
-          title: title,
-          color: color,
-          place: place,
-          detail: detail,
-          startAt: startAt!,
-          endAt: endAt!,
-          updatedAt: updatedAt,
-          createdAt: createdAt,
-        );
-        // return GroupSchedule.fromMap(scheduleRef);
-      }).toList();
-
-      yield schedulesRefs;
+      await for (final snapshot in stream) {
+        yield _fetchGroupScheduleList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: Failed to read group ID list. $e');
     }
+  }
+
+  static List<GroupSchedule?> _fetchGroupScheduleList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data == null) {
+        return null;
+      }
+
+      return GroupSchedule.fromMap(data);
+    }).toList();
   }
 
   /// Watch list of schedule ID.
   static Stream<List<String?>> watchAllScheduleId(String groupId) async* {
-    final schedulesStream = db
-        .collection(collectionPath)
-        .where(
-          'group_id',
-          isEqualTo: groupId,
-        )
-        .snapshots();
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where(
+            'group_id',
+            isEqualTo: groupId,
+          )
+          .snapshots();
 
-    await for (final schedules in schedulesStream) {
-      final schedulesRefs = schedules.docs.map((doc) {
-        final scheduleRef = doc.data() as Map<String, dynamic>?;
-        if (scheduleRef == null) {
-          return null;
-        }
-
-        return doc.id;
-      }).toList();
-
-      yield schedulesRefs;
+      await for (final snapshot in stream) {
+        yield _fetchGroupScheduleIdList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch schedule ID list. $e');
     }
   }
 
-  /// Read list of schedule ID.
-  static Future<List<String?>> readAllScheduleIdFuture(String groupId) async {
-    final schedulesSnapshot = await db
-        .collection(collectionPath)
-        .where(
-          'group_id',
-          isEqualTo: groupId,
-        )
-        .get();
-
-    final schedulesRefs = schedulesSnapshot.docs.map((doc) {
-      final scheduleData = doc.data() as Map<String, dynamic>?;
-      if (scheduleData == null) {
+  static List<String?> _fetchGroupScheduleIdList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data == null) {
         return null;
       }
 
       return doc.id;
     }).toList();
+  }
 
-    return schedulesRefs;
+  /// Read list of schedule ID.
+  static Future<List<String?>> readAllScheduleIdFuture(String groupId) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where(
+            'group_id',
+            isEqualTo: groupId,
+          )
+          .get();
+
+      return _fetchGroupSchduleData(snapshot);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch schedule ID list. $e');
+    }
+  }
+
+  static List<String?> _fetchGroupSchduleData(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data == null) {
+        return null;
+      }
+
+      return doc.id;
+    }).toList();
   }
 
   // Get selected schedule database.
   static Future<GroupSchedule?> read(String docId) async {
-    final snapshot = await db.collection(collectionPath).doc(docId).get();
-    final scheduleRef = snapshot.data();
-    if (scheduleRef == null) {
-      debugPrint('documentId not found.');
-      return null;
-    }
+    try {
+      final snapshot = await db.collection(collectionPath).doc(docId).get();
+      final data = snapshot.data();
+      if (data == null) {
+        debugPrint('documentId not found.');
+        return null;
+      }
 
-    final groupId = scheduleRef['group_id'] as String;
-    final title = scheduleRef['title'] as String;
-    final color = scheduleRef['color'] as String;
-    final place = scheduleRef['place'] as String?;
-    final detail = scheduleRef['detail'] as String?;
-    final startAt = convertTimestampToDateTime(scheduleRef['start_at']);
-    final endAt = convertTimestampToDateTime(scheduleRef['end_at']);
-    final updatedAt = scheduleRef['updated_at'] as Timestamp?;
-    final createdAt = scheduleRef['created_at'] as Timestamp?;
-    if (createdAt == null) {
-      return null;
+      return GroupSchedule.fromMap(data);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to read schedule. $e');
     }
-
-    return GroupSchedule(
-      groupId: groupId,
-      title: title,
-      color: color,
-      place: place,
-      detail: detail,
-      startAt: startAt!,
-      endAt: endAt!,
-      updatedAt: updatedAt,
-      createdAt: createdAt,
-    );
   }
 
   /// Read GroupId.
   static Future<String?> readGroupId(String docId) async {
-    final snapshot =
-        await db.collection(collectionPath).doc(docId).get();
-    final grouopScheduleData = snapshot.data();
-    if (grouopScheduleData == null) {
-      return null;
+    try {
+      final snapshot = await db.collection(collectionPath).doc(docId).get();
+      final data = snapshot.data();
+      if (data == null) {
+        return null;
+      }
+
+      return data['group_id'] as String;
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch group ID. $e');
     }
-
-    final groupId = grouopScheduleData['group_id'] as String;
-
-    return groupId;
   }
 
   /// Update scheule database.
@@ -204,22 +185,29 @@ class GroupScheduleController {
     required DateTime startAt,
     required DateTime endAt,
   }) async {
-    final updatedAt = FieldValue.serverTimestamp();
-    final updateData = <String, dynamic>{
-      'group_id': groupId,
-      'title': title,
-      'place': place,
-      'color': color,
-      'detail': detail,
-      'start_at': startAt,
-      'end_at': endAt,
-      'updated_at': updatedAt,
-    };
+    try {
+      final updateData = <String, dynamic>{
+        'group_id': groupId,
+        'title': title,
+        'place': place,
+        'color': color,
+        'detail': detail,
+        'start_at': startAt,
+        'end_at': endAt,
+        'updated_at': FieldValue.serverTimestamp(),
+      };
 
-    await db.collection(collectionPath).doc(docId).update(updateData);
+      await db.collection(collectionPath).doc(docId).update(updateData);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to update schedule. $e');
+    }
   }
 
   static Future<void> delete(String docId) async {
-    await db.collection(collectionPath).doc(docId).delete();
+    try {
+      await db.collection(collectionPath).doc(docId).delete();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete schedule. $e');
+    }
   }
 }

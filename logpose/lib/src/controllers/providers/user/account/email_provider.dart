@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../services/auth/auth_controller.dart';
-import '../validation/email_validation.dart';
+import '../../../../services/auth/auth_controller.dart';
+import '../../../validation/email_validation.dart';
 
 final userEmailProvider =
     StateNotifierProvider.autoDispose<_UserEmail, String?>(

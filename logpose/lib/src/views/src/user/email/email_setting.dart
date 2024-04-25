@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/email_provider.dart';
+import '../../../../controllers/providers/user/account/email_provider.dart';
 
 import '../user_setting_page.dart';
 

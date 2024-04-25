@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../utils/time/time_utils.dart';
+
 class GroupSchedule {
   const GroupSchedule({
     required this.groupId,
@@ -20,8 +22,8 @@ class GroupSchedule {
       final color = data['color'] as String;
       final place = data['place'] as String?;
       final detail = data['detail'] as String?;
-      final startAt = data['start_at'] as DateTime;
-      final endAt = data['end_at'] as DateTime;
+      final startAt = convertTimestampToDateTime(data['start_at']);
+      final endAt = convertTimestampToDateTime(data['end_at']);
       final updatedAt = data['updated_at'] as Timestamp?;
       final createdAt = data['created_at'] as Timestamp;
       
@@ -31,8 +33,8 @@ class GroupSchedule {
         color: color,
         place: place,
         detail: detail,
-        startAt: startAt,
-        endAt: endAt,
+        startAt: startAt!,
+        endAt: endAt!,
         updatedAt: updatedAt,
         createdAt: createdAt,
       );
