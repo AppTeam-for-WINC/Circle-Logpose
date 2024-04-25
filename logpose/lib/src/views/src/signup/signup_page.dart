@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
-import '../../../controllers/src/signup/signup_controller.dart';
+import '../../../controllers/controllers/signup/signup_controller.dart';
 
 import '../../widgets/progress/progress_indicator.dart';
 

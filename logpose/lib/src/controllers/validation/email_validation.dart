@@ -25,21 +25,13 @@ class UserEmailValidation {
       'email',
     );
     if (!emailTypeValidation) {
-      final errorMessage = const EmailValidation().emailInvalidMessage();
-
-      return errorMessage;
+      return const EmailValidation().emailInvalidMessage();
     }
     if (!emailMinLength8Validation) {
-      final errorMessage =
-          const MinLength8Validation().getMinLengthInvalidMessage();
-
-      return errorMessage;
+      return const MinLength8Validation().getMinLengthInvalidMessage();
     }
     if (!emailMaxLength32Validation) {
-      final errorMessage =
-          const MaxLength32Validation().getMaxLengthInvalidMessage();
-
-      return errorMessage;
+      return const MaxLength32Validation().getMaxLengthInvalidMessage();
     }
 
     return null;

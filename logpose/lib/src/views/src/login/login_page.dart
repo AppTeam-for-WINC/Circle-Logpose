@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controllers/common/loading/loading_progress.dart';
 
-import '../../../controllers/src/login/login_controller.dart';
+import '../../../controllers/controllers/login/login_controller.dart';
 import '../../widgets/progress/progress_indicator.dart';
 
 import '../start/start_page.dart';

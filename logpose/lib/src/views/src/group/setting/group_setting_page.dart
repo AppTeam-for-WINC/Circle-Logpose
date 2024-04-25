@@ -6,16 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/common/loading/loading_progress.dart';
-import '../../../../controllers/providers/group/admin/group_admin_profile_list_provider.dart';
+import '../../../../controllers/controllers/group/update/update_group_settings.dart';
+import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
+import '../../../../controllers/providers/group/admin/watch_group_admin_profile_list_provider.dart';
 import '../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
-import '../../../../controllers/providers/group/msg/group_name_error_msg_provider.dart';
-import '../../../../controllers/providers/group/name/group_name_provider.dart';
-import '../../../../controllers/providers/group/schedule/group_schedule_and_id_provider.dart';
-import '../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
-import '../../../../controllers/src/group/update/update_group_settings.dart';
+import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
+import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+
 
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';
@@ -75,8 +75,6 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
         ref.watch(groupSettingProvider(groupId).notifier);
     final asyncGroupScheduleList =
         ref.watch(watchGroupScheduleAndIdProvider(groupId));
-    final groupScheduleNotifier =
-        ref.watch(groupScheduleProvider.notifier);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
@@ -531,13 +529,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       right: 0,
                       child: GestureDetector(
                         onTap: () async {
-                          groupScheduleNotifier.setGroupId(groupId);
-                          ref.watch(groupNameProvider.notifier).state =
+                          ref.watch(selectedGroupNameProvider.notifier).state =
                               groupProfileNotifier.groupNameController.text;
                           await showCupertinoModalPopup<ScheduleCreate>(
                             context: context,
                             builder: (BuildContext context) {
-                              return const ScheduleCreate();
+                              return ScheduleCreate(groupId: groupId);
                             },
                           );
                         },

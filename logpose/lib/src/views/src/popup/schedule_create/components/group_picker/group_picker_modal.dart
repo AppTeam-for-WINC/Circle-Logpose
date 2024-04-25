@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/group/group_and_id_modal_provider.dart';
-import '../../../../../../controllers/providers/group/name/group_name_provider.dart';
-import '../../../../../../controllers/providers/group/schedule/group_schedule_provider.dart';
+import '../../../../../../controllers/providers/group/group/fetch_group_and_id_modal_provider.dart';
+import '../../../../../../controllers/providers/group/name/selected_group_name_provider.dart';
+import '../../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
   const GroupPickerModal({
@@ -23,13 +23,14 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
     // 選択肢が1つしかない場合、自動的にその選択肢を選択。
     if (widget.groupIdList.length == 1) {
       final id = widget.groupIdList[0];
-      final scheduleNotifier = ref.read(groupScheduleProvider.notifier);
+      final scheduleNotifier =
+          ref.read(setGroupScheduleProvider(null).notifier);
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         scheduleNotifier.setGroupId(id);
         final asyncGroupWithIdList = await ref
-            .read(readGroupAndIdModalProvider(widget.groupIdList).future);
+            .read(fetchGroupAndIdModalProvider(widget.groupIdList).future);
 
-        ref.read(groupNameProvider.notifier).state =
+        ref.read(selectedGroupNameProvider.notifier).state =
             asyncGroupWithIdList[0].groupProfile.name;
       });
     }
@@ -38,10 +39,10 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   @override
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
-    
-    final scheduleNotifier = ref.watch(groupScheduleProvider.notifier);
+
+    final scheduleNotifier = ref.watch(setGroupScheduleProvider(null).notifier);
     final asyncGroupWithIdList =
-        ref.watch(readGroupAndIdModalProvider(groupIdList));
+        ref.watch(fetchGroupAndIdModalProvider(groupIdList));
 
     return Container(
       height: 200,
@@ -66,7 +67,8 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
                       final id = groupDataList[index].groupId;
                       final name = groupDataList[index].groupProfile.name;
                       scheduleNotifier.setGroupId(id);
-                      ref.watch(groupNameProvider.notifier).state = name;
+                      ref.watch(selectedGroupNameProvider.notifier).state =
+                          name;
                     },
                     children: groupDataList
                         .map(
