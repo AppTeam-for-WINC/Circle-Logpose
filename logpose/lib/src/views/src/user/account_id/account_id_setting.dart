@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../controllers/providers/group/error/account_id_error_message_provider.dart';
 import '../../../../controllers/providers/user/set_user_profile_provider.dart';
 import '../../../../controllers/src/user/update_account_id.dart';
 
@@ -21,6 +22,7 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
+    final accountIdErrorMessage = ref.watch(accountIdErrorMessageProvider);
     final userProfile = ref.watch(setUserProfileDataProvider);
     final userProfileNotifier = ref.watch(setUserProfileDataProvider.notifier);
     return CupertinoPageScaffold(
@@ -87,11 +89,17 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
                           ),
                           child: Row(
                             children: [
-                              Text(
-                                userProfile!.accountId,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 124, 122, 122),
-                                  fontSize: 14,
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: deviceWidth * 0.8,
+                                ),
+                                child: Text(
+                                  userProfile!.accountId,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 124, 122, 122),
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -122,6 +130,18 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
                     ),
                     autofocus: true,
                   ),
+
+                  // Error message.
+                  if (accountIdErrorMessage != null)
+                    Center(
+                      child: Text(
+                        accountIdErrorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -135,12 +155,15 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
                 ),
                 backgroundColor: const Color.fromARGB(255, 123, 97, 255),
                 onPressed: () async {
-                  final success = await UpdateAccountId.update(
+                  final errorMessage = await UpdateAccountId.update(
                     userProfileNotifier.accountIdController.text,
                   );
-                  if (!success) {
+                  if (errorMessage != null) {
+                    ref.watch(accountIdErrorMessageProvider.notifier).state =
+                        errorMessage;
                     return;
                   }
+
                   //Init
                   userProfileNotifier.setNewAccountId(
                     userProfileNotifier.accountIdController.text,

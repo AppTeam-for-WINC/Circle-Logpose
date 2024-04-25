@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+
 import '../../../services/auth/auth_controller.dart';
 import '../../../services/database/user_controller.dart';
 
@@ -8,22 +10,37 @@ class UpdateAccountId {
   static final UpdateAccountId _instance = UpdateAccountId._internal();
   static UpdateAccountId get instance => _instance;
 
-  static Future<bool> update(String newAccountId) async {
-    final userId = await AuthController.getCurrentUserId();
-    if (userId == null) {
-      throw Exception('Error : No found user ID.');
-    }
+  static Future<String?> update(String newAccountId) async {
+    try {
+      final userId = await _fetchUserDocId();
+      if (userId == null) {
+        return 'Error : No found user ID.';
+      }
 
-    final validation = AccountIdValidation.validation(newAccountId);
-    if (!validation) {
-      return false;
-    }
+      final accountIdValidation = AccountIdValidation.validation(newAccountId);
+      if (accountIdValidation != null) {
+        return accountIdValidation;
+      }
 
-    final success = await UserController.updateAccountId(userId, newAccountId);
-    if (!success) {
-      return false;
-    }
+      final success = await _updateAccountId(userId, newAccountId);
+      if (!success) {
+        return 'Failed to update account ID.';
+      }
 
-    return true;
+      return null;
+    } on FirebaseException catch (e) {
+      return 'Error: failed to update account ID. $e';
+    }
+  }
+
+  static Future<String?> _fetchUserDocId() async {
+    return AuthController.getCurrentUserId();
+  }
+
+  static Future<bool> _updateAccountId(
+    String userId,
+    String newAccountId,
+  ) async {
+    return UserController.updateAccountId(userId, newAccountId);
   }
 }

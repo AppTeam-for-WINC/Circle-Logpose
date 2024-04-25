@@ -20,35 +20,62 @@ class LoginController {
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
-    final email = emailController.text;
-    final password = passwordController.text;
+    try {
+      final email = emailController.text;
+      final password = passwordController.text;
 
-    final emailErrorMessage = UserEmailValidation.validation(email);
-    if (emailErrorMessage != null) {
-      return emailErrorMessage;
+      final loginValidation = _loginValidation(email, password);
+      if (loginValidation != null) {
+        return loginValidation;
+      }
+
+      final loginSuccess = await _loadingProgress(ref, email, password);
+      if (!loginSuccess) {
+        return 'Password or Email is not correct.';
+      }
+
+      if (context.mounted) {
+        await _moveToNextPage(context);
+      }
+
+      return null;
+    } on Exception catch (e) {
+      return 'Error to sign up.: $e';
     }
-    final passwordErrorMessage = PasswordValidation.validation(password);
-    if (passwordErrorMessage != null) {
-      return passwordErrorMessage;
+  }
+
+  static String? _loginValidation(String email, String password) {
+    final emailError = UserEmailValidation.validation(email);
+    if (emailError != null) {
+      return emailError;
+    }
+    final passwordError = PasswordValidation.validation(password);
+    if (passwordError != null) {
+      return passwordError;
     }
 
+    return null;
+  }
+
+  static Future<bool> _loadingProgress(
+    WidgetRef ref,
+    String email,
+    String password,
+  ) async {
     LoadingProgressController.loadingProgress(ref, loading: true);
     final loginSuccess = await AuthController.loginToAccount(email, password);
     LoadingProgressController.loadingProgress(ref, loading: false);
 
-    if (!loginSuccess) {
-      return 'Password or Email is not correct.';
-    }
+    return loginSuccess;
+  }
 
-    if (context.mounted) {
-      await Navigator.pushAndRemoveUntil(
-        context,
-        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-          builder: (context) => const HomePage(),
-        ),
-        (_) => false,
-      );
-    }
-    return null;
+  static Future<void> _moveToNextPage(BuildContext context) async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+        builder: (context) => const HomePage(),
+      ),
+      (_) => false,
+    );
   }
 }

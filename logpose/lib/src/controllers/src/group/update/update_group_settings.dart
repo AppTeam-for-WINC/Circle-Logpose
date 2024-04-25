@@ -25,16 +25,12 @@ class UpdateGroupSettings {
     File? image,
     WidgetRef ref,
   ) async {
-    String? imagePath;
     try {
+      final imagePath = image?.path;
+
       final nameValidation = GroupValidation.nameValidation(name);
       if (nameValidation != null) {
         return nameValidation;
-      }
-      if (image == null) {
-        imagePath = null;
-      } else {
-        imagePath = image.path;
       }
 
       await _updateGroup(

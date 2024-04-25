@@ -15,18 +15,18 @@ class GroupMemberSchedule {
   });
 
   factory GroupMemberSchedule.fromMap(
-    Map<String, dynamic> groupMemberScheduleRef,
+    Map<String, dynamic> data,
   ) {
-    final scheduleId = groupMemberScheduleRef['schedule_id'] as String;
-    final userId = groupMemberScheduleRef['user_id'] as String;
-    final attendance = groupMemberScheduleRef['attendance'] as bool;
-    final leaveEarly = groupMemberScheduleRef['leave_early'] as bool;
-    final lateness = groupMemberScheduleRef['lateness'] as bool;
-    final absence = groupMemberScheduleRef['absence'] as bool;
-    final startAt = groupMemberScheduleRef['start_at'] as DateTime?;
-    final endAt = groupMemberScheduleRef['end_at'] as DateTime?;
-    final updatedAt = groupMemberScheduleRef['updated_at'] as Timestamp?;
-    final createdAt = groupMemberScheduleRef['created_at'] as Timestamp;
+    final scheduleId = data['schedule_id'] as String;
+    final userId = data['user_id'] as String;
+    final attendance = data['attendance'] as bool;
+    final leaveEarly = data['leave_early'] as bool;
+    final lateness = data['lateness'] as bool;
+    final absence = data['absence'] as bool;
+    final startAt = data['start_at'] as DateTime?;
+    final endAt = data['end_at'] as DateTime?;
+    final updatedAt = data['updated_at'] as Timestamp?;
+    final createdAt = data['created_at'] as Timestamp;
 
     return GroupMemberSchedule(
       scheduleId: scheduleId,

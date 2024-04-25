@@ -9,10 +9,7 @@ class GroupInvitation {
   });
 
   final String groupId;
-
   final String invitationLink;
-
   final Timestamp expiresAt;
-
   final Timestamp createdAt;
 }

@@ -16,51 +16,53 @@ class GroupController {
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'groups';
 
-  /// Create group database.
+  /// Create Group database, return Group Doc ID.
   static Future<String> create(
     String name,
     String? image,
     String? description,
   ) async {
-    // Create new document
-    final groupDoc = db.collection(collectionPath).doc();
-    String? imagePath;
-    if (image != null) {
-      imagePath =
-          await StorageController.uploadGroupImageToStorage(groupDoc.id, image);
-    } else {
-      imagePath = 'src/images/group_img.jpeg';
+    try {
+      // Create new document
+      final groupDoc = db.collection(collectionPath).doc();
+
+      String? imagePath = 'src/images/group_img.jpeg';
+      if (image != null) {
+        imagePath = await StorageController.uploadGroupImageToStorage(
+          groupDoc.id,
+          image,
+        );
+      }
+
+      // Get server time
+      final createdAt = FieldValue.serverTimestamp();
+
+      // Set database.
+      await groupDoc.set({
+        'name': name,
+        'image': imagePath,
+        'description': description,
+        'updated_at': null,
+        'created_at': createdAt,
+      });
+
+      return groupDoc.id;
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to create group document: $e');
     }
-
-    // Get server time
-    final createdAt = FieldValue.serverTimestamp();
-
-    await groupDoc.set({
-      'name': name,
-      'image': imagePath,
-      'description': description,
-      'updated_at': null,
-      'created_at': createdAt,
-    });
-
-    return groupDoc.id;
   }
 
   static Future<List<String>> readAllDocId(String userId) async {
-    final groups = await db
-        .collection(collectionPath)
-        .where('user_id', isEqualTo: userId)
-        .get();
-    final groupMembershipsRefs = groups.docs.map((doc) {
-      final groupMembershipsRef = doc.data() as Map<String, dynamic>?;
-      if (groupMembershipsRef == null) {
-        throw Exception('Error : No found document data.');
-      }
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('user_id', isEqualTo: userId)
+          .get();
 
-      return doc.id;
-    }).toList();
-
-    return groupMembershipsRefs;
+      return snapshot.docs.map((doc) => doc.id).toList();
+    } on FirebaseException catch (e) {
+      throw Exception('Failed to fetch Group ID list. $e');
+    }
   }
 
   /// Get the group database.
@@ -74,50 +76,62 @@ class GroupController {
     });
   }
 
-  /// Get the group database.
+  /// Fetch the group database.
   static Future<GroupProfile?> read(String docId) async {
-    final groupProfileSnapshot =
-        await db.collection(collectionPath).doc(docId).get();
+    try {
+      final snapshot = await db.collection(collectionPath).doc(docId).get();
+      final data = snapshot.data();
+      if (data == null) {
+        return null;
+      }
 
-    final groupProfileData = groupProfileSnapshot.data();
-    if (groupProfileData == null) {
-      return null;
+      return GroupProfile.fromMap(data);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch Group. $e');
     }
-    return GroupProfile.fromMap(groupProfileData);
   }
 
-  ///後で、名前、説明、画像其々個別で変更できるような関数を作成する。
-  ///Update group database
+  /// Update group database
   static Future<void> update({
     required String docId,
     required String? name,
     required String? description,
     required String? image,
   }) async {
-    final updatedAt = FieldValue.serverTimestamp();
-    final updateData = <String, dynamic>{'updated_at': updatedAt};
+    try {
+      final updateData = <String, dynamic>{
+        'updated_at': FieldValue.serverTimestamp(),
+      };
 
-    if (name != null) {
-      updateData['name'] = name;
-    }
-
-    if (image != null) {
-      final imagePath =
-          await StorageController.uploadGroupImageToStorage(docId, image);
-      if (imagePath != null) {
-        updateData['image'] = imagePath;
+      if (name != null) {
+        updateData['name'] = name;
       }
-    }
 
-    if (description != null) {
-      updateData['description'] = description;
+      if (image != null) {
+        final imagePath =
+            await StorageController.uploadGroupImageToStorage(docId, image);
+        if (imagePath != null) {
+          updateData['image'] = imagePath;
+        }
+      }
+
+      if (description != null) {
+        updateData['description'] = description;
+      }
+
+      await db.collection(collectionPath).doc(docId).update(updateData);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to update group database. $e');
     }
-    await db.collection(collectionPath).doc(docId).update(updateData);
   }
 
-  ///後でcloud functionsに設定させる。（セキュリティ的な問題のため！）
-  ///Delete group
+  /// 後でcloud functionsに設定させる。（セキュリティ的な問題のため！）
+  /// Delete group
   static Future<void> delete(String docId) async {
-    await db.collection(collectionPath).doc(docId).delete();
+    try {
+      await db.collection(collectionPath).doc(docId).delete();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete group. $e');
+    }
   }
 }

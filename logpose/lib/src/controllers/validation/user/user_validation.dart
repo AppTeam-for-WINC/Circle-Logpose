@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import '../../../../validation/max_length_validation.dart';
 import '../../../../validation/required_validation.dart';
 
@@ -9,9 +7,10 @@ class UserValidation {
   static final UserValidation _instance = UserValidation._internal();
   static UserValidation get instance => _instance;
 
-  static bool validation(String name) {
+  static String? validation(String name) {
     const requiredValidation = RequiredValidation();
     const maxLength32Validation = MaxLength32Validation();
+
     final nameRequiredValidation = requiredValidation.validate(
       name,
       'name',
@@ -21,20 +20,12 @@ class UserValidation {
       'name',
     );
     if (!nameRequiredValidation) {
-      final errorMessage =
-          const RequiredValidation().getStringInvalidRequiredMessage();
-
-      debugPrint('nameError: $errorMessage');
-      return false;
+      return const RequiredValidation().getStringInvalidRequiredMessage();
     }
     if (!nameMaxLength32Validation) {
-      final errorMessage =
-          const MaxLength32Validation().getMaxLengthInvalidMessage();
-
-      debugPrint('nameError: $errorMessage');
-      return false;
+      return const MaxLength32Validation().getMaxLengthInvalidMessage();
     }
 
-    return true;
+    return null;
   }
 }

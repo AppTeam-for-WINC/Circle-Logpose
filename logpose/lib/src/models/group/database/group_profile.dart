@@ -10,12 +10,12 @@ class GroupProfile {
   });
 
   /// Convert type of map.
-  factory GroupProfile.fromMap(Map<String, dynamic> groupRef) {
-    final name = groupRef['name'] as String;
-    final description = groupRef['description'] as String?;
-    final image = groupRef['image'] as String;
-    final updatedAt = groupRef['updated_at'] as Timestamp?;
-    final createdAt = groupRef['created_at'] as Timestamp;
+  factory GroupProfile.fromMap(Map<String, dynamic> data) {
+    final name = data['name'] as String;
+    final description = data['description'] as String?;
+    final image = data['image'] as String;
+    final updatedAt = data['updated_at'] as Timestamp?;
+    final createdAt = data['created_at'] as Timestamp;
 
     return GroupProfile(
       name: name,
