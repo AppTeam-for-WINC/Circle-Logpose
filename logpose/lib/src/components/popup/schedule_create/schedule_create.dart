@@ -50,7 +50,6 @@ class _ScheduleCreateState extends ConsumerState<ScheduleCreate> {
                 onPressed: () {
                   // Init
                   scheduleNotifier.initSchedule();
-
                   Navigator.of(context).pop();
                 },
                 child: const Icon(
