@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'components/copy_invitation_link_button.dart';
-import 'components/search_user_profile.dart';
+import 'components/user_profile_button.dart';
+import 'components/user_profile_search_field.dart';
 
 class AddMember extends ConsumerStatefulWidget {
   const AddMember({
@@ -40,7 +40,8 @@ class _AddMemberState extends ConsumerState<AddMember> {
               ),
               child: Column(
                 children: [
-                  SearchUserProfile(groupId: groupId),
+                  UserProfileSearchField(groupId: groupId),
+                  UserProfileButton(groupId: groupId),
                   if (groupId != null)
                     CopyInvitationLinkButton(groupId: groupId),
                 ],
