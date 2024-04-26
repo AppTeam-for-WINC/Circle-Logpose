@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/user/user.dart';
+import '../../../../models/database/user/user.dart';
 
 import '../../../../services/database/group_membership_controller.dart';
 

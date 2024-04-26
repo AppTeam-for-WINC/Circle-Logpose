@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/loading_progress.dart';
 import '../../../services/auth/auth_controller.dart';
-
 import '../../../views/src/login/login_page.dart';
-
-import '../../common/loading/loading_progress.dart';
 
 import '../../validation/email_validation.dart';
 import '../../validation/password_validation.dart';

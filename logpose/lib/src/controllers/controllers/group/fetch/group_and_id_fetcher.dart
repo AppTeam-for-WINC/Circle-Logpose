@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../../models/group/database/group_profile.dart';
-import '../../../../models/group/group_and_id_model.dart';
+import '../../../../models/custom/group_and_id_model.dart';
+import '../../../../models/database/group/group_profile.dart';
 import '../../../../services/database/group_controller.dart';
 
 class GroupAndIdFetcher {

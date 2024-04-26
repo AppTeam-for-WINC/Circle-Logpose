@@ -5,7 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../controllers/common/loading/loading_progress.dart';
+import '../../../../common/loading_progress.dart';
+import '../../../../components/group/group_member_image.dart';
+import '../../../../components/group/group_schedule_tile.dart';
+
+import '../../../../components/popup/add_member/add_member.dart';
+import '../../../../components/popup/schedule_create/schedule_create.dart';
+import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 import '../../../../controllers/controllers/group/update/update_group_settings.dart';
 import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/admin/watch_group_admin_profile_list_provider.dart';
@@ -16,15 +22,9 @@ import '../../../../controllers/providers/group/mode/schedule_delete_mode_provid
 import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 
-
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';
 
-import '../../home/home_page.dart';
-import '../../popup/add_member/add_member.dart';
-import '../../popup/schedule_create/schedule_create.dart';
-import 'components/group_member_image.dart';
-import 'components/schedule_component.dart';
 
 class GroupSettingPage extends ConsumerStatefulWidget {
   const GroupSettingPage({
@@ -84,7 +84,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
             Navigator.pop(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                builder: (context) => const HomePage(),
+                builder: (context) => 
+                const ScheduleListAndJoinedGroupTabSlider(),
               ),
             );
           },
@@ -498,7 +499,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                         }
                                         return groupAdminProfileList.when(
                                           data: (membershipProfiles) {
-                                            return ScheduleComponent(
+                                            return GroupScheduleTile(
                                               groupId: groupId,
                                               schedule: groupScheduleData,
                                               groupName: groupProfileNotifier
@@ -610,7 +611,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         await Navigator.pushAndRemoveUntil(
                           context,
                           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => const HomePage(),
+                            builder: (context) => 
+                            const ScheduleListAndJoinedGroupTabSlider(),
                           ),
                           (_) => false,
                         );

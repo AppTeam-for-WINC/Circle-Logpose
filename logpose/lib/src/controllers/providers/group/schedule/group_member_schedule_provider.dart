@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/models/group/database/member_schedule.dart';
+import 'package:logpose/src/models/database/group/member_schedule.dart';
 
-import '../../../../models/group/database/group_schedule.dart';
+import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/auth/auth_controller.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';

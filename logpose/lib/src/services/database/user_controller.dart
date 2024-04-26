@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../common/error_messages.dart';
-import '../../models/user/user.dart';
+import '../../models/database/user/user.dart';
 import '../storage/storage.dart';
 
 class UserController {
