@@ -181,13 +181,13 @@ class GroupMemberScheduleController {
           .where('user_id', isEqualTo: userDocId)
           .get();
 
-      return _fetchGroupMemberScheduleIdListByTerm(snapshot);
+      return _fetchGroupMemberIdListByTerm(snapshot);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch member docId list by term. $e');
     }
   }
 
-  static List<String?> _fetchGroupMemberScheduleIdListByTerm(
+  static List<String?> _fetchGroupMemberIdListByTerm(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
     return snapshot.docs.map((doc) {
@@ -211,7 +211,7 @@ class GroupMemberScheduleController {
       }
 
       if (!absence) {
-        return doc.id;
+        return data['user_id'] as String;
       }
       return null;
     }).toList();
