@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../models/group/database/group_membership.dart';
-import '../../models/user/user.dart';
+import '../../models/database/group/group_membership.dart';
+import '../../models/database/user/user.dart';
 import 'user_controller.dart';
 
 class GroupMembershipController {

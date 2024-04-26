@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/group/group_and_id_model.dart';
+import '../../../models/custom/group_and_id_model.dart';
 import '../../../services/database/group_controller.dart';
 
 /// Watch Group and Group ID.

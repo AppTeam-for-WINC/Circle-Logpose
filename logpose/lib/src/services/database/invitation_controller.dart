@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../models/group/database/invitation.dart';
+import '../../models/database/group/invitation.dart';
 
 import '../../utils/time/time_utils.dart';
 

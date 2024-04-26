@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/models/group/database/member_schedule.dart';
+import 'package:logpose/src/models/database/group/member_schedule.dart';
 
 import '../../../../services/database/group_controller.dart';
 import '../../../../services/database/group_membership_controller.dart';

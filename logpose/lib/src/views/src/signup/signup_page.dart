@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/common/loading/loading_progress.dart';
+import '../../../common/loading_progress.dart';
+import '../../../components/progress/progress_indicator.dart';
 import '../../../controllers/controllers/signup/signup_controller.dart';
-
-import '../../widgets/progress/progress_indicator.dart';
-
 import '../start/start_page.dart';
 
 class SignupPage extends ConsumerWidget {

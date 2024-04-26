@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/group/group_schedule_and_id_model.dart';
+import '../../../../models/custom/group_schedule_and_id_model.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../controllers/group/fetch/group_schedule_and_id_fetcher.dart';
 
