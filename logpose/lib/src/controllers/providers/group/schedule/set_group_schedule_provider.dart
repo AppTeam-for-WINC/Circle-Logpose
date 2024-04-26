@@ -5,7 +5,7 @@ import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_d
 import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
 import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
 
-import '../../../../models/group/database/group_schedule.dart';
+import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 

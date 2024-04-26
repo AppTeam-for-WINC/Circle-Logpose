@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/max_length_validation.dart';
-import '../../../models/user/user.dart';
+import '../../../models/database/user/user.dart';
 
 import '../../../services/auth/auth_controller.dart';
 import '../../../services/database/group_membership_controller.dart';

@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../common/loading/loading_progress.dart';
+import '../../../common/loading_progress.dart';
+import '../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../../../services/auth/auth_controller.dart';
 import '../../validation/email_validation.dart';
 import '../../validation/password_validation.dart';
-
-import '../../../services/auth/auth_controller.dart';
-
-import '../../../views/src/home/home_page.dart';
 
 class LoginController {
   LoginController._internal();
@@ -73,7 +71,7 @@ class LoginController {
     await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const HomePage(),
+        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
       ),
       (_) => false,
     );

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/user/user.dart';
+import '../../../models/database/user/user.dart';
 
 import '../../../services/auth/auth_controller.dart';
 import '../../../services/database/user_controller.dart';

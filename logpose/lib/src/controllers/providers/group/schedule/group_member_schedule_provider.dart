@@ -1,25 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/models/group/database/member_schedule.dart';
+import 'package:logpose/src/models/database/group/member_schedule.dart';
 
-import '../../../../models/group/database/group_schedule.dart';
+import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/auth/auth_controller.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';
 
 final groupMemberScheduleProvider = StateNotifierProvider.family<
-    _UpdateMemberScheduleNotifier, GroupMemberSchedule?, String>(
-  (ref, groupScheduleId) => _UpdateMemberScheduleNotifier(groupScheduleId),
+    _MemberScheduleNotifier, GroupMemberSchedule?, String>(
+  (ref, groupScheduleId) => _MemberScheduleNotifier(groupScheduleId),
 );
 
-class _UpdateMemberScheduleNotifier
-    extends StateNotifier<GroupMemberSchedule?> {
-  _UpdateMemberScheduleNotifier(String groupScheduleId) : super(null) {
-    _initSchedule(groupScheduleId);
+class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
+  _MemberScheduleNotifier(String groupScheduleId) : super(null) {
+    initSchedule(groupScheduleId);
   }
 
-  Future<void> _initSchedule(String groupScheduleId) async {
+  Future<void> initSchedule(String groupScheduleId) async {
     try {
       final groupSchedule = await _fetchGroupSchedule(groupScheduleId);
       final userDocId = await _fetchUserDocId();
@@ -98,34 +97,44 @@ class _UpdateMemberScheduleNotifier
     return memberSchedule!;
   }
 
-  /// Update Group membership's schedule of startAt.
-  Future<void> updateStartAt(DateTime startAt) async {
+  /// Set Group membership's schedule of startAt.
+  Future<void> setStartAt(DateTime startAt) async {
     try {
-      final updatedState = state!.copyWith(startAt: startAt);
-      await GroupMemberScheduleController.update(
-        docId: state!.scheduleId,
-        startAt: startAt,
-      );
-      state = updatedState;
+      state = state!.copyWith(startAt: startAt);
     } on Exception catch (e) {
       state = null;
       debugPrint('Faield to update startAt. $e');
     }
   }
 
-  /// Update Group membership's schedule of endAt.
-  Future<void> updateEndAt(DateTime endAt) async {
+  /// Update Group membership's schedule of startAt.
+  Future<void> updateStartAt(
+    DateTime? startAt,
+  ) async {
+    await GroupMemberScheduleController.update(
+      docId: state!.scheduleId,
+      startAt: startAt,
+    );
+  }
+
+  /// Set Group membership's schedule of endAt.
+  Future<void> setEndAt(DateTime endAt) async {
     try {
-      final updatedState = state!.copyWith(endAt: endAt);
-      await GroupMemberScheduleController.update(
-        docId: state!.scheduleId,
-        endAt: endAt,
-      );
-      state = updatedState;
+      state = state!.copyWith(endAt: endAt);
     } on Exception catch (e) {
       state = null;
       debugPrint('Failed to update endAt. $e');
     }
+  }
+
+  /// Update Group membership's schedule of endAt.
+  Future<void> updateEndAt(
+    DateTime? endAt,
+  ) async {
+    await GroupMemberScheduleController.update(
+      docId: state!.scheduleId,
+      endAt: endAt,
+    );
   }
 
   /// Update Group membership's schedule of attendance.

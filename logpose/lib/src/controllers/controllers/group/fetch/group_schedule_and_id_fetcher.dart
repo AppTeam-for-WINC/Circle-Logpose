@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../../models/group/database/group_schedule.dart';
-import '../../../../models/group/group_schedule_and_id_model.dart';
+import '../../../../models/custom/group_schedule_and_id_model.dart';
+import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 
 class GroupScheduleAndIdFetcher {

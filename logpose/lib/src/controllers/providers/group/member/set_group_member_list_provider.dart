@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/user/user.dart';
+import '../../../../models/database/user/user.dart';
 
 /// Used to set group membership.
 final setGroupMemberListProvider = StateNotifierProvider.autoDispose<
