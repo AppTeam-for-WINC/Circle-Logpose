@@ -8,7 +8,7 @@ import '../../../models/database/group/group_schedule.dart';
 import '../../../utils/color/color_exchanger.dart';
 import '../../../utils/time/time_utils.dart';
 
-import 'components/responsed_member.dart';
+import 'components/responsed_members.dart';
 
 class ScheduleDetailConfirm extends ConsumerStatefulWidget {
   const ScheduleDetailConfirm({
@@ -24,6 +24,7 @@ class ScheduleDetailConfirm extends ConsumerStatefulWidget {
   final GroupProfile group;
   final String scheduleId;
   final GroupSchedule schedule;
+
   @override
   ConsumerState createState() => _ScheduleDetailConfirmState();
 }
@@ -33,7 +34,6 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-
     final responseIcon = widget.responseIcon;
     final responseText = widget.responseText;
     final group = widget.group;

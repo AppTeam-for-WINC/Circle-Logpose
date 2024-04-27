@@ -3,8 +3,7 @@ import 'package:intl/intl.dart';
 
 /// Format DateTime data to String data.
 String formatDateTime(DateTime datetime) {
-  final formatter = DateFormat('yyyy/MM/dd HH');
-  return formatter.format(datetime);
+  return DateFormat('yyyy/MM/dd HH').format(datetime);
 }
 
 /// Format String data to DateTime data.
@@ -25,8 +24,7 @@ DateTime formatStringExcYear(String datetime) {
 
 /// Format DateTime data to String data. And Except year data.
 String formatDateTimeExcYearHourMinuteDay(DateTime datetime) {
-  final formatter = DateFormat('MM/dd');
-  return formatter.format(datetime);
+  return DateFormat('MM/dd').format(datetime);
 }
 
 /// Format DateTime data to String data. And Except year data.
@@ -36,8 +34,7 @@ DateTime formatStringExcYearHourMinuteDay(String datetime) {
 
 /// Format DateTime data to String data. And Except year data.
 String formatDateTimeExcYearMonthDay(DateTime datetime) {
-  final formatter = DateFormat('HH:mm');
-  return formatter.format(datetime);
+  return DateFormat('HH:mm').format(datetime);
 }
 
 /// Format DateTime data to String data. And Except year data.

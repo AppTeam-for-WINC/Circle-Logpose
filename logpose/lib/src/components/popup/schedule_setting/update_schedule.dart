@@ -12,7 +12,7 @@ import '../../../controllers/providers/group/schedule/text/schedule_detail_contr
 import '../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
 import '../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
 
-import '../schedule_create/components/group_picker/group_picker_button.dart';
+import '../schedule_create/components/group/components/group_picker_button.dart';
 import 'update_activity_time.dart';
 
 class ScheduleUpdate extends ConsumerStatefulWidget {

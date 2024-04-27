@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
-import 'components/activity_time.dart';
-import 'components/header.dart';
-import 'components/join_time.dart';
-import 'components/response_Icon_and_text.dart';
+import 'components/activity_time/activity_time.dart';
+import 'components/header/header.dart';
+import 'components/join_time/join_time.dart';
+import 'components/response_icon_and_text/response_icon_and_text.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
