@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../common/schedule_color_palette.dart';
-import '../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../common/schedule_color_palette.dart';
+import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
 class PaletteDialog extends ConsumerWidget {
   const PaletteDialog({
@@ -44,29 +44,30 @@ class _ColorObject extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    void onTapped(int index) {
+    if (schedule.color != scheduleColorPalette[index]) {
+      return const SizedBox.shrink();
+    }
+    
+    void onTap(int index) {
       scheduleNotifier.setColor(
         scheduleColorPalette[index],
       );
       Navigator.of(context).pop();
     }
 
+
     return GestureDetector(
-      onTap: () => onTapped(index),
+      onTap: () => onTap(index),
       child: DecoratedBox(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: scheduleColorPalette[index],
-          border: schedule.color == scheduleColorPalette[index]
-              ? Border.all(width: 2)
-              : null,
+          border: Border.all(width: 2),
         ),
-        child: schedule.color == scheduleColorPalette[index]
-            ? const Icon(
-                CupertinoIcons.check_mark,
-                color: CupertinoColors.white,
-              )
-            : null,
+        child: const Icon(
+          CupertinoIcons.check_mark,
+          color: CupertinoColors.white,
+        ),
       ),
     );
   }

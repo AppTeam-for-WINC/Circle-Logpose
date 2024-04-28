@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
+import '../components/schedule_color/color_button.dart';
 import 'components/back/back_to_page_button.dart';
-import 'components/color/color_button.dart';
 import 'components/detail/detail.dart';
 import 'components/error/schedule_error.dart';
 import 'components/footer/footer.dart';

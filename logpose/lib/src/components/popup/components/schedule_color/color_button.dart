@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import 'palette_dialog.dart';
 
 class ColorButton extends ConsumerWidget {
-  const ColorButton({super.key});
+  const ColorButton({super.key, this.groupScheduleId});
+  final String? groupScheduleId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final schedule = ref.watch(setGroupScheduleProvider(null));
+    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
     if (schedule == null) {
       return const SizedBox.shrink();
     }

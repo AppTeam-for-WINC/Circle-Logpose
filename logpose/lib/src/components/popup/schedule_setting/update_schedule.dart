@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../common/schedule_color_palette.dart';
-
 import '../../../controllers/controllers/group/update/update_group_schedule.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
@@ -12,6 +10,8 @@ import '../../../controllers/providers/group/schedule/text/schedule_detail_contr
 import '../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
 import '../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
 
+import '../components/back_to_page_button.dart';
+import '../components/schedule_color/color_button.dart';
 import '../schedule_create/components/group/components/group_picker_button.dart';
 import 'update_activity_time.dart';
 
@@ -34,8 +34,6 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
     final groupScheduleId = widget.groupScheduleId;
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
-    final scheduleNotifier =
-        ref.watch(setGroupScheduleProvider(groupScheduleId).notifier);
     final asyncGroupsIdList = ref.watch(watchJoinedGroupsProfileProvider);
 
     return Center(
@@ -48,71 +46,8 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CupertinoButton(
-                padding: const EdgeInsets.only(left: 15, top: 15),
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xFF7B61FF),
-                ),
-              ),
-              CupertinoButton(
-                padding: const EdgeInsets.only(left: 20),
-                onPressed: () {
-                  showCupertinoDialog<Widget>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CupertinoAlertDialog(
-                        content: SizedBox(
-                          height: 110,
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 18,
-                              mainAxisSpacing: 18,
-                            ),
-                            itemCount: scheduleColorPalette.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  scheduleNotifier.setColor(
-                                    scheduleColorPalette[index],
-                                  );
-                                  Navigator.of(context).pop();
-                                },
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: scheduleColorPalette[index],
-                                    border: schedule.color ==
-                                            scheduleColorPalette[index]
-                                        ? Border.all(width: 2)
-                                        : null,
-                                  ),
-                                  child: schedule.color ==
-                                          scheduleColorPalette[index]
-                                      ? const Icon(
-                                          Icons.check,
-                                          color: Colors.white,
-                                        )
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Icon(
-                  Icons.circle,
-                  size: 50,
-                  color: schedule!.color,
-                ),
-              ),
+              const BackToPageButton(),
+              ColorButton(groupScheduleId: groupScheduleId),
               Center(
                 child: SizedBox(
                   width: deviceWidth * 0.7,
@@ -132,7 +67,7 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                       color: Colors.black,
                     ),
                     onChanged: (text) => ref
-                        .read(scheduleTitleControllerProvider.notifier)
+                        .watch(scheduleTitleControllerProvider.notifier)
                         .state
                         .text = text,
                   ),
@@ -287,7 +222,7 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
                         child: CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () async {
-                            if (schedule.groupId == null) {
+                            if (schedule!.groupId == null) {
                               ref
                                   .watch(scheduleErrorMessageProvider.notifier)
                                   .state = 'No selected group.';
