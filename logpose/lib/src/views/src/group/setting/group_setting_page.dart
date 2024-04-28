@@ -25,7 +25,6 @@ import '../../../../controllers/providers/group/schedule/watch_group_schedule_an
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';
 
-
 class GroupSettingPage extends ConsumerStatefulWidget {
   const GroupSettingPage({
     super.key,
@@ -84,8 +83,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
             Navigator.pop(
               context,
               CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                builder: (context) => 
-                const ScheduleListAndJoinedGroupTabSlider(),
+                builder: (context) =>
+                    const ScheduleListAndJoinedGroupTabSlider(),
               ),
             );
           },
@@ -240,8 +239,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                 await showPhotoAccessDeniedDialog(context);
                               }
                               if (image != null) {
-                                await groupProfileNotifier
-                                    .changeImage(image!);
+                                await groupProfileNotifier.changeImage(image!);
                               }
                             },
                             child: const SizedBox(
@@ -351,8 +349,9 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                                 .map((membershipProfile) {
                                               return membershipProfile != null
                                                   ? GroupMemberImage(
-                                                      userProfile:
-                                                          membershipProfile,
+                                                      imagePath:
+                                                          membershipProfile
+                                                              .image,
                                                     )
                                                   : const SizedBox.shrink();
                                             }).toList(),
@@ -368,8 +367,9 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                                 .map((membershipProfile) {
                                               return membershipProfile != null
                                                   ? GroupMemberImage(
-                                                      userProfile:
-                                                          membershipProfile,
+                                                      imagePath:
+                                                          membershipProfile
+                                                              .image,
                                                     )
                                                   : const SizedBox.shrink();
                                             }).toList(),
@@ -385,7 +385,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                           .map(
                                             (member) => groupProfile != null
                                                 ? GroupMemberImage(
-                                                    userProfile: member,
+                                                    imagePath: member.image,
                                                   )
                                                 : const Text('No member'),
                                           ),
@@ -611,8 +611,8 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         await Navigator.pushAndRemoveUntil(
                           context,
                           CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                            builder: (context) => 
-                            const ScheduleListAndJoinedGroupTabSlider(),
+                            builder: (context) =>
+                                const ScheduleListAndJoinedGroupTabSlider(),
                           ),
                           (_) => false,
                         );

@@ -31,9 +31,7 @@ class _ScheduleUpdateState extends ConsumerState<ScheduleUpdate> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-
     final groupScheduleId = widget.groupScheduleId;
-
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
     final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
     final scheduleNotifier =

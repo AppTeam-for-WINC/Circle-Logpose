@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
+import '../components/header.dart';
 import 'components/activity_time/activity_time.dart';
-import 'components/header/header.dart';
 import 'components/join_time/join_time.dart';
 import 'components/response_icon_and_text/response_icon_and_text.dart';
 
@@ -41,7 +41,7 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
           decoration: const BoxDecoration(color: CupertinoColors.white),
           child: Stack(
             children: [
-              Header(colorToString: groupSchedule.color),
+              Header(color: groupSchedule.color),
               ResponseIconAndText(
                 responseIcon: responseIcon,
                 responseText: responseText,

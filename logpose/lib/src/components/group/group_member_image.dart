@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/database/user/user.dart';
-
 class GroupMemberImage extends ConsumerStatefulWidget {
   const GroupMemberImage({
     super.key,
-    required this.userProfile,
+    required this.imagePath,
   });
-  final UserProfile userProfile;
+  final String imagePath;
 
   @override
   ConsumerState<GroupMemberImage> createState() => _GroupMemberImageState();
@@ -17,19 +15,19 @@ class GroupMemberImage extends ConsumerStatefulWidget {
 class _GroupMemberImageState extends ConsumerState<GroupMemberImage> {
   @override
   Widget build(BuildContext context) {
-    final userProfile = widget.userProfile;
+    final imagePath = widget.imagePath;
 
     return Container(
       width: 30,
       height: 30,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: userProfile.image.startsWith('http')
+          image: imagePath.startsWith('http')
               ? NetworkImage(
-                  userProfile.image,
+                  imagePath,
                 )
               : AssetImage(
-                  userProfile.image,
+                  imagePath,
                 ) as ImageProvider,
           fit: BoxFit.cover,
         ),
