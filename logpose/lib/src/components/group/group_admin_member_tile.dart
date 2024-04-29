@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/database/user/user.dart';
+import '../image/custom_cached_network_image.dart';
+import '../text/custom_text.dart';
 
 class GroupAdminMemberTile extends ConsumerWidget {
   const GroupAdminMemberTile({super.key, required this.adminUserProfile});
   final UserProfile adminUserProfile;
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DecoratedBox(
@@ -16,7 +18,6 @@ class GroupAdminMemberTile extends ConsumerWidget {
             blurRadius: 1,
             spreadRadius: 2,
             offset: Offset(1, 1),
-            color: Colors.black12,
           ),
         ],
         borderRadius: BorderRadius.circular(40),
@@ -28,27 +29,13 @@ class GroupAdminMemberTile extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 5, right: 10),
-              child: Container(
+              child: CustomCachedNetworkImage(
+                imagePath: adminUserProfile.image,
                 width: 37,
                 height: 37,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      adminUserProfile.image,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(999),
-                ),
               ),
             ),
-            Expanded(
-              child: Text(
-                adminUserProfile.name,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.black),
-              ),
-            ),
+            CustomText(text: adminUserProfile.name),
           ],
         ),
       ),

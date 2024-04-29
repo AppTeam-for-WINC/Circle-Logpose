@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/schedule/watch_group_member_profile_not_absence_list_provider.dart';
-import '../../../../../group/group_member_image.dart';
+import '../../../../../image/custom_image.dart';
 
 class AsyncGroupMember extends ConsumerStatefulWidget {
   const AsyncGroupMember({
@@ -22,7 +22,7 @@ class _AsyncGroupMemberState extends ConsumerState<AsyncGroupMember> {
     final asyncGroupMember = ref.watch(
       watchGroupMembershipProfileNotAbsenceListProvider(scheduleId),
     );
-    
+
     return asyncGroupMember.when(
       data: (membershipProfileList) {
         return Padding(
@@ -30,8 +30,10 @@ class _AsyncGroupMemberState extends ConsumerState<AsyncGroupMember> {
           child: Row(
             children: membershipProfileList.map((membershipProfile) {
               return membershipProfile != null
-                  ? GroupMemberImage(
+                  ? CustomImage(
                       imagePath: membershipProfile.image,
+                      width: 30,
+                      height: 30,
                     )
                   : const SizedBox.shrink();
             }).toList(),

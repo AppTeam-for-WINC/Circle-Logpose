@@ -6,13 +6,11 @@ class Username extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    
+
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: deviceWidth * 0.25,
-        ),
+        constraints: BoxConstraints(maxWidth: deviceWidth * 0.25),
         child: Text(
           name,
           style: const TextStyle(color: CupertinoColors.black),

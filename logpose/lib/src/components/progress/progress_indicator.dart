@@ -11,13 +11,10 @@ class PageProgressIndicator extends ConsumerStatefulWidget {
   ConsumerState createState() => _ProgressIndicatorState();
 }
 
-class _ProgressIndicatorState
-    extends ConsumerState<PageProgressIndicator> {
-
+class _ProgressIndicatorState extends ConsumerState<PageProgressIndicator> {
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(loadingProgressProvider);
-    if (isLoading) {
+    if (ref.watch(loadingProgressProvider)) {
       return const Positioned.fill(
         child: Center(
           child: CupertinoActivityIndicator(
@@ -28,7 +25,7 @@ class _ProgressIndicatorState
       );
     } else {
       // Returns an empty widget when not loading.
-      return const  SizedBox.expand();
+      return const SizedBox.expand();
     }
   }
 }

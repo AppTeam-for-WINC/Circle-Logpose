@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../common/loading_progress.dart';
-import '../../../../components/group/group_member_image.dart';
-import '../../../../components/group/group_schedule_tile.dart';
 
+import '../../../../components/group/group_schedule_tile/group_schedule_tile.dart';
+import '../../../../components/image/custom_image.dart';
 import '../../../../components/popup/add_member/add_member.dart';
-import '../../../../components/popup/schedule_create/schedule_create.dart';
+import '../../../../components/popup/create_schedule/create_schedule.dart';
 import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 import '../../../../controllers/controllers/group/update/update_group_settings.dart';
 import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
@@ -348,10 +348,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                             children: membershipProfiles
                                                 .map((membershipProfile) {
                                               return membershipProfile != null
-                                                  ? GroupMemberImage(
+                                                  ? CustomImage(
                                                       imagePath:
                                                           membershipProfile
                                                               .image,
+                                                      width: 30,
+                                                      height: 30,
                                                     )
                                                   : const SizedBox.shrink();
                                             }).toList(),
@@ -366,10 +368,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                             children: membershipProfiles
                                                 .map((membershipProfile) {
                                               return membershipProfile != null
-                                                  ? GroupMemberImage(
+                                                  ? CustomImage(
                                                       imagePath:
                                                           membershipProfile
                                                               .image,
+                                                      width: 30,
+                                                      height: 30,
                                                     )
                                                   : const SizedBox.shrink();
                                             }).toList(),
@@ -384,8 +388,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                                           .watch(setGroupMemberListProvider)
                                           .map(
                                             (member) => groupProfile != null
-                                                ? GroupMemberImage(
+                                                ? CustomImage(
                                                     imagePath: member.image,
+                                                    width: 30,
+                                                    height: 30,
                                                   )
                                                 : const Text('No member'),
                                           ),
@@ -532,10 +538,10 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         onTap: () async {
                           ref.watch(selectedGroupNameProvider.notifier).state =
                               groupProfileNotifier.groupNameController.text;
-                          await showCupertinoModalPopup<ScheduleCreate>(
+                          await showCupertinoModalPopup<CreateSchedule>(
                             context: context,
                             builder: (BuildContext context) {
-                              return ScheduleCreate(groupId: groupId);
+                              return CreateSchedule(groupId: groupId);
                             },
                           );
                         },

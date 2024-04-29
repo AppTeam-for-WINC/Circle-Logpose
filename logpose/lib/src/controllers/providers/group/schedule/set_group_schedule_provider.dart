@@ -10,7 +10,7 @@ import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 
 /// Set group schedule.
-final setGroupScheduleProvider = StateNotifierProvider.family<
+final setGroupScheduleProvider = StateNotifierProvider.family.autoDispose<
     _SetGroupScheduleNotifier, _GroupScheduleViewer?, String?>(
   // tear off -> (ref, scheduleId) => _SetGroupScheduleNotifier(ref, scheduleId)
   _SetGroupScheduleNotifier.new,

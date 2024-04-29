@@ -10,8 +10,10 @@ import '../../utils/color/color_exchanger.dart';
 import '../../utils/schedule/schedule_response.dart';
 import '../../utils/time/time_utils.dart';
 
+import '../image/custom_image.dart';
 import '../popup/behind_and_early_setting/behind_and_early_setting.dart';
 import '../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
+import 'components/schdule_card_time_view.dart';
 
 class ScheduleCard extends ConsumerStatefulWidget {
   const ScheduleCard({super.key, required this.groupData});
@@ -27,18 +29,15 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-
     final groupProfileAndScheduleAndId = widget.groupData;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
     final groupSchedule = widget.groupData.groupSchedule;
     final groupScheduleId = widget.groupData.groupScheduleId;
-
     final userSchedule =
         ref.watch(groupMemberScheduleProvider(groupScheduleId));
     final userScheduleNotifier =
         ref.watch(groupMemberScheduleProvider(groupScheduleId).notifier);
-
     final isAttendance = userSchedule?.attendance ?? false;
     final isLeavingEarly = userSchedule?.leaveEarly ?? false;
     final isBehindTime = userSchedule?.lateness ?? false;
@@ -82,32 +81,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              formatDateTimeExcYearMonthDay(
-                                groupSchedule.startAt,
-                              ),
-                              style: const TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                            const Text(
-                              '-',
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              formatDateTimeExcYearMonthDay(
-                                groupSchedule.endAt,
-                              ),
-                              style: const TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
+                        ScheduleCardTimeView(groupSchedule: groupSchedule),
                         GestureDetector(
                           onTap: () async {
                             await showCupertinoModalPopup<
@@ -452,19 +426,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
           ),
           Positioned(
             right: 35,
-            child: Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: groupImage.startsWith('http')
-                      ? NetworkImage(groupImage)
-                      : AssetImage(groupImage) as ImageProvider,
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(999),
-              ),
-            ),
+            child: CustomImage(imagePath: groupImage, width: 42, height: 42),
           ),
         ],
       ),

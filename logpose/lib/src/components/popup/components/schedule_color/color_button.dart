@@ -19,7 +19,7 @@ class ColorButton extends ConsumerWidget {
       showCupertinoDialog<Widget>(
         context: context,
         builder: (BuildContext context) {
-          return const PaletteDialog();
+          return PaletteDialog(groupScheduleId: groupScheduleId);
         },
       );
     }

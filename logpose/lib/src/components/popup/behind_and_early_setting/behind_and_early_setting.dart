@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
-import '../components/header.dart';
-import 'components/activity_time/activity_time.dart';
+import '../components/header/header.dart';
+import '../components/schedule_time_view/schedule_time_view.dart';
 import 'components/join_time/join_time.dart';
 import 'components/response_icon_and_text/response_icon_and_text.dart';
+import 'components/title/schedule_title.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
@@ -14,10 +15,10 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
     required this.responseIcon,
     required this.responseText,
   });
-
   final GroupProfileAndScheduleAndId groupProfileAndScheduleAndId;
   final Icon responseIcon;
   final Text responseText;
+
   @override
   ConsumerState<BehindAndEarlySetting> createState() {
     return _BehindAndEarlySettingState();
@@ -46,11 +47,18 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
                 responseIcon: responseIcon,
                 responseText: responseText,
               ),
-              ActivityTime(
-                title: groupSchedule.title,
-                startAt: groupSchedule.startAt,
-                endAt: groupSchedule.endAt,
-                groupData: groupData,
+              Container(
+                margin: const EdgeInsets.only(left: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ScheduleTitle(title: groupSchedule.title),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: ScheduleTimeView(groupSchedule: groupSchedule),
+                    ),
+                  ],
+                ),
               ),
               JoinTime(groupData: groupData),
             ],

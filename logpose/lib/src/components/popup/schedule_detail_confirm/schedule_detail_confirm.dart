@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/database/group/group_profile.dart';
 import '../../../models/database/group/group_schedule.dart';
 
-import '../components/background.dart';
-import '../components/header.dart';
-import '../components/schedule_activity_time.dart';
+import '../components/background/background.dart';
+import '../components/header/header.dart';
+import '../components/schedule_time_view/schedule_time_view.dart';
 import 'components/detail/detail.dart';
 import 'components/group_image/group_image.dart';
 import 'components/member/responsed_members.dart';
@@ -71,7 +71,7 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ScheduleTitle(title: groupSchedule.title),
-                        ScheduleActivityTime(groupSchedule: groupSchedule),
+                        ScheduleTimeView(groupSchedule: groupSchedule),
                         ResponsedMembers(
                           groupProfile: group,
                           scheduleId: groupScheduleId,

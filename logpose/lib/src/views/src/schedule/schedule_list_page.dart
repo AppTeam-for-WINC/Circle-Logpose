@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../components/popup/schedule_create/schedule_create.dart';
+import '../../../components/popup/create_schedule/create_schedule.dart';
 import '../../../components/schedule/schedule_card.dart';
 import '../../../controllers/providers/group/group/watch_joined_group_exist_provider.dart';
 import '../../../controllers/providers/utils/group_and_schedule_id_provider.dart';
@@ -113,10 +113,10 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
                 ),
                 child: CupertinoButton(
                   onPressed: () async {
-                    await showCupertinoModalPopup<ScheduleCreate>(
+                    await showCupertinoModalPopup<CreateSchedule>(
                       context: context,
                       builder: (BuildContext context) {
-                        return const ScheduleCreate();
+                        return const CreateSchedule();
                       },
                     );
                   },

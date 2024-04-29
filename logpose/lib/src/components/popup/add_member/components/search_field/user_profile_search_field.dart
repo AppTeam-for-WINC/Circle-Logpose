@@ -9,7 +9,7 @@ class UserProfileSearchField extends ConsumerStatefulWidget {
     required this.groupId,
   });
   final String? groupId;
-  
+
   @override
   ConsumerState<UserProfileSearchField> createState() =>
       _UserProfileSearchFieldState();
@@ -19,9 +19,8 @@ class _UserProfileSearchFieldState
     extends ConsumerState<UserProfileSearchField> {
   @override
   Widget build(BuildContext context) {
-    final groupId = widget.groupId;
     final userProfileNotifier =
-        ref.watch(setSearchUserDataProvider(groupId).notifier);
+        ref.watch(setSearchUserDataProvider(widget.groupId).notifier);
 
     return Container(
       padding: const EdgeInsets.only(

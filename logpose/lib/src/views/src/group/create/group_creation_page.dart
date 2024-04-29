@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../common/loading_progress.dart';
 import '../../../../components/group/group_admin_member_tile.dart';
-import '../../../../components/group/group_membership_tile.dart';
+import '../../../../components/group/group_membership_tile/group_membership_tile.dart';
 import '../../../../components/popup/add_member/add_member.dart';
 import '../../../../components/progress/progress_indicator.dart';
 import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';

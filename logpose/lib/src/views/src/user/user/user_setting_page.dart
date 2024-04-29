@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../common/loading_progress.dart';
 import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
-import '../../../../components/user/joined_group_tile.dart';
+import '../../../../components/user/user_joined_group_tile.dart';
 
 import '../../../../controllers/controllers/user/update_user_profile.dart';
 import '../../../../controllers/providers/error/update_user_profile_error_provider.dart';
@@ -530,7 +530,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
                                   return const [SizedBox.shrink()];
                                 }
                                 return groupProfile.map((groupId) {
-                                  return JoinedGroupTile(
+                                  return UserJoinedGroupTile(
                                     groupId: groupId,
                                   );
                                 }).toList();

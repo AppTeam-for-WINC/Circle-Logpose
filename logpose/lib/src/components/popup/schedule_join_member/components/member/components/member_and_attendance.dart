@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../models/database/user/user.dart';
-import '../../../../../group/group_member_image.dart';
+import '../../../../../image/custom_image.dart';
 import '../../../../components/user_name.dart';
 import 'components/async_member_schedule.dart';
 
@@ -51,7 +51,11 @@ class _MemberAndAttendanceState extends ConsumerState<MemberAndAttendance> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
-                    child: GroupMemberImage(imagePath: userProfile.image),
+                    child: CustomImage(
+                      imagePath: userProfile.image,
+                      width: 30,
+                      height: 30,
+                    ),
                   ),
                   Username(name: userProfile.name),
                 ],
