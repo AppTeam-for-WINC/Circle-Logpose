@@ -1,14 +1,14 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:logpose/src/controllers/providers/group/schedule/image_provider.dart';
 
 import '../../../../common/loading_progress.dart';
 
+import '../../../../components/group/group_image_view/group_image_view.dart';
 import '../../../../components/group/group_schedule_tile/group_schedule_tile.dart';
 import '../../../../components/image/custom_image.dart';
+import '../../../../components/photo_button/photo_button.dart';
 import '../../../../components/popup/add_member/add_member.dart';
 import '../../../../components/popup/create_schedule/create_schedule.dart';
 import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
@@ -22,7 +22,7 @@ import '../../../../controllers/providers/group/mode/schedule_delete_mode_provid
 import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 import '../../../../controllers/providers/group/text/selected_group_name_provider.dart';
 
-import '../../../../entities/device/image_controller.dart';
+import 'header/group_setting_header.dart';
 // import '../../../common/progress/progress_indicator.dart';
 
 class GroupSettingPage extends ConsumerStatefulWidget {
@@ -34,24 +34,6 @@ class GroupSettingPage extends ConsumerStatefulWidget {
 }
 
 class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
-  File? image;
-
-  /// Select image.
-  Future<String> pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        return 'no image';
-      }
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-      return 'Success: selected image.';
-    } on PlatformException catch (e) {
-      debugPrint('Failed: $e');
-      return 'Failed';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -74,84 +56,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
-      navigationBar: CupertinoNavigationBar(
-        leading: CupertinoButton(
-          onPressed: () async {
-            Navigator.pop(
-              context,
-              CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                builder: (context) =>
-                    const ScheduleListAndJoinedGroupTabSlider(),
-              ),
-            );
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 233, 233, 246),
-        border: const Border(bottom: BorderSide(color: Colors.transparent)),
-        middle: Container(
-          width: deviceWidth * 0.4,
-          margin: const EdgeInsets.only(top: 10),
-          decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0xFFD9D9D9),
-                offset: Offset(0, 2),
-                blurRadius: 2,
-                spreadRadius: 1,
-              ),
-            ],
-            color: const Color(0xFF7B61FF),
-            borderRadius: BorderRadius.circular(80),
-          ),
-          child: const Center(
-            child: Text(
-              '団体編集',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ),
-        trailing: CupertinoButton(
-          onPressed: () async {
-            await showCupertinoModalPopup<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return CupertinoAlertDialog(
-                  title: const Text('団体を削除しますか?'),
-                  content: const Text('削除後、元に戻すことはできません。'),
-                  actions: <CupertinoDialogAction>[
-                    CupertinoDialogAction(
-                      isDefaultAction: true,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('No'),
-                    ),
-                    CupertinoDialogAction(
-                      isDefaultAction: true,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Yes'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: const Icon(
-            Icons.delete_forever,
-            color: Color(0xFF7B61FF),
-            size: 30,
-          ),
-        ),
-      ),
+      navigationBar: GroupSettingHeader(context: context),
       child: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -180,44 +85,13 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           if (groupProfile != null)
-                            CustomImage(
-                              imagePath: groupProfile.image,
-                              width: deviceWidth * 0.17,
-                              height: deviceHeight * 0.0765,
-                            )
-                          else
-                            Icon(
-                              Icons.group,
-                              size: deviceWidth * 0.17,
-                              color: Colors.grey,
-                            ),
+                            GroupImageView(imagePath: groupProfile.image),
                           const Icon(
                             Icons.cached_sharp,
                             size: 30,
                             color: Colors.grey,
                           ),
-                          CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () async {
-                              final imageGetResult = await pickImage();
-                              if (imageGetResult == 'Failed') {
-                                if (!mounted) {
-                                  return;
-                                }
-                                await showPhotoAccessDeniedDialog(context);
-                              }
-                              if (image != null) {
-                                await groupProfileNotifier.changeImage(image!);
-                              }
-                            },
-                            child: const SizedBox(
-                              child: Icon(
-                                Icons.image,
-                                size: 70,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
+                          const PhotoButton(),
                         ],
                       ),
                     ),
@@ -569,7 +443,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                           groupId,
                           groupProfileNotifier.groupNameController.text,
                           null,
-                          image,
+                          ref.watch(imageControllerProvider),
                           ref,
                         );
                         if (errorMessage != null) {

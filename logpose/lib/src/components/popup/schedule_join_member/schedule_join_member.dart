@@ -6,7 +6,7 @@ import '../../../models/database/group/group_profile.dart';
 import '../../../models/database/group/group_schedule.dart';
 import '../../../models/database/user/user.dart';
 
-import '../components/back_to_page_button/back_to_page_button.dart';
+import '../../back_to_page_button/back_to_page_button.dart';
 import '../components/background/background.dart';
 import '../components/schedule_time_view/schedule_time_view.dart';
 import 'components/member/join_members.dart';

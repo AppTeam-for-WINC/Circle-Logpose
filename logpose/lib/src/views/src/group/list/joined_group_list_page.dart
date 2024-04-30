@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../components/gradation/gradation.dart';
 import '../../../../components/group/create_new_group_button/create_new_group_button.dart';
 import '../../../../components/group/grid_group_list/grid_group_list.dart';
-import '../../../../components/gradation/gradation.dart';
 
 class JoinedGroupListPage extends ConsumerWidget {
   const JoinedGroupListPage({super.key});
