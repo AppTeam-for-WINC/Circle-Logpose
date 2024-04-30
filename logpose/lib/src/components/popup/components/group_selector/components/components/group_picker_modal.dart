@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../controllers/providers/group/group/fetch_group_and_id_modal_provider.dart';
-import '../../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
 import '../../../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
 import '../../../../../../models/custom/group_and_id_model.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
@@ -50,7 +49,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
         bottom: 20,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: CupertinoColors.white,
         borderRadius: BorderRadius.circular(36),
       ),
       child: Center(

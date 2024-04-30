@@ -193,7 +193,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             ),
                           const Icon(
                             Icons.cached_sharp,
-                            size: 40,
+                            size: 30,
                             color: Colors.grey,
                           ),
                           CupertinoButton(
@@ -306,7 +306,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                             ClipRect(
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                widthFactor: 0.87,
+                                widthFactor: 0.8,
                                 child: SizedBox(
                                   child: Row(
                                     children: [

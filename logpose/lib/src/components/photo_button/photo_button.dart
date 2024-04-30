@@ -2,26 +2,26 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../entities/device/image_controller.dart';
+import '../../controllers/providers/group/schedule/image_provider.dart';
+import '../../entities/device/image_controller.dart';
 
-class PhotoButton extends StatefulWidget {
+class PhotoButton extends ConsumerStatefulWidget {
   const PhotoButton({super.key});
   @override
-  State<PhotoButton> createState() => _PhotoButtonState();
+  ConsumerState<PhotoButton> createState() => _PhotoButtonState();
 }
 
-class _PhotoButtonState extends State<PhotoButton> {
-  File? image;
-  Future<String> pickImage() async {
+class _PhotoButtonState extends ConsumerState<PhotoButton> {
+  Future<String> imagePicker() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) {
         return 'no image';
       }
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      ref.watch(imageControllerProvider.notifier).state = File(image.path);
       return 'Success: selected image.';
     } on PlatformException catch (e) {
       debugPrint('Failed: $e');
@@ -38,7 +38,7 @@ class _PhotoButtonState extends State<PhotoButton> {
   }
 
   Future<void> _onPressed() async {
-    final imageGetResult = await pickImage();
+    final imageGetResult = await imagePicker();
     if (imageGetResult == 'Failed') {
       if (!mounted) {
         return;
@@ -55,7 +55,7 @@ class _PhotoButtonState extends State<PhotoButton> {
       child: const SizedBox(
         child: Icon(
           CupertinoIcons.photo,
-          size: 70,
+          size: 60,
           color: CupertinoColors.systemGrey,
         ),
       ),

@@ -10,9 +10,7 @@ class MemberDeleteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onPressed() {
-      ref.watch(setGroupMemberListProvider.notifier).removeMember(
-            accountId,
-          );
+      ref.watch(setGroupMemberListProvider.notifier).removeMember(accountId);
     }
 
     return CupertinoButton(
