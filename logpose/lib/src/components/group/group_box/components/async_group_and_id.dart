@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controllers/providers/utils/group_and_id_provider.dart';
-import '../../../image/custom_cached_network_image.dart';
+import '../../../image/custom_image.dart';
 
 class AsyncGroupAndId extends ConsumerWidget {
   const AsyncGroupAndId({super.key, required this.groupId});
@@ -21,10 +21,10 @@ class AsyncGroupAndId extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomCachedNetworkImage(
+            CustomImage(
               imagePath: data.groupProfile.image,
-              height: 50,
-              width: 50,
+              height: 45,
+              width: 45,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),

@@ -9,8 +9,8 @@ class ScheduleTimeView extends ConsumerWidget {
   const ScheduleTimeView({super.key, required this.groupSchedule});
   final GroupSchedule groupSchedule;
 
-  String _formatDateTimeExcYearHourMinuteDay(DateTime datetime) {
-    return formatDateTimeExcYearHourMinuteDay(datetime);
+  String _formatDateTimeExcYearHourMinute(DateTime datetime) {
+    return formatDateTimeExcYearHourMinute(datetime);
   }
 
   String _formatDateTimeExcYearMonthDay(DateTime datetime) {
@@ -24,7 +24,7 @@ class ScheduleTimeView extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Text(
-            _formatDateTimeExcYearHourMinuteDay(groupSchedule.startAt),
+            _formatDateTimeExcYearHourMinute(groupSchedule.startAt),
             style: const TextStyle(
               fontSize: 18,
             ),

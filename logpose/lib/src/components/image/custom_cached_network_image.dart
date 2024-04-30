@@ -24,10 +24,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.cover,
-          ),
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(999),
         ),
       ),

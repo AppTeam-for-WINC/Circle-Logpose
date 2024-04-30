@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/database/user/user.dart';
-import '../image/custom_cached_network_image.dart';
-import '../text/custom_text.dart';
+import '../../../models/database/user/user.dart';
+import '../../image/custom_cached_network_image.dart';
+import '../../text/custom_text.dart';
 
 class GroupAdminMemberTile extends ConsumerWidget {
   const GroupAdminMemberTile({super.key, required this.adminUserProfile});

@@ -19,17 +19,14 @@ import '../../../../controllers/providers/group/group/group_setting_provider.dar
 import '../../../../controllers/providers/group/member/group_member_profile_list_provider.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
-import '../../../../controllers/providers/group/name/selected_group_name_provider.dart';
 import '../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../../../controllers/providers/group/text/selected_group_name_provider.dart';
 
 import '../../../../entities/device/image_controller.dart';
 // import '../../../common/progress/progress_indicator.dart';
 
 class GroupSettingPage extends ConsumerStatefulWidget {
-  const GroupSettingPage({
-    super.key,
-    required this.groupId,
-  });
+  const GroupSettingPage({super.key, required this.groupId});
   final String groupId;
 
   @override
@@ -182,47 +179,18 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          if (groupProfile?.image != null &&
-                              groupProfile!.image.startsWith('http'))
-                            Container(
+                          if (groupProfile != null)
+                            CustomImage(
+                              imagePath: groupProfile.image,
                               width: deviceWidth * 0.17,
                               height: deviceHeight * 0.0765,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(groupProfile.image)
-                                      as ImageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
                             )
                           else
-                            const Icon(
+                            Icon(
                               Icons.group,
-                              size: 70,
+                              size: deviceWidth * 0.17,
                               color: Colors.grey,
                             ),
-                          // if (groupProfile?.image != null)
-                          //   Container(
-                          //     width: deviceWidth * 0.17,
-                          //     height: deviceHeight * 0.0765,
-                          //     decoration: BoxDecoration(
-                          //       image: DecorationImage(
-                          //       image: groupProfile!.image.startsWith('http')
-                          //             ? NetworkImage(groupProfile.image)
-                          //             : AssetImage(groupProfile.image)
-                          //                 as ImageProvider,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //       borderRadius: BorderRadius.circular(999),
-                          //     ),
-                          //   )
-                          // else
-                          //   const Icon(
-                          //     Icons.group,
-                          //     size: 50,
-                          //     color: Colors.grey,
-                          //   ),
                           const Icon(
                             Icons.cached_sharp,
                             size: 40,

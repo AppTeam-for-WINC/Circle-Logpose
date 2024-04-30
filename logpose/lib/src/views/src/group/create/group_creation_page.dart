@@ -5,21 +5,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 import '../../../../common/loading_progress.dart';
-import '../../../../components/group/group_admin_member_tile.dart';
+import '../../../../components/group/group_admin_tile/group_admin_member_tile.dart';
 import '../../../../components/group/group_membership_tile/group_membership_tile.dart';
+import '../../../../components/image/custom_image.dart';
 import '../../../../components/popup/add_member/add_member.dart';
 import '../../../../components/progress/progress_indicator.dart';
 import '../../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 import '../../../../controllers/controllers/group/create/create_group.dart';
 import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
-import '../../../../controllers/providers/group/name/group_name_editing_provider.dart';
+import '../../../../controllers/providers/group/schedule/image_provider.dart';
+import '../../../../controllers/providers/group/text/group_name_editing_provider.dart';
 import '../../../../controllers/providers/user/user_profile_provider.dart';
-
 import '../../../../entities/device/image_controller.dart';
-
 
 class GroupCreationPage extends ConsumerStatefulWidget {
   const GroupCreationPage({super.key});
@@ -50,12 +49,11 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreationPage> {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-
     final isLoading = ref.watch(loadingProgressProvider);
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
-
     final groupNameController = ref.watch(groupNameEditingProvider(''));
     final groupAdminMemberProfile = ref.watch(readUserProfileProvider);
+    final imageController = ref.watch(imageControllerProvider);
 
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFFF5F3FE),
@@ -98,16 +96,10 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreationPage> {
                                   size: 70,
                                   color: Colors.grey,
                                 )
-                              : Container(
+                              : CustomImage(
+                                  imagePath: image!.path,
                                   width: 80,
                                   height: 80,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: FileImage(image!),
-                                      fit: BoxFit.cover, // 画像のフィットを指定
-                                    ),
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
                                 ),
                           const Icon(
                             Icons.cached_sharp,
@@ -298,7 +290,7 @@ class _GroupCreateContentsState extends ConsumerState<GroupCreationPage> {
                             CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
                               builder: (context) {
                                 return 
-                                const ScheduleListAndJoinedGroupTabSlider();
+                                    const ScheduleListAndJoinedGroupTabSlider();
                               },
                             ),
                             (_) => false,

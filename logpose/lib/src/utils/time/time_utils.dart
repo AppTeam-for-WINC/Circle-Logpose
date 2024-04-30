@@ -23,12 +23,12 @@ DateTime formatStringExcYear(String datetime) {
 }
 
 /// Format DateTime data to String data. And Except year data.
-String formatDateTimeExcYearHourMinuteDay(DateTime datetime) {
+String formatDateTimeExcYearHourMinute(DateTime datetime) {
   return DateFormat('MM/dd').format(datetime);
 }
 
 /// Format DateTime data to String data. And Except year data.
-DateTime formatStringExcYearHourMinuteDay(String datetime) {
+DateTime formatStringExcYearHourMinute(String datetime) {
   return DateFormat('MM/dd').parseStrict(datetime);
 }
 

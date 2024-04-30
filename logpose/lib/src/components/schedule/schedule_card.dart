@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
-
 import '../../models/custom/group_profile_and_schedule_and_id_model.dart';
 
-import '../../utils/color/color_exchanger.dart';
-import '../../utils/schedule/schedule_response.dart';
-import '../../utils/time/time_utils.dart';
-
 import '../image/custom_image.dart';
-import '../popup/behind_and_early_setting/behind_and_early_setting.dart';
-import '../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
-import 'components/schdule_card_time_view.dart';
+import 'components/absence/absence_button.dart';
+import 'components/attendance/attendance_button.dart';
+import 'components/date_label/date_label.dart';
+import 'components/lateness/lateness_button.dart';
+import 'components/leave_early/leave_early_button.dart';
+import 'components/move_to_page/schedule_detail_confirm_button.dart';
+import 'components/time_view/schdule_card_time_view.dart';
 
 class ScheduleCard extends ConsumerStatefulWidget {
   const ScheduleCard({super.key, required this.groupData});
@@ -36,11 +34,9 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
     final groupScheduleId = widget.groupData.groupScheduleId;
     final userSchedule =
         ref.watch(groupMemberScheduleProvider(groupScheduleId));
-    final userScheduleNotifier =
-        ref.watch(groupMemberScheduleProvider(groupScheduleId).notifier);
     final isAttendance = userSchedule?.attendance ?? false;
-    final isLeavingEarly = userSchedule?.leaveEarly ?? false;
-    final isBehindTime = userSchedule?.lateness ?? false;
+    final isLeaveEarly = userSchedule?.leaveEarly ?? false;
+    final isLateness = userSchedule?.lateness ?? false;
     final isAbsence = userSchedule?.absence ?? false;
 
     return Container(
@@ -58,7 +54,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
+                color: CupertinoColors.white,
                 boxShadow: const [
                   BoxShadow(
                     blurRadius: 3,
@@ -82,100 +78,10 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ScheduleCardTimeView(groupSchedule: groupSchedule),
-                        GestureDetector(
-                          onTap: () async {
-                            await showCupertinoModalPopup<
-                                ScheduleDetailConfirm>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                final schedule = ref.read(
-                                  groupMemberScheduleProvider(groupScheduleId),
-                                );
-                                if (schedule == null) {
-                                  return const Text('Missing Schedule');
-                                }
-                                if (schedule.attendance) {
-                                  return ScheduleDetailConfirm(
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.attendance,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.attendance,
-                                    ),
-                                    group: groupProfile,
-                                    scheduleId: groupScheduleId,
-                                    schedule: groupSchedule,
-                                  );
-                                } else if (schedule.leaveEarly) {
-                                  return ScheduleDetailConfirm(
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.leavingEarly,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.leavingEarly,
-                                    ),
-                                    group: groupProfile,
-                                    scheduleId: groupScheduleId,
-                                    schedule: groupSchedule,
-                                  );
-                                } else if (schedule.lateness) {
-                                  return ScheduleDetailConfirm(
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.behindTime,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.behindTime,
-                                    ),
-                                    group: groupProfile,
-                                    scheduleId: groupScheduleId,
-                                    schedule: groupSchedule,
-                                  );
-                                } else if (schedule.absence) {
-                                  return ScheduleDetailConfirm(
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.absence,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.absence,
-                                    ),
-                                    group: groupProfile,
-                                    scheduleId: groupScheduleId,
-                                    schedule: groupSchedule,
-                                  );
-                                } else {
-                                  return ScheduleDetailConfirm(
-                                    responseIcon: null,
-                                    responseText: null,
-                                    group: groupProfile,
-                                    scheduleId: groupScheduleId,
-                                    schedule: groupSchedule,
-                                  );
-                                }
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: deviceWidth * 0.35,
-                                ),
-                                child: Text(
-                                  groupSchedule.title,
-                                  textAlign: TextAlign.end,
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                                color: Color(0xFF7B61FF),
-                              ),
-                            ],
-                          ),
+                        ScheduleDetailConfirmButton(
+                          groupScheduleId: groupScheduleId,
+                          groupProfile: groupProfile,
+                          groupSchedule: groupSchedule,
                         ),
                       ],
                     ),
@@ -189,210 +95,27 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Attendance
-                        GestureDetector(
-                          onTap: () async {
-                            final schedule = ref.read(
-                              groupMemberScheduleProvider(groupScheduleId),
-                            );
-                            if (schedule == null) {
-                              return;
-                            }
-                            await userScheduleNotifier.updateAttendance(
-                              attendance: schedule.attendance,
-                            );
-                          },
-                          child: Container(
-                            width: deviceWidth * 0.185,
-                            height: deviceHeight * 0.085,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: isAttendance
-                                  ? const Color(0xFFFBCEFF)
-                                  : Colors.white,
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ScheduleResponse.getIcon(
-                                    ResponseType.attendance,
-                                  ),
-                                  ScheduleResponse.getText(
-                                    ResponseType.attendance,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        AttendanceButton(
+                          isAttendance: isAttendance,
+                          groupScheduleId: groupScheduleId,
+                          groupSchedule: groupSchedule,
                         ),
-
-                        // LeavingEarly
-                        GestureDetector(
-                          onTap: () async {
-                            final schedule = ref.read(
-                              groupMemberScheduleProvider(groupScheduleId),
-                            );
-                            if (schedule == null) {
-                              return;
-                            }
-                            await userScheduleNotifier.updateLeaveEarly(
-                              leaveEarly: schedule.leaveEarly,
-                            );
-                            if (!mounted) {
-                              return;
-                            }
-
-                            // ref.read()におけるデータの変更が即座に反映されないため、再度呼び出している。
-                            if (ref
-                                .read(
-                                  groupMemberScheduleProvider(groupScheduleId),
-                                )!
-                                .leaveEarly) {
-                              await showCupertinoModalPopup<
-                                  BehindAndEarlySetting>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return BehindAndEarlySetting(
-                                    groupProfileAndScheduleAndId:
-                                        groupProfileAndScheduleAndId,
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.leavingEarly,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.leavingEarly,
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: deviceWidth * 0.185,
-                            height: deviceHeight * 0.085,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: isLeavingEarly
-                                  ? const Color(0xFFFBCEFF)
-                                  : Colors.white,
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ScheduleResponse.getIcon(
-                                    ResponseType.leavingEarly,
-                                  ),
-                                  ScheduleResponse.getText(
-                                    ResponseType.leavingEarly,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        LeaveEarlyButton(
+                          isLeaveEarly: isLeaveEarly,
+                          groupScheduleId: groupScheduleId,
+                          groupProfileAndScheduleAndId:
+                              groupProfileAndScheduleAndId,
                         ),
-
-                        // BehindTime (lateness)
-                        GestureDetector(
-                          onTap: () async {
-                            final schedule = ref.read(
-                              groupMemberScheduleProvider(groupScheduleId),
-                            );
-                            if (schedule == null) {
-                              return;
-                            }
-                            await userScheduleNotifier.updateLateness(
-                              lateness: schedule.lateness,
-                            );
-                            if (!mounted) {
-                              return;
-                            }
-
-                            // ref.read()におけるデータの変更が即座に反映されないため、再度呼び出している。
-                            if (ref
-                                .read(
-                                  groupMemberScheduleProvider(groupScheduleId),
-                                )!
-                                .lateness) {
-                              await showCupertinoModalPopup<
-                                  BehindAndEarlySetting>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return BehindAndEarlySetting(
-                                    groupProfileAndScheduleAndId:
-                                        groupProfileAndScheduleAndId,
-                                    responseIcon: ScheduleResponse.getIcon(
-                                      ResponseType.behindTime,
-                                    ),
-                                    responseText: ScheduleResponse.getText(
-                                      ResponseType.behindTime,
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: deviceWidth * 0.185,
-                            height: deviceHeight * 0.085,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: isBehindTime
-                                  ? const Color(0xFFFBCEFF)
-                                  : Colors.white,
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ScheduleResponse.getIcon(
-                                    ResponseType.behindTime,
-                                  ),
-                                  ScheduleResponse.getText(
-                                    ResponseType.behindTime,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        LatenessButton(
+                          isLateness: isLateness,
+                          groupScheduleId: groupScheduleId,
+                          groupProfileAndScheduleAndId:
+                              groupProfileAndScheduleAndId,
                         ),
-
-                        // Absence
-                        GestureDetector(
-                          onTap: () async {
-                            final schedule = ref.read(
-                              groupMemberScheduleProvider(groupScheduleId),
-                            );
-                            if (schedule == null) {
-                              return;
-                            }
-                            await userScheduleNotifier.updateAbsence(
-                              absence: schedule.absence,
-                            );
-                          },
-                          child: Container(
-                            width: deviceWidth * 0.185,
-                            height: deviceHeight * 0.085,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80),
-                              color: isAbsence
-                                  ? const Color(0xFFFBCEFF)
-                                  : Colors.white,
-                            ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ScheduleResponse.getIcon(
-                                    ResponseType.absence,
-                                  ),
-                                  ScheduleResponse.getText(
-                                    ResponseType.absence,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        AbsenceButton(
+                          isAbsence: isAbsence,
+                          groupScheduleId: groupScheduleId,
+                          groupSchedule: groupSchedule,
                         ),
                       ],
                     ),
@@ -404,25 +127,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
           Positioned(
             left: 15,
             top: 5,
-            child: Container(
-              width: 80,
-              height: 38,
-              decoration: BoxDecoration(
-                color: hexToColor(groupSchedule.color),
-                borderRadius: BorderRadius.circular(99),
-              ),
-              child: Center(
-                child: Text(
-                  formatDateTimeExcYearHourMinuteDay(
-                    groupSchedule.startAt,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
+            child: DateLabel(groupSchedule: groupSchedule),
           ),
           Positioned(
             right: 35,

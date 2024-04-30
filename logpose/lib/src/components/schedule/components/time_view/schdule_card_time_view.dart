@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/group/group_schedule.dart';
-import '../../../utils/time/time_utils.dart';
+import '../../../../models/database/group/group_schedule.dart';
+import '../../../../utils/time/time_utils.dart';
 
 class ScheduleCardTimeView extends ConsumerWidget {
   const ScheduleCardTimeView({super.key, required this.groupSchedule});
