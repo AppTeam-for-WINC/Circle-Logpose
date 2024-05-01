@@ -111,6 +111,24 @@ class GroupMembershipController {
     }
   }
 
+  /// Watch all member's profiles with 'groupId'.
+  static Stream<List<UserProfile?>> watchAllUserProfileWithGroupId(
+    String groupId,
+  ) async* {
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .snapshots();
+
+      await for (final snapshot in stream) {
+        yield await _fetchUserProfileList(snapshot: snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. $e');
+    }
+  }
+
   /// Watch all role(Selected 'admin', or 'membership')
   /// member's profiles.
   static Stream<List<UserProfile?>> watchAllUserProfileWithGroupIdAndRole(
@@ -125,17 +143,17 @@ class GroupMembershipController {
           .snapshots();
 
       await for (final snapshot in stream) {
-        yield await _fetchUserProfileList(snapshot, role);
+        yield await _fetchUserProfileList(snapshot: snapshot, role: role);
       }
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to watch user profile list. $e');
     }
   }
 
-  static Future<List<UserProfile?>> _fetchUserProfileList(
-    QuerySnapshot<Map<String, dynamic>> snapshot,
-    String role,
-  ) async {
+  static Future<List<UserProfile?>> _fetchUserProfileList({
+    required QuerySnapshot<Map<String, dynamic>> snapshot,
+    String? role,
+  }) async {
     return Future.wait(
       snapshot.docs.map((doc) async {
         final userDocId = doc.data()['user_id'] as String?;

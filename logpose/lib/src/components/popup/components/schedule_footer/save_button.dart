@@ -82,6 +82,10 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       }
     }
 
+    void pop() {
+      Navigator.of(context).pop();
+    }
+
     Future<void> save() async {
       setGroupId();
       final errorMessage = await createOrUpdateSchedule();
@@ -94,7 +98,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       if (!mounted) {
         return;
       }
-      Navigator.of(context).pop();
+      pop();
     }
 
     return CupertinoButton(

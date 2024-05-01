@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/group/member/set_group_member_list_provider.dart';
+import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
 
 class MemberDeleteButton extends ConsumerWidget {
   const MemberDeleteButton({super.key, required this.accountId});

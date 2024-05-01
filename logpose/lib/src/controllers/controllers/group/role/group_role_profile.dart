@@ -31,4 +31,12 @@ class GroupRoleProfileStream {
       debugPrint('Error to watch membership profile. $e');
     }
   }
+
+  Stream<List<UserProfile?>> watchMemberProfile(String groupId) async* {
+    try {
+      yield* GroupMembershipController.watchAllUserProfileWithGroupId(groupId);
+    } on FirebaseException catch (e) {
+      debugPrint('Error to watch membership profile. $e');
+    }
+  }
 }

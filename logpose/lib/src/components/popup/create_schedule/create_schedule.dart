@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
+import '../../error_message/red_error_message.dart';
 import '../components/schedule_color/color_button.dart';
 import '../components/schedule_detail/detail.dart';
-import '../components/schedule_error/schedule_error.dart';
 import '../components/schedule_footer/schedule_footer.dart';
 import '../components/schedule_group_selector/group_selector.dart';
 import '../components/schedule_place/place.dart';
@@ -64,7 +64,7 @@ class _CreateScheduleState extends ConsumerState<CreateSchedule> {
                       ),
                     ),
                     if (scheduleErrorMessage != null)
-                      ScheduleError(errorMessage: scheduleErrorMessage),
+                      RedErrorMessage(errorMessage: scheduleErrorMessage),
                   ],
                 ),
               ),

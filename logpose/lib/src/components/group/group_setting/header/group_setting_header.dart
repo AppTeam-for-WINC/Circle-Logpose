@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../components/back_to_page_button/back_to_page_button.dart';
+import '../../../back_to_page_button/back_to_page_button.dart';
 
 class GroupSettingHeader extends CupertinoNavigationBar {
   GroupSettingHeader({super.key, required this.context})

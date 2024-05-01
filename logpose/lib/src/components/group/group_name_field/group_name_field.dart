@@ -4,13 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../controllers/providers/group/text/group_name_editing_provider.dart';
 
 class GroupNameField extends ConsumerWidget {
-  const GroupNameField({super.key});
+  const GroupNameField({super.key, this.groupName});
+  final String? groupName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final groupNameController = ref.watch(groupNameEditingProvider(''));
+
+    TextEditingController groupNameController;
+    if (groupName == null) {
+      groupNameController = ref.watch(groupNameEditingProvider(''));
+    } else {
+      groupNameController = ref.watch(groupNameEditingProvider(groupName!));
+    }
 
     return Container(
       width: deviceWidth * 0.65,

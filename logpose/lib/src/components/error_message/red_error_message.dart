@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class ScheduleError extends StatelessWidget {
-  const ScheduleError({super.key, required this.errorMessage});
+class RedErrorMessage extends StatelessWidget {
+  const RedErrorMessage({super.key, required this.errorMessage});
   final String errorMessage;
 
   @override

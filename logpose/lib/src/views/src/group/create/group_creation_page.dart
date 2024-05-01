@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/loading_progress.dart';
+import '../../../../components/error_message/red_error_message.dart';
 import '../../../../components/group/group_creation/create_group_button/create_group_button.dart';
 import '../../../../components/group/group_creation/group_member_section/member_section.dart';
 import '../../../../components/group/group_creation/switch/add_member_switch.dart';
@@ -10,7 +11,6 @@ import '../../../../components/group/group_creation/switch/delete_member_switch.
 import '../../../../components/group/group_image_view/group_image_view.dart';
 import '../../../../components/group/group_name_field/group_name_field.dart';
 import '../../../../components/photo_button/photo_button.dart';
-import '../../../../components/popup/components/schedule_error/schedule_error.dart';
 import '../../../../components/progress/progress_indicator.dart';
 
 class GroupCreationPage extends ConsumerStatefulWidget {
@@ -72,7 +72,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
                       ),
                     ),
                     if (loadingErrorMessage != null)
-                      ScheduleError(errorMessage: loadingErrorMessage),
+                      RedErrorMessage(errorMessage: loadingErrorMessage),
                     const GroupNameField(),
                   ],
                 ),

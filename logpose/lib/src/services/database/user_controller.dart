@@ -35,10 +35,13 @@ class UserController {
         }
       }
 
-      String? imagePath = 'src/images/group_img.jpeg';
-      if (image != null) {
-        imagePath =
-            await StorageController.uploadUserImageToStorage(docId, image);
+      String? imagePath;
+      if (image != '') {
+        imagePath = await _downloadUserDefaultImageToStorage();
+      } else if (image != null) {
+        imagePath = await _uploadUserImageToStorage(docId, image);
+      } else {
+        throw Exception('Error: failed to set user data.');
       }
 
       await db.collection(collectionPath).doc(docId).set({
@@ -51,6 +54,20 @@ class UserController {
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to create user account. $e');
     }
+  }
+
+  static Future<String> _downloadUserDefaultImageToStorage() async {
+    return StorageController.downloadUserDefaultImageToStorage();
+  }
+
+  static Future<String> _uploadUserImageToStorage(
+    String userDocId,
+    String image,
+  ) async {
+    return StorageController.uploadUserImageToStorage(
+      userDocId,
+      image,
+    );
   }
 
   static Future<UserProfile> read(String docId) async {
@@ -161,11 +178,8 @@ class UserController {
         updateData['name'] = name;
       }
       if (image != null) {
-        final imagePath =
+        updateData['image'] =
             await StorageController.uploadUserImageToStorage(docId, image);
-        if (imagePath != null) {
-          updateData['image'] = imagePath;
-        }
       }
       if (description != null) {
         updateData['description'] = description;

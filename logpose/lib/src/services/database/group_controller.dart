@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/database/group/group_profile.dart';
-
 import '../storage/storage.dart';
 
 /// Stream型をwatchで書く。
-/// Future型はreadで書く。
+/// Future型はreadもしくは　fetchで書く。
 
 class GroupController {
   // シングルトンパターンにしています。
@@ -26,12 +25,13 @@ class GroupController {
       // Create new document
       final groupDoc = db.collection(collectionPath).doc();
 
-      String? imagePath = 'src/images/group_img.jpeg';
-      if (image != null) {
-        imagePath = await StorageController.uploadGroupImageToStorage(
-          groupDoc.id,
-          image,
-        );
+      String? imagePath;
+      if (image == '') {
+        imagePath = await _downloadGroupDefaultImageToStorage();
+      } else if (image != null) {
+        imagePath = await _uploadGroupImageToStorage(groupDoc.id, image);
+      } else {
+        throw Exception('Error: failed to set group data.');
       }
 
       // Get server time
@@ -50,6 +50,20 @@ class GroupController {
     } on FirebaseException catch (e) {
       throw Exception('Failed to create group document: $e');
     }
+  }
+
+  static Future<String> _downloadGroupDefaultImageToStorage() async {
+    return StorageController.downloadGroupDefaultImageToStorage();
+  }
+
+  static Future<String> _uploadGroupImageToStorage(
+    String groupDocId,
+    String image,
+  ) async {
+    return StorageController.uploadGroupImageToStorage(
+      groupDocId,
+      image,
+    );
   }
 
   static Future<List<String>> readAllDocId(String userId) async {
@@ -107,12 +121,9 @@ class GroupController {
         updateData['name'] = name;
       }
 
-      if (image != null) {
-        final imagePath =
-            await StorageController.uploadGroupImageToStorage(docId, image);
-        if (imagePath != null) {
-          updateData['image'] = imagePath;
-        }
+      if (image != '') {
+        updateData['image'] =
+            await StorageController.uploadGroupImageToStorage(docId, image!);
       }
 
       if (description != null) {

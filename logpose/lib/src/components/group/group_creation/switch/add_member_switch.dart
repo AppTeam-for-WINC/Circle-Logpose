@@ -4,14 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../popup/add_member/add_member.dart';
 
 class AddMemberSwitch extends ConsumerWidget {
-  const AddMemberSwitch({super.key});
+  const AddMemberSwitch({super.key, this.groupId});
+  final String? groupId;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> onPressed() async {
       await showCupertinoModalPopup<AddMember>(
         context: context,
         builder: (BuildContext context) {
-          return const AddMember(groupId: null);
+          return AddMember(groupId: groupId);
         },
       );
     }
