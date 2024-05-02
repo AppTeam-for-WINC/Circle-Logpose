@@ -79,7 +79,7 @@ class GroupController {
     }
   }
 
-  /// Get the group database.
+  /// Watch the group database.
   static Stream<GroupProfile?> watch(String docId) {
     return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
       if (!snapshot.exists) {

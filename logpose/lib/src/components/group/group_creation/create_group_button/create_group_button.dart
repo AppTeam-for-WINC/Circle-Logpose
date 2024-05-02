@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../common/loading_progress.dart';
 import '../../../../controllers/controllers/group/create/create_group.dart';
 import '../../../../controllers/providers/group/schedule/image_provider.dart';
-import '../../../../controllers/providers/group/text/group_name_editing_provider.dart';
+import '../../../../controllers/providers/group/text/name_editing_provider.dart';
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class CreateGroupButton extends ConsumerStatefulWidget {
@@ -21,7 +21,7 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
   Future<String?> _createGroup() async {
     try {
       return CreateGroup.create(
-        ref.watch(groupNameEditingProvider('')).text,
+        ref.watch(nameEditingProvider('')).text,
         ref.watch(imageControllerProvider),
         null,
         ref,

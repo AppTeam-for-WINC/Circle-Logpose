@@ -69,7 +69,7 @@ class StorageController {
       final gsReference = FirebaseStorage.instance.refFromURL(
         'gs://fir-15300.appspot.com/images/default/default_group_jpg.png',
       );
-      return gsReference.getDownloadURL();
+      return await gsReference.getDownloadURL();
     } on FirebaseException catch (e) {
       throw Exception('Error: Failed to upload image file. $e');
     }
@@ -78,9 +78,9 @@ class StorageController {
   static Future<String> downloadUserDefaultImageToStorage() async {
     try {
       final gsReference = FirebaseStorage.instance.refFromURL(
-        'gs://fir-15300.appspot.com/images/default/default_user.png',
+        'gs://fir-15300.appspot.com/images/default/default_user.jpg',
       );
-      return gsReference.getDownloadURL();
+      return await gsReference.getDownloadURL();
     } on FirebaseException catch (e) {
       throw Exception('Error: Failed to upload image file. $e');
     }

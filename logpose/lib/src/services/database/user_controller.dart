@@ -36,7 +36,7 @@ class UserController {
       }
 
       String? imagePath;
-      if (image != '') {
+      if (image == '') {
         imagePath = await _downloadUserDefaultImageToStorage();
       } else if (image != null) {
         imagePath = await _uploadUserImageToStorage(docId, image);
@@ -70,6 +70,7 @@ class UserController {
     );
   }
 
+  /// Fetch user database.
   static Future<UserProfile> read(String docId) async {
     try {
       final data =
@@ -79,6 +80,25 @@ class UserController {
       }
 
       return UserProfile.fromMap(data);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch user profile. $e');
+    }
+  }
+
+  /// Watch(Listen) user database.
+  static Stream<UserProfile?> watch(String docId) {
+    try {
+      return db
+          .collection(collectionPath)
+          .doc(docId)
+          .snapshots()
+          .map((snapshot) {
+        if (!snapshot.exists) {
+          throw Exception('Error : No found document data.');
+        }
+
+        return UserProfile.fromMap(snapshot.data()!);
+      });
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch user profile. $e');
     }
@@ -177,9 +197,9 @@ class UserController {
       if (name != null) {
         updateData['name'] = name;
       }
-      if (image != null) {
+      if (image != '') {
         updateData['image'] =
-            await StorageController.uploadUserImageToStorage(docId, image);
+            await StorageController.uploadUserImageToStorage(docId, image!);
       }
       if (description != null) {
         updateData['description'] = description;

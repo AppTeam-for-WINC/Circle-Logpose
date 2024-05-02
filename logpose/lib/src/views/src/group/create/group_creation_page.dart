@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/loading_progress.dart';
+
 import '../../../../components/error_message/red_error_message.dart';
 import '../../../../components/group/group_creation/create_group_button/create_group_button.dart';
 import '../../../../components/group/group_creation/group_member_section/member_section.dart';
 import '../../../../components/group/group_creation/switch/add_member_switch.dart';
 import '../../../../components/group/group_creation/switch/delete_member_switch.dart';
 import '../../../../components/group/group_image_view/group_image_view.dart';
-import '../../../../components/group/group_name_field/group_name_field.dart';
 import '../../../../components/photo_button/photo_button.dart';
 import '../../../../components/progress/progress_indicator.dart';
+import '../../../../components/text_field/name_field.dart';
 
 class GroupCreationPage extends ConsumerStatefulWidget {
   const GroupCreationPage({super.key});
@@ -39,7 +39,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
                 height: deviceHeight * 0.215,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Colors.white,
+                  color: CupertinoColors.white,
                   boxShadow: const [
                     BoxShadow(
                       blurRadius: 2,
@@ -63,17 +63,20 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
                         children: [
                           GroupImageView(),
                           Icon(
-                            Icons.cached_sharp,
+                            CupertinoIcons.arrow_right_arrow_left,
                             size: 30,
-                            color: Colors.grey,
+                            color: CupertinoColors.systemGrey,
                           ),
                           PhotoButton(),
                         ],
                       ),
                     ),
                     if (loadingErrorMessage != null)
-                      RedErrorMessage(errorMessage: loadingErrorMessage),
-                    const GroupNameField(),
+                      RedErrorMessage(
+                        errorMessage: loadingErrorMessage,
+                        fontSize: 14,
+                      ),
+                    const NameField(placeholder: '団体名'),
                   ],
                 ),
               ),

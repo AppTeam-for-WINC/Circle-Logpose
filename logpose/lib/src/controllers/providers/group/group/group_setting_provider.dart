@@ -24,7 +24,6 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
     try {
       final groupData = await _fetchGroupProfile();
       state = groupData;
-      groupNameController.text = groupData.name;
     } on Exception catch (e) {
       state = null;
       debugPrint('Error: No found group $e');

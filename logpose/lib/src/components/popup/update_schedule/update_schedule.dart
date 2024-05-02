@@ -66,7 +66,10 @@ class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
                       ),
                     ),
                     if (scheduleErrorMessage != null)
-                      RedErrorMessage(errorMessage: scheduleErrorMessage),
+                      RedErrorMessage(
+                        errorMessage: scheduleErrorMessage,
+                        fontSize: 14,
+                      ),
                   ],
                 ),
               ),

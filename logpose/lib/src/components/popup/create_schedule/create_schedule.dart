@@ -64,7 +64,10 @@ class _CreateScheduleState extends ConsumerState<CreateSchedule> {
                       ),
                     ),
                     if (scheduleErrorMessage != null)
-                      RedErrorMessage(errorMessage: scheduleErrorMessage),
+                      RedErrorMessage(
+                        errorMessage: scheduleErrorMessage,
+                        fontSize: 14,
+                      ),
                   ],
                 ),
               ),

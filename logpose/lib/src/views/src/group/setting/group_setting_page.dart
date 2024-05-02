@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../components/error_message/red_error_message.dart';
 import '../../../../components/group/group_creation/switch/add_member_switch.dart';
 import '../../../../components/group/group_image_view/group_image_view.dart';
-import '../../../../components/group/group_name_field/group_name_field.dart';
-import '../../../../components/group/group_setting/header/group_setting_header.dart';
 import '../../../../components/group/group_setting/member_section/member_section.dart';
 import '../../../../components/group/group_setting/save/save_button.dart';
 import '../../../../components/group/group_setting/schedule_section/schedule_section.dart';
+import '../../../../components/navigation_bar/group_setting_navigation_bar.dart';
 import '../../../../components/photo_button/photo_button.dart';
+import '../../../../components/text_field/name_field.dart';
 
 import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/group_setting_provider.dart';
@@ -41,7 +40,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
-      navigationBar: GroupSettingHeader(context: context),
+      navigationBar: GroupSettingNavigationBar(context: context),
       child: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -51,7 +50,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 height: deviceHeight * 0.215,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Colors.white,
+                  color: CupertinoColors.white,
                   boxShadow: const [
                     BoxShadow(
                       color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -71,17 +70,20 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                         children: [
                           GroupImageView(imagePath: groupProfile.image),
                           const Icon(
-                            Icons.cached_sharp,
+                            CupertinoIcons.arrow_right_arrow_left,
                             size: 30,
-                            color: Colors.grey,
+                            color: CupertinoColors.systemGrey,
                           ),
                           const PhotoButton(),
                         ],
                       ),
                     ),
                     if (groupNameErrorMessage != null)
-                      RedErrorMessage(errorMessage: groupNameErrorMessage),
-                    GroupNameField(groupName: groupProfile.name),
+                      RedErrorMessage(
+                        errorMessage: groupNameErrorMessage,
+                        fontSize: 14,
+                      ),
+                    NameField(placeholder: '団体名', name: groupProfile.name),
                   ],
                 ),
               ),

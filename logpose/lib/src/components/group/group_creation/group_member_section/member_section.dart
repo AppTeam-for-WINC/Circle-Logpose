@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../controllers/providers/user/user_profile_provider.dart';
+import '../../../../controllers/providers/user/fetch_user_profile_provider.dart';
 import '../../group_member_tile/group_member_tile.dart';
 
 class MemberSection extends ConsumerStatefulWidget {
@@ -58,7 +58,7 @@ class _MemberSectionState extends ConsumerState<MemberSection> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(10),
                 children: <Widget>[
-                  ref.watch(readUserProfileProvider).when(
+                  ref.watch(fetchUserProfileProvider).when(
                     data: (adminUserProfile) {
                       return GroupMemberTile(
                         memberProfile: adminUserProfile,

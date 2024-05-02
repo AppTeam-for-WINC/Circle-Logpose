@@ -5,10 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../controllers/controllers/user/update_account_id.dart';
 import '../../../../controllers/providers/error/account_id_error_message_provider.dart';
 import '../../../../controllers/providers/user/set_user_profile_provider.dart';
-
 import '../../../../utils/clipboard/copy_to_clipboard.dart';
-
-import '../user/user_setting_page.dart';
+import '../user_setting_page.dart';
 
 class AccountIdSettingPage extends ConsumerStatefulWidget {
   const AccountIdSettingPage({super.key});
@@ -31,7 +29,7 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
         leading: CupertinoButton(
           onPressed: () async {
             //Init
-            userProfileNotifier.accountIdController.clear();
+            // userProfileNotifier.accountIdController.clear();
 
             await Navigator.pushAndRemoveUntil(
               context,
@@ -80,9 +78,7 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            final userRef =
-                                await userProfileNotifier.initUserProfile();
-                            copyToClipboard(userRef.accountId);
+                            copyToClipboard(userProfile.accountId);
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,

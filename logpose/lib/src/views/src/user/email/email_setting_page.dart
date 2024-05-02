@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controllers/providers/user/account/email_provider.dart';
 
-import '../user/user_setting_page.dart';
+import '../user_setting_page.dart';
 
 class EmailSettingPage extends ConsumerStatefulWidget {
   const EmailSettingPage({super.key});

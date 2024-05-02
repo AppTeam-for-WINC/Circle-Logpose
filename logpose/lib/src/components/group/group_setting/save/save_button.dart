@@ -6,7 +6,7 @@ import 'package:logpose/src/controllers/providers/group/schedule/image_provider.
 import '../../../../common/loading_progress.dart';
 import '../../../../controllers/controllers/group/update/update_group_settings.dart';
 import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
-import '../../../../controllers/providers/group/text/group_name_editing_provider.dart';
+import '../../../../controllers/providers/group/text/name_editing_provider.dart';
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -24,7 +24,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
     Future<String?> updateGroupSetting() async {
       return UpdateGroupSettings.update(
         widget.groupId,
-        ref.watch(groupNameEditingProvider(widget.groupName)).text,
+        ref.watch(nameEditingProvider(widget.groupName)).text,
         null,
         ref.watch(imageControllerProvider),
         ref,
