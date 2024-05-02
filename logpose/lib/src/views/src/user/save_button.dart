@@ -6,7 +6,7 @@ import '../../../components/slide/slider/schedule_list_and_joined_group_tab_slid
 import '../../../controllers/controllers/user/update_user_profile.dart';
 import '../../../controllers/providers/error/update_user_profile_error_provider.dart';
 import '../../../controllers/providers/group/schedule/image_provider.dart';
-import '../../../controllers/providers/group/text/name_editing_provider.dart';
+import '../../../controllers/providers/text_field/name_editing_provider.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
   const SaveButton({super.key, required this.name});
@@ -17,52 +17,55 @@ class SaveButton extends ConsumerStatefulWidget {
 }
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
+  void _loadingProgress(bool loading) {
+    LoadingProgressController.loadingProgress(ref, loading: loading);
+  }
+
+  Future<String?> _update() async {
+    return UpdateUserProfile.update(
+      ref.watch(nameEditingProvider(widget.name)).text,
+      ref.watch(imageControllerProvider),
+      null,
+      ref,
+    );
+  }
+
+  Future<void> _pushAndRemoveUntil() async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
+      ),
+      (_) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future<void> save() async {
+      if (ref.watch(loadingProgressProvider)) {
+        return;
+      }
+
+      _loadingProgress(true);
+      final errorMessage = await _update();
+      _loadingProgress(false);
+      if (errorMessage != null) {
+        ref.watch(updateUserProfileErrorMessageProvider.notifier).state =
+            errorMessage;
+        return;
+      }
+
+      if (!mounted) {
+        return;
+      }
+      await _pushAndRemoveUntil();
+    }
+
     return Container(
       padding: const EdgeInsets.only(top: 20),
       child: CupertinoButton(
-        onPressed: ref.watch(loadingProgressProvider)
-            ? null
-            : () async {
-                LoadingProgressController.loadingProgress(
-                  ref,
-                  loading: true,
-                );
-
-                final errorMessage = await UpdateUserProfile.update(
-                  ref.watch(nameEditingProvider(widget.name)).text,
-                  ref.watch(imageControllerProvider),
-                  null,
-                  ref,
-                );
-                if (errorMessage != null) {
-                  ref
-                      .watch(
-                        updateUserProfileErrorMessageProvider.notifier,
-                      )
-                      .state = errorMessage;
-                  return;
-                }
-
-                if (!mounted) {
-                  return;
-                }
-
-                LoadingProgressController.loadingProgress(
-                  ref,
-                  loading: false,
-                );
-
-                await Navigator.pushAndRemoveUntil(
-                  context,
-                  CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-                    builder: (context) =>
-                        const ScheduleListAndJoinedGroupTabSlider(),
-                  ),
-                  (_) => false,
-                );
-              },
+        onPressed: save,
         color: const Color(0xFF7B61FF),
         borderRadius: BorderRadius.circular(30),
         child: SizedBox(

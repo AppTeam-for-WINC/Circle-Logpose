@@ -9,7 +9,7 @@ import '../../../services/database/user_controller.dart';
 
 /// Set user profile.
 final setUserProfileDataProvider =
-    StateNotifierProvider<_UserProfileData, UserProfile?>(
+    StateNotifierProvider.autoDispose<_UserProfileData, UserProfile?>(
   (ref) => _UserProfileData(),
 );
 
@@ -17,15 +17,15 @@ class _UserProfileData extends StateNotifier<UserProfile?> {
   _UserProfileData() : super(null) {
     _initUserProfile();
   }
-
+  
   TextEditingController accountIdController = TextEditingController();
 
   Future<void> _initUserProfile() async {
     try {
       final userId = await _fetchUserDocId();
-      final userProfile = await _fetchUserProfile(userId);
-      state = userProfile;
+      state = await _fetchUserProfile(userId);
     } on Exception catch (e) {
+      state = null;
       throw Exception('Error read user data: $e');
     }
   }
@@ -33,6 +33,7 @@ class _UserProfileData extends StateNotifier<UserProfile?> {
   Future<String> _fetchUserDocId() async {
     final userId = await AuthController.getCurrentUserId();
     if (userId == null) {
+      state = null;
       throw Exception('User not logged in.');
     }
     return userId;
@@ -43,6 +44,7 @@ class _UserProfileData extends StateNotifier<UserProfile?> {
     if (userProfile == null) {
       state = null;
     }
+
     return userProfile!;
   }
 

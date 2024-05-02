@@ -22,8 +22,7 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
 
   Future<void> _initGroupProfile() async {
     try {
-      final groupData = await _fetchGroupProfile();
-      state = groupData;
+      state = await _fetchGroupProfile();
     } on Exception catch (e) {
       state = null;
       debugPrint('Error: No found group $e');

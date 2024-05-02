@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../components/error_message/red_error_message.dart';
 import '../../../components/navigation_bar/user_setting_navigation_bar.dart';
 import '../../../components/photo_button/photo_button.dart';
 import '../../../components/text_field/name_field.dart';
+import '../../../components/user_setting/account_id_section.dart';
+import '../../../components/user_setting/email_section.dart';
+import '../../../components/user_setting/group_section.dart';
+import '../../../components/user_setting/password_section.dart';
 
+import '../../../controllers/providers/error/update_user_profile_error_provider.dart';
 import '../../../controllers/providers/user/set_user_profile_provider.dart';
 // import '../../common/progress/progress_indicator.dart';
 
 import 'save_button.dart';
-import 'section/account_id_section.dart';
-import 'section/email_section.dart';
-import 'section/group_section.dart';
-import 'section/password_section.dart';
 import 'user_image_view.dart';
 
 class UserSettingPage extends ConsumerStatefulWidget {
@@ -26,11 +28,10 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final userProfile = ref.watch(setUserProfileDataProvider);
-    // final userProfileError =
-    // ref.watch(updateUserProfileErrorMessageProvider);
+    final userProfileError = ref.watch(updateUserProfileErrorMessageProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
+    final userProfile = ref.watch(setUserProfileDataProvider);
     if (userProfile == null) {
       return const SizedBox.shrink();
     }
@@ -60,9 +61,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
                   ],
                   color: CupertinoColors.white,
                   borderRadius: const BorderRadius.all(Radius.circular(60)),
-                  border: Border.all(
-                    color: const Color(0xFFD9D9D9),
-                  ),
+                  border: Border.all(color: const Color(0xFFD9D9D9)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -82,6 +81,11 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
                         ],
                       ),
                     ),
+                    if (userProfileError != null)
+                      RedErrorMessage(
+                        errorMessage: userProfileError,
+                        fontSize: 14,
+                      ),
                     NameField(placeholder: 'username', name: userProfile.name),
                   ],
                 ),

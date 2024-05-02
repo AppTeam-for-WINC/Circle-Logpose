@@ -5,9 +5,9 @@ import '../../../../controllers/controllers/group/create/create_group_schedule.d
 import '../../../../controllers/controllers/group/update/update_group_schedule.dart';
 import '../../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
-import '../../../../controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
-import '../../../../controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
-import '../../../../controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
+import '../../../../controllers/providers/text_field/schedule/schedule_detail_controller_provider.dart';
+import '../../../../controllers/providers/text_field/schedule/schedule_place_controller_provider.dart';
+import '../../../../controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
 
 /// createOrUpdate is 'create' or 'update'.
 class SaveButton extends ConsumerStatefulWidget {

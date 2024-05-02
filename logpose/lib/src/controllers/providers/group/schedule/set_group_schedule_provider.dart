@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_detail_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_place_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
 
 import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';

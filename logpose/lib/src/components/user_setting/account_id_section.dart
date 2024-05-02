@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../email/email_setting_page.dart';
+import '../../views/src/user/account_id/account_id_setting_page.dart';
 
-class EmailSection extends ConsumerStatefulWidget {
-  const EmailSection({super.key});
+class AccountIdSection extends ConsumerStatefulWidget {
+  const AccountIdSection({super.key});
   @override
-  ConsumerState createState() => _EmailSectionState();
+  ConsumerState createState() => _AccountIdSectionState();
 }
 
-class _EmailSectionState extends ConsumerState<EmailSection> {
+class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
   Future<void> _onPressed() async {
     await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const EmailSettingPage(),
+        builder: (context) => const AccountIdSettingPage(),
       ),
       (_) => false,
     );
@@ -56,16 +56,14 @@ class _EmailSectionState extends ConsumerState<EmailSection> {
               Row(
                 children: [
                   Icon(
-                    CupertinoIcons.mail,
+                    CupertinoIcons.info,
                     color: CupertinoColors.black,
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      'メールアドレス',
-                      style: TextStyle(
-                        color: CupertinoColors.black,
-                      ),
+                      'Account ID',
+                      style: TextStyle(color: CupertinoColors.black),
                     ),
                   ),
                 ],
