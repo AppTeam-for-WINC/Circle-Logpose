@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/providers/group/schedule/image_provider.dart';
-import '../../image/custom_image.dart';
+import '../controllers/providers/group/schedule/image_provider.dart';
+import 'image/custom_image.dart';
 
 class GroupImageView extends ConsumerStatefulWidget {
   const GroupImageView({super.key, this.imagePath});

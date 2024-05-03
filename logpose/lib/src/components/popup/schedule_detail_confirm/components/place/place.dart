@@ -23,9 +23,7 @@ class Place extends ConsumerWidget {
                 margin: const EdgeInsets.only(left: 8),
                 child: const Text(
                   '場所',
-                  style: TextStyle(
-                    color: CupertinoColors.systemGrey,
-                  ),
+                  style: TextStyle(color: CupertinoColors.systemGrey),
                 ),
               ),
             ],
@@ -36,9 +34,7 @@ class Place extends ConsumerWidget {
             child: place != null
                 ? Text(
                     place!,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: const TextStyle(fontSize: 18),
                     maxLines: 7,
                     overflow: TextOverflow.ellipsis,
                   )

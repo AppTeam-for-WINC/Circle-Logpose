@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
+import '../../../../../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
 
 class DeleteScheduleSwitch extends ConsumerWidget {
   const DeleteScheduleSwitch({super.key});

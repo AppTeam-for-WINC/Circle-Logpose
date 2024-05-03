@@ -197,6 +197,10 @@ class GroupMembershipController {
         return null;
       }
 
+      if (data['created_at'] == null) {
+        return null;
+      }
+
       return GroupMembership.fromMap(data);
     }).toList();
   }

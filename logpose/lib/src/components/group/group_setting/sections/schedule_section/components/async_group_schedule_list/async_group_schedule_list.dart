@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/group/group_setting_provider.dart';
-import '../../../../../../controllers/providers/group/members/admin/watch_group_member_profile_list.dart';
-import '../../../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../../../../../../controllers/providers/group/group/group_setting_provider.dart';
+import '../../../../../../../controllers/providers/group/members/admin/watch_group_member_profile_list.dart';
+import '../../../../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 
-import '../../../../../../models/custom/group_schedule_and_id_model.dart';
-import '../../../../group_schedule_tile/group_schedule_tile.dart';
+import '../../../../../../../models/custom/group_schedule_and_id_model.dart';
+import '../../../../../group_schedule_tile/group_schedule_tile.dart';
 
 class AsyncGroupScheduleList extends ConsumerStatefulWidget {
   const AsyncGroupScheduleList({super.key, required this.groupId});

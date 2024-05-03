@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/group_image_view.dart';
 import '../../../components/error_message/red_error_message.dart';
 import '../../../components/group/group_creation/switch/add_member_switch.dart';
-import '../../../components/group/group_image_view/group_image_view.dart';
-import '../../../components/group/group_setting/member_section/member_section.dart';
 import '../../../components/group/group_setting/save/save_button.dart';
-import '../../../components/group/group_setting/schedule_section/schedule_section.dart';
+import '../../../components/group/group_setting/sections/member_section/member_section.dart';
+import '../../../components/group/group_setting/sections/schedule_section/schedule_section.dart';
 import '../../../components/navigation_bar/group_setting_navigation_bar.dart';
 import '../../../components/photo_button/photo_button.dart';
 import '../../../components/text_field/name_field.dart';
