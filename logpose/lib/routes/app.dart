@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../src/components/slide/slider/group_creation_and_list_tab_slider.dart';
 import '../src/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
-import '../src/views/src/login/login_page.dart';
-import '../src/views/src/signup/signup_page.dart';
-import '../src/views/src/start/start_page.dart';
+import '../src/views/login/login_page.dart';
+import '../src/views/signup/signup_page.dart';
+import '../src/views/start/start_page.dart';
 import 'app_controller.dart';
 
 class LogposeApp extends StatelessWidget {

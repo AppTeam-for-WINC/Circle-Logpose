@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/auth/password_field_provider.dart';
+import '../../controllers/providers/text_field/password_field_provider.dart';
 
 class PasswordField extends ConsumerWidget {
   const PasswordField({super.key, this.password});
@@ -13,7 +13,7 @@ class PasswordField extends ConsumerWidget {
     if (password == null) {
       passwordController = ref.watch(passwordFieldProvider(''));
     } else {
-      passwordController = ref.watch(passwordFieldProvider(password!));
+      passwordController = ref.watch(passwordFieldProvider(password));
     }
 
     return Column(

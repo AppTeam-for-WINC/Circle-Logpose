@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../views/src/signup/signup_page.dart';
+import '../../views/signup/signup_page.dart';
 
 class SignUpButton extends ConsumerStatefulWidget {
   const SignUpButton({super.key});

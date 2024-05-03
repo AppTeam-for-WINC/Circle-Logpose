@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/name_editing_provider.dart';
+import '../../controllers/providers/text_field/name_field_provider.dart';
 
 class NameField extends ConsumerWidget {
   const NameField({super.key, required this.placeholder, this.name});
@@ -15,9 +15,9 @@ class NameField extends ConsumerWidget {
 
     TextEditingController nameController;
     if (name == null) {
-      nameController = ref.watch(nameEditingProvider(''));
+      nameController = ref.watch(nameFieldProvider(''));
     } else {
-      nameController = ref.watch(nameEditingProvider(name!));
+      nameController = ref.watch(nameFieldProvider(name!));
     }
 
     return Container(

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controllers/providers/text_field/account_id_field_provider.dart';
-import '../../views/src/user/user_setting_page.dart';
+import '../../views/user/user_setting_page.dart';
 
 class AccountIdSettingNavigationBar extends CupertinoNavigationBar {
   AccountIdSettingNavigationBar({
@@ -10,13 +10,7 @@ class AccountIdSettingNavigationBar extends CupertinoNavigationBar {
     required this.context,
     required this.ref,
   }) : super(
-          leading: CupertinoButton(
-            onPressed: () => _leading(context, ref),
-            child: const Icon(
-              CupertinoIcons.back,
-              color: CupertinoColors.black,
-            ),
-          ),
+          leading: _leading(context, ref),
           backgroundColor: const Color.fromARGB(255, 245, 243, 254),
           border: const Border(
             bottom: BorderSide(
@@ -39,20 +33,23 @@ class AccountIdSettingNavigationBar extends CupertinoNavigationBar {
 
   static Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
     _init(ref);
-    await _pushAndRemoveUntil(context);
+    await navigateBack(context);
   }
 
   static void _init(WidgetRef ref) {
     ref.read(accountIdFieldProvider('')).clear();
   }
 
-  static Future<void> _pushAndRemoveUntil(BuildContext context) async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const UserSettingPage(),
-      ),
-      (_) => false,
-    );
+  static Future<void> navigateBack(BuildContext context) async {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      await Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+          builder: (_) => const UserSettingPage(),
+        ),
+      );
+    }
   }
 }

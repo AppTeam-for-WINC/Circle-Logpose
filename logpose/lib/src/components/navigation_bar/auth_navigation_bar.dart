@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../views/src/start/start_page.dart';
+import '../../views/start/start_page.dart';
 
 class AuthNavigationBar extends CupertinoNavigationBar {
   AuthNavigationBar({super.key, required this.context})

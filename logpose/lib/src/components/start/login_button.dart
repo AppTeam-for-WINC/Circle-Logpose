@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../views/src/login/login_page.dart';
+import '../../views/login/login_page.dart';
 
 class LoginButton extends ConsumerStatefulWidget {
   const LoginButton({super.key});

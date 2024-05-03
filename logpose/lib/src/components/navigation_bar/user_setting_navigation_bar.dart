@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../services/auth/auth_controller.dart';
-import '../../views/src/start/start_page.dart';
+import '../../views/start/start_page.dart';
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class UserSettingNavigationBar extends CupertinoNavigationBar {

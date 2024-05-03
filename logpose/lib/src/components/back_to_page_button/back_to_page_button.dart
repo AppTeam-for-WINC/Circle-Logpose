@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BackToPageButton extends ConsumerWidget {
+class BackToPageButton extends StatelessWidget {
   const BackToPageButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     void onPresseed() {
       Navigator.of(context).pop();
     }
