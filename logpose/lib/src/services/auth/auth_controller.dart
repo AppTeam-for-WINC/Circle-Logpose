@@ -40,6 +40,7 @@ class AuthController {
       await UserController.create(
         docId: docId,
         name: 'New user',
+        image: '',
       );
       return true;
     } on FirebaseFirestore catch (e) {

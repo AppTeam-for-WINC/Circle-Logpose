@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../views/src/user/user/user_setting_page.dart';
+import '../../../views/user/user_setting_page.dart';
 
 class UserSettingTab extends ConsumerStatefulWidget {
   const UserSettingTab({super.key});

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,11 +57,15 @@ class UpdateUserProfile {
     String? imagePath,
     String? description,
   ) async {
-    await UserController.update(
-      userId,
-      name,
-      imagePath,
-      description,
-    );
+    try {
+      await UserController.update(
+        userId,
+        name,
+        imagePath,
+        description,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to update user data. $e');
+    }
   }
 }
