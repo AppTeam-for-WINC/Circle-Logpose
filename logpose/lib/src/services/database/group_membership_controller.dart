@@ -40,7 +40,29 @@ class GroupMembershipController {
     }
   }
 
-  /// Read all memgber's doc ID.
+  /// Watch all memgber's doc ID.
+  static Stream<List<String>> watchAllMembershipIdList(String groupId) async* {
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .snapshots();
+
+      await for (final snapshot in stream) {
+        yield _fetchMembershipIdList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user docId list. $e');
+    }
+  }
+
+  static List<String> _fetchMembershipIdList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  /// Read all memgber's userDoc ID.
   static Future<List<String>> readAllUserDocIdWithGroupId(
     String groupId,
   ) async {
@@ -56,7 +78,7 @@ class GroupMembershipController {
     }
   }
 
-  /// Watch all memgber's doc ID.
+  /// Watch all memgber's userDoc ID.
   static Stream<List<String?>> watchAllUserDocIdWithGroupId(
     String groupId,
   ) async* {
@@ -111,6 +133,24 @@ class GroupMembershipController {
     }
   }
 
+  /// Watch all member's profiles with 'groupId'.
+  static Stream<List<UserProfile?>> watchAllUserProfileWithGroupId(
+    String groupId,
+  ) async* {
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .snapshots();
+
+      await for (final snapshot in stream) {
+        yield await _fetchUserProfileList(snapshot: snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. $e');
+    }
+  }
+
   /// Watch all role(Selected 'admin', or 'membership')
   /// member's profiles.
   static Stream<List<UserProfile?>> watchAllUserProfileWithGroupIdAndRole(
@@ -125,17 +165,17 @@ class GroupMembershipController {
           .snapshots();
 
       await for (final snapshot in stream) {
-        yield await _fetchUserProfileList(snapshot, role);
+        yield await _fetchUserProfileList(snapshot: snapshot, role: role);
       }
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to watch user profile list. $e');
     }
   }
 
-  static Future<List<UserProfile?>> _fetchUserProfileList(
-    QuerySnapshot<Map<String, dynamic>> snapshot,
-    String role,
-  ) async {
+  static Future<List<UserProfile?>> _fetchUserProfileList({
+    required QuerySnapshot<Map<String, dynamic>> snapshot,
+    String? role,
+  }) async {
     return Future.wait(
       snapshot.docs.map((doc) async {
         final userDocId = doc.data()['user_id'] as String?;
@@ -176,6 +216,10 @@ class GroupMembershipController {
       final data = doc.data() as Map<String, dynamic>?;
       if (data == null) {
         debugPrint('Error : No found document data.');
+        return null;
+      }
+
+      if (data['created_at'] == null) {
         return null;
       }
 

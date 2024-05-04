@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../views/src/group/list/joined_group_list_page.dart';
-import '../../../views/src/schedule/schedule_list_page.dart';
+import '../../../views/group/list/joined_group_list_page.dart';
+import '../../../views/schedule/schedule_list_page.dart';
 import '../src/slide_tab.dart';
 import '../src/slide_tab_bar.dart';
 

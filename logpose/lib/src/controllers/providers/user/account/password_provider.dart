@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../services/auth/auth_controller.dart';
-
 import '../../../validation/password_validation.dart';
+import '../../text_field/new_password_field_provider.dart';
+import '../../text_field/password_field_provider.dart';
 
 final passwordSettingProvider = Provider.autoDispose<_UserPasswordSetting>(
   (ref) => _UserPasswordSetting(),
 );
 
 class _UserPasswordSetting {
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-
-  Future<String?> update() async {
+  Future<String?> update(WidgetRef ref) async {
+    final newPasswordController = ref.watch(newPasswordFieldProvider);
     final validationPasswordError =
         _validationPassword(newPasswordController.text);
     if (validationPasswordError != null) {
@@ -27,7 +25,7 @@ class _UserPasswordSetting {
       return "Failed to read user's email.";
     }
 
-    return _updateUserPassword(email);
+    return _updateUserPassword(email, ref);
   }
 
   // Validate new password
@@ -39,9 +37,9 @@ class _UserPasswordSetting {
     return null;
   }
 
-  Future<String?> _updateUserPassword(String email) async {
-    final newPassword = newPasswordController.text;
-    final password = passwordController.text;
+  Future<String?> _updateUserPassword(String email, WidgetRef ref) async {
+    final newPassword = ref.watch(newPasswordFieldProvider).text;
+    final password = ref.watch(passwordFieldProvider('')).text;
 
     // Attempt to update password
     // Returns null if no error
@@ -57,7 +55,6 @@ class _UserPasswordSetting {
   }
 
   Future<String?> _readUserEmail() async {
-    final email = await AuthController.readEmail();
-    return email;
+    return AuthController.readEmail();
   }
 }

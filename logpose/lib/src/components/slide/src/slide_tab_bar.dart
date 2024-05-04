@@ -16,7 +16,7 @@ class SegmentedTabControl extends StatelessWidget {
     super.key,
     this.height = 46,
     required this.tabs,
-    // this.controller,
+    this.controller,
     this.backgroundColor,
     this.backgroundGradient,
     this.tabTextColor,
@@ -42,7 +42,7 @@ class SegmentedTabControl extends StatelessWidget {
   final List<SegmentTab> tabs;
 
   /// Can be provided by [DefaultTabController].
-  // final TabController? controller;
+  final TabController? controller;
 
   /// The color of the area beyond the indicator.
   final Color? backgroundColor;
@@ -103,7 +103,7 @@ class SegmentedTabControl extends StatelessWidget {
         return _SegmentedTabControl(
           tabs: tabs,
           height: height,
-          // controller: controller,
+          controller: controller,
           backgroundColor: backgroundColor,
           backgroundGradient: backgroundGradient,
           tabTextColor: tabTextColor,
