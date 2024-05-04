@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../image/custom_image.dart';
+import '../../../../../common/custom_image/custom_image.dart';
 
 class GroupImage extends ConsumerWidget {
   const GroupImage({super.key, required this.imagePath});

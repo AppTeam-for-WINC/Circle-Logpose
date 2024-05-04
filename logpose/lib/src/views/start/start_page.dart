@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/app_logo_and_title/app_logo_and_title.dart';
-import '../../components/start/login_button.dart';
-import '../../components/start/sign_up_button.dart';
+import '../../components/start_button/move_to_login_button.dart';
+import '../../components/start_button/move_to_sign_up_button.dart';
 
 class StartPage extends ConsumerWidget {
   const StartPage({super.key});
@@ -31,8 +31,8 @@ class StartPage extends ConsumerWidget {
           children: <Widget>[
             AppLogoAndTitle(),
             SizedBox(width: 300, height: 200),
-            SignUpButton(),
-            LoginButton(),
+            MoveToSignUpButton(),
+            MoveToLoginButton(),
           ],
         ),
       ),

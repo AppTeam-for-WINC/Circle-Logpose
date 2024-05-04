@@ -1,19 +1,34 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controllers/controllers/group/delete/delete_group.dart';
+import '../../controllers/providers/group/members/watch_group_member_profile_list.dart';
+import '../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../models/custom/group_schedule_and_id_model.dart';
+import '../../models/database/user/user.dart';
 import '../back_to_page_button/back_to_page_button.dart';
+import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class GroupSettingNavigationBar extends CupertinoNavigationBar {
-  GroupSettingNavigationBar({super.key, required this.context})
-      : super(
+  GroupSettingNavigationBar({
+    super.key,
+    required this.context,
+    required this.ref,
+    required this.mounted,
+    required this.groupId,
+  }) : super(
           leading: const BackToPageButton(),
           backgroundColor: const Color.fromARGB(255, 233, 233, 246),
           border: const Border(
             bottom: BorderSide(color: Color.fromARGB(0, 0, 0, 0)),
           ),
           middle: _middle(context),
-          trailing: _trailing(context),
+          trailing: _trailing(context, ref, mounted, groupId),
         );
   final BuildContext context;
+  final WidgetRef ref;
+  final bool mounted;
+  final String groupId;
 
   static Widget _middle(BuildContext context) {
     return Container(
@@ -43,11 +58,33 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
     );
   }
 
-  static void _pop(BuildContext context) {
-    Navigator.pop(context);
+  static Widget _trailing(
+    BuildContext context,
+    WidgetRef ref,
+    bool mounted,
+    String groupId,
+  ) {
+    return CupertinoButton(
+      onPressed: () => _onPressed(
+        context,
+        ref,
+        mounted,
+        groupId,
+      ),
+      child: const Icon(
+        CupertinoIcons.delete,
+        color: Color(0xFF7B61FF),
+        size: 25,
+      ),
+    );
   }
 
-  static Future<void> _onPressed(BuildContext context) async {
+  static Future<void> _onPressed(
+    BuildContext context,
+    WidgetRef ref,
+    bool mounted,
+    String groupId,
+  ) async {
     await showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
@@ -57,13 +94,13 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
           actions: <CupertinoDialogAction>[
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: () => _pop(context),
-              child: const Text('No'),
+              onPressed: () => _yes(context, ref, mounted, groupId),
+              child: const Text('Yes'),
             ),
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: () => _pop(context),
-              child: const Text('Yes'),
+              onPressed: () => _no(context),
+              child: const Text('No'),
             ),
           ],
         );
@@ -71,14 +108,83 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
     );
   }
 
-  static Widget _trailing(BuildContext context) {
-    return CupertinoButton(
-      onPressed: () => _onPressed(context),
-      child: const Icon(
-        CupertinoIcons.delete,
-        color: Color(0xFF7B61FF),
-        size: 25,
+  static Future<void> _yes(
+    BuildContext context,
+    WidgetRef ref,
+    bool mounted,
+    String groupId,
+  ) async {
+    await _deleteSchedule(context, ref, mounted, groupId);
+  }
+
+  static Future<void> _deleteSchedule(
+    BuildContext context,
+    WidgetRef ref,
+    bool mounted,
+    String groupId,
+  ) async {
+    ref.watch(watchGroupMemberProfileListProvider(groupId)).when(
+          data: (groupMemberList) async {
+            await _watchGroupScheduleAndId(ref, groupId, groupMemberList);
+          },
+          loading: () => [const SizedBox.shrink()],
+          error: (error, stack) => [Text('$error')],
+        );
+    if (!mounted) {
+      return;
+    }
+    await _pushAndRemoveUntil(context);
+  }
+
+  static Future<void> _watchGroupScheduleAndId(
+    WidgetRef ref,
+    String groupId,
+    List<UserProfile?> groupMemberList,
+  ) async {
+    ref.watch(watchGroupScheduleAndIdProvider(groupId)).when(
+          data: (groupScheduleList) async {
+            await _deleteGroup(groupScheduleList, groupId, groupMemberList);
+          },
+          loading: () => [const SizedBox.shrink()],
+          error: (error, stack) => [Text('$error')],
+        );
+  }
+
+  static Future<void> _deleteGroup(
+    List<GroupScheduleAndId?> groupScheduleList,
+    String groupId,
+    List<UserProfile?> groupMemberList,
+  ) async {
+    if (groupScheduleList.isEmpty) {
+      await _delete(groupId, null, groupMemberList);
+    }
+    groupScheduleList.map((data) async {
+      if (data == null) {
+        return;
+      }
+      await _delete(groupId, data.groupScheduleId, groupMemberList);
+    });
+  }
+
+  static Future<void> _delete(
+    String groupId,
+    String? groupScheduleId,
+    List<UserProfile?> groupMemberList,
+  ) async {
+    await DeleteGroup.delete(groupId, groupScheduleId, groupMemberList);
+  }
+
+  static Future<void> _pushAndRemoveUntil(BuildContext context) async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
       ),
+      (_) => false,
     );
+  }
+
+  static void _no(BuildContext context) {
+    Navigator.pop(context);
   }
 }

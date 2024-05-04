@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/database/user/user.dart';
-import '../../role/group_role_profile_stream_provider.dart';
+import '../../../../models/database/user/user.dart';
+import '../role/group_role_profile_stream_provider.dart';
 
 /// Provides a stream of member profiles for a specific group ID.
 final watchGroupMemberProfileListProvider =

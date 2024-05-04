@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/custom_image/custom_image.dart';
 import '../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
 
-import '../../image/custom_image.dart';
 import 'components/absence/absence_button.dart';
 import 'components/attendance/attendance_button.dart';
 import 'components/date_label/date_label.dart';

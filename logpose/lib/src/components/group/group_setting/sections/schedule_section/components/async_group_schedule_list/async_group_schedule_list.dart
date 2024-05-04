@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../controllers/providers/group/group/group_setting_provider.dart';
-import '../../../../../../../controllers/providers/group/members/admin/watch_group_member_profile_list.dart';
+import '../../../../../../../controllers/providers/group/members/watch_group_member_profile_list.dart';
 import '../../../../../../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 
 import '../../../../../../../models/custom/group_schedule_and_id_model.dart';

@@ -40,7 +40,12 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
 
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 246),
-      navigationBar: GroupSettingNavigationBar(context: context),
+      navigationBar: GroupSettingNavigationBar(
+        context: context,
+        ref: ref,
+        mounted: mounted,
+        groupId: groupId,
+      ),
       child: Center(
         child: SingleChildScrollView(
           child: Column(

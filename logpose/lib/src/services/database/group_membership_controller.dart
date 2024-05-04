@@ -40,7 +40,29 @@ class GroupMembershipController {
     }
   }
 
-  /// Read all memgber's doc ID.
+  /// Watch all memgber's doc ID.
+  static Stream<List<String>> watchAllMembershipIdList(String groupId) async* {
+    try {
+      final stream = db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .snapshots();
+
+      await for (final snapshot in stream) {
+        yield _fetchMembershipIdList(snapshot);
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user docId list. $e');
+    }
+  }
+
+  static List<String> _fetchMembershipIdList(
+    QuerySnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return snapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  /// Read all memgber's userDoc ID.
   static Future<List<String>> readAllUserDocIdWithGroupId(
     String groupId,
   ) async {
@@ -56,7 +78,7 @@ class GroupMembershipController {
     }
   }
 
-  /// Watch all memgber's doc ID.
+  /// Watch all memgber's userDoc ID.
   static Stream<List<String?>> watchAllUserDocIdWithGroupId(
     String groupId,
   ) async* {

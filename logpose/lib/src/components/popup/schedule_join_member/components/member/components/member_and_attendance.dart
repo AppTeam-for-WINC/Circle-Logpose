@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../common/custom_image/custom_image.dart';
 import '../../../../../../models/database/user/user.dart';
-import '../../../../../image/custom_image.dart';
 import '../../../../components/user_name/user_name.dart';
 import 'components/async_member_schedule.dart';
 

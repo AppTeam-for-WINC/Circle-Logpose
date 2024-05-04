@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../views/login/login_page.dart';
+import '../../views/signup/signup_page.dart';
 
-class LoginButton extends ConsumerStatefulWidget {
-  const LoginButton({super.key});
+class MoveToSignUpButton extends ConsumerStatefulWidget {
+  const MoveToSignUpButton({super.key});
 
   @override
-  ConsumerState<LoginButton> createState() => _LoginButtonState();
+  ConsumerState<MoveToSignUpButton> createState() => _MoveToSignUpButtonState();
 }
 
-class _LoginButtonState extends ConsumerState<LoginButton> {
+class _MoveToSignUpButtonState extends ConsumerState<MoveToSignUpButton> {
   Future<void> _onPressed() async {
     await Navigator.push(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const LoginPage(),
+        builder: (context) => const SignupPage(),
       ),
     );
   }
@@ -27,16 +27,22 @@ class _LoginButtonState extends ConsumerState<LoginButton> {
       height: 60,
       child: Container(
         margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: CupertinoColors.white,
+          ),
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: CupertinoButton(
           padding: const EdgeInsets.all(8),
-          color: CupertinoColors.white,
+          color: const Color.fromARGB(0, 0, 0, 0),
           borderRadius: BorderRadius.circular(30),
           onPressed: _onPressed,
           child: const Text(
-            'Login',
+            'Sign Up',
             style: TextStyle(
-              color: Color.fromRGBO(80, 49, 238, 1),
               fontSize: 18,
+              color: CupertinoColors.white,
               fontFamily: 'Shippori_Mincho_B1',
             ),
           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../common/custom_image/custom_cached_network_image.dart';
 import '../../controllers/providers/utils/group_and_id_provider.dart';
-import '../image/custom_cached_network_image.dart';
 
 class UserJoinedGroupTile extends ConsumerStatefulWidget {
   const UserJoinedGroupTile({super.key, required this.groupId});

@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../views/login/login_page.dart';
 
-class LoginButton extends ConsumerStatefulWidget {
-  const LoginButton({super.key});
+class MoveToLoginButton extends ConsumerStatefulWidget {
+  const MoveToLoginButton({super.key});
 
   @override
-  ConsumerState<LoginButton> createState() => _LoginButtonState();
+  ConsumerState<MoveToLoginButton> createState() => _MoveToLoginButtonState();
 }
 
-class _LoginButtonState extends ConsumerState<LoginButton> {
+class _MoveToLoginButtonState extends ConsumerState<MoveToLoginButton> {
   Future<void> _onPressed() async {
     await Navigator.push(
       context,

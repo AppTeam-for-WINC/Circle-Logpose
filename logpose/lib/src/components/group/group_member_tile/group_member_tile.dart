@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/custom_image/custom_cached_network_image.dart';
+import '../../../common/custom_text.dart';
 import '../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
 import '../../../models/database/user/user.dart';
-import '../../image/custom_cached_network_image.dart';
-import '../../text/custom_text.dart';
 import 'components/member_delete_button.dart';
 
 class GroupMemberTile extends ConsumerStatefulWidget {
