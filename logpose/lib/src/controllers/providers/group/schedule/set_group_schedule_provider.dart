@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_detail_controller_provider.dart';
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_place_controller_provider.dart';
-import 'package:logpose/src/controllers/providers/group/schedule/text/schedule_title_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_detail_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_place_controller_provider.dart';
+import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
 
 import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 
 /// Set group schedule.
-final setGroupScheduleProvider = StateNotifierProvider.family<
+final setGroupScheduleProvider = StateNotifierProvider.family.autoDispose<
     _SetGroupScheduleNotifier, _GroupScheduleViewer?, String?>(
   // tear off -> (ref, scheduleId) => _SetGroupScheduleNotifier(ref, scheduleId)
   _SetGroupScheduleNotifier.new,

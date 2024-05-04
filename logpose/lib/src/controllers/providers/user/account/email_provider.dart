@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../services/auth/auth_controller.dart';
@@ -11,19 +10,22 @@ final userEmailProvider =
 
 class _UserEmail extends StateNotifier<String?> {
   _UserEmail() : super(null) {
-    readUserEmail();
+    initUserEmail();
   }
 
-  TextEditingController emailController = TextEditingController();
   String? userEmail;
 
-  Future<void> readUserEmail() async {
-    final email = await AuthController.readEmail();
+  Future<void> initUserEmail() async {
+    final email = await _fetchEmail();
     if (email == null) {
       return;
     }
     state = email;
     userEmail = email;
+  }
+
+  Future<String?> _fetchEmail() async {
+    return AuthController.readEmail();
   }
 
   Future<bool> changeEmail(String newEmail) async {

@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'components/copy_invitation_link_button.dart';
-import 'components/user_profile_button.dart';
-import 'components/user_profile_search_field.dart';
+import 'components/invitation_link/copy_invitation_link_button.dart';
+import 'components/search_field/user_profile_search_field.dart';
+import 'components/user_profile/user_profile_button.dart';
 
 class AddMember extends ConsumerStatefulWidget {
-  const AddMember({
-    super.key,
-    required this.groupId,
-  });
+  const AddMember({super.key, required this.groupId});
   final String? groupId;
 
   @override
@@ -21,7 +18,6 @@ class _AddMemberState extends ConsumerState<AddMember> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-
     final groupId = widget.groupId;
 
     return Center(

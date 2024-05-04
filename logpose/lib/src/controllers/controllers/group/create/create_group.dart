@@ -10,7 +10,7 @@ import '../../../../services/auth/auth_controller.dart';
 import '../../../../services/database/group_controller.dart';
 import '../../../../services/database/group_membership_controller.dart';
 import '../../../../services/database/user_controller.dart';
-import '../../../providers/group/member/set_group_member_list_provider.dart';
+import '../../../providers/group/members/membership/set_group_member_list_provider.dart';
 
 /// Create group.
 class CreateGroup {

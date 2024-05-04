@@ -19,20 +19,22 @@ class DeleteSchedule {
     List<UserProfile?> groupMemberList,
   ) async {
     try {
-      await Future.wait(groupMemberList.map((member) async {
-        if (member == null) {
-          return;
-        }
-        final memberScheduleId = await _fetchMemberScheduleId(
-          member.accountId,
-          groupScheduleId,
-        );
-        if (memberScheduleId == null) {
-          debugPrint('Failed to reead memberSchedule ID.');
-          return;
-        }
-        await _deleteMemberSchedule(memberScheduleId);
-      }),);
+      await Future.wait(
+        groupMemberList.map((member) async {
+          if (member == null) {
+            return;
+          }
+          final memberScheduleId = await _fetchMemberScheduleId(
+            member.accountId,
+            groupScheduleId,
+          );
+          if (memberScheduleId == null) {
+            debugPrint('Failed to reead memberSchedule ID.');
+            return;
+          }
+          await _deleteMemberSchedule(memberScheduleId);
+        }),
+      );
       await _deleteGroupSchedule(groupScheduleId);
     } on FirebaseException catch (e) {
       throw Exception('Failed to delete group schedule. Error: $e');
@@ -43,11 +45,15 @@ class DeleteSchedule {
     String accountId,
     String groupScheduleId,
   ) async {
-    final userDocId = await _fetchUserDocId(accountId);
-    return GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
-      scheduleId: groupScheduleId,
-      userDocId: userDocId,
-    );
+    try {
+      final userDocId = await _fetchUserDocId(accountId);
+      return GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
+        scheduleId: groupScheduleId,
+        userDocId: userDocId,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to read schedule ID and User ID. $e');
+    }
   }
 
   static Future<String> _fetchUserDocId(String accountId) async {

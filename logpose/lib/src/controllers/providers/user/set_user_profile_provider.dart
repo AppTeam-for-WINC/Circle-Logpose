@@ -9,39 +9,43 @@ import '../../../services/database/user_controller.dart';
 
 /// Set user profile.
 final setUserProfileDataProvider =
-    StateNotifierProvider<_UserProfileData, UserProfile?>(
+    StateNotifierProvider.autoDispose<_UserProfileData, UserProfile?>(
   (ref) => _UserProfileData(),
 );
 
 class _UserProfileData extends StateNotifier<UserProfile?> {
   _UserProfileData() : super(null) {
-    readUserData();
+    _initUserProfile();
   }
-
-  TextEditingController nameController = TextEditingController();
+  
   TextEditingController accountIdController = TextEditingController();
 
-  Future<UserProfile> initUserProfile() async {
+  Future<void> _initUserProfile() async {
     try {
-      final userId = await AuthController.getCurrentUserId();
-      if (userId == null) {
-        throw Exception('User not logged in.');
-      }
-
-      return await UserController.read(userId);
+      final userId = await _fetchUserDocId();
+      state = await _fetchUserProfile(userId);
     } on Exception catch (e) {
+      state = null;
       throw Exception('Error read user data: $e');
     }
   }
 
-  Future<void> readUserData() async {
-    try {
-      final userProfile = await initUserProfile();
-      nameController.text = userProfile.name;
-      state = userProfile;
-    } on Exception catch (e) {
-      debugPrint('Error read user data: $e');
+  Future<String> _fetchUserDocId() async {
+    final userId = await AuthController.getCurrentUserId();
+    if (userId == null) {
+      state = null;
+      throw Exception('User not logged in.');
     }
+    return userId;
+  }
+
+  Future<UserProfile> _fetchUserProfile(String userDocId) async {
+    final userProfile = await UserController.watch(userDocId).first;
+    if (userProfile == null) {
+      state = null;
+    }
+
+    return userProfile!;
   }
 
   void setNewImage(File newImage) {

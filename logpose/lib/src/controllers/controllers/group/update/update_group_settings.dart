@@ -9,7 +9,7 @@ import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';
 import '../../../../services/database/user_controller.dart';
 
-import '../../../providers/group/member/set_group_member_list_provider.dart';
+import '../../../providers/group/members/membership/set_group_member_list_provider.dart';
 import '../../../validation/group/group_validation.dart';
 
 /// Update group settings.
@@ -26,8 +26,6 @@ class UpdateGroupSettings {
     WidgetRef ref,
   ) async {
     try {
-      final imagePath = image?.path;
-
       final nameValidation = GroupValidation.nameValidation(name);
       if (nameValidation != null) {
         return nameValidation;
@@ -37,7 +35,7 @@ class UpdateGroupSettings {
         groupId,
         name,
         description,
-        imagePath,
+        image?.path,
       );
       await _addMemberships(ref, groupId);
     } on FirebaseException catch (e) {
