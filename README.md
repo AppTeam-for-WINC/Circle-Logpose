@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logpose/src/logpose/Logpose.png" width="50" />
+  <img src="logpose/assets/logpose/Logpose.png" width="50" />
 </p>
 <h1 align="center">Circle Logpose✨</h1>
 <h3 align="center">Circle Management Application</h3>
@@ -10,9 +10,9 @@
 
 <p align="center">
     <!-- 画面スクリーンショット何枚かここへ -->
-    <img width="20%" src="logpose/src/screenshot/start_screenshot.png" />
-    <img width="20%" src="logpose/src/screenshot/attendance_screenshot.png" />
-    <img width="20%" src="logpose/src/screenshot/join_time_screenshot.png" />
+    <img width="20%" src="logpose/assets/screenshot/start_screenshot.png" />
+    <img width="20%" src="logpose/assets/screenshot/attendance_screenshot.png" />
+    <img width="20%" src="logpose/assets/screenshot/join_time_screenshot.png" />
 </p>
 
 ## Overview
@@ -23,7 +23,7 @@ Circle Logpose is designed for managing club activities. It primarily features A
 
 ## Architecture
 <p align="center">
-    <img src="logpose/src/architecture/circle_logpose_architecture.png" width="80%" />
+    <img src="logpose/assets/architecture/circle_logpose_architecture.png" width="80%" />
 </p>
 
 
