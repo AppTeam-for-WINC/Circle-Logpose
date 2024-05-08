@@ -50,31 +50,33 @@ class _MemberSectionState extends ConsumerState<MemberSection> {
           ),
           SingleChildScrollView(
             child: Center(
-              child: GridView.count(
-                crossAxisSpacing: 26,
-                mainAxisSpacing: 14,
-                childAspectRatio: 2.5,
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                children: <Widget>[
-                  ref.watch(fetchUserProfileProvider).when(
-                    data: (adminUserProfile) {
-                      return GroupMemberTile(
-                        memberProfile: adminUserProfile,
-                        adminOrMembership: 'admin',
-                      );
-                    },
-                    loading: () => const SizedBox.shrink(),
-                    error: (error, stack) => Text('$error'),
-                  ),
-                  ...ref.watch(setGroupMemberListProvider).map(
-                        (memberProfile) => GroupMemberTile(
-                          memberProfile: memberProfile,
-                          adminOrMembership: 'membership',
+              child: SizedBox(
+                height: deviceHeight * 0.3,
+                child: GridView.count(
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 5.5,
+                  crossAxisCount: 1,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(10),
+                  children: <Widget>[
+                    ref.watch(fetchUserProfileProvider).when(
+                          data: (adminUserProfile) {
+                            return GroupMemberTile(
+                              memberProfile: adminUserProfile,
+                              adminOrMembership: 'admin',
+                            );
+                          },
+                          loading: () => const SizedBox.shrink(),
+                          error: (error, stack) => Text('$error'),
                         ),
-                      ),
-                ],
+                    ...ref.watch(setGroupMemberListProvider).map(
+                          (memberProfile) => GroupMemberTile(
+                            memberProfile: memberProfile,
+                            adminOrMembership: 'membership',
+                          ),
+                        ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/back_to_page_button.dart';
+import '../../../common/red_error_message.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
-import '../../back_to_page_button/back_to_page_button.dart';
-import '../../error_message/red_error_message.dart';
 import '../components/schedule_color/color_button.dart';
 import '../components/schedule_detail/detail.dart';
 import '../components/schedule_footer/schedule_footer.dart';

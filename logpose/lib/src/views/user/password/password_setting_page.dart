@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../components/error_message/red_error_message.dart';
+import '../../../common/red_error_message.dart';
 import '../../../components/navigation_bar/password_setting_navigation_bar.dart';
 import '../../../components/password_setting/password_setting_section.dart';
 import '../../../components/password_setting/save_button.dart';
