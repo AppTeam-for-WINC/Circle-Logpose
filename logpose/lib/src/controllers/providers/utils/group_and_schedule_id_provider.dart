@@ -14,10 +14,20 @@ final watchGroupAndScheduleAndIdProvider =
   final stream =
       GroupAndScheduleAndIdListListener.listenGroupAndScheduleAndIdList();
   await for (final snapshot in stream) {
-    // 日付で昇順ソート
+    // // 日付で昇順ソート
     snapshot.sort(
       (a, b) => a.groupSchedule.startAt.compareTo(b.groupSchedule.startAt),
     );
+    yield snapshot;
+
+    // グループ名かつ日付で昇順ソート
+    snapshot.sort((a, b) {
+      final result = a.groupProfile.name.compareTo(b.groupProfile.name);
+      if (result != 0) {
+        return result;
+      }
+      return a.groupSchedule.startAt.compareTo(b.groupSchedule.startAt);
+    });
     yield snapshot;
   }
 });

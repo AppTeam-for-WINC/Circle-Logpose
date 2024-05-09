@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/bottom_gradation/bottom_gradation.dart';
 import '../../components/schedule_card_list/schedule_card_list.dart';
 import '../../components/schedule_creation_button/schedule_creation_button.dart';
+import '../../components/schedule_sort_button/schedule_sort_button.dart';
+
 import '../../controllers/providers/group/group/watch_joined_group_exist_provider.dart';
 
 class ScheduleListPage extends ConsumerStatefulWidget {
@@ -29,19 +31,7 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
           Positioned(
             top: deviceHeight * 0.13,
             right: deviceWidth * 0.1,
-            child: CupertinoButton(
-              onPressed: () => debugPrint('NO function.'),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('並び替え', style: TextStyle(color: Color(0xFF7B61FF))),
-                  Icon(
-                    CupertinoIcons.sort_down,
-                    color: Color(0xFF7B61FF),
-                  ),
-                ],
-              ),
-            ),
+            child: const ScheduleSortButton(),
           ),
           Positioned(
             top: deviceHeight * 0.173,

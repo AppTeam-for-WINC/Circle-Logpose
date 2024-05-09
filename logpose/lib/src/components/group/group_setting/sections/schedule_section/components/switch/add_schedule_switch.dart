@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
 import '../../../../../../popup/schedule_creation/schedule_creation.dart';
 
@@ -13,10 +12,8 @@ class AddScheduleSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> onTap() async {
-      final groupProfileNotifier =
-          ref.watch(groupSettingProvider(groupId).notifier);
       ref.watch(selectedGroupNameProvider.notifier).state =
-          groupProfileNotifier.groupNameController.text;
+          groupName!;
       await showCupertinoModalPopup<ScheduleCreation>(
         context: context,
         builder: (BuildContext context) {
