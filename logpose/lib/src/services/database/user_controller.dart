@@ -104,28 +104,6 @@ class UserController {
     }
   }
 
-  /// Read userProfile's list with accountId.
-  static Future<List<UserProfile>> readWithAccountIdList(
-    String accountId,
-  ) async {
-    try {
-      final snapshot = await db
-          .collection(collectionPath)
-          .where('account_id', isEqualTo: accountId)
-          .get();
-
-      return snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>?;
-        if (data == null) {
-          throw ControllerException(DBErrorMessages.noDocumentData + accountId);
-        }
-        return UserProfile.fromMap(data);
-      }).toList();
-    } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch user profile list. $e');
-    }
-  }
-
   /// Read userProfile with accountId.
   static Future<UserProfile?> readWithAccountId(String accountId) async {
     try {

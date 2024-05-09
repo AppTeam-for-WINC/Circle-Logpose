@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/utils/group_and_schedule_id_provider.dart';
+import '../../controllers/providers/sort/sorted_group_and_schedule_id_provider.dart';
 import '../../models/custom/group_profile_and_schedule_and_id_model.dart';
 import 'components/schedule_card.dart';
 
@@ -34,7 +34,7 @@ class _ScheduleCardListState extends ConsumerState<ScheduleCardList> {
 
     // 代わりにListView.builder を用いても良い。
     Widget asyncScheduleCardList() {
-      final data = ref.watch(watchGroupAndScheduleAndIdProvider);
+      final data = ref.watch(sortedGroupAndScheduleAndIdProvider);
 
       return data.when(
         data: (groupDataList) {

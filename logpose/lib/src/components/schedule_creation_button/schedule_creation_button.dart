@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../popup/create_schedule/create_schedule.dart';
+import '../popup/schedule_creation/schedule_creation.dart';
 
 class ScheduleCreationButton extends ConsumerStatefulWidget {
   const ScheduleCreationButton({super.key});
@@ -13,10 +13,10 @@ class ScheduleCreationButton extends ConsumerStatefulWidget {
 class _ScheduleCreationButtonState
     extends ConsumerState<ScheduleCreationButton> {
   Future<void> onPressed() async {
-    await showCupertinoModalPopup<CreateSchedule>(
+    await showCupertinoModalPopup<ScheduleCreation>(
       context: context,
       builder: (BuildContext context) {
-        return const CreateSchedule();
+        return const ScheduleCreation();
       },
     );
   }

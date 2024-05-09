@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/database/group/group_profile.dart';
 import '../storage/storage.dart';
 
-/// Stream型をwatchで書く。
+/// Stream型をwatchもしくはlistenで書く。
 /// Future型はreadもしくは　fetchで書く。
 
 class GroupController {
@@ -34,7 +34,8 @@ class GroupController {
         throw Exception('Error: failed to set group data.');
       }
 
-      // Get server time
+      // Get server time.
+      /// ここで createdAt変数に敢えて格納することで、 serverTimestampの取得処理時間を獲得できる。
       final createdAt = FieldValue.serverTimestamp();
 
       // Set database.

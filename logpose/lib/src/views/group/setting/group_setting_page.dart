@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/group_image_view.dart';
-import '../../../components/error_message/red_error_message.dart';
-import '../../../components/group/group_creation/switch/add_member_switch.dart';
+import '../../../common/photo_button.dart';
+import '../../../common/red_error_message.dart';
+
 import '../../../components/group/group_setting/save/save_button.dart';
 import '../../../components/group/group_setting/sections/member_section/member_section.dart';
 import '../../../components/group/group_setting/sections/schedule_section/schedule_section.dart';
+import '../../../components/group/switch/add_member_switch.dart';
+import '../../../components/group/switch/delete_member_switch.dart';
 import '../../../components/navigation_bar/group_setting_navigation_bar.dart';
-import '../../../components/photo_button/photo_button.dart';
 import '../../../components/text_field/name_field.dart';
 
 import '../../../controllers/providers/error/group_name_error_msg_provider.dart';
@@ -106,11 +108,19 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                       right: -15,
                       child: AddMemberSwitch(groupId: groupId),
                     ),
+                    Positioned(
+                      top: 25,
+                      right: -15,
+                      child: DeleteMemberSwitch(
+                        groupId: groupId,
+                        mode: 'setting',
+                      ),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 15),
-              ScheduleSection(groupId: groupId),
+              ScheduleSection(groupId: groupId, groupName: groupProfile.name),
               const SizedBox(
                 height: 20,
               ),

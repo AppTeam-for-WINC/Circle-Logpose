@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/controllers/providers/text_field/account_id_field_provider.dart';
 
+import '../../common/red_error_message.dart';
 import '../../controllers/providers/error/account_id_error_message_provider.dart';
 import '../../controllers/providers/user/set_user_profile_provider.dart';
-import '../error_message/red_error_message.dart';
 
 class AccountIdSection extends ConsumerWidget {
   const AccountIdSection({super.key, required this.accountId});

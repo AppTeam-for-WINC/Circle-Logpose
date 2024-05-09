@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../components/error_message/red_error_message.dart';
+import '../../common/photo_button.dart';
+import '../../common/red_error_message.dart';
 import '../../components/navigation_bar/user_setting_navigation_bar.dart';
-import '../../components/photo_button/photo_button.dart';
 import '../../components/text_field/name_field.dart';
 import '../../components/user_setting/save_button.dart';
 import '../../components/user_setting/sections/account_id_section.dart';

@@ -69,7 +69,7 @@ Circle Logpose is designed for managing club activities. It primarily features A
       <sub><b>Mr.Fujino</b></sub></a><br />
         Advisor
       </td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ichiro16go"><img src="https://avatars.githubusercontent.com/u/65273424?v=4" width="100px;"/><br />
+      <td align="center" valign="top" width="21%"><a href="https://github.com/ichiro16go"><img src="https://avatars.githubusercontent.com/u/65273424?v=4" width="100px;"/><br />
       <sub><b>Ichiro</b></sub></a><br />
         Engineer
       </td>
@@ -141,11 +141,11 @@ Used: pedantic_mono
 
 <h3>common</h3>
 
-- アプリ全体で共通して使用されるコンポーネントやユーティリティ、設定ファイルなどを含む。例えば、共通のスタイル定義、ユーティリティ関数、グローバルな設定など。
+- アプリ全体で共通して使用されるcommonディレクトリ内に汎用的なコンポーネントやを含む。例えば、共通のスタイル設定など。
 
 <h3> components </h3>
 
-- 再利用可能なUIコンポーネントを格納。これにはボタン、カード、フォームフィールドなどの小さなウィジェットや、アプリケーション全体で再利用可能な汎用コンポーネントを提供する。
+- 再利用可能なUIコンポーネントを格納。これにはボタン、カード、フォームフィールドなどの小さなウィジェットを提供する。
   
 - また、下の階層のcomponentsでは、特定の機能やビューに特化したコンポーネントを提供する。
   
@@ -194,19 +194,15 @@ lib
 │   │   ├── red_error_message.dart
 │   │   └── schedule_color_palette.dart
 │   ├── components
-│   │   ├── accouunt_id
 │   │   ├── accouunt_id_setting
 │   │   ├── app_logo_and_title
 │   │   ├── auth_button
-│   │   ├── back_to_page_button
 │   │   ├── bottom_gradation
 │   │   ├── email_setting
-│   │   ├── error_message
 │   │   ├── group
 │   │   ├── joined_group_tile
 │   │   ├── navigation_bar
 │   │   ├── password_setting
-│   │   ├── photo_button
 │   │   ├── popup
 │   │   ├── progress
 │   │   ├── schedule_card_list
@@ -255,4 +251,4 @@ lib
 ├── test
 └── validation
 
-185 directories, 255 files
+183 directories, 255 files
