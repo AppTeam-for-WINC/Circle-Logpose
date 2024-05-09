@@ -12,18 +12,20 @@ class GroupCreationTab extends ConsumerStatefulWidget {
 }
 
 class GroupCreateTabState extends ConsumerState<GroupCreationTab> {
+  Future<void> _onTap() async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+        builder: (context) => const GroupCreationAndListTabSlider(),
+      ),
+      (_) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        await Navigator.pushAndRemoveUntil(
-          context,
-          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-            builder: (context) => const GroupCreationAndListTabSlider(),
-          ),
-          (_) => false,
-        );
-      },
+      onTap: _onTap,
       child: Container(
         width: 180,
         height: 55,

@@ -15,6 +15,7 @@ class ScheduleListPage extends ConsumerStatefulWidget {
 class _ScheduleListState extends ConsumerState<ScheduleListPage> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
     final groupExist = ref.watch(watchJoinedGroupExistProvider);
 
@@ -26,7 +27,24 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
         alignment: AlignmentDirectional.center,
         children: [
           Positioned(
-            top: deviceHeight * 0.14,
+            top: deviceHeight * 0.13,
+            right: deviceWidth * 0.1,
+            child: CupertinoButton(
+              onPressed: () => debugPrint('NO function.'),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('並び替え', style: TextStyle(color: Color(0xFF7B61FF))),
+                  Icon(
+                    CupertinoIcons.sort_down,
+                    color: Color(0xFF7B61FF),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: deviceHeight * 0.173,
             child: const ScheduleCardList(),
           ),
           const Positioned(
