@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
+import '../../common/red_error_message.dart';
 import '../../components/app_logo_and_title/app_logo_and_title.dart';
 import '../../components/auth_button/sign_up_button.dart';
-import '../../components/error_message/red_error_message.dart';
 import '../../components/navigation_bar/auth_navigation_bar.dart';
 import '../../components/progress/progress_indicator.dart';
 import '../../components/text_field/email_field.dart';

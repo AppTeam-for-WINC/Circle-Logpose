@@ -242,6 +242,28 @@ class GroupMembershipController {
     }
   }
 
+  /// Read Group member's Doc Id.
+  static Future<String> readMemberDocIdWithGroupIdAndUserId(
+    String groupId,
+    String userId,
+  ) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.first.id;
+      } else {
+        throw Exception('No document found for the specified user and group.');
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. $e');
+    }
+  }
+
   /// Update membership users
   static Future<void> update({
     required String docId,

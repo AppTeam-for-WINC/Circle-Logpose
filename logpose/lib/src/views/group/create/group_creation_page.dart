@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/group_image_view.dart';
 import '../../../common/loading_progress.dart';
 
-import '../../../components/error_message/red_error_message.dart';
+import '../../../common/photo_button.dart';
+import '../../../common/red_error_message.dart';
 import '../../../components/group/group_creation/create_group_button/create_group_button.dart';
 import '../../../components/group/group_creation/group_member_section/member_section.dart';
-import '../../../components/group/group_creation/switch/add_member_switch.dart';
-import '../../../components/group/group_creation/switch/delete_member_switch.dart';
-import '../../../components/photo_button/photo_button.dart';
+import '../../../components/group/switch/add_member_switch.dart';
+import '../../../components/group/switch/delete_member_switch.dart';
 import '../../../components/progress/progress_indicator.dart';
 import '../../../components/text_field/name_field.dart';
 
@@ -98,7 +98,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
             Positioned(
               top: deviceHeight * 0.505,
               left: deviceWidth * 0.84,
-              child: const DeleteMemberSwitch(),
+              child: const DeleteMemberSwitch(mode: 'create'),
             ),
             const PageProgressIndicator(),
           ],

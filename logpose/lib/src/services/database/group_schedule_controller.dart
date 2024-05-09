@@ -31,6 +31,10 @@ class GroupScheduleController {
     try {
       // Create new document ID.
       final doc = db.collection(collectionPath).doc();
+
+      // Get server time
+      final createdAt = FieldValue.serverTimestamp();
+
       await doc.set({
         'group_id': groupId,
         'title': title,
@@ -39,7 +43,7 @@ class GroupScheduleController {
         'detail': detail,
         'start_at': startAt,
         'end_at': endAt,
-        'created_at': FieldValue.serverTimestamp(),
+        'created_at': createdAt,
       });
 
       return doc.id;

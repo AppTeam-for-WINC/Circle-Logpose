@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../tabs/attendance_tab.dart';
 import '../tabs/group_creation_tab.dart';
+import '../tabs/schedule_tab.dart';
 import '../tabs/user_setting_tab.dart';
 import 'slide_tab.dart';
 

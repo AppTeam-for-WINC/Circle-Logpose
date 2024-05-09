@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../popup/add_member/add_member.dart';
+import '../../popup/add_member/add_member.dart';
 
 class AddMemberSwitch extends ConsumerWidget {
   const AddMemberSwitch({super.key, this.groupId});

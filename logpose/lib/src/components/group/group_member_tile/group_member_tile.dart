@@ -12,9 +12,11 @@ class GroupMemberTile extends ConsumerStatefulWidget {
     super.key,
     required this.memberProfile,
     required this.adminOrMembership,
+    this.groupId,
   });
   final UserProfile memberProfile;
   final String adminOrMembership;
+  final String? groupId;
 
   @override
   ConsumerState<GroupMemberTile> createState() => _GroupMemberTileState();
@@ -23,24 +25,31 @@ class GroupMemberTile extends ConsumerStatefulWidget {
 class _GroupMemberTileState extends ConsumerState<GroupMemberTile> {
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
     final memberProfile = widget.memberProfile;
     final adminOrMembership = widget.adminOrMembership;
 
     if (adminOrMembership == 'admin') {
       return _MemberNameAndImageView(memberProfile: memberProfile);
     } else if (adminOrMembership == 'membership') {
-      return Stack(
-        children: [
-          SizedBox.expand(
-            child: _MemberNameAndImageView(memberProfile: memberProfile),
-          ),
-          if (ref.watch(groupMemberDeleteModeProvider))
-            Positioned(
-              top: 0,
-              right: 0,
-              child: MemberDeleteButton(accountId: memberProfile.accountId),
+      return SizedBox(
+        height: deviceHeight * 0.06,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: _MemberNameAndImageView(memberProfile: memberProfile),
             ),
-        ],
+            if (ref.watch(groupMemberDeleteModeProvider))
+              Positioned(
+                top: 0,
+                right: 0,
+                child: MemberDeleteButton(
+                  accountId: memberProfile.accountId,
+                  groupId: widget.groupId,
+                ),
+              ),
+          ],
+        ),
       );
     } else {
       return const SizedBox.shrink();

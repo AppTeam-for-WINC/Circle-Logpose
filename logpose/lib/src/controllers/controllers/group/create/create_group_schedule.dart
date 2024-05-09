@@ -85,6 +85,10 @@ class CreateGroupSchedule {
     return null;
   }
 
+  static String _colorToHex(Color color) {
+    return colorToHex(color);
+  }
+
   static Future<String> _createSchedule(
     String groupId,
     String title,
@@ -94,26 +98,33 @@ class CreateGroupSchedule {
     DateTime startAt,
     DateTime endAt,
   ) async {
-    final colorToString = colorToHex(color);
     // Create Group Schedule, return Group Schedule doc ID.
-    return GroupScheduleController.create(
-      groupId: groupId,
-      title: title,
-      color: colorToString,
-      place: place,
-      detail: detail,
-      startAt: startAt,
-      endAt: endAt,
-    );
+    try {
+      return GroupScheduleController.create(
+        groupId: groupId,
+        title: title,
+        color: _colorToHex(color),
+        place: place,
+        detail: detail,
+        startAt: startAt,
+        endAt: endAt,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to created schedule. $e');
+    }
+  }
+
+  static Future<List<String>> _readAllUserDocIdWithGroupId(
+    String groupId,
+  ) async {
+    return GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
   }
 
   static Future<void> _createMemberSchedule(
     String groupId,
     String scheduleId,
   ) async {
-    final userDocIds =
-        await GroupMembershipController.readAllUserDocIdWithGroupId(groupId);
-    for (final userDocId in userDocIds) {
+    for (final userDocId in await _readAllUserDocIdWithGroupId(groupId)) {
       await CreateMembersSchedule.create(
         scheduleId: scheduleId,
         userId: userDocId,

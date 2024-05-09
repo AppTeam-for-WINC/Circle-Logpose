@@ -6,9 +6,14 @@ import 'components/switch/add_schedule_switch.dart';
 import 'components/switch/delete_schedule_switch.dart';
 
 class ScheduleSection extends ConsumerStatefulWidget {
-  const ScheduleSection({super.key, required this.groupId});
-
+  const ScheduleSection({
+    super.key,
+    required this.groupId,
+    required this.groupName,
+  });
   final String groupId;
+  final String groupName;
+
   @override
   ConsumerState createState() => _ScheduleSectionState();
 }
@@ -58,7 +63,10 @@ class _ScheduleSectionState extends ConsumerState<ScheduleSection> {
                       ],
                     ),
                   ),
-                  AsyncGroupScheduleList(groupId: groupId),
+                  AsyncGroupScheduleList(
+                    groupId: groupId,
+                    groupName: widget.groupName,
+                  ),
                 ],
               ),
             ),
@@ -66,7 +74,10 @@ class _ScheduleSectionState extends ConsumerState<ScheduleSection> {
           Positioned(
             top: 10,
             right: 0,
-            child: AddScheduleSwitch(groupId: groupId),
+            child: AddScheduleSwitch(
+              groupId: groupId,
+              groupName: widget.groupName,
+            ),
           ),
           const Positioned(
             top: 60,
