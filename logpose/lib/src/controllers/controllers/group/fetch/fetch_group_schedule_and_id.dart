@@ -5,11 +5,11 @@ import '../../../../models/custom/group_schedule_and_id_model.dart';
 import '../../../../models/database/group/group_schedule.dart';
 import '../../../../services/database/group_schedule_controller.dart';
 
-class GroupScheduleAndIdFetcher {
-  GroupScheduleAndIdFetcher._internal();
-  static final GroupScheduleAndIdFetcher _instance =
-      GroupScheduleAndIdFetcher._internal();
-  static GroupScheduleAndIdFetcher get instance => _instance;
+class FetchGroupScheduleAndId {
+  FetchGroupScheduleAndId._internal();
+  static final FetchGroupScheduleAndId _instance =
+      FetchGroupScheduleAndId._internal();
+  static FetchGroupScheduleAndId get instance => _instance;
 
   static Future<List<GroupScheduleAndId?>> fetchGroupScheduleAndIdList(
     List<String?> scheduleIdList,

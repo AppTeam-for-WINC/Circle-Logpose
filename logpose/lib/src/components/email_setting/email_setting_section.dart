@@ -49,9 +49,7 @@ class EmailSettingSection extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 3,
-                  ),
+                  padding: const EdgeInsets.only(bottom: 3),
                   child: Row(
                     children: [
                       Text(
