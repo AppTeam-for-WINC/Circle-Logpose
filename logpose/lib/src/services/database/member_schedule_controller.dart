@@ -23,6 +23,9 @@ class GroupMemberScheduleController {
     DateTime? endAt,
   }) async {
     try {
+      // Get server time
+      final createdAt = FieldValue.serverTimestamp();
+
       await db.collection(collectionPath).doc().set({
         'schedule_id': scheduleId,
         'user_id': userId,
@@ -32,7 +35,7 @@ class GroupMemberScheduleController {
         'absence': absence,
         'start_at': startAt,
         'end_at': endAt,
-        'created_at': FieldValue.serverTimestamp(),
+        'created_at': createdAt,
       });
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to create group member schedule. $e');

@@ -24,13 +24,8 @@ class JoinMembers extends ConsumerWidget {
           margin: const EdgeInsets.only(top: 15),
           child: const Row(
             children: [
-              Icon(
-                CupertinoIcons.group,
-                size: 25,
-              ),
-              SizedBox(
-                width: 10,
-              ),
+              Icon(CupertinoIcons.group, size: 25),
+              SizedBox(width: 10),
               Text(
                 '参加メンバー',
                 style: TextStyle(color: CupertinoColors.black),

@@ -8,22 +8,24 @@ class ScheduleTab extends ConsumerStatefulWidget {
   const ScheduleTab({super.key});
 
   @override
-  ConsumerState createState() => AttendanceTabState();
+  ConsumerState createState() => _ScheduleTabState();
 }
 
-class AttendanceTabState extends ConsumerState<ScheduleTab> {
+class _ScheduleTabState extends ConsumerState<ScheduleTab> {
+  Future<void> _onTap() async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
+      ),
+      (_) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async{
-        await Navigator.pushAndRemoveUntil(
-          context,
-          CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-            builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
-          ),
-          (_) => false,
-        );
-      },
+      onTap: _onTap,
       child: Container(
         width: 180,
         height: 55,

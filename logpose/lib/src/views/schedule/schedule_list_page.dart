@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/bottom_gradation/bottom_gradation.dart';
 import '../../components/schedule_card_list/schedule_card_list.dart';
 import '../../components/schedule_creation_button/schedule_creation_button.dart';
+import '../../components/schedule_sort_button/schedule_sort_button.dart';
+
 import '../../controllers/providers/group/group/watch_joined_group_exist_provider.dart';
 
 class ScheduleListPage extends ConsumerStatefulWidget {
@@ -15,6 +17,7 @@ class ScheduleListPage extends ConsumerStatefulWidget {
 class _ScheduleListState extends ConsumerState<ScheduleListPage> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
     final groupExist = ref.watch(watchJoinedGroupExistProvider);
 
@@ -26,7 +29,12 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
         alignment: AlignmentDirectional.center,
         children: [
           Positioned(
-            top: deviceHeight * 0.14,
+            top: deviceHeight * 0.13,
+            right: deviceWidth * 0.1,
+            child: const ScheduleSortButton(),
+          ),
+          Positioned(
+            top: deviceHeight * 0.173,
             child: const ScheduleCardList(),
           ),
           const Positioned(

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../common/back_to_page_button.dart';
 import '../../../common/red_error_message.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
@@ -14,26 +13,29 @@ import '../components/schedule_place/place.dart';
 import '../components/schedule_time/schedule_activity_time.dart';
 import '../components/schedule_title/title_field.dart';
 
-class UpdateSchedule extends ConsumerStatefulWidget {
-  const UpdateSchedule({super.key, required this.groupScheduleId});
+import 'components/back_to_page_button.dart';
 
-  final String groupScheduleId;
+class ScheduleCreation extends ConsumerStatefulWidget {
+  const ScheduleCreation({super.key, this.groupId});
+  final String? groupId;
+
   @override
-  ConsumerState createState() => _UpdateScheduleState();
+  ConsumerState createState() => _ScheduleCreationState();
 }
 
-class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
+class _ScheduleCreationState extends ConsumerState<ScheduleCreation> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final groupScheduleId = widget.groupScheduleId;
-    final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
 
-    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
+    final schedule = ref.watch(setGroupScheduleProvider(null));
     if (schedule == null) {
       return const SizedBox.shrink();
     }
+
+    final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
+    final groupId = widget.groupId;
 
     return Center(
       child: ClipRRect(
@@ -46,7 +48,7 @@ class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const BackToPageButton(),
-              ColorButton(groupScheduleId: groupScheduleId),
+              const ColorButton(),
               const TitleField(),
               Center(
                 child: Column(
@@ -54,14 +56,12 @@ class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: deviceWidth * 0.1),
-                      child: Column(
+                      child: const Column(
                         children: [
-                          const GroupSelector(),
-                          ScheduleActivityTime(
-                            groupScheduleId: groupScheduleId,
-                          ),
-                          const Place(),
-                          const Detail(),
+                          GroupSelector(),
+                          ScheduleActivityTime(),
+                          Place(),
+                          Detail(),
                         ],
                       ),
                     ),
@@ -73,11 +73,7 @@ class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
                   ],
                 ),
               ),
-              ScheduleFooter(
-                groupId: schedule.groupId,
-                createOrUpdate: 'update',
-                groupScheduleId: groupScheduleId,
-              ),
+              ScheduleFooter(groupId: groupId, createOrUpdate: 'create'),
             ],
           ),
         ),

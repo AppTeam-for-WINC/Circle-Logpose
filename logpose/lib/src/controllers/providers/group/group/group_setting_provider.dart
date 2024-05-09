@@ -17,7 +17,6 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
   _GroupSettingNotifier(this.groupId) : super(null) {
     _initGroupProfile();
   }
-  TextEditingController groupNameController = TextEditingController();
   String groupId;
 
   Future<void> _initGroupProfile() async {

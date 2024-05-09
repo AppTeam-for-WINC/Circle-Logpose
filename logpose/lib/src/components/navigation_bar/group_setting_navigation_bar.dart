@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../common/back_to_page_button.dart';
 import '../../controllers/controllers/group/delete/delete_group.dart';
 import '../../controllers/providers/group/members/watch_group_member_profile_list.dart';
 import '../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
 import '../../models/custom/group_schedule_and_id_model.dart';
 import '../../models/database/user/user.dart';
-import '../back_to_page_button/back_to_page_button.dart';
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class GroupSettingNavigationBar extends CupertinoNavigationBar {
