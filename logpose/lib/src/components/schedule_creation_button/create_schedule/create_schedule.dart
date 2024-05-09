@@ -5,13 +5,13 @@ import '../../../common/red_error_message.dart';
 import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 
-import '../components/schedule_color/color_button.dart';
-import '../components/schedule_detail/detail.dart';
-import '../components/schedule_footer/schedule_footer.dart';
-import '../components/schedule_group_selector/group_selector.dart';
-import '../components/schedule_place/place.dart';
-import '../components/schedule_time/schedule_activity_time.dart';
-import '../components/schedule_title/title_field.dart';
+import '../../popup/components/schedule_color/color_button.dart';
+import '../../popup/components/schedule_detail/detail.dart';
+import '../../popup/components/schedule_footer/schedule_footer.dart';
+import '../../popup/components/schedule_group_selector/group_selector.dart';
+import '../../popup/components/schedule_place/place.dart';
+import '../../popup/components/schedule_time/schedule_activity_time.dart';
+import '../../popup/components/schedule_title/title_field.dart';
 
 import 'components/back_to_page_button.dart';
 

@@ -119,7 +119,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 ),
               ),
               const SizedBox(height: 15),
-              ScheduleSection(groupId: groupId),
+              ScheduleSection(groupId: groupId, groupName: groupProfile.name),
               const SizedBox(
                 height: 20,
               ),

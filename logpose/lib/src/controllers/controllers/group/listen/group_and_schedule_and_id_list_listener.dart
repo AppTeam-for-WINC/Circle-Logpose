@@ -4,6 +4,7 @@ import '../../../../models/custom/group_profile_and_schedule_and_id_model.dart';
 import '../../../../models/database/group/group_membership.dart';
 import '../../../../models/database/group/group_profile.dart';
 import '../../../../models/database/group/group_schedule.dart';
+
 import '../../../../services/auth/auth_controller.dart';
 import '../../../../services/database/group_controller.dart';
 import '../../../../services/database/group_membership_controller.dart';

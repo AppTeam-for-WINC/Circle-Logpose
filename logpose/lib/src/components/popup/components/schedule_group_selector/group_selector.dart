@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
-import 'components/components/group_picker_button.dart';
+
+import 'components/group_picker_button.dart';
 
 class GroupSelector extends ConsumerWidget {
   const GroupSelector({super.key});
@@ -16,14 +17,9 @@ class GroupSelector extends ConsumerWidget {
       data: (data) {
         return Row(
           children: [
-            const Icon(
-              CupertinoIcons.group,
-              color: CupertinoColors.systemGrey,
-            ),
+            const Icon(CupertinoIcons.group, color: CupertinoColors.systemGrey),
             ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: deviceWidth * 0.6,
-              ),
+              constraints: BoxConstraints(maxWidth: deviceWidth * 0.6),
               child: GroupPickerButton(groupIdList: data),
             ),
           ],

@@ -6,9 +6,10 @@ import 'components/switch/add_schedule_switch.dart';
 import 'components/switch/delete_schedule_switch.dart';
 
 class ScheduleSection extends ConsumerStatefulWidget {
-  const ScheduleSection({super.key, required this.groupId});
-
+  const ScheduleSection({super.key, required this.groupId, this.groupName});
   final String groupId;
+  final String? groupName;
+
   @override
   ConsumerState createState() => _ScheduleSectionState();
 }

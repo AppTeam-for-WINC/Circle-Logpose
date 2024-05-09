@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../controllers/providers/group/group/fetch_group_and_id_modal_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../controllers/providers/group/text/selected_group_name_provider.dart';
+
 import '../../../../models/custom/group_and_id_model.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
@@ -84,10 +85,10 @@ class _AsyncGroupWithIdListState extends ConsumerState<_AsyncGroupWithIdList> {
   @override
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
-    final asyncGroupWithIdList =
+    final asyncGroupAndIdList =
         ref.watch(fetchGroupAndIdModalProvider(groupIdList));
 
-    return asyncGroupWithIdList.when(
+    return asyncGroupAndIdList.when(
       data: (data) {
         return SizedBox(
           height: 150,

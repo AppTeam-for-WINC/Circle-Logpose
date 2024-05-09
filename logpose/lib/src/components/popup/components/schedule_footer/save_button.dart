@@ -48,7 +48,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
     }
 
     Future<String?> createGroupSchedule() async {
-      if (ref.read(setGroupScheduleProvider(null))!.groupId != null) {
+      if (ref.read(setGroupScheduleProvider(null))!.groupId == null) {
         return 'No selected group.';
       }
       

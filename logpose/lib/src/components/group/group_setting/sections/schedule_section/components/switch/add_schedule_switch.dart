@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../controllers/providers/group/group/group_setting_provider.dart';
 import '../../../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
-import '../../../../../../popup/create_schedule/create_schedule.dart';
+import '../../../../../../popup/schedule_creation/schedule_creation.dart';
 
 class AddScheduleSwitch extends ConsumerWidget {
-  const AddScheduleSwitch({super.key, required this.groupId});
+  const AddScheduleSwitch({super.key, required this.groupId, this.groupName});
   final String groupId;
+  final String? groupName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,10 +17,10 @@ class AddScheduleSwitch extends ConsumerWidget {
           ref.watch(groupSettingProvider(groupId).notifier);
       ref.watch(selectedGroupNameProvider.notifier).state =
           groupProfileNotifier.groupNameController.text;
-      await showCupertinoModalPopup<CreateSchedule>(
+      await showCupertinoModalPopup<ScheduleCreation>(
         context: context,
         builder: (BuildContext context) {
-          return CreateSchedule(groupId: groupId);
+          return ScheduleCreation(groupId: groupId);
         },
       );
     }
