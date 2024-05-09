@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controllers/providers/sort/sort_option_provider.dart';
+
 class ScheduleSortButton extends ConsumerStatefulWidget {
   const ScheduleSortButton({super.key});
   @override
@@ -10,10 +12,20 @@ class ScheduleSortButton extends ConsumerStatefulWidget {
 }
 
 class _ScheduleSortButtonState extends ConsumerState<ScheduleSortButton> {
+  void _onPressed() {
+    final currentSort = ref.read(sortOptionProvider);
+    if (currentSort == SortOption.byDate) {
+      ref.read(sortOptionProvider.notifier).state =
+          SortOption.byGroupNameAndDate;
+    } else {
+      ref.read(sortOptionProvider.notifier).state = SortOption.byDate;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      onPressed: () => debugPrint('NO function.'),
+      onPressed: _onPressed,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
