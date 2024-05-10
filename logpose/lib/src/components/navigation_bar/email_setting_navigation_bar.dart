@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../views/user/user_setting_page.dart';
+import '../../views/user/email/email_setting_page.dart';
 
 class EmailSettingNavigationBar extends CupertinoNavigationBar {
   EmailSettingNavigationBar({
@@ -33,8 +33,8 @@ class EmailSettingNavigationBar extends CupertinoNavigationBar {
   static Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
     await Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const UserSettingPage(),
+      CupertinoPageRoute<CupertinoPageRoute<EmailSettingPage>>(
+        builder: (context) => const EmailSettingPage(),
       ),
       (_) => false,
     );
