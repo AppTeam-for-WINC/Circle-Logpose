@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../database/user_controller.dart';
-// import 'package:cloud_functions/cloud_functions.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
@@ -91,10 +90,17 @@ class AuthController {
       if (auth.currentUser == null) {
         throw Exception('User not found.');
       }
+      await auth.currentUser!.reload();
       return auth.currentUser?.email;
     } on FirebaseAuthException catch (error) {
-      debugPrint('Error: email not found.  $error');
-      throw Exception('Email not found.');
+      debugPrint('Error reloading user: $error');
+      if (error.code == 'user-token-expired') {
+        throw Exception(
+          "User's credential is no longer valid. Please sign in again.",
+        );
+      } else {
+        throw Exception('Email not found.');
+      }
     }
   }
 
@@ -102,39 +108,43 @@ class AuthController {
   static Future<bool> updateUserEmail(
     String oldEmail,
     String email,
-    // String password,
+    String password,
   ) async {
     try {
       final user = auth.currentUser;
-      // final credential = await _checkSignInWithCredential(
-      //   email,
-      //   password,
-      // );
-      // await user.reauthenticateWithCredential(credential);
+      final credential = await _checkSignInWithCredential(oldEmail, password);
       if (user == null) {
-        debugPrint('Email not found.');
+        debugPrint('User not log in.');
+        return false;
+      } else if (!user.emailVerified) {
+        debugPrint('メールアドレスが未確認です。');
+        await user.sendEmailVerification();
+        debugPrint('確認メールを再送しました。');
         return false;
       } else if (user.email == oldEmail && user.email != email) {
+        await user.reauthenticateWithCredential(credential);
         await user.verifyBeforeUpdateEmail(email);
         await user.updateEmail(email);
-        debugPrint('Email updated successfully to $email');
         return true;
       } else {
         debugPrint('Error updating email');
         return false;
       }
     } on FirebaseAuthException catch (error) {
-      debugPrint('Error: email not found.  $error');
-      return false;
+      if (error.code == 'operation-not-allowed') {
+        debugPrint('Please check your email for verification link.');
+        return true;
+      } else {
+        debugPrint('Error: failed to update email.  $error ${error.message}');
+        return false;
+      }
     }
   }
 
   /// Send Confirmation email.
   static Future<bool> sendConfirmationEmail() async {
     try {
-      /// Set auth code of language to japanese.
       await _setLanguageCode();
-
       if (auth.currentUser == null) {
         debugPrint('User is not currently signed in.');
         return false;
@@ -147,6 +157,7 @@ class AuthController {
     }
   }
 
+  /// Set auth code of language to japanese.
   static Future<void> _setLanguageCode() async {
     await auth.setLanguageCode('ja');
   }
@@ -203,12 +214,9 @@ class AuthController {
     String password,
   ) async {
     try {
-      return EmailAuthProvider.credential(
-        email: email,
-        password: password,
-      );
+      return EmailAuthProvider.credential(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      throw Exception('Error: $e');
+      throw Exception('Error: failed to check credential data. ${e.message}');
     }
   }
 

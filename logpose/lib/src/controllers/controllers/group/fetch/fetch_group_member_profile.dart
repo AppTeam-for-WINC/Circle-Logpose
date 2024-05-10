@@ -5,11 +5,11 @@ import '../../../../services/database/group_schedule_controller.dart';
 import '../../../../services/database/member_schedule_controller.dart';
 import '../../../../services/database/user_controller.dart';
 
-class GroupMemberProfileFetcher {
-  GroupMemberProfileFetcher._internal();
-  static final GroupMemberProfileFetcher _instance =
-      GroupMemberProfileFetcher._internal();
-  static GroupMemberProfileFetcher get instance => _instance;
+class FetchGroupMemberProfile {
+  FetchGroupMemberProfile._internal();
+  static final FetchGroupMemberProfile _instance =
+      FetchGroupMemberProfile._internal();
+  static FetchGroupMemberProfile get instance => _instance;
 
   static Future<String> fetchGroupIdWithScheduleId(String scheduleId) async {
     final groupId = await GroupScheduleController.readGroupId(scheduleId);

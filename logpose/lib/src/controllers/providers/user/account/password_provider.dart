@@ -12,9 +12,13 @@ final passwordSettingProvider = Provider.autoDispose<_UserPasswordSetting>(
 
 class _UserPasswordSetting {
   Future<String?> update(WidgetRef ref) async {
-    final newPasswordController = ref.watch(newPasswordFieldProvider);
-    final validationPasswordError =
-        _validationPassword(newPasswordController.text);
+    final password = ref.watch(passwordFieldProvider('')).text;
+    final newPassword = ref.watch(newPasswordFieldProvider).text;
+    final passwordError = _validationPassword(password);
+    if (passwordError != null) {
+      return passwordError;
+    }
+    final validationPasswordError = _validationPassword(newPassword);
     if (validationPasswordError != null) {
       return validationPasswordError;
     }
@@ -25,22 +29,23 @@ class _UserPasswordSetting {
       return "Failed to read user's email.";
     }
 
-    return _updateUserPassword(email, ref);
+    return _updateUserPassword(email, password, newPassword);
   }
 
-  // Validate new password
-  String? _validationPassword(String newPassword) {
-    final passwordError = PasswordValidation.validation(newPassword);
+  // Validate password
+  String? _validationPassword(String password) {
+    final passwordError = PasswordValidation.validation(password);
     if (passwordError != null) {
       return passwordError;
     }
     return null;
   }
 
-  Future<String?> _updateUserPassword(String email, WidgetRef ref) async {
-    final newPassword = ref.watch(newPasswordFieldProvider).text;
-    final password = ref.watch(passwordFieldProvider('')).text;
-
+  Future<String?> _updateUserPassword(
+    String email,
+    String password,
+    String newPassword,
+  ) async {
     // Attempt to update password
     // Returns null if no error
     try {

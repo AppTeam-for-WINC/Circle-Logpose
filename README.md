@@ -9,7 +9,6 @@
 </p>
 
 <p align="center">
-    <!-- 画面スクリーンショット何枚かここへ -->
     <img width="20%" src="logpose/assets/screenshot/start_screenshot.png" />
     <img width="20%" src="logpose/assets/screenshot/attendance_screenshot.png" />
     <img width="20%" src="logpose/assets/screenshot/join_time_screenshot.png" />
@@ -126,7 +125,6 @@ Circle Logpose is designed for managing club activities. It primarily features A
     </tr>
   </tbody>
 </table>
-<p align="right">2024年2月11日更新</p>
 
 ## License
 Reusing the design of the application without permission is prohibited.
