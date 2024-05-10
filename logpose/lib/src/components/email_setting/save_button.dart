@@ -4,26 +4,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controllers/providers/text_field/email_field_provider.dart';
 import '../../controllers/providers/user/account/email_provider.dart';
+
 import '../../views/user/user_setting_page.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
-  const SaveButton({super.key});
+  const SaveButton({super.key, required this.password});
+  final String password;
+
   @override
   ConsumerState<SaveButton> createState() => _SaveButtonState();
 }
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
   Future<bool> _updateEmail() async {
-    final emailController = ref.watch(emailFieldProvider(''));
+    final email = ref.watch(emailFieldProvider('')).text;
     return ref
         .watch(userEmailProvider.notifier)
-        .changeEmail(emailController.text);
+        .changeEmail(ref, email, widget.password);
   }
 
   Future<void> _pushAndRemoveUntil() async {
     await Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+      CupertinoPageRoute<CupertinoPageRoute<UserSettingPage>>(
         builder: (context) => const UserSettingPage(),
       ),
       (_) => false,
@@ -51,9 +54,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       height: 58,
       margin: const EdgeInsets.only(top: 100),
       child: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         backgroundColor: const Color.fromARGB(255, 123, 97, 255),
         onPressed: _save,
         child: Row(
@@ -61,18 +62,11 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: const Icon(
-                Icons.download,
-                size: 30,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.download, size: 30, color: Colors.white),
             ),
             const Text(
               '変更を保存',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ],
         ),
