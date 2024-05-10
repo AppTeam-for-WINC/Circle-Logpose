@@ -18,12 +18,11 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   }
 
   Future<void> _pushAndRemoveUntil() async {
-    await Navigator.pushAndRemoveUntil(
+    await Navigator.push(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
         builder: (context) => const UserSettingPage(),
       ),
-      (_) => false,
     );
   }
 

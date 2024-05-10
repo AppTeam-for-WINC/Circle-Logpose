@@ -5,10 +5,10 @@ import '../../../../models/custom/group_and_id_model.dart';
 import '../../../../models/database/group/group_profile.dart';
 import '../../../../services/database/group_controller.dart';
 
-class GroupAndIdFetcher {
-  GroupAndIdFetcher._internal();
-  static final GroupAndIdFetcher _instance = GroupAndIdFetcher._internal();
-  static GroupAndIdFetcher get instance => _instance;
+class FetchGroupAndId {
+  FetchGroupAndId._internal();
+  static final FetchGroupAndId _instance = FetchGroupAndId._internal();
+  static FetchGroupAndId get instance => _instance;
 
   static Future<List<GroupAndId>> fetchGroupAndIdList(
     List<String> groupIdList,
