@@ -104,6 +104,7 @@ class AuthController {
     }
   }
 
+  /// to-do modifled.
   /// Update email.
   static Future<bool> updateUserEmail(
     String oldEmail,
@@ -231,7 +232,7 @@ class AuthController {
     await user.updatePassword(newPassword);
   }
 
-  static Future<String?> getCurrentUserId() async {
+  static Future<String?> fetchCurrentUserId() async {
     try {
       return FirebaseAuth.instance.currentUser?.uid;
     } on FirebaseAuthException catch (e) {

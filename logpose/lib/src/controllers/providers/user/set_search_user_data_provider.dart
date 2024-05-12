@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../validation/max_length_validation.dart';
 import '../../../models/database/user/user.dart';
 
-import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/group_membership_controller.dart';
-import '../../../services/database/user_controller.dart';
+import '../../../server/auth/auth_controller.dart';
+import '../../../server/database/group_membership_controller.dart';
+import '../../../server/database/user_controller.dart';
 
 final setSearchUserDataProvider =
     StateNotifierProvider.family<_SearchUserData, UserProfile?, String?>(
@@ -51,7 +51,7 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _memberAddController(String? groupId) async {
-    final myDocId = await AuthController.getCurrentUserId();
+    final myDocId = await AuthController.fetchCurrentUserId();
     final myAccount = await UserController.read(myDocId!);
     final accountId = accountIdController.text;
     user = await UserController.readWithAccountId(accountId);
@@ -70,7 +70,8 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
 
     // 既にGroup memberの場合は何も返さない。
     if (groupId != null) {
-      final userId = await UserController.readUserDocIdWithAccountId(accountId);
+      final userId =
+          await UserController.fetchUserDocIdWithAccountId(accountId);
       final isAlreadyMember =
           await GroupMembershipController.checkMemberIsExist(
         groupId: groupId,

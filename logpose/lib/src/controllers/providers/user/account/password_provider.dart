@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../services/auth/auth_controller.dart';
+import '../../../../server/auth/auth_controller.dart';
 import '../../../validation/password_validation.dart';
 import '../../text_field/new_password_field_provider.dart';
 import '../../text_field/password_field_provider.dart';

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
-import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/user_controller.dart';
+import '../../../server/auth/auth_controller.dart';
+import '../../../server/database/user_controller.dart';
 
 import '../../validation/user/account_id_validation.dart';
 
@@ -34,7 +34,11 @@ class UpdateAccountId {
   }
 
   static Future<String?> _fetchUserDocId() async {
-    return AuthController.getCurrentUserId();
+    try {
+      return AuthController.fetchCurrentUserId();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch current user ID. $e');
+    }
   }
 
   static Future<bool> _updateAccountId(

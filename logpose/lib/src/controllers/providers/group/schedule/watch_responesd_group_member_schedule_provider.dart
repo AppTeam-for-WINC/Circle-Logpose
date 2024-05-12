@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/database/group/member_schedule.dart';
 
-import '../../../../services/database/member_schedule_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../server/database/member_schedule_controller.dart';
+import '../../../../server/database/user_controller.dart';
 
 /// Watch responsed group member's schedule.
 final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
@@ -12,7 +12,7 @@ final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
         (ref, args) async* {
   try {
     final userDocId =
-        await UserController.readUserDocIdWithAccountId(args.accountId);
+        await UserController.fetchUserDocIdWithAccountId(args.accountId);
 
     yield await GroupMemberScheduleController.readGroupMemberSchedule(
       userDocId: userDocId,

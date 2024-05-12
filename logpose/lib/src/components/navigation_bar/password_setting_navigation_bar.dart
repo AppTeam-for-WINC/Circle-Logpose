@@ -33,7 +33,7 @@ class PasswordSettingNavigationBar extends CupertinoNavigationBar {
   static Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
     await Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
+      CupertinoPageRoute<CupertinoPageRoute<UserSettingPage>>(
         builder: (context) => const UserSettingPage(),
       ),
       (_) => false,

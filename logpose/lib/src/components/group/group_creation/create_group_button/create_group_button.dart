@@ -1,10 +1,17 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/loading_progress.dart';
-import '../../../../controllers/controllers/group/create/create_group.dart';
+
+import '../../../../controllers/providers/group/group/group_create_provider.dart';
+import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
 import '../../../../controllers/providers/group/schedule/image_provider.dart';
 import '../../../../controllers/providers/text_field/name_field_provider.dart';
+
+import '../../../../models/custom/group_name_and_image_and_description_model.dart';
+
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class CreateGroupButton extends ConsumerStatefulWidget {
@@ -14,17 +21,19 @@ class CreateGroupButton extends ConsumerStatefulWidget {
 }
 
 class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
-  void _loadingProgress({required bool loading}) {
-    LoadingProgressController.loadingProgress(ref, loading: loading);
+  void _loadingProgress(bool loading) {
+    LoadingProgressController(ref).loadingProgress = loading;
   }
 
   Future<String?> _createGroup() async {
     try {
-      return CreateGroup.create(
-        ref.watch(nameFieldProvider('')).text,
-        ref.watch(imageControllerProvider),
-        null,
-        ref,
+      return ref.read(groupCreatorProvider).create(
+        GroupNameAndImageAndDescription(
+          groupName: ref.read(nameFieldProvider('')).text,
+          image: ref.read(imageControllerProvider),
+          description: null,
+        ),
+        ref.read(setGroupMemberListProvider),
       );
     } on Exception catch (e) {
       return 'Error: failed to create group. $e';
@@ -48,11 +57,12 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
       return;
     }
 
-    _loadingProgress(loading: true);
+    _loadingProgress(true);
     final errorMessage = await _createGroup();
-    _loadingProgress(loading: false);
+    _loadingProgress(false);
+
     if (errorMessage != null) {
-      LoadingProgressController.loadingErrorMessage(ref, errorMessage);
+      LoadingProgressController(ref).loadingErrorMessage = errorMessage;
       return;
     }
 
@@ -61,6 +71,7 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
     }
     await _pushAndRemoveUntil();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -1,51 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../common/loading_progress.dart';
-import '../../../components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
-import '../../../services/auth/auth_controller.dart';
+import '../../../server/auth/auth_controller.dart';
+
 import '../../validation/email_validation.dart';
 import '../../validation/password_validation.dart';
 
+/// Used with loginControllerProvider.
 class LoginController {
-  LoginController._internal();
-  static final LoginController _instance = LoginController._internal();
-  static LoginController get instance => _instance;
-
-  static Future<String?> login(
-    BuildContext context,
-    WidgetRef ref,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-  ) async {
+  Future<String?> login(String email, String password) async {
     try {
-      final email = emailController.text;
-      final password = passwordController.text;
-
-      final loginValidation = _loginValidation(email, password);
-      if (loginValidation != null) {
-        return loginValidation;
-      }
-
-      _loadingProgress(ref, true);
-      final success = await _loginToAccount(email, password);
-       _loadingProgress(ref, false);
-      if (!success) {
-        return 'Password or Email is not correct.';
-      }
-
-      if (context.mounted) {
-        await _moveToNextPage(context);
-      }
-
-      return null;
+      return await _executeLogin(email, password);
     } on Exception catch (e) {
-      return 'Error to sign up.: $e';
+      return 'Error: failed to log in account.: $e';
     }
   }
 
-  static String? _loginValidation(String email, String password) {
+  Future<String?> _executeLogin(String email, String password) async {
+    final validationError = _validateCredentials(email, password);
+    if (validationError != null) {
+      return validationError;
+    }
+
+    final success = await _loginToAccount(email, password);
+    if (!success) {
+      return 'Password or Email is not correct.';
+    }
+
+    return null;
+  }
+
+  String? _validateCredentials(String email, String password) {
     final emailError = UserEmailValidation.validation(email);
     if (emailError != null) {
       return emailError;
@@ -58,26 +43,12 @@ class LoginController {
     return null;
   }
 
-    static Future<bool> _loginToAccount(String email, String password) async {
+  Future<bool> _loginToAccount(String email, String password) async {
     try {
       return AuthController.loginToAccount(email, password);
     } on FirebaseException catch (e) {
-      debugPrint('Error: failed to login account. $e');
+      debugPrint('Error: failed to login account. ${e.message}');
       return false;
     }
-  }
-
-  static void _loadingProgress(WidgetRef ref, bool loading) {
-    LoadingProgressController.loadingProgress(ref, loading: loading);
-  }
-
-  static Future<void> _moveToNextPage(BuildContext context) async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
-      ),
-      (_) => false,
-    );
   }
 }

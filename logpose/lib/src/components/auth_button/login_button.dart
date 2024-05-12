@@ -1,10 +1,15 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
-import '../../controllers/controllers/auth/login_controller.dart';
+
+import '../../controllers/providers/auth/login_controller_provider.dart';
 import '../../controllers/providers/text_field/email_field_provider.dart';
 import '../../controllers/providers/text_field/password_field_provider.dart';
+
+import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class LoginButton extends ConsumerStatefulWidget {
   const LoginButton({super.key});
@@ -14,31 +19,12 @@ class LoginButton extends ConsumerStatefulWidget {
 }
 
 class _LoginButtonState extends ConsumerState<LoginButton> {
-  Future<String?> _login() async {
-    return LoginController.login(
-      context,
-      ref,
-      ref.read(emailFieldProvider('')),
-      ref.read(passwordFieldProvider('')),
-    );
-  }
+  Future<void> _handleLogin() async {
+    final email = ref.read(emailFieldProvider('')).text;
+    final password = ref.read(passwordFieldProvider('')).text;
 
-  void _loadingErrorMessage(String errorMessage) {
-        LoadingProgressController.loadingErrorMessage(
-        ref,
-        errorMessage,
-      );
-  }
-
-  Future<void> _onPressed() async {
-    if (ref.watch(loadingProgressProvider)) {
-      return;
-    }
-
-    final errorMessage = await _login();
-    if (errorMessage != null) {
-      _loadingErrorMessage(errorMessage);
-    }
+    final loginService = _LoginService(context, ref);
+    await loginService.performLogin(email, password);
   }
 
   @override
@@ -51,7 +37,7 @@ class _LoginButtonState extends ConsumerState<LoginButton> {
         padding: EdgeInsets.zero,
         color: const Color.fromRGBO(80, 49, 238, 0.9),
         borderRadius: BorderRadius.circular(30),
-        onPressed: _onPressed,
+        onPressed: _handleLogin,
         child: const Text(
           'Login',
           style: TextStyle(
@@ -60,6 +46,52 @@ class _LoginButtonState extends ConsumerState<LoginButton> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LoginService {
+  _LoginService(this.context, this.ref);
+  final BuildContext context;
+  final WidgetRef ref;
+
+  Future<void> performLogin(String email, String password) async {
+    _updateLoadingStatus(true);
+    final errorMessage =
+        await ref.read(loginControllerProvider).login(email, password);
+    _updateLoadingStatus(false);
+
+    if (errorMessage != null) {
+      _displayErrorMessage(errorMessage);
+      return;
+    }
+
+    if (context.mounted) {
+      await _NavigationService(context).moveToNextPage();
+    }
+  }
+
+  void _updateLoadingStatus(bool loading) {
+    LoadingProgressController(ref).loadingProgress = loading;
+  }
+
+  void _displayErrorMessage(String errorMessage) {
+    LoadingProgressController(ref).loadingErrorMessage = errorMessage;
+  }
+}
+
+class _NavigationService {
+  _NavigationService(this.context);
+  final BuildContext context;
+
+  Future<void> moveToNextPage() async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<
+          CupertinoPageRoute<ScheduleListAndJoinedGroupTabSlider>>(
+        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
+      ),
+      (_) => false,
     );
   }
 }

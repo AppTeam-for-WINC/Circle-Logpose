@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/models/database/group/member_schedule.dart';
 
-import '../../../../services/database/group_controller.dart';
-import '../../../../services/database/group_membership_controller.dart';
-import '../../../../services/database/group_schedule_controller.dart';
-import '../../../../services/database/member_schedule_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../server/database/group_controller.dart';
+import '../../../../server/database/group_membership_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
+import '../../../../server/database/member_schedule_controller.dart';
+import '../../../../server/database/user_controller.dart';
 
 import '../../../providers/group/members/membership/set_group_member_list_provider.dart';
 import '../../../validation/group/group_validation.dart';
@@ -99,7 +99,7 @@ class UpdateGroupSettings {
   }
 
   static Future<String> _fetchUserDocId(String accountId) async {
-    return UserController.readUserDocIdWithAccountId(accountId);
+    return UserController.fetchUserDocIdWithAccountId(accountId);
   }
 
   static Future<void> _createMembershipMember(

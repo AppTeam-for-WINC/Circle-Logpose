@@ -24,13 +24,13 @@ class LogposeApp extends StatelessWidget {
           primaryColor: CupertinoColors.white,
           textStyle: TextStyle(color: CupertinoColors.black),
           dateTimePickerTextStyle: TextStyle(color: CupertinoColors.black),
-          pickerTextStyle: TextStyle(color: CupertinoColors.black,),
+          pickerTextStyle: TextStyle(
+            color: CupertinoColors.black,
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,
-      supportedLocales: const [
-        Locale('ja'),
-      ],
+      supportedLocales: const [Locale('ja')],
       locale: const Locale('ja'),
       home: FutureBuilder(
         future: firstPage(),

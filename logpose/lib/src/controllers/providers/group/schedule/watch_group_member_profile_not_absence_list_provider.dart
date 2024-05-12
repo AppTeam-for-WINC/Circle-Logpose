@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/database/user/user.dart';
 
-import '../../../../services/database/group_membership_controller.dart';
+import '../../../../server/database/group_membership_controller.dart';
 
 import '../../../controllers/group/fetch/fetch_group_member_profile.dart';
 

@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/models/database/group/member_schedule.dart';
 
 import '../../../../models/database/group/group_schedule.dart';
-import '../../../../services/auth/auth_controller.dart';
-import '../../../../services/database/group_schedule_controller.dart';
-import '../../../../services/database/member_schedule_controller.dart';
+import '../../../../server/auth/auth_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
+import '../../../../server/database/member_schedule_controller.dart';
 
 final groupMemberScheduleProvider = StateNotifierProvider.family<
     _MemberScheduleNotifier, GroupMemberSchedule?, String>(
@@ -52,7 +52,7 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   }
 
   Future<String> _fetchUserDocId() async {
-    final userDocId = await AuthController.getCurrentUserId();
+    final userDocId = await AuthController.fetchCurrentUserId();
     if (userDocId == null) {
       state = null;
       debugPrint('User not logged in.');

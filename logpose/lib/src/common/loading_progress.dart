@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_setters_without_getters
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loadingProgressProvider = StateProvider.autoDispose<bool>((ref) => false);
@@ -6,16 +8,14 @@ final loadingErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
 class LoadingProgressController {
-  LoadingProgressController._internal();
-  static final LoadingProgressController _instance =
-      LoadingProgressController._internal();
-  static LoadingProgressController get instance => _instance;
+  LoadingProgressController(this.ref);
+  final WidgetRef ref;
 
-  static void loadingProgress(WidgetRef ref, {required bool loading}) {
-    ref.watch(loadingProgressProvider.notifier).state = loading;
+  set loadingProgress(bool loading) {
+    ref.read(loadingProgressProvider.notifier).state = loading;
   }
 
-  static void loadingErrorMessage(WidgetRef ref, String? errorMessage) {
-    ref.watch(loadingErrorMessageProvider.notifier).state = errorMessage;
+  set loadingErrorMessage(String? errorMessage) {
+    ref.read(loadingErrorMessageProvider.notifier).state = errorMessage;
   }
 }

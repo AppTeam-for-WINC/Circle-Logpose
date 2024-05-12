@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 import '../../../validation/schedule_validation.dart';
 

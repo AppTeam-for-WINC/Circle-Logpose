@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 import '../../../../models/database/user/user.dart';
-import '../../../../services/database/group_schedule_controller.dart';
-import '../../../../services/database/member_schedule_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
+import '../../../../server/database/member_schedule_controller.dart';
+import '../../../../server/database/user_controller.dart';
 
 class FetchGroupMemberProfile {
   FetchGroupMemberProfile._internal();

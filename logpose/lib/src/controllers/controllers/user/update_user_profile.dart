@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/user_controller.dart';
+import '../../../server/auth/auth_controller.dart';
+import '../../../server/database/user_controller.dart';
 
 import '../../validation/user/user_validation.dart';
 
@@ -48,7 +48,11 @@ class UpdateUserProfile {
   }
 
   static Future<String?> _fetchUserDocId() async {
-    return AuthController.getCurrentUserId();
+    try {
+      return AuthController.fetchCurrentUserId();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch current user ID. $e');
+    }
   }
 
   static Future<void> _updateUserProfile(

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../../../models/custom/group_schedule_and_id_model.dart';
 import '../../../../models/database/group/group_schedule.dart';
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
 
 class FetchGroupScheduleAndId {
   FetchGroupScheduleAndId._internal();

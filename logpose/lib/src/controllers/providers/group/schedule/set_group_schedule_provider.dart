@@ -6,7 +6,7 @@ import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_p
 import 'package:logpose/src/controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
 
 import '../../../../models/database/group/group_schedule.dart';
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
 import '../../../../utils/color/color_exchanger.dart';
 
 /// Set group schedule.

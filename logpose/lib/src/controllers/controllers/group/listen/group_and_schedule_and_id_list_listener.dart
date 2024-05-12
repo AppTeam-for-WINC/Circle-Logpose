@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../models/custom/group_profile_and_schedule_and_id_model.dart';
@@ -5,10 +6,10 @@ import '../../../../models/database/group/group_membership.dart';
 import '../../../../models/database/group/group_profile.dart';
 import '../../../../models/database/group/group_schedule.dart';
 
-import '../../../../services/auth/auth_controller.dart';
-import '../../../../services/database/group_controller.dart';
-import '../../../../services/database/group_membership_controller.dart';
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../server/auth/auth_controller.dart';
+import '../../../../server/database/group_controller.dart';
+import '../../../../server/database/group_membership_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
 
 // このコードでは、BLoCパターンの構造をしたRxDartを使用している。以下リンクは参考サイトである。
 // https://qiita.com/tetsufe/items/521014ddc59f8d1df581
@@ -32,7 +33,11 @@ class GroupAndScheduleAndIdListListener {
   }
 
   static Future<String?> _fetchUserDocId() async {
-    return AuthController.getCurrentUserId();
+    try {
+      return AuthController.fetchCurrentUserId();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch current user ID. $e');
+    }
   }
 
   static Stream<List<GroupMembership?>> _watchAllWithUserId(String userDocId) {

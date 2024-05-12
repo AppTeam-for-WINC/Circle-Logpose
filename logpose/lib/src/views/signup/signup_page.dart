@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
 import '../../common/red_error_message.dart';
+
 import '../../components/app_logo_and_title/app_logo_and_title.dart';
 import '../../components/auth_button/sign_up_button.dart';
 import '../../components/navigation_bar/auth_navigation_bar.dart';
@@ -49,6 +50,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               ),
             ),
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 const PageProgressIndicator(),
                 Column(

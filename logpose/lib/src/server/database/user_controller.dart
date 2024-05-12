@@ -139,7 +139,7 @@ class UserController {
   }
 
   /// Read userDocId with accountId.
-  static Future<String> readUserDocIdWithAccountId(String accountId) async {
+  static Future<String> fetchUserDocIdWithAccountId(String accountId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)

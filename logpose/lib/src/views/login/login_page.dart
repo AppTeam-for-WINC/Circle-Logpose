@@ -50,6 +50,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 const PageProgressIndicator(),
                 Column(

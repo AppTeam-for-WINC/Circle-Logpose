@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logpose/src/services/database/group_controller.dart';
-import 'package:logpose/src/services/database/group_membership_controller.dart';
 
 import '../../../../models/database/user/user.dart';
+
+import '../../../../server/database/group_controller.dart';
+import '../../../../server/database/group_membership_controller.dart';
 import 'delete_schedule.dart';
 
 // Delete Group, All GroupMembers, GroupSchedule, GroupMemberSchedule.
@@ -21,7 +22,7 @@ class DeleteGroup {
         await _deleteSchedule(groupId, groupScheduleId, groupMemberList);
       }
       final membershipIdList = await _fetchAllMembershipIdList(groupId);
-      await _futureDeleteMember(membershipIdList);
+      await _deleteMemberList(membershipIdList);
       await _deleteGroup(groupId);
     } on FirebaseException catch (e) {
       throw Exception('Failed to delete group schedule. Error: $e');
@@ -45,7 +46,7 @@ class DeleteGroup {
     }
   }
 
-  static Future<void> _futureDeleteMember(List<String> membershipIdList) async {
+  static Future<void> _deleteMemberList(List<String> membershipIdList) async {
     await Future.wait(
       membershipIdList.map((membershipDocId) async {
         await _deleteMembers(membershipDocId);

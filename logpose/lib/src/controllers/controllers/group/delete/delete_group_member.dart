@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:logpose/src/services/database/group_membership_controller.dart';
-
-import '../../../../services/database/user_controller.dart';
+import '../../../../server/database/group_membership_controller.dart';
+import '../../../../server/database/user_controller.dart';
 
 // Delete Group Member.
 class DeleteGroupMember {
@@ -35,7 +34,7 @@ class DeleteGroupMember {
   }
 
   static Future<String> _fetchUserDocId(String accountId) async {
-    return UserController.readUserDocIdWithAccountId(accountId);
+    return UserController.fetchUserDocIdWithAccountId(accountId);
   }
 
   static Future<void> _deleteMembers(String membershipDocId) async {

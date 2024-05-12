@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/database/user/user.dart';
 
-import '../../../services/auth/auth_controller.dart';
-import '../../../services/database/user_controller.dart';
+import '../../../server/auth/auth_controller.dart';
+import '../../../server/database/user_controller.dart';
 
 /// Set user profile.
 final setUserProfileDataProvider =
@@ -31,7 +31,7 @@ class _UserProfileData extends StateNotifier<UserProfile?> {
   }
 
   Future<String> _fetchUserDocId() async {
-    final userId = await AuthController.getCurrentUserId();
+    final userId = await AuthController.fetchCurrentUserId();
     if (userId == null) {
       state = null;
       throw Exception('User not logged in.');

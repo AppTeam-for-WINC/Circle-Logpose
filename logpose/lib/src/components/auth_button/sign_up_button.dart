@@ -1,10 +1,15 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
-import '../../controllers/controllers/auth/signup_controller.dart';
+
+import '../../controllers/providers/auth/sign_up_controller_provider.dart';
 import '../../controllers/providers/text_field/email_field_provider.dart';
 import '../../controllers/providers/text_field/password_field_provider.dart';
+
+import '../../views/login/login_page.dart';
 
 class SignUpButton extends ConsumerStatefulWidget {
   const SignUpButton({super.key});
@@ -14,28 +19,11 @@ class SignUpButton extends ConsumerStatefulWidget {
 }
 
 class _SignUpButtonState extends ConsumerState<SignUpButton> {
-  Future<String?> _signUp() async {
-    return SignupController.signup(
-      context,
-      ref,
-      ref.read(emailFieldProvider('')),
-      ref.read(passwordFieldProvider('')),
-    );
-  }
-
-  void _loadingErrorMessage(String errorMessage) {
-    LoadingProgressController.loadingErrorMessage(ref, errorMessage);
-  }
-
-  Future<void> _onPressed() async {
-    if (ref.watch(loadingProgressProvider)) {
-      return;
-    }
-
-    final errorMessage = await _signUp();
-    if (errorMessage != null) {
-      _loadingErrorMessage(errorMessage);
-    }
+  Future<void> _handleSignUp() async {
+    final email = ref.read(emailFieldProvider('')).text;
+    final password = ref.read(passwordFieldProvider('')).text;
+    final signUpService = _SignUpService(context, ref);
+    await signUpService.performSignUp(email, password);
   }
 
   @override
@@ -48,7 +36,7 @@ class _SignUpButtonState extends ConsumerState<SignUpButton> {
         padding: EdgeInsets.zero,
         color: const Color.fromRGBO(80, 49, 238, 0.9),
         borderRadius: BorderRadius.circular(30),
-        onPressed: _onPressed,
+        onPressed: _handleSignUp,
         child: const Text(
           'Sign Up',
           style: TextStyle(
@@ -57,6 +45,51 @@ class _SignUpButtonState extends ConsumerState<SignUpButton> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SignUpService {
+  _SignUpService(this.context, this.ref);
+  final BuildContext context;
+  final WidgetRef ref;
+
+  Future<void> performSignUp(String email, String password) async {
+    _loadingProgress(true);
+    final errorMessage =
+        await ref.read(signUpControllerProvider).signup(email, password);
+    _loadingProgress(false);
+
+    if (errorMessage != null) {
+      _loadingErrorMessage(errorMessage);
+      return;
+    }
+
+    if (context.mounted) {
+      await _NavigationService(context).moveToNextPage(context);
+    }
+  }
+
+  void _loadingProgress(bool loading) {
+    LoadingProgressController(ref).loadingProgress = loading;
+  }
+
+  void _loadingErrorMessage(String errorMessage) {
+    LoadingProgressController(ref).loadingErrorMessage = errorMessage;
+  }
+}
+
+class _NavigationService {
+  _NavigationService(this.context);
+  final BuildContext context;
+
+  Future<void> moveToNextPage(BuildContext context) async {
+    await Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute<CupertinoPageRoute<LoginPage>>(
+        builder: (context) => const LoginPage(),
+      ),
+      (_) => false,
     );
   }
 }

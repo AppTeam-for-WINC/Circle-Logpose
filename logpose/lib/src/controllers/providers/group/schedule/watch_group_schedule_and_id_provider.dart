@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/custom/group_schedule_and_id_model.dart';
-import '../../../../services/database/group_schedule_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
 import '../../../controllers/group/fetch/fetch_group_schedule_and_id.dart';
 
 /// Watch group schedule and schedule ID.

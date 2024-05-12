@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../services/auth/auth_controller.dart';
+import '../../../../server/auth/auth_controller.dart';
 import '../../../validation/email_validation.dart';
 import '../../error/email_error_message_provider.dart';
 

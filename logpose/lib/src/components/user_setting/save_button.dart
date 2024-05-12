@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,7 +20,7 @@ class SaveButton extends ConsumerStatefulWidget {
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
   void _loadingProgress(bool loading) {
-    LoadingProgressController.loadingProgress(ref, loading: loading);
+    LoadingProgressController(ref).loadingProgress = loading;
   }
 
   Future<String?> _update() async {
@@ -50,16 +52,18 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       _loadingProgress(true);
       final errorMessage = await _update();
       _loadingProgress(false);
+
       if (errorMessage != null) {
         ref.watch(updateUserProfileErrorMessageProvider.notifier).state =
             errorMessage;
         return;
       }
 
-      if (!mounted) {
-        return;
+      if (mounted) {
+        await _pushAndRemoveUntil();
       }
-      await _pushAndRemoveUntil();
+
+      return;
     }
 
     return Container(

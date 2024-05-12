@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 
 import '../../../../models/database/user/user.dart';
 
-import '../../../../services/database/group_schedule_controller.dart';
-import '../../../../services/database/member_schedule_controller.dart';
-import '../../../../services/database/user_controller.dart';
+import '../../../../server/database/group_schedule_controller.dart';
+import '../../../../server/database/member_schedule_controller.dart';
+import '../../../../server/database/user_controller.dart';
 
 // Delete GroupSchedule, GroupMemberSchedule.
 class DeleteSchedule {
@@ -57,7 +57,7 @@ class DeleteSchedule {
   }
 
   static Future<String> _fetchUserDocId(String accountId) async {
-    return UserController.readUserDocIdWithAccountId(accountId);
+    return UserController.fetchUserDocIdWithAccountId(accountId);
   }
 
   static Future<void> _deleteMemberSchedule(String memberScheduleId) async {
