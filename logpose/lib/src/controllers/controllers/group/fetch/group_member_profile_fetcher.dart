@@ -23,9 +23,9 @@ class GroupMemberProfileFetcher {
     String scheduleId,
   ) async {
     try {
-      return Future.wait(
-        userIdList.where((id) => id != null).map((userId) async {
-          await _retrieveUserProfile(scheduleId, userId);
+      return await Future.wait(
+        userIdList.where((id) => id != null).map((userId) {
+          return _retrieveUserProfile(scheduleId, userId);
         }).toList(),
       );
     } on Exception catch (e) {

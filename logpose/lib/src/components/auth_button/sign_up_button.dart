@@ -57,7 +57,7 @@ class _SignUpService {
   Future<void> performSignUp(String email, String password) async {
     _loadingProgress(true);
     final errorMessage =
-        await ref.read(signUpControllerProvider).signup(email, password);
+        await ref.read(signUpControllerProvider).signUp(email, password);
     _loadingProgress(false);
 
     if (errorMessage != null) {

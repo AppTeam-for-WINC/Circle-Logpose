@@ -8,8 +8,8 @@ import 'sort_option_provider.dart';
 final sortedGroupAndScheduleAndIdProvider =
     StreamProvider.autoDispose<List<GroupProfileAndScheduleAndId>>(
         (ref) async* {
-  final stream =
-      GroupAndScheduleAndIdListListener.listenGroupAndScheduleAndIdList();
+  final stream = const GroupAndScheduleAndIdListListener()
+      .listenGroupAndScheduleAndIdList();
   final sortOption = ref.watch(sortOptionProvider);
 
   await for (final snapshot in stream) {

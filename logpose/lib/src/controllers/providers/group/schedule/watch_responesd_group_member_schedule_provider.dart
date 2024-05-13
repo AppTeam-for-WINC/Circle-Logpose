@@ -14,7 +14,7 @@ final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
     final userDocId =
         await UserController.fetchUserDocIdWithAccountId(args.accountId);
 
-    yield await GroupMemberScheduleController.readGroupMemberSchedule(
+    yield await GroupMemberScheduleController.fetchGroupMemberSchedule(
       userDocId: userDocId,
       scheduleId: args.scheduleId,
     );

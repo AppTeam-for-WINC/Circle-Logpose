@@ -54,7 +54,7 @@ class AccountIdSection extends ConsumerWidget {
                     children: [
                       ConstrainedBox(
                         constraints:
-                            BoxConstraints(maxWidth: deviceWidth * 0.8),
+                            BoxConstraints(maxWidth: deviceWidth * 0.75),
                         child: Text(
                           userProfile.accountId,
                           style: const TextStyle(

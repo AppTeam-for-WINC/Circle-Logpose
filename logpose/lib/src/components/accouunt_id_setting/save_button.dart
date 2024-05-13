@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/controllers/user/update_account_id.dart';
 import '../../controllers/providers/error/account_id_error_message_provider.dart';
+import '../../controllers/providers/group/group/account_id_updater_provider.dart';
 import '../../controllers/providers/text_field/account_id_field_provider.dart';
 import '../../controllers/providers/user/set_user_profile_provider.dart';
+
 import '../../views/user/user_setting_page.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -16,7 +17,8 @@ class SaveButton extends ConsumerStatefulWidget {
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
   Future<String?> _update(String newAccountId) async {
-    return UpdateAccountId.update(newAccountId);
+    final accountIdUpdater = ref.read(accountIdUpdaterProvider);
+    return accountIdUpdater.update(newAccountId);
   }
 
   // Init

@@ -22,8 +22,8 @@ class LoginController {
       return validationError;
     }
 
-    final success = await _loginToAccount(email, password);
-    if (!success) {
+    final loginProcess = await _loginToAccount(email, password);
+    if (!loginProcess) {
       return 'Password or Email is not correct.';
     }
 
@@ -45,7 +45,7 @@ class LoginController {
 
   Future<bool> _loginToAccount(String email, String password) async {
     try {
-      return AuthController.loginToAccount(email, password);
+      return await AuthController.loginToAccount(email, password);
     } on FirebaseException catch (e) {
       debugPrint('Error: failed to login account. ${e.message}');
       return false;

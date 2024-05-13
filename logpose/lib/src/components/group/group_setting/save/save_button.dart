@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/controllers/providers/group/schedule/image_provider.dart';
 
 import '../../../../common/loading_progress.dart';
-import '../../../../controllers/controllers/group/update/update_group_settings.dart';
+
 import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
+import '../../../../controllers/providers/group/group/group_setting_updater_provider.dart';
+import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../controllers/providers/group/schedule/image_provider.dart';
 import '../../../../controllers/providers/text_field/name_field_provider.dart';
+
+import '../../../../models/custom/group_setting_params_model.dart';
+
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -22,12 +27,15 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   @override
   Widget build(BuildContext context) {
     Future<String?> updateGroupSetting() async {
-      return UpdateGroupSettings.update(
-        widget.groupId,
-        ref.watch(nameFieldProvider(widget.groupName)).text,
-        null,
-        ref.watch(imageControllerProvider),
-        ref,
+      final groupSettingUpdater = ref.read(groupSettingUpdaterProvider);
+      return groupSettingUpdater.update(
+        GroupSettingParams(
+          groupId: widget.groupId,
+          groupName: ref.read(nameFieldProvider(widget.groupName)).text,
+          image: ref.read(imageControllerProvider),
+          description: null,
+          memberList: ref.read(setGroupMemberListProvider),
+        ),
       );
     }
 
@@ -71,10 +79,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
                 borderRadius: BorderRadius.circular(15),
                 color: Colors.white,
               ),
-              child: const Icon(
-                Icons.download,
-                color: Colors.black,
-              ),
+              child: const Icon(Icons.download, color: Colors.black),
             ),
             const SizedBox(width: 10),
             const Text('変更を保存'),

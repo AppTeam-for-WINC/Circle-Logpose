@@ -93,12 +93,7 @@ class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer?> {
   }
 
   Future<GroupSchedule> _fetchSchedule(String scheduleId) async {
-    final schedule = await GroupScheduleController.fetch(scheduleId);
-    if (schedule == null) {
-      debugPrint('Schedule ID is not found.: $scheduleId');
-      state = null;
-    }
-    return schedule!;
+    return GroupScheduleController.fetch(scheduleId);
   }
 
   void _setTitleController(

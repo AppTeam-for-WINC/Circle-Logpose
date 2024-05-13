@@ -4,10 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
-import '../../controllers/controllers/user/update_user_profile.dart';
+
 import '../../controllers/providers/error/update_user_profile_error_provider.dart';
+import '../../controllers/providers/group/group/user_setting_updater_provider.dart';
 import '../../controllers/providers/group/schedule/image_provider.dart';
 import '../../controllers/providers/text_field/name_field_provider.dart';
+
+import '../../models/custom/user_setting_model.dart';
+
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -24,11 +28,13 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   }
 
   Future<String?> _update() async {
-    return UpdateUserProfile.update(
-      ref.watch(nameFieldProvider(widget.name)).text,
-      ref.watch(imageControllerProvider),
-      null,
-      ref,
+    final userSettingUpdater = ref.read(userSettingUpdaterProvider);
+    return userSettingUpdater.update(
+      UserSettingParams(
+        name: ref.watch(nameFieldProvider(widget.name)).text,
+        image: ref.watch(imageControllerProvider),
+        description: null,
+      ),
     );
   }
 

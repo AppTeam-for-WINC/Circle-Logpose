@@ -9,8 +9,8 @@ class AsyncGroupMember extends ConsumerStatefulWidget {
     super.key,
     required this.scheduleId,
   });
-
   final String scheduleId;
+
   @override
   ConsumerState createState() => _AsyncGroupMemberState();
 }

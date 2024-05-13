@@ -183,12 +183,12 @@ class GroupMembershipController {
           debugPrint('No found $role document data.');
           return null;
         }
-        return _readUserProfile(userDocId);
+        return _fetchUserProfile(userDocId);
       }).toList(),
     );
   }
 
-  static Future<UserProfile> _readUserProfile(String userId) async {
+  static Future<UserProfile> _fetchUserProfile(String userId) async {
     return UserController.fetch(userId);
   }
 

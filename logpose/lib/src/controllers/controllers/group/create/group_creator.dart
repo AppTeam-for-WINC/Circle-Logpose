@@ -16,19 +16,17 @@ class GroupCreator {
   const GroupCreator();
 
   Future<String?> create(
-    GroupNameAndImageAndDescription groupData,
-    List<UserProfile> memberList,
+    GroupNameAndImageAndDescriptionAndMemberList groupData,
   ) async {
     try {
-      return await _attemptToCreateGroup(groupData, memberList);
+      return await _attemptToCreateGroup(groupData);
     } on FirebaseException catch (e) {
       return 'Error: failed to create group. $e';
     }
   }
 
   Future<String?> _attemptToCreateGroup(
-    GroupNameAndImageAndDescription groupData,
-    List<UserProfile> memberList,
+    GroupNameAndImageAndDescriptionAndMemberList groupData,
   ) async {
     final validationError = _validateGroup(groupData.groupName);
     if (validationError != null) {
@@ -42,7 +40,7 @@ class GroupCreator {
 
     final groupId = await _createGroup(groupData);
     await _createAdminRole(userDocId, groupId);
-    await _createAllMembershipRole(groupId, memberList);
+    await _createAllMembershipRole(groupId, groupData.memberList);
 
     return null;
   }
@@ -75,10 +73,10 @@ class GroupCreator {
   }
 
   Future<String> _createGroup(
-    GroupNameAndImageAndDescription groupData,
+    GroupNameAndImageAndDescriptionAndMemberList groupData,
   ) async {
     try {
-      return GroupController.create(
+      return await GroupController.create(
         groupData.groupName,
         groupData.image?.path,
         groupData.description,
@@ -127,7 +125,7 @@ class GroupCreator {
 
   Future<String> _fetchMemberDocId(String accountId) async {
     try {
-      return UserController.fetchUserDocIdWithAccountId(accountId);
+      return await UserController.fetchUserDocIdWithAccountId(accountId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch user ID. ${e.message}');
     }

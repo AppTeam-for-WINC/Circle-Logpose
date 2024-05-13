@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/controllers/group/update/update_group_schedule.dart';
 import '../../../../controllers/providers/error/schedule_error_msg_provider.dart';
 import '../../../../controllers/providers/group/group/group_schedule_creator_provider.dart';
+import '../../../../controllers/providers/group/group/group_schedule_updater_provider.dart';
 import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../controllers/providers/text_field/schedule/schedule_detail_controller_provider.dart';
 import '../../../../controllers/providers/text_field/schedule/schedule_place_controller_provider.dart';
 import '../../../../controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
+
 import '../../../../models/custom/schedule_params_model.dart';
 
 /// createOrUpdate is 'create' or 'update'.
@@ -68,15 +69,21 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
     }
 
     Future<String?> updateGroupSchedule() async {
-      return UpdateGroupSchedule.updateSchedule(
-        groupScheduleId!,
-        schedule.groupId!,
-        ref.read(scheduleTitleControllerProvider).text,
-        schedule.color!,
-        ref.read(schedulePlaceControllerProvider).text,
-        ref.read(scheduleDetailControllerProvider).text,
-        schedule.startAt,
-        schedule.endAt,
+      if (groupScheduleId == null) {
+        throw Exception('GroupSchedule ID is null.');
+      }
+      final groupScheduleUpdater = ref.read(groupScheduleUpdaterProvider);
+      return groupScheduleUpdater.update(
+        groupScheduleId,
+        ScheduleParams(
+          groupId: schedule.groupId!,
+          title: ref.read(scheduleTitleControllerProvider).text,
+          color: schedule.color!,
+          place: ref.read(schedulePlaceControllerProvider).text,
+          detail: ref.read(scheduleDetailControllerProvider).text,
+          startAt: schedule.startAt,
+          endAt: schedule.endAt,
+        ),
       );
     }
 
@@ -114,10 +121,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       onPressed: save,
       child: const Text(
         '保存',
-        style: TextStyle(
-          color: CupertinoColors.white,
-          fontSize: 16,
-        ),
+        style: TextStyle(color: CupertinoColors.white, fontSize: 16),
       ),
     );
   }

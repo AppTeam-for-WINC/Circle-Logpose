@@ -13,14 +13,14 @@ final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
   try {
     final groupId = await const GroupMemberProfileFetcher()
         .fetchGroupIdWithScheduleId(scheduleId);
+
     yield* GroupMembershipController.watchAllUserDocIdWithGroupId(groupId)
-        .asyncMap(
-      (userIdList) =>
-          const GroupMemberProfileFetcher().fetchUserProfilesNotAbsentList(
+        .asyncMap((userIdList) {
+      return const GroupMemberProfileFetcher().fetchUserProfilesNotAbsentList(
         userIdList,
         scheduleId,
-      ),
-    );
+      );
+    });
   } on FirebaseException catch (e) {
     throw Exception('Error: failed to watch member profile. $e');
   }

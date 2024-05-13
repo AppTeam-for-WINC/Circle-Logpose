@@ -117,7 +117,7 @@ class GroupScheduleController {
   }
 
   /// Read list of schedule ID.
-  static Future<List<String?>> readAllScheduleIdFuture(String groupId) async {
+  static Future<List<String?>> fetchAllScheduleIdFuture(String groupId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)
@@ -147,13 +147,13 @@ class GroupScheduleController {
   }
 
   // Get selected schedule database.
-  static Future<GroupSchedule?> fetch(String docId) async {
+  static Future<GroupSchedule> fetch(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
       final data = snapshot.data();
       if (data == null) {
         debugPrint('documentId not found.');
-        return null;
+        throw Exception('Error: No data.');
       }
 
       return GroupSchedule.fromMap(data);

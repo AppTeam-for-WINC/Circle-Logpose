@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/models/database/group/member_schedule.dart';
 
 import '../../../../models/database/group/group_schedule.dart';
+
 import '../../../../server/auth/auth_controller.dart';
 import '../../../../server/database/group_schedule_controller.dart';
 import '../../../../server/database/member_schedule_controller.dart';
@@ -44,11 +45,7 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   }
 
   Future<GroupSchedule> _fetchGroupSchedule(String groupScheduleId) async {
-    final groupSchedule = await GroupScheduleController.fetch(groupScheduleId);
-    if (groupSchedule == null) {
-      state = null;
-    }
-    return groupSchedule!;
+    return GroupScheduleController.fetch(groupScheduleId);
   }
 
   Future<String> _fetchUserDocId() async {

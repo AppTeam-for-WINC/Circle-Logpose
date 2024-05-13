@@ -7,7 +7,7 @@ import '../../validation/email_validation.dart';
 import '../../validation/password_validation.dart';
 
 class SignUpController {
-  Future<String?> signup(String email, String password) async {
+  Future<String?> signUp(String email, String password) async {
     try {
       return await _executeSignUp(email, password);
     } on Exception catch (e) {
@@ -44,7 +44,7 @@ class SignUpController {
 
   Future<bool> _createAccount(String email, String password) async {
     try {
-      return AuthController.createAccount(email, password);
+      return await AuthController.createAccount(email, password);
     } on FirebaseException catch (e) {
       debugPrint('Error: failed to create account. $e');
       return false;

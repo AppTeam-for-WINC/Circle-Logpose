@@ -87,7 +87,7 @@ class GroupMemberScheduleController {
   }
 
   /// Read GroupMembershipSchedule.
-  static Future<GroupMemberSchedule?> readGroupMemberSchedule({
+  static Future<GroupMemberSchedule?> fetchGroupMemberSchedule({
     required String userDocId,
     required String scheduleId,
   }) async {

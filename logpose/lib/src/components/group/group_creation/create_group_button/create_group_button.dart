@@ -27,13 +27,14 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
 
   Future<String?> _createGroup() async {
     try {
-      return ref.read(groupCreatorProvider).create(
-        GroupNameAndImageAndDescription(
+      final groupCreator = ref.read(groupCreatorProvider);
+      return groupCreator.create(
+        GroupNameAndImageAndDescriptionAndMemberList(
           groupName: ref.read(nameFieldProvider('')).text,
           image: ref.read(imageControllerProvider),
           description: null,
+          memberList: ref.read(setGroupMemberListProvider),
         ),
-        ref.read(setGroupMemberListProvider),
       );
     } on Exception catch (e) {
       return 'Error: failed to create group. $e';

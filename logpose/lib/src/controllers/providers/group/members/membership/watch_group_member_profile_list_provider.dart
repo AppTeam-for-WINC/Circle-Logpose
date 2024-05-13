@@ -7,6 +7,6 @@ import '../../role/group_role_profile_stream_provider.dart';
 final watchGroupMembershipProfileListProvider =
     StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
   return ref
-      .read(groupRoleProfileStreamProvider)
+      .read(groupRoleProfileStreamListenerProvider)
       .watchMembershipProfile(groupId);
 });
