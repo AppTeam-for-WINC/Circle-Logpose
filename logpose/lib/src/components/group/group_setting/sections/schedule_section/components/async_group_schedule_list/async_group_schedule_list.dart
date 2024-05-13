@@ -38,7 +38,6 @@ class _AsyncGroupScheduleListState
       return asyncGroupMemberProfileList.when(
         data: (memberProfiles) {
           return GroupScheduleTile(
-            groupId: groupId,
             schedule: groupScheduleData,
             groupName: widget.groupName,
             groupMemberList: memberProfiles,

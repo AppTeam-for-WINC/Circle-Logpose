@@ -44,7 +44,7 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   }
 
   Future<GroupSchedule> _fetchGroupSchedule(String groupScheduleId) async {
-    final groupSchedule = await GroupScheduleController.read(groupScheduleId);
+    final groupSchedule = await GroupScheduleController.fetch(groupScheduleId);
     if (groupSchedule == null) {
       state = null;
     }
@@ -77,7 +77,7 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
     String userDocId,
   ) async {
     try {
-      return GroupMemberScheduleController.readDocIdWithScheduleIdAndUserId(
+      return GroupMemberScheduleController.fetchDocIdWithScheduleIdAndUserId(
         scheduleId: scheduleId,
         userDocId: userDocId,
       );

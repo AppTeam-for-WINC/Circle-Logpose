@@ -5,19 +5,20 @@ import '../../../../models/database/user/user.dart';
 
 import '../../../../server/database/group_membership_controller.dart';
 
-import '../../../controllers/group/fetch/fetch_group_member_profile.dart';
+import '../../../controllers/group/fetch/group_member_profile_fetcher.dart';
 
 /// Group membership user list controller under condition not absence.
 final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
     .autoDispose<List<UserProfile?>, String>((ref, scheduleId) async* {
   try {
-    final groupId =
-        await FetchGroupMemberProfile.fetchGroupIdWithScheduleId(scheduleId);
+    final groupId = await const GroupMemberProfileFetcher()
+        .fetchGroupIdWithScheduleId(scheduleId);
     yield* GroupMembershipController.watchAllUserDocIdWithGroupId(groupId)
         .asyncMap(
-      (userIdList) => FetchGroupMemberProfile.fetchUserProfilesNotAbsentList(
-        scheduleId,
+      (userIdList) =>
+          const GroupMemberProfileFetcher().fetchUserProfilesNotAbsentList(
         userIdList,
+        scheduleId,
       ),
     );
   } on FirebaseException catch (e) {

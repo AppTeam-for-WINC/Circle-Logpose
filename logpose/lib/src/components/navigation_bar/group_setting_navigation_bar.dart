@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/back_to_page_button.dart';
-import '../../controllers/controllers/group/delete/delete_group.dart';
+
+import '../../controllers/providers/group/group/group_deleter_provider.dart';
 import '../../controllers/providers/group/members/watch_group_member_profile_list.dart';
 import '../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+
+import '../../models/custom/group_id_and_schedule_id_and_member_list_model.dart';
 import '../../models/custom/group_schedule_and_id_model.dart';
 import '../../models/database/user/user.dart';
+
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class GroupSettingNavigationBar extends CupertinoNavigationBar {
@@ -143,7 +147,12 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
   ) async {
     ref.watch(watchGroupScheduleAndIdProvider(groupId)).when(
           data: (groupScheduleList) async {
-            await _deleteGroup(groupScheduleList, groupId, groupMemberList);
+            await _deleteGroup(
+              ref,
+              groupScheduleList,
+              groupId,
+              groupMemberList,
+            );
           },
           loading: () => [const SizedBox.shrink()],
           error: (error, stack) => [Text('$error')],
@@ -151,27 +160,36 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
   }
 
   static Future<void> _deleteGroup(
+    WidgetRef ref,
     List<GroupScheduleAndId?> groupScheduleList,
     String groupId,
     List<UserProfile?> groupMemberList,
   ) async {
     if (groupScheduleList.isEmpty) {
-      await _delete(groupId, null, groupMemberList);
+      await _delete(ref, groupId, null, groupMemberList);
     }
     groupScheduleList.map((data) async {
       if (data == null) {
         return;
       }
-      await _delete(groupId, data.groupScheduleId, groupMemberList);
+      await _delete(ref, groupId, data.groupScheduleId, groupMemberList);
     });
   }
 
   static Future<void> _delete(
+    WidgetRef ref,
     String groupId,
     String? groupScheduleId,
     List<UserProfile?> groupMemberList,
   ) async {
-    await DeleteGroup.delete(groupId, groupScheduleId, groupMemberList);
+    final groupDeleter = ref.read(groupDeleterProvider);
+    await groupDeleter.delete(
+      GroupIdAndScheduleIdAndMemberList(
+        groupId: groupId,
+        groupScheduleId: groupScheduleId,
+        groupMemberList: groupMemberList,
+      ),
+    );
   }
 
   static Future<void> _pushAndRemoveUntil(BuildContext context) async {

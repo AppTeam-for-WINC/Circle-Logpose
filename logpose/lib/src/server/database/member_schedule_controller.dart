@@ -57,7 +57,7 @@ class GroupMemberScheduleController {
   }
 
   /// Read GroupMembershipSchedule's doc ID.
-  static Future<String?> readDocIdWithScheduleIdAndUserId({
+  static Future<String> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
   }) async {
@@ -80,17 +80,10 @@ class GroupMemberScheduleController {
     }
   }
 
-  static String? _fetchMemberScheduleId(
+  static String _fetchMemberScheduleId(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
-    return snapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data == null) {
-        return null;
-      }
-
-      return doc.id;
-    }).first;
+    return snapshot.docs.map((doc) => doc.id).first;
   }
 
   /// Read GroupMembershipSchedule.
@@ -171,9 +164,9 @@ class GroupMemberScheduleController {
     }
   }
 
-  // Read All Memberships's UserDocId under conditions
+  // Read Memberships's UserDocId under conditions
   // absence != null, absence == false.
-  static Future<List<String?>> readAllUserDocIdByTerm(
+  static Future<String?> fetchUserDocIdByTerm(
     String scheduleId,
     String userDocId,
   ) async {
@@ -184,13 +177,13 @@ class GroupMemberScheduleController {
           .where('user_id', isEqualTo: userDocId)
           .get();
 
-      return _fetchGroupMemberIdListByTerm(snapshot);
+      return _fetchGroupMemberIdByTerm(snapshot);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch member docId list by term. $e');
     }
   }
 
-  static List<String?> _fetchGroupMemberIdListByTerm(
+  static String? _fetchGroupMemberIdByTerm(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
     return snapshot.docs.map((doc) {
@@ -198,6 +191,7 @@ class GroupMemberScheduleController {
       if (data == null) {
         return null;
       }
+
       final absence = data['absence'] as bool?;
       final lateness = data['lateness'] as bool?;
       final attendance = data['attendance'] as bool?;
@@ -212,12 +206,11 @@ class GroupMemberScheduleController {
       if (!absence && !lateness && !attendance && !leaveEarly) {
         return null;
       }
-
       if (!absence) {
         return data['user_id'] as String;
       }
       return null;
-    }).toList();
+    }).first;
   }
 
   // Read All Memberships's Group member schedules under conditions

@@ -69,18 +69,14 @@ class GroupAndScheduleAndIdListListener {
       }
 
       final groupProfile = await _readGroupProfile(membership.groupId);
-      if (groupProfile == null) {
-        continue;
-      }
-
       streams.add(_watchAllScheduleId(membership.groupId, groupProfile));
     }
 
     return streams;
   }
 
-  static Future<GroupProfile?> _readGroupProfile(String groupId) async {
-    return GroupController.read(groupId);
+  static Future<GroupProfile> _readGroupProfile(String groupId) async {
+    return GroupController.fetch(groupId);
   }
 
   static Stream<(List<String?>, String, GroupProfile)> _watchAllScheduleId(
@@ -129,6 +125,6 @@ class GroupAndScheduleAndIdListListener {
   }
 
   static Future<GroupSchedule?> _readGroupSchedule(String scheduleId) async {
-    return GroupScheduleController.read(scheduleId);
+    return GroupScheduleController.fetch(scheduleId);
   }
 }

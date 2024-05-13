@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
-import '../../../controllers/controllers/tab/slide_tab_controller.dart';
+import '../../../utils/tab/slide_tab_controller.dart';
 import 'slide_tab.dart';
 import 'utils/clippers.dart';
 import 'utils/range.dart';

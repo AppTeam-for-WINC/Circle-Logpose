@@ -92,17 +92,18 @@ class GroupController {
   }
 
   /// Fetch the group database.
-  static Future<GroupProfile?> read(String docId) async {
+  static Future<GroupProfile> fetch(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
       final data = snapshot.data();
+      
       if (data == null) {
-        return null;
+       throw Exception('Error: No data found for document ID $docId');
       }
 
       return GroupProfile.fromMap(data);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch Group. $e');
+      throw Exception('Error: failed to fetch Group. ${e.message}');
     }
   }
 

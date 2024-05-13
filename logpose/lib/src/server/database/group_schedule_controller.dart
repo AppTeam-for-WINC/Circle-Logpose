@@ -147,7 +147,7 @@ class GroupScheduleController {
   }
 
   // Get selected schedule database.
-  static Future<GroupSchedule?> read(String docId) async {
+  static Future<GroupSchedule?> fetch(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
       final data = snapshot.data();
@@ -158,22 +158,22 @@ class GroupScheduleController {
 
       return GroupSchedule.fromMap(data);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to read schedule. $e');
+      throw Exception('Error: failed to fetch schedule. ${e.message}');
     }
   }
 
   /// Read GroupId.
-  static Future<String?> readGroupId(String docId) async {
+  static Future<String> fetchGroupId(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
       final data = snapshot.data();
       if (data == null) {
-        return null;
+        throw Exception('Error: failed to fetch data.');
       }
 
       return data['group_id'] as String;
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch group ID. $e');
+      throw Exception('Error: failed to fetch group ID. ${e.message}');
     }
   }
 

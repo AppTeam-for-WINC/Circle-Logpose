@@ -189,7 +189,7 @@ class GroupMembershipController {
   }
 
   static Future<UserProfile> _readUserProfile(String userId) async {
-    return UserController.read(userId);
+    return UserController.fetch(userId);
   }
 
   static Stream<List<GroupMembership?>> watchAllWithUserId(
@@ -243,7 +243,7 @@ class GroupMembershipController {
   }
 
   /// Read Group member's Doc Id.
-  static Future<String> readMemberDocIdWithGroupIdAndUserId(
+  static Future<String> fetchMemberDocIdWithGroupIdAndUserId(
     String groupId,
     String userId,
   ) async {

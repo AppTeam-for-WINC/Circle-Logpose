@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../../models/database/user/user.dart';
+
 import '../../../../server/database/group_membership_controller.dart';
 
 class GroupRoleProfileStream {

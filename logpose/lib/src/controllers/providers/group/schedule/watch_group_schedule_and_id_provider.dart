@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/custom/group_schedule_and_id_model.dart';
 import '../../../../server/database/group_schedule_controller.dart';
-import '../../../controllers/group/fetch/fetch_group_schedule_and_id.dart';
+import '../../../controllers/group/fetch/group_schedule_and_id_fetcher.dart';
 
 /// Watch group schedule and schedule ID.
 final watchGroupScheduleAndIdProvider =
@@ -12,7 +12,7 @@ final watchGroupScheduleAndIdProvider =
     try {
       yield* GroupScheduleController.watchAllScheduleId(groupId).asyncMap(
         (scheduleIdList) async =>
-            FetchGroupScheduleAndId.fetchGroupScheduleAndIdList(
+            const GroupScheduleAndIdFetcher().fetchGroupScheduleAndIdList(
           scheduleIdList,
         ),
       );

@@ -1,28 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/controllers/group/delete/delete_schedule.dart';
+import '../../../../controllers/providers/group/schedule/schedule_deleter_provider.dart';
+
 import '../../../../models/database/user/user.dart';
 
 class DeleteGroupScheduleButton extends ConsumerWidget {
   const DeleteGroupScheduleButton({
     super.key,
-    required this.groupId,
     required this.groupScheduleId,
     required this.groupMemberList,
   });
-  final String groupId;
-
   final String groupScheduleId;
   final List<UserProfile?> groupMemberList;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> onPressed() async {
-      await DeleteSchedule.delete(
-        groupId,
-        groupScheduleId,
-        groupMemberList,
-      );
+      final scheduleDeleter = ref.read(scheduleDeleterProvider);
+      await scheduleDeleter.delete(groupMemberList, groupScheduleId);
     }
 
     return CupertinoButton(
@@ -40,10 +36,7 @@ class DeleteGroupScheduleButton extends ConsumerWidget {
             ),
           ],
         ),
-        child: Icon(
-          CupertinoIcons.delete,
-          color: CupertinoColors.black,
-        ),
+        child: Icon(CupertinoIcons.delete, color: CupertinoColors.black),
       ),
     );
   }

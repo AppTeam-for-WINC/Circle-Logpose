@@ -71,7 +71,7 @@ class UserController {
   }
 
   /// Fetch user database.
-  static Future<UserProfile> read(String docId) async {
+  static Future<UserProfile> fetch(String docId) async {
     try {
       final data =
           (await db.collection(collectionPath).doc(docId).get()).data();

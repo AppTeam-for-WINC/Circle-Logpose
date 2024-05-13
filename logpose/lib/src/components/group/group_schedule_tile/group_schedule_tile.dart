@@ -13,16 +13,14 @@ import 'components/delete_group_schedule_button.dart';
 class GroupScheduleTile extends ConsumerStatefulWidget {
   const GroupScheduleTile({
     super.key,
-    required this.groupId,
     required this.schedule,
     required this.groupName,
     required this.groupMemberList,
   });
-
-  final String groupId;
   final GroupScheduleAndId schedule;
   final String groupName;
   final List<UserProfile?> groupMemberList;
+  
   @override
   ConsumerState<GroupScheduleTile> createState() => _ScheduleComponentState();
 }
@@ -31,7 +29,6 @@ class _ScheduleComponentState extends ConsumerState<GroupScheduleTile> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final groupId = widget.groupId;
     final groupScheduleId = widget.schedule.groupScheduleId;
     final groupSchedule = widget.schedule.groupSchedule;
     final groupName = widget.groupName;
@@ -84,9 +81,8 @@ class _ScheduleComponentState extends ConsumerState<GroupScheduleTile> {
             top: -8,
             right: 0,
             child: DeleteGroupScheduleButton(
-              groupId: groupId,
-              groupScheduleId: groupScheduleId,
               groupMemberList: groupMemberList,
+              groupScheduleId: groupScheduleId,
             ),
           ),
       ],

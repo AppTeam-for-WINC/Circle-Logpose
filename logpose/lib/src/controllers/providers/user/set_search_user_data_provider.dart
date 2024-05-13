@@ -52,7 +52,7 @@ class _SearchUserData extends StateNotifier<UserProfile?> {
 
   Future<void> _memberAddController(String? groupId) async {
     final myDocId = await AuthController.fetchCurrentUserId();
-    final myAccount = await UserController.read(myDocId!);
+    final myAccount = await UserController.fetch(myDocId!);
     final accountId = accountIdController.text;
     user = await UserController.readWithAccountId(accountId);
 

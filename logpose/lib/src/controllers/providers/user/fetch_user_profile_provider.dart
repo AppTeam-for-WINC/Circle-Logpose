@@ -12,12 +12,12 @@ final fetchUserProfileProvider = FutureProvider<UserProfile>((ref) async {
     throw Exception('User not logged in.');
   }
 
-  return UserController.read(userDocId);
+  return UserController.fetch(userDocId);
 });
 
 Future<String?> _fetchUserDocId() async {
   try {
-    return AuthController.fetchCurrentUserId();
+    return await AuthController.fetchCurrentUserId();
   } on FirebaseException catch (e) {
     throw Exception('Error: failed to fetch current user ID. $e');
   }
