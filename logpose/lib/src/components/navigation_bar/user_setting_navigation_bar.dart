@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../server/auth/auth_controller.dart';
+import '../../data/repository/auth/auth_repository.dart';
 import '../../views/start/start_page.dart';
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
@@ -129,7 +129,7 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
   }
 
   static Future<void> _logout() async {
-    await AuthController.logout();
+    await AuthRepository.logout();
   }
 
   static Future<void> _moveToStartPage(BuildContext context) async {

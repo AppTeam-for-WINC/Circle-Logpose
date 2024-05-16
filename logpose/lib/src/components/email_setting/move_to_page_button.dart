@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/error/password_error_message_provider.dart';
-import '../../controllers/providers/text_field/password_field_provider.dart';
-import '../../controllers/validation/password_validation.dart';
+import '../../domain/providers/error/password_error_message_provider.dart';
+import '../../domain/providers/text_field/password_field_provider.dart';
+import '../../domain/validation/password_validation.dart';
 
 import '../../views/user/email/email_setting_next_page.dart';
 

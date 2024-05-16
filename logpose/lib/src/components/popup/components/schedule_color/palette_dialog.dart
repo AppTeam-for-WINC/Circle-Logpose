@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/schedule_color_palette.dart';
-import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 
 class PaletteDialog extends ConsumerWidget {
   const PaletteDialog({super.key, this.groupScheduleId});

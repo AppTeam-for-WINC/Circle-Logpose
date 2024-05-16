@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/schedule/watch_group_member_profile_not_absence_list_provider.dart';
+import '../../../../../domain/providers/group/schedule/watch_group_member_profile_not_absence_list_provider.dart';
 import '../../../../../models/database/group/group_profile.dart';
 import '../../../../../models/database/group/group_schedule.dart';
 import '../../../schedule_join_member/schedule_join_member.dart';

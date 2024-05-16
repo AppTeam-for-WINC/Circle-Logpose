@@ -13,8 +13,8 @@ import '../../../components/group/switch/delete_member_switch.dart';
 import '../../../components/navigation_bar/group_setting_navigation_bar.dart';
 import '../../../components/text_field/name_field.dart';
 
-import '../../../controllers/providers/error/group_name_error_msg_provider.dart';
-import '../../../controllers/providers/group/group/group_setting_provider.dart';
+import '../../../domain/providers/error/group_name_error_msg_provider.dart';
+import '../../../domain/providers/group/group/group_setting_notifier_provider.dart';
 // import '../../../common/progress/progress_indicator.dart';
 
 class GroupSettingPage extends ConsumerStatefulWidget {
@@ -32,7 +32,7 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     final groupId = widget.groupId;
-    final groupProfile = ref.watch(groupSettingProvider(groupId));
+    final groupProfile = ref.watch(groupSettingNotifierProvider(groupId));
     if (groupProfile == null) {
       return const SizedBox.shrink();
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
 
 class JoinDatePickerDialog extends ConsumerStatefulWidget {
   const JoinDatePickerDialog({
@@ -63,7 +63,7 @@ class _JoinDatePickerDialogState extends ConsumerState<JoinDatePickerDialog> {
     }
 
     Future<void> cancel() async {
-      await scheduleNotifier.initSchedule(groupScheduleId);
+      await scheduleNotifier.initSchedule();
       if (!mounted) {
         return;
       }

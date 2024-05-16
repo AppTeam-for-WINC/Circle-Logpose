@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
-import '../../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
 import 'components/group_member_image_list.dart';
 
 class MemberSection extends ConsumerStatefulWidget {

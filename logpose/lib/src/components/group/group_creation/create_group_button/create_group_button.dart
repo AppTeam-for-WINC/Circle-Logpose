@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/loading_progress.dart';
 
-import '../../../../controllers/providers/group/group/group_create_provider.dart';
-import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../controllers/providers/group/schedule/image_provider.dart';
-import '../../../../controllers/providers/text_field/name_field_provider.dart';
+import '../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../../domain/providers/text_field/name_field_provider.dart';
 
-import '../../../../models/custom/group_name_and_image_and_description_model.dart';
+import '../../../../domain/usecase/group_use_case.dart';
+import '../../../../models/custom/group_creator_params_model.dart';
 
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
@@ -27,9 +27,9 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
 
   Future<String?> _createGroup() async {
     try {
-      final groupCreator = ref.read(groupCreatorProvider);
-      return groupCreator.create(
-        GroupNameAndImageAndDescriptionAndMemberList(
+      final groupController = ref.read(groupUseCaseProvider);
+      return groupController.createGroup(
+        GroupCreatorParams(
           groupName: ref.read(nameFieldProvider('')).text,
           image: ref.read(imageControllerProvider),
           description: null,

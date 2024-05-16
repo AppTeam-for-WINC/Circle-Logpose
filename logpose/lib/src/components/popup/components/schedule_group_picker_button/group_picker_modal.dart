@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/group/group/fetch_group_and_id_list_provider.dart';
-import '../../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
-import '../../../../controllers/providers/group/text/selected_group_name_provider.dart';
+import '../../../../domain/providers/group/group/fetch_group_and_id_list_provider.dart';
+import '../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../domain/providers/group/text/selected_group_name_provider.dart';
 
+import '../../../../domain/usecase/group_use_case.dart';
 import '../../../../models/custom/group_and_id_model.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
@@ -34,10 +35,13 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   }
 
   Future<void> _setGroupName() async {
-    final groupWithIdList =
-        await ref.read(fetchGroupAndIdListProvider(widget.groupIdList).future);
+    final groupController = ref.read(groupUseCaseProvider);
+
+    final groupIdList =
+        await groupController.fetchGroupAndIdList(widget.groupIdList);
+
     ref.read(selectedGroupNameProvider.notifier).state =
-        groupWithIdList[0].groupProfile.name;
+        groupIdList[0].groupProfile.name;
   }
 
   @override
@@ -85,6 +89,7 @@ class _AsyncGroupWithIdListState extends ConsumerState<_AsyncGroupWithIdList> {
   @override
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
+    
     final asyncGroupAndIdList =
         ref.watch(fetchGroupAndIdListProvider(groupIdList));
 

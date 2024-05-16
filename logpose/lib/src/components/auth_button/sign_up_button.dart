@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
 
-import '../../controllers/providers/auth/sign_up_controller_provider.dart';
-import '../../controllers/providers/text_field/email_field_provider.dart';
-import '../../controllers/providers/text_field/password_field_provider.dart';
+import '../../domain/providers/auth/sign_up_usecase_provider.dart';
+import '../../domain/providers/text_field/email_field_provider.dart';
+import '../../domain/providers/text_field/password_field_provider.dart';
 
 import '../../views/login/login_page.dart';
 
@@ -57,7 +57,7 @@ class _SignUpService {
   Future<void> performSignUp(String email, String password) async {
     _loadingProgress(true);
     final errorMessage =
-        await ref.read(signUpControllerProvider).signUp(email, password);
+        await ref.read(signUpUsecaseProvider).signUp(email, password);
     _loadingProgress(false);
 
     if (errorMessage != null) {

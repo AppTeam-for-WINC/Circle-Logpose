@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/name_field_provider.dart';
+import '../../domain/providers/text_field/name_field_provider.dart';
 
 class NameField extends ConsumerWidget {
   const NameField({super.key, required this.placeholder, this.name});

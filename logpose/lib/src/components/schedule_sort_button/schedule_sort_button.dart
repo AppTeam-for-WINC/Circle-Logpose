@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/sort/sort_option_provider.dart';
+import '../../domain/providers/sort/sort_option_provider.dart';
 
 class ScheduleSortButton extends ConsumerStatefulWidget {
   const ScheduleSortButton({super.key});

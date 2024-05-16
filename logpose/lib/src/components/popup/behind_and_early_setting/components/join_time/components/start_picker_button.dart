@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
 import '../../../../../../models/database/group/group_schedule.dart';
 import '../../../../../../utils/time/time_utils.dart';
 import 'components/date_picker_dialog.dart';

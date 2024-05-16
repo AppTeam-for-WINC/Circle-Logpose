@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../components/accouunt_id_setting/account_id_section.dart';
 import '../../../components/accouunt_id_setting/save_button.dart';
 import '../../../components/navigation_bar/account_id_setting_navigation_bar.dart';
-import '../../../controllers/providers/user/set_user_profile_provider.dart';
+import '../../../domain/providers/user/set_user_profile_provider.dart';
 
 class AccountIdSettingPage extends ConsumerStatefulWidget {
   const AccountIdSettingPage({super.key});

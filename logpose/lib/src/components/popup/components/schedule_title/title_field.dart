@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/text_field/schedule/schedule_title_controller_provider.dart';
+import '../../../../domain/providers/text_field/schedule/schedule_title_controller_provider.dart';
 
 class TitleField extends ConsumerWidget {
   const TitleField({super.key});

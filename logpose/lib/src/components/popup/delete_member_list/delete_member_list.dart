@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../controllers/providers/group/members/membership/watch_group_member_profile_list_provider.dart';
-import '../../../controllers/providers/user/fetch_user_profile_provider.dart';
+import '../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../domain/providers/group/members/membership/watch_group_member_profile_list_provider.dart';
+import '../../../domain/providers/user/fetch_user_profile_provider.dart';
 
 import '../../../models/database/user/user.dart';
 import '../../group/group_member_tile/group_member_tile.dart';

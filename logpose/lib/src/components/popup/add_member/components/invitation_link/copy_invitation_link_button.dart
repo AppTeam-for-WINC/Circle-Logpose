@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/controllers/group/create/group_invitation_link_service.dart';
+import '../../../../../domain/providers/group/group/group_invitation_controller_provider.dart';
 import '../../../../../utils/clipboard/copy_to_clipboard.dart';
 
 class CopyInvitationLinkButton extends ConsumerStatefulWidget {
@@ -16,7 +16,9 @@ class CopyInvitationLinkButton extends ConsumerStatefulWidget {
 class _CopyInvitationLinkButtonState
     extends ConsumerState<CopyInvitationLinkButton> {
   Future<String?> _readGroupInvitationLink(String groupId) async {
-    return GroupInvitationLinkService.fetchGroupInvitationLink(groupId);
+    final invitationRepository = ref.read(groupInvitationRepositoryProvider);
+    final data = await invitationRepository.create(groupId);
+    return data.invitationLink;
   }
 
   void _copyToClipboard(String invitationLink) {

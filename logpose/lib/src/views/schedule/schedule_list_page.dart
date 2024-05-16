@@ -6,7 +6,7 @@ import '../../components/schedule_card_list/schedule_card_list.dart';
 import '../../components/schedule_creation_button/schedule_creation_button.dart';
 import '../../components/schedule_sort_button/schedule_sort_button.dart';
 
-import '../../controllers/providers/group/group/watch_joined_group_exist_provider.dart';
+import '../../domain/providers/group/group/watch_joined_group_exist_provider.dart';
 
 class ScheduleListPage extends ConsumerStatefulWidget {
   const ScheduleListPage({super.key});

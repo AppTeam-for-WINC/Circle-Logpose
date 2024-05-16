@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/schedule/schedule_detail_controller_provider.dart';
+import '../../domain/providers/text_field/schedule/schedule_detail_controller_provider.dart';
 
 class DetailTextField extends ConsumerStatefulWidget {
   const DetailTextField({super.key});

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/error/password_error_message_provider.dart';
-import '../../controllers/providers/user/account/password_provider.dart';
+import '../../domain/providers/error/password_error_message_provider.dart';
+import '../../domain/providers/user/account/password_provider.dart';
 import '../../views/user/user_setting_page.dart';
 
 class SaveButton extends ConsumerStatefulWidget {

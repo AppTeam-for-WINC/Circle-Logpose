@@ -7,8 +7,8 @@ class DBErrorMessages {
   // その他のエラーメッセージ...
 }
 
-class ControllerException implements Exception {
-  ControllerException(this.message);
+class RepositoryException implements Exception {
+  RepositoryException(this.message);
   final String message;
 
   @override

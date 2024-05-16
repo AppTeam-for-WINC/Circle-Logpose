@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/new_password_field_provider.dart';
-import '../../controllers/providers/text_field/password_field_provider.dart';
-import '../../controllers/providers/user/set_user_profile_provider.dart';
+import '../../domain/providers/text_field/new_password_field_provider.dart';
+import '../../domain/providers/text_field/password_field_provider.dart';
+import '../../domain/providers/user/set_user_profile_provider.dart';
 
 class PasswordSettingSection extends ConsumerWidget {
   const PasswordSettingSection({super.key});

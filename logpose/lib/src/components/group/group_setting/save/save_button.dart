@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/loading_progress.dart';
 
-import '../../../../controllers/providers/error/group_name_error_msg_provider.dart';
-import '../../../../controllers/providers/group/group/group_setting_updater_provider.dart';
-import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../controllers/providers/group/schedule/image_provider.dart';
-import '../../../../controllers/providers/text_field/name_field_provider.dart';
+import '../../../../domain/providers/error/group_name_error_msg_provider.dart';
+import '../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../../domain/providers/text_field/name_field_provider.dart';
+import '../../../../domain/usecase/group_use_case.dart';
 
 import '../../../../models/custom/group_setting_params_model.dart';
 
@@ -27,8 +27,8 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   @override
   Widget build(BuildContext context) {
     Future<String?> updateGroupSetting() async {
-      final groupSettingUpdater = ref.read(groupSettingUpdaterProvider);
-      return groupSettingUpdater.update(
+      final groupUseCase = ref.read(groupUseCaseProvider);
+      return groupUseCase.updateGroup(
         GroupSettingParams(
           groupId: widget.groupId,
           groupName: ref.read(nameFieldProvider(widget.groupName)).text,

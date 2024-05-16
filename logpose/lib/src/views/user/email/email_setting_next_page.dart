@@ -5,7 +5,7 @@ import '../../../common/red_error_message.dart';
 import '../../../components/email_setting/email_setting_next_section.dart';
 import '../../../components/email_setting/save_button.dart';
 import '../../../components/navigation_bar/email_setting_navigation_bar.dart';
-import '../../../controllers/providers/error/email_error_message_provider.dart';
+import '../../../domain/providers/error/email_error_message_provider.dart';
 
 class EmailSettingNextPage extends ConsumerStatefulWidget {
   const EmailSettingNextPage({super.key, required this.password});

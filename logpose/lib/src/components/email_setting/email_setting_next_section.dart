@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/email_field_provider.dart';
-import '../../controllers/providers/user/account/email_provider.dart';
-import '../../controllers/providers/user/set_user_profile_provider.dart';
+import '../../domain/providers/text_field/email_field_provider.dart';
+import '../../domain/providers/user/account/email_provider.dart';
+import '../../domain/providers/user/set_user_profile_provider.dart';
 
 class EmailSettingNextSection extends ConsumerWidget {
   const EmailSettingNextSection({super.key});

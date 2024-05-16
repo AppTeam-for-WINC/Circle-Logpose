@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/custom_image/custom_image.dart';
-import '../../controllers/providers/group/schedule/image_provider.dart';
+import '../../domain/providers/group/schedule/image_provider.dart';
 
 class UserImageView extends ConsumerStatefulWidget {
   const UserImageView({super.key, required this.imagePath});

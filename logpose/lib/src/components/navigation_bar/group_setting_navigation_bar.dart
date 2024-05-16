@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/back_to_page_button.dart';
 
-import '../../controllers/providers/group/group/group_deleter_provider.dart';
-import '../../controllers/providers/group/members/watch_group_member_profile_list.dart';
-import '../../controllers/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../domain/providers/group/members/watch_group_member_profile_list.dart';
+import '../../domain/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../domain/usecase/group_use_case.dart';
 
 import '../../models/custom/group_id_and_schedule_id_and_member_list_model.dart';
 import '../../models/custom/group_schedule_and_id_model.dart';
@@ -182,8 +182,8 @@ class GroupSettingNavigationBar extends CupertinoNavigationBar {
     String? groupScheduleId,
     List<UserProfile?> groupMemberList,
   ) async {
-    final groupDeleter = ref.read(groupDeleterProvider);
-    await groupDeleter.delete(
+    final groupUseCase = ref.read(groupUseCaseProvider);
+    await groupUseCase.deleteGroup(
       GroupIdAndScheduleIdAndMemberList(
         groupId: groupId,
         groupScheduleId: groupScheduleId,

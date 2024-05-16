@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
 
-import '../../controllers/providers/auth/login_controller_provider.dart';
-import '../../controllers/providers/text_field/email_field_provider.dart';
-import '../../controllers/providers/text_field/password_field_provider.dart';
+import '../../domain/providers/auth/login_usecase_provider.dart';
+import '../../domain/providers/text_field/email_field_provider.dart';
+import '../../domain/providers/text_field/password_field_provider.dart';
 
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
@@ -58,7 +58,7 @@ class _LoginService {
   Future<void> performLogin(String email, String password) async {
     _updateLoadingStatus(true);
     final errorMessage =
-        await ref.read(loginControllerProvider).login(email, password);
+        await ref.read(loginUseCaseProvider).login(email, password);
     _updateLoadingStatus(false);
 
     if (errorMessage != null) {

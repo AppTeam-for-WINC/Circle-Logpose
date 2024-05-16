@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/text_field/account_id_field_provider.dart';
+import '../../domain/providers/text_field/account_id_field_provider.dart';
 import '../../views/user/user_setting_page.dart';
 
 class AccountIdSettingNavigationBar extends CupertinoNavigationBar {

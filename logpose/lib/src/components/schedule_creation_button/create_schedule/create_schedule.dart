@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/red_error_message.dart';
-import '../../../controllers/providers/error/schedule_error_msg_provider.dart';
-import '../../../controllers/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../domain/providers/error/schedule_error_msg_provider.dart';
+import '../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 
 import '../../popup/components/schedule_color/color_button.dart';
 import '../../popup/components/schedule_detail/detail.dart';

@@ -5,7 +5,7 @@ import '../../../common/red_error_message.dart';
 import '../../../components/navigation_bar/password_setting_navigation_bar.dart';
 import '../../../components/password_setting/password_setting_section.dart';
 import '../../../components/password_setting/save_button.dart';
-import '../../../controllers/providers/error/password_error_message_provider.dart';
+import '../../../domain/providers/error/password_error_message_provider.dart';
 
 class PasswordSettingPage extends ConsumerStatefulWidget {
   const PasswordSettingPage({super.key});

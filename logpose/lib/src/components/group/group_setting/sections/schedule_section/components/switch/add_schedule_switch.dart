@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
+import '../../../../../../../domain/providers/group/text/selected_group_name_provider.dart';
 import '../../../../../../popup/schedule_creation/schedule_creation.dart';
 
 class AddScheduleSwitch extends ConsumerWidget {

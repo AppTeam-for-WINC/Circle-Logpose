@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../controllers/providers/group/schedule/watch_responesd_group_member_schedule_provider.dart';
+import '../../../../../../../domain/providers/group/schedule/watch_responesd_group_member_schedule_provider.dart';
 import '../../../../../../../utils/time/time_utils.dart';
 
 class AsyncMemberSchedule extends ConsumerStatefulWidget {

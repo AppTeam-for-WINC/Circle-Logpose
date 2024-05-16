@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/providers/group/mode/schedule_delete_mode_provider.dart';
-import '../../../controllers/providers/group/text/selected_group_name_provider.dart';
+import '../../../domain/providers/group/mode/schedule_delete_mode_provider.dart';
+import '../../../domain/providers/group/text/selected_group_name_provider.dart';
 
 import '../../../models/custom/group_schedule_and_id_model.dart';
 import '../../../models/database/user/user.dart';

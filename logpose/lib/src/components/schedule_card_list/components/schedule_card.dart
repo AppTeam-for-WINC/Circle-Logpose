@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/custom_image/custom_image.dart';
-import '../../../controllers/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
 
 import 'components/absence/absence_button.dart';

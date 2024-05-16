@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/providers/sort/sorted_group_and_schedule_id_provider.dart';
+import '../../domain/providers/sort/sorted_group_and_schedule_id_provider.dart';
 import '../../models/custom/group_profile_and_schedule_and_id_model.dart';
 import 'components/schedule_card.dart';
 

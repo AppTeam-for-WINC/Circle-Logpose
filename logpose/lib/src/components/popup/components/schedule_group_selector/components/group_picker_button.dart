@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/group/text/selected_group_name_provider.dart';
+import '../../../../../domain/providers/group/text/selected_group_name_provider.dart';
 import '../../schedule_group_picker_button/group_picker_modal.dart';
 
 class GroupPickerButton extends ConsumerStatefulWidget {

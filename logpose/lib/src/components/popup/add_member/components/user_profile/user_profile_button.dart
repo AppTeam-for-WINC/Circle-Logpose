@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
-import '../../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../../controllers/providers/user/set_search_user_data_provider.dart';
+import '../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../../domain/providers/user/set_search_user_data_provider.dart';
 import '../../../components/user_name/user_name.dart';
 
 class UserProfileButton extends ConsumerStatefulWidget {

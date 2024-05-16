@@ -5,7 +5,7 @@ import '../../../common/red_error_message.dart';
 import '../../../components/email_setting/email_setting_section.dart';
 import '../../../components/email_setting/move_to_page_button.dart';
 import '../../../components/navigation_bar/email_setting_navigation_bar.dart';
-import '../../../controllers/providers/error/password_error_message_provider.dart';
+import '../../../domain/providers/error/password_error_message_provider.dart';
 
 class EmailSettingPage extends ConsumerStatefulWidget {
   const EmailSettingPage({super.key});

@@ -12,8 +12,8 @@ import '../../components/user_setting/sections/group_section.dart';
 import '../../components/user_setting/sections/password_section.dart';
 import '../../components/user_setting/user_image_view.dart';
 
-import '../../controllers/providers/error/update_user_profile_error_provider.dart';
-import '../../controllers/providers/user/set_user_profile_provider.dart';
+import '../../domain/providers/error/update_user_profile_error_provider.dart';
+import '../../domain/providers/user/set_user_profile_provider.dart';
 // import '../../common/progress/progress_indicator.dart';
 
 

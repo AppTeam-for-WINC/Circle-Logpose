@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../controllers/providers/group/members/group_member_deleter_provider.dart';
-import '../../../../controllers/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../domain/usecase/group_membership_use_case.dart';
 
 class MemberDeleteButton extends ConsumerWidget {
   const MemberDeleteButton({super.key, required this.accountId, this.groupId});
@@ -13,7 +13,12 @@ class MemberDeleteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> onPressed() async {
       if (groupId != null) {
-        await ref.read(groupMemberDeleterProvider).delete(groupId!, accountId);
+        await ref
+            .read(groupMembershipUseCaseProvider)
+            .deleteMemberWithGroupIdAndAccountId(
+              groupId!,
+              accountId,
+            );
       }
       ref.watch(setGroupMemberListProvider.notifier).removeMember(accountId);
     }

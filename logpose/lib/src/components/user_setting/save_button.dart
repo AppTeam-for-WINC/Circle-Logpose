@@ -5,10 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
 
-import '../../controllers/providers/error/update_user_profile_error_provider.dart';
-import '../../controllers/providers/group/group/user_setting_updater_provider.dart';
-import '../../controllers/providers/group/schedule/image_provider.dart';
-import '../../controllers/providers/text_field/name_field_provider.dart';
+import '../../domain/providers/error/update_user_profile_error_provider.dart';
+import '../../domain/providers/group/schedule/image_provider.dart';
+import '../../domain/providers/text_field/name_field_provider.dart';
+
+import '../../domain/usecase/user_use_case.dart';
 
 import '../../models/custom/user_setting_model.dart';
 
@@ -28,8 +29,8 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   }
 
   Future<String?> _update() async {
-    final userSettingUpdater = ref.read(userSettingUpdaterProvider);
-    return userSettingUpdater.update(
+    final userUseCase = ref.read(userUseCaseProvider);
+    return userUseCase.updateUser(
       UserSettingParams(
         name: ref.watch(nameFieldProvider(widget.name)).text,
         image: ref.watch(imageControllerProvider),

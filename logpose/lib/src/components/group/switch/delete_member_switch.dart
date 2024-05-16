@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/components/popup/delete_member_list/delete_member_list.dart';
 
-import '../../../controllers/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../domain/providers/group/mode/group_member_delete_mode_provider.dart';
 
 /// Select mode which is create or setting.
 class DeleteMemberSwitch extends ConsumerWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../controllers/providers/user/set_search_user_data_provider.dart';
+import '../../../../../domain/providers/user/set_search_user_data_provider.dart';
 
 class UserProfileSearchField extends ConsumerStatefulWidget {
   const UserProfileSearchField({

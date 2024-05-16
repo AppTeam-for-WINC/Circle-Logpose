@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controllers/providers/group/group/watch_joined_group_profile_provider.dart';
+import '../../../domain/providers/group/group/watch_joined_group_profile_provider.dart';
 import '../../user/user_joined_group_tile.dart';
 
 class GroupSection extends ConsumerStatefulWidget {
