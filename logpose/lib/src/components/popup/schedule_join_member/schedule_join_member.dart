@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/back_to_page_button.dart';
-import '../../../models/database/group/group_profile.dart';
-import '../../../models/database/group/group_schedule.dart';
-import '../../../models/database/user/user.dart';
+import '../../../data/models/group_profile.dart';
+import '../../../data/models/group_schedule.dart';
+import '../../../data/models/user.dart';
 
 import '../components/background/background.dart';
 import '../components/schedule_time_view/schedule_time_view.dart';

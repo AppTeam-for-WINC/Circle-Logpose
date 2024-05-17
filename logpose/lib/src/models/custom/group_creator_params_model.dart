@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../database/user/user.dart';
+import '../../data/models/user.dart';
 
 class GroupCreatorParams {
   GroupCreatorParams({

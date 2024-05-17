@@ -1,32 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../exceptions/group/group_setting_exception.dart';
-import '../../../models/database/group/group_profile.dart';
+
+import '../../../domain/interface/i_group_repository.dart';
+import '../../models/group_profile.dart';
+
 import '../storage/storage_repository.dart';
 
-/// Stream型をwatchもしくはlistenで書く。
-/// Future型はreadもしくは　fetchで書く。
+class GroupRepository implements IGroupRepository {
+  GroupRepository({required this.ref});
 
-class GroupRepository {
-  // シングルトンパターンにしています。
-  GroupRepository._internal();
-  static final GroupRepository _instance = GroupRepository._internal();
-  static GroupRepository get instance => _instance;
-
+  final Ref ref;
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'groups';
 
-  /// Create Group database, return Group Doc ID.
+  @override
   Future<String> create(
     String name,
     String? image,
     String? description,
   ) async {
     try {
-      // Create new document
       final groupDoc = db.collection(collectionPath).doc();
-
       String? imagePath;
+
       if (image == '') {
         imagePath = await _downloadGroupDefaultImageToStorage();
       } else if (image != null) {
@@ -35,11 +33,9 @@ class GroupRepository {
         throw Exception('Error: failed to set group data.');
       }
 
-      // Get server time.
       /// ここで createdAt変数に敢えて格納することで、 serverTimestampの取得処理時間を獲得できる。
       final createdAt = FieldValue.serverTimestamp();
 
-      // Set database.
       await groupDoc.set({
         'name': name,
         'image': imagePath,
@@ -50,25 +46,28 @@ class GroupRepository {
 
       return groupDoc.id;
     } on FirebaseException catch (e) {
-      throw Exception('Failed to create group document: $e');
+      throw Exception('Failed to create group document: ${e.message}');
     }
   }
 
-  static Future<String> _downloadGroupDefaultImageToStorage() async {
-    return StorageRepository.downloadGroupDefaultImageToStorage();
+  Future<String> _downloadGroupDefaultImageToStorage() async {
+    final storageRepository = ref.read(storageRepositoryProvider);
+    return storageRepository.downloadGroupDefaultImageToStorage();
   }
 
-  static Future<String> _uploadGroupImageToStorage(
+  Future<String> _uploadGroupImageToStorage(
     String groupDocId,
     String image,
   ) async {
-    return StorageRepository.uploadGroupImageToStorage(
+    final storageRepository = ref.read(storageRepositoryProvider);
+    return storageRepository.uploadGroupImageToStorage(
       groupDocId,
       image,
     );
   }
 
-  static Future<List<String>> readAllDocId(String userId) async {
+  @override
+  Future<List<String>> fetchAllGroupId(String userId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)
@@ -77,12 +76,12 @@ class GroupRepository {
 
       return snapshot.docs.map((doc) => doc.id).toList();
     } on FirebaseException catch (e) {
-      throw Exception('Failed to fetch Group ID list. $e');
+      throw Exception('Failed to fetch Group ID list. ${e.message}');
     }
   }
 
-  /// Watch the group database.
-  static Stream<GroupProfile?> watch(String docId) {
+  @override
+  Stream<GroupProfile?> watch(String docId) {
     return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
       if (!snapshot.exists) {
         throw Exception('Error : No found document data.');
@@ -92,7 +91,7 @@ class GroupRepository {
     });
   }
 
-  /// Fetch the group database.
+  @override
   Future<GroupProfile> fetchGroup(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
@@ -108,7 +107,7 @@ class GroupRepository {
     }
   }
 
-  /// Update group database
+  @override
   Future<void> update({
     required String docId,
     required String? name,
@@ -125,8 +124,9 @@ class GroupRepository {
       }
 
       if (image != '') {
+        final storageRepository = ref.read(storageRepositoryProvider);
         updateData['image'] =
-            await StorageRepository.uploadGroupImageToStorage(docId, image!);
+            await storageRepository.uploadGroupImageToStorage(docId, image!);
       }
 
       if (description != null) {
@@ -139,13 +139,12 @@ class GroupRepository {
     }
   }
 
-  /// 後でcloud functionsに設定させる。（セキュリティ的な問題のため！）
-  /// Delete group
+  @override
   Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to delete group. $e');
+      throw Exception('Error: failed to delete group. ${e.message}');
     }
   }
 }

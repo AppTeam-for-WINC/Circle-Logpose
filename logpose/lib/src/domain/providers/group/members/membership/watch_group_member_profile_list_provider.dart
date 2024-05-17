@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/database/user/user.dart';
+import '../../../../../data/models/user.dart';
 
-import '../../../../usecase/group_membership_use_case.dart';
+import '../../../../usecase/facade/group_membership_facade.dart';
 
 final watchGroupMembershipProfileListProvider =
     StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
   return ref
-      .read(groupMembershipUseCaseProvider)
+      .read(groupMembershipFacadeProvider)
       .listenAllMembershipProfile(groupId);
 });

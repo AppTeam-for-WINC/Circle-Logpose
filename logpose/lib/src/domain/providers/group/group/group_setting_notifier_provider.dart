@@ -3,21 +3,21 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/repository/database/group_repository.dart';
+import '../../../../data/models/group_profile.dart';
 
-import '../../../../models/database/group/group_profile.dart';
+import '../../repository/group_repository_provider.dart';
 
-/// Group setting provider.
 final groupSettingNotifierProvider = StateNotifierProvider.family
     .autoDispose<_GroupSettingNotifier, GroupProfile?, String>(
-  (ref, groupId) => _GroupSettingNotifier(groupId),
+  _GroupSettingNotifier.new,
 );
 
-/// Group notifier class.
 class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
-  _GroupSettingNotifier(this.groupId) : super(null) {
+  _GroupSettingNotifier(this.ref, this.groupId) : super(null) {
     _initGroupProfile();
   }
+
+  final Ref ref;
   String groupId;
 
   Future<void> _initGroupProfile() async {
@@ -30,14 +30,15 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
   }
 
   Future<GroupProfile> _fetchGroupProfile() async {
-    final groupData = await GroupRepository.watch(groupId).first;
+    final groupRepository = ref.read(groupRepositoryProvider);
+    final groupData = await groupRepository.watch(groupId).first;
+
     if (groupData == null) {
       state = null;
     }
     return groupData!;
   }
 
-  /// Change GroupProfile image.
   Future<void> changeImage(File newImage) async {
     if (state != null) {
       state = state!.copyWith(image: newImage.path);

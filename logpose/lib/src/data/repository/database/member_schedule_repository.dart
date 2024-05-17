@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../models/database/group/member_schedule.dart';
+import '../../../domain/interface/i_group_member_schedule_repository.dart';
 
-class GroupMemberScheduleRepository {
+import '../../models/member_schedule.dart';
+
+class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   GroupMemberScheduleRepository._internal();
   static final GroupMemberScheduleRepository _instance =
       GroupMemberScheduleRepository._internal();
@@ -11,7 +13,7 @@ class GroupMemberScheduleRepository {
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'group_member_schedules';
 
-  /// Create GroupMembershipSchedule.
+  @override
   Future<void> createMemberSchedule({
     required String scheduleId,
     required String userId,
@@ -23,7 +25,6 @@ class GroupMemberScheduleRepository {
     DateTime? endAt,
   }) async {
     try {
-      // Get server time
       final createdAt = FieldValue.serverTimestamp();
 
       await db.collection(collectionPath).doc().set({
@@ -42,7 +43,7 @@ class GroupMemberScheduleRepository {
     }
   }
 
-  /// Read GroupMemberSchedule.
+  @override
   Future<GroupMemberSchedule?> fetchMemberSchedule(String docId) async {
     try {
       final data =
@@ -56,7 +57,7 @@ class GroupMemberScheduleRepository {
     }
   }
 
-  /// Read GroupMembershipSchedule's doc ID.
+  @override
   Future<String> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
@@ -76,7 +77,9 @@ class GroupMemberScheduleRepository {
 
       return _fetchMemberScheduleId(snapshot);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch member schedule ID. $e');
+      throw Exception(
+        'Error: failed to fetch member schedule ID. ${e.message}',
+      );
     }
   }
 
@@ -86,7 +89,7 @@ class GroupMemberScheduleRepository {
     return snapshot.docs.map((doc) => doc.id).first;
   }
 
-  /// Read GroupMembershipSchedule.
+  @override
   Future<GroupMemberSchedule?> fetchMemberScheduleWithUserIdAndScheduleId({
     required String userDocId,
     required String scheduleId,
@@ -127,8 +130,8 @@ class GroupMemberScheduleRepository {
     }).first;
   }
 
-  /// Read All GroupMembershipSchedule by GroupScheduleID, UserDocID.
-  static Future<List<GroupMemberSchedule?>> readAllGroupMemberSchedule(
+  @override
+  Future<List<GroupMemberSchedule?>> fetchAllGroupMemberSchedule(
     String scheduleId,
     String userDocId,
   ) async {
@@ -141,7 +144,9 @@ class GroupMemberScheduleRepository {
 
       return _fetchGroupMemberScheduleList(snapshot);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch group member schedule list. $e');
+      throw Exception(
+        'Error: failed to fetch group member schedule list. ${e.message}',
+      );
     }
   }
 
@@ -160,13 +165,16 @@ class GroupMemberScheduleRepository {
           .whereType<GroupMemberSchedule?>()
           .toList();
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to group member schedule list. $e');
+      throw Exception(
+        'Error: failed to group member schedule list. ${e.message}',
+      );
     }
   }
 
-  // Read Memberships's UserDocId under conditions
+  // Fetch Membership ID under conditions
   // absence != null, absence == false.
-  static Future<String?> fetchUserDocIdByTerm(
+  @override
+  Future<String?> fetchMembershipIdWithScheduleIdAndUserId(
     String scheduleId,
     String userDocId,
   ) async {
@@ -213,9 +221,10 @@ class GroupMemberScheduleRepository {
     }).first;
   }
 
-  // Read All Memberships's Group member schedules under conditions
+  // Fetch All Memberships's Group member schedules under conditions
   // absence != null, absence == false.
-  static Future<List<GroupMemberSchedule?>> readAllMemberScheduleByTerm(
+  @override
+  Future<List<GroupMemberSchedule?>> fetchAllMemberScheduleByTerm(
     String scheduleId,
     String userDocId,
   ) async {
@@ -264,7 +273,7 @@ class GroupMemberScheduleRepository {
     }).toList();
   }
 
-  /// Update GroupMembershipSchedule.
+  @override
   Future<void> update({
     required String docId,
     bool? attendance,
@@ -310,6 +319,7 @@ class GroupMemberScheduleRepository {
     }
   }
 
+  @override
   Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();

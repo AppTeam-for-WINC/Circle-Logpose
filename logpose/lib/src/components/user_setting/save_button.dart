@@ -8,8 +8,7 @@ import '../../common/loading_progress.dart';
 import '../../domain/providers/error/update_user_profile_error_provider.dart';
 import '../../domain/providers/group/schedule/image_provider.dart';
 import '../../domain/providers/text_field/name_field_provider.dart';
-
-import '../../domain/usecase/user_use_case.dart';
+import '../../domain/usecase/facade/user_service_facade.dart';
 
 import '../../models/custom/user_setting_model.dart';
 
@@ -29,8 +28,8 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   }
 
   Future<String?> _update() async {
-    final userUseCase = ref.read(userUseCaseProvider);
-    return userUseCase.updateUser(
+    final userServiceFacade = ref.read(userServiceFacadeProvider);
+    return userServiceFacade.updateUser(
       UserSettingParams(
         name: ref.watch(nameFieldProvider(widget.name)).text,
         image: ref.watch(imageControllerProvider),

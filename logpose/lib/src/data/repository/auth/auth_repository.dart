@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../database/user_repository.dart';
+import '../../../domain/interface/i_auth_repository.dart';
+import '../../../domain/providers/repository/user_repository_provider.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
 
-class AuthRepository {
-  AuthRepository._internal();
-  static final AuthRepository _instance = AuthRepository._internal();
-  static AuthRepository get instance => _instance;
-  
+class AuthRepository implements IAuthRepository {
+  AuthRepository({required this.ref});
+
+  final Ref ref;
   static final auth = FirebaseAuth.instance;
 
-  /// Create user's account.
+  @override
   Future<bool> createAccount(String email, String password) async {
     try {
       final userCredential = await auth.createUserWithEmailAndPassword(
@@ -35,9 +36,10 @@ class AuthRepository {
     }
   }
 
-  static Future<bool> _createUserDatabase(String docId, String name) async {
+  Future<bool> _createUserDatabase(String docId, String name) async {
     try {
-      await UserRepository.create(
+      final userRepository = ref.read(userRepositoryProvider);
+      await userRepository.createUser(
         docId: docId,
         name: 'New user',
         image: '',
@@ -49,8 +51,8 @@ class AuthRepository {
     }
   }
 
-  /// Login user's account.
-  Future<bool> loginToAccount(String email, String password) async {
+  @override
+  Future<bool> logInAccount(String email, String password) async {
     try {
       final userCredential = await auth.signInWithEmailAndPassword(
         email: email,
@@ -70,9 +72,10 @@ class AuthRepository {
     }
   }
 
-  /// Watching whether users remain logged in.
+  /// Watch whether users remain logged in.
   /// True is signed in. False is signed out.
-  static Stream<bool> userLoginState(String docId) async* {
+  @override
+  Stream<bool> userLoginState(String docId) async* {
     await for (final doc in auth.authStateChanges()) {
       if (doc == null) {
         debugPrint('User is currently signed out!');
@@ -86,7 +89,8 @@ class AuthRepository {
     }
   }
 
-  static Future<String?> readEmail() async {
+  @override
+  Future<String?> fetchUserEmail() async {
     try {
       if (auth.currentUser == null) {
         throw Exception('User not found.');
@@ -107,7 +111,8 @@ class AuthRepository {
 
   /// to-do modifled.
   /// Update email.
-  static Future<bool> updateUserEmail(
+  @override
+  Future<bool> updateUserEmail(
     String oldEmail,
     String email,
     String password,
@@ -143,8 +148,8 @@ class AuthRepository {
     }
   }
 
-  /// Send Confirmation email.
-  static Future<bool> sendConfirmationEmail() async {
+  @override
+  Future<bool> sendConfirmationEmail() async {
     try {
       await _setLanguageCode();
       if (auth.currentUser == null) {
@@ -177,7 +182,8 @@ class AuthRepository {
 
   /// Send a password reset email to the user
   /// registered with Firebase Authentication.
-  static Future<bool> sendPasswordResetEmail(String email) async {
+  @override
+  Future<bool> sendPasswordResetEmail(String email) async {
     try {
       await auth.sendPasswordResetEmail(email: email);
       debugPrint('Password reset email sent successfully.');
@@ -188,8 +194,8 @@ class AuthRepository {
     }
   }
 
-  /// Update user's new password.
-  static Future<String?> updateUserPassword(
+  @override
+  Future<String?> updateUserPassword(
     String email,
     String password,
     String newPassword,
@@ -233,6 +239,7 @@ class AuthRepository {
     await user.updatePassword(newPassword);
   }
 
+  @override
   Future<String?> fetchCurrentUserId() async {
     try {
       return FirebaseAuth.instance.currentUser?.uid;
@@ -241,7 +248,8 @@ class AuthRepository {
     }
   }
 
-  static Future<String?> getUserIdToken() async {
+  @override
+  Future<String?> getUserIdToken() async {
     try {
       return await auth.currentUser?.getIdToken();
     } on FirebaseAuthException catch (e) {
@@ -249,12 +257,12 @@ class AuthRepository {
     }
   }
 
-  /// Logout.
-  static Future<void> logout() async {
+  @override
+  Future<void> logOut() async {
     try {
       await FirebaseAuth.instance.signOut();
     } on FirebaseException catch (e) {
-      throw Exception('Failed to logout: $e');
+      throw Exception('Failed to log out: ${e.message}');
     }
   }
 

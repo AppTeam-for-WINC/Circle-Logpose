@@ -2,15 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
 
-import '../../usecase/group_use_case.dart';
+import '../../usecase/usecase_group/group_and_schedule_and_id_list_listen_use_case.dart';
 
 import 'sort_option_provider.dart';
 
 final sortedGroupAndScheduleAndIdProvider =
     StreamProvider.autoDispose<List<GroupProfileAndScheduleAndId>>(
         (ref) async* {
-  final groupUseCase = ref.read(groupUseCaseProvider);
-  final stream = groupUseCase.listenGroupAndScheduleAndIdList();
+  final groupAndScheduleAndIdListListenUseCase =
+      ref.read(groupAndScheduleAndIdListListenUseCaseProvider);
+  final stream =
+      groupAndScheduleAndIdListListenUseCase.listenGroupAndScheduleAndIdList();
   final sortOption = ref.watch(sortOptionProvider);
 
   await for (final snapshot in stream) {

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../validator/validator_controller.dart';
+import '../../../../validation/validator/validator_controller.dart';
 import 'account_id_validator_provider.dart';
 import 'credentials_validator_provider.dart';
 import 'group_validator_provider.dart';

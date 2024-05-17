@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/user/user.dart';
+import '../../../data/models/user.dart';
 
-import '../../usecase/auth_use_case.dart';
-import '../../usecase/user_use_case.dart';
+import '../../usecase/facade/user_service_facade.dart';
 
 final setUserProfileDataProvider =
     StateNotifierProvider.autoDispose<_UserProfileNotifier, UserProfile?>(
@@ -13,15 +12,13 @@ final setUserProfileDataProvider =
 
 class _UserProfileNotifier extends StateNotifier<UserProfile?> {
   _UserProfileNotifier(this.ref)
-      : authController = ref.read(authUseCaseProvider),
-        userController = ref.read(userUseCaseProvider),
+      : _userServiceFacade = ref.read(userServiceFacadeProvider),
         super(null) {
     _initUserProfile();
   }
 
   final StateNotifierProviderRef<_UserProfileNotifier, UserProfile?> ref;
-  final AuthUseCase authController;
-  final UserUseCase userController;
+  final UserServiceFacade _userServiceFacade;
 
   Future<void> _initUserProfile() async {
     try {
@@ -34,11 +31,11 @@ class _UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<String> _fetchUserDocId() async {
-    return authController.fetchCurrentUserId();
+    return _userServiceFacade.fetchCurrentUserId();
   }
 
   Future<UserProfile> _fetchUserProfile(String userDocId) async {
-    return userController.fetchUserProfile(userDocId);
+    return _userServiceFacade.fetchUserProfile(userDocId);
   }
 
   void setNewImage(File newImage) {

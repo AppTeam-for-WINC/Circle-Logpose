@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/repository/auth/auth_repository.dart';
+import '../../domain/usecase/facade/auth_facade.dart';
+
 import '../../views/start/start_page.dart';
+
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class UserSettingNavigationBar extends CupertinoNavigationBar {
@@ -63,7 +65,7 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
 
   static Widget _trailing(BuildContext context, WidgetRef ref, bool mounted) {
     return CupertinoButton(
-      onPressed: () => _showPopup(context, mounted),
+      onPressed: () => _showPopup(context, mounted, ref),
       child: const Icon(
         CupertinoIcons.square_arrow_right,
         color: CupertinoColors.black,
@@ -92,7 +94,11 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
     );
   }
 
-  static Future<void> _showPopup(BuildContext context, bool mounted) async {
+  static Future<void> _showPopup(
+    BuildContext context,
+    bool mounted,
+    WidgetRef ref,
+  ) async {
     await showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
@@ -106,7 +112,7 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
             ),
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: () => _dialogAction(context, mounted),
+              onPressed: () => _dialogAction(context, mounted, ref),
               child: const Text('Yes'),
             ),
           ],
@@ -119,8 +125,12 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
     Navigator.pop(context);
   }
 
-  static Future<void> _dialogAction(BuildContext context, bool mounted) async {
-    await _logout();
+  static Future<void> _dialogAction(
+    BuildContext context,
+    bool mounted,
+    WidgetRef ref,
+  ) async {
+    await _logout(ref);
 
     if (!mounted) {
       return;
@@ -128,8 +138,9 @@ class UserSettingNavigationBar extends CupertinoNavigationBar {
     await _moveToStartPage(context);
   }
 
-  static Future<void> _logout() async {
-    await AuthRepository.logout();
+  static Future<void> _logout(WidgetRef ref) async {
+    final authFacade = ref.read(authFacadeProvider);
+    await authFacade.logOut();
   }
 
   static Future<void> _moveToStartPage(BuildContext context) async {

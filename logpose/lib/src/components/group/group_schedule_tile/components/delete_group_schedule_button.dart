@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/usecase/group_schedule_use_case.dart';
-
-import '../../../../models/database/user/user.dart';
+import '../../../../data/models/user.dart';
+import '../../../../domain/usecase/facade/group_schedule_facade.dart';
 
 class DeleteGroupScheduleButton extends ConsumerWidget {
   const DeleteGroupScheduleButton({
@@ -17,8 +16,8 @@ class DeleteGroupScheduleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> onPressed() async {
-      final groupScheduleUseCase = ref.read(groupScheduleUseCaseProvider);
-      await groupScheduleUseCase.deleteSchedule(
+      final groupScheduleFacade = ref.read(groupScheduleFacadeProvider);
+      await groupScheduleFacade.deleteSchedule(
         groupMemberList,
         groupScheduleId,
       );

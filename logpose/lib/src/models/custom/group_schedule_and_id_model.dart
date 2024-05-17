@@ -1,4 +1,4 @@
-import '../database/group/group_schedule.dart';
+import '../../data/models/group_schedule.dart';
 
 class GroupScheduleAndId {
   GroupScheduleAndId({

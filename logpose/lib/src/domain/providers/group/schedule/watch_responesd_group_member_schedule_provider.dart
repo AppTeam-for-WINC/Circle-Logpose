@@ -1,24 +1,25 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/database/group/member_schedule.dart';
+import '../../../../data/models/member_schedule.dart';
 
-import '../../../usecase/group_member_schedule_use_case.dart';
-import '../../../usecase/user_use_case.dart';
+import '../../../usecase/facade/group_member_schedule_facade.dart';
+import '../../../usecase/facade/user_service_facade.dart';
 
 /// Watch responsed group member's schedule.
 final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
     .autoDispose<GroupMemberSchedule?, ({String scheduleId, String accountId})>(
         (ref, args) async* {
   try {
-    final userUseCase = ref.read(userUseCaseProvider);
-    final memberScheduleUseCase = ref.read(groupMemberScheduleUseCaseProvider);
-
+    final memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider);
+    final userServiceFacade = ref.read(userServiceFacadeProvider);
     final userDocId =
-        await userUseCase.fetchUserDocIdWithAccountId(args.accountId);
+        await userServiceFacade.fetchUserDocIdWithAccountId(args.accountId);
 
-    yield await memberScheduleUseCase
-        .fetchMemberScheduleWithUserIdAndScheduleId(userDocId, args.scheduleId);
+    yield await memberScheduleFacade.fetchMemberScheduleWithUserIdAndScheduleId(
+      userDocId,
+      args.scheduleId,
+    );
   } on Exception catch (e) {
     debugPrint('Failed to fetch Group member schedule. $e');
     yield null;

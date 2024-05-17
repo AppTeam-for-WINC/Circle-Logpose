@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/database/group/group_schedule.dart';
+import '../../../../../data/models/group_schedule.dart';
 import '../../../../../utils/color/color_exchanger.dart';
 import '../../../../../utils/time/time_utils.dart';
 

@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/providers/group/group/fetch_group_and_id_list_provider.dart';
 import '../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../domain/providers/group/text/selected_group_name_provider.dart';
+import '../../../../domain/usecase/facade/group_use_case.dart';
 
-import '../../../../domain/usecase/group_use_case.dart';
 import '../../../../models/custom/group_and_id_model.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
@@ -35,10 +35,10 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   }
 
   Future<void> _setGroupName() async {
-    final groupController = ref.read(groupUseCaseProvider);
+    final groupFacade = ref.read(groupFacadeProvider);
 
     final groupIdList =
-        await groupController.fetchGroupAndIdList(widget.groupIdList);
+        await groupFacade.fetchGroupAndIdList(widget.groupIdList);
 
     ref.read(selectedGroupNameProvider.notifier).state =
         groupIdList[0].groupProfile.name;

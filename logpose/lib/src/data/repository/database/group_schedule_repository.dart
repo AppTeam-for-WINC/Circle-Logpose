@@ -1,25 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../models/database/group/group_schedule.dart';
+import '../../../domain/interface/i_group_schedule_repository.dart';
 
-class GroupScheduleRepository {
-  // シングルトンパターンにしています。
+import '../../models/group_schedule.dart';
+
+class GroupScheduleRepository  implements IGroupScheduleRepository {
+  // Singleton pattern.
   GroupScheduleRepository._internal();
   static final GroupScheduleRepository _instance =
       GroupScheduleRepository._internal();
   static GroupScheduleRepository get instance => _instance;
 
   static final db = FirebaseFirestore.instance;
-
-  // schedule path
   static const collectionPath = 'group_schedules';
 
-  /// Create schudule database, return doc.id;
-  Future<String> createAndRetrieveScheduleId(
-
-      // Named parameters
-      {
+  @override
+  Future<String> createAndRetrieveScheduleId({
     required String groupId,
     required String title,
     required String color,
@@ -29,10 +26,7 @@ class GroupScheduleRepository {
     required DateTime endAt,
   }) async {
     try {
-      // Create new document ID.
       final doc = db.collection(collectionPath).doc();
-
-      // Get server time
       final createdAt = FieldValue.serverTimestamp();
 
       await doc.set({
@@ -48,12 +42,12 @@ class GroupScheduleRepository {
 
       return doc.id;
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to create group schedule. $e');
+      throw Exception('Error: failed to create group schedule. ${e.message}');
     }
   }
 
-  /// Get all schedule database.
-  static Stream<List<GroupSchedule?>> readAll(String groupId) async* {
+  @override
+  Stream<List<GroupSchedule?>> fetchAllGroupSchedule(String groupId) async* {
     try {
       final stream = db
           .collection(collectionPath)
@@ -67,7 +61,7 @@ class GroupScheduleRepository {
         yield _fetchGroupScheduleList(snapshot);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to read group ID list. $e');
+      throw Exception('Error: Failed to read group ID list. ${e.message}');
     }
   }
 
@@ -84,7 +78,7 @@ class GroupScheduleRepository {
     }).toList();
   }
 
-  /// Watch list of schedule ID.
+  @override
   Stream<List<String?>> listenAllScheduleId(String groupId) async* {
     try {
       final stream = db
@@ -116,8 +110,8 @@ class GroupScheduleRepository {
     }).toList();
   }
 
-  /// Read list of schedule ID.
-  Future<List<String?>> fetchAllScheduleId(String groupId) async {
+  @override
+  Future<List<String?>> fetchAllGroupScheduleId(String groupId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)
@@ -146,8 +140,8 @@ class GroupScheduleRepository {
     }).toList();
   }
 
-  // Get selected schedule database.
-  Future<GroupSchedule> fetch(String docId) async {
+  @override
+  Future<GroupSchedule> fetchGroupSchedule(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
       final data = snapshot.data();
@@ -162,7 +156,7 @@ class GroupScheduleRepository {
     }
   }
 
-  /// Read GroupId.
+  @override
   Future<String> fetchGroupId(String docId) async {
     try {
       final snapshot = await db.collection(collectionPath).doc(docId).get();
@@ -177,8 +171,7 @@ class GroupScheduleRepository {
     }
   }
 
-  /// Update scheule database.
-  /// Group ID can't be changed.
+  @override
   Future<void> update({
     required String docId,
     required String groupId,
@@ -203,15 +196,16 @@ class GroupScheduleRepository {
 
       await db.collection(collectionPath).doc(docId).update(updateData);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to update schedule. $e');
+      throw Exception('Error: failed to update schedule. ${e.message}');
     }
   }
 
+  @override
   Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to delete schedule. $e');
+      throw Exception('Error: failed to delete schedule. ${e.message}');
     }
   }
 }

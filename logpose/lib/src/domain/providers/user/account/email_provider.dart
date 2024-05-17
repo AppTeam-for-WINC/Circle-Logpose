@@ -1,19 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/repository/auth/auth_repository.dart';
+import '../../../../../validation/validator/validation/email_validation.dart';
 
-import '../../../validation/email_validation.dart';
+import '../../../usecase/facade/auth_facade.dart';
+
 import '../../error/email_error_message_provider.dart';
 
 final userEmailProvider =
     StateNotifierProvider.autoDispose<_UserEmail, String?>(
-  (ref) => _UserEmail(),
+  (ref) => _UserEmail(ref: ref),
 );
 
 class _UserEmail extends StateNotifier<String?> {
-  _UserEmail() : super(null) {
+  _UserEmail({required this.ref}) : super(null) {
     initUserEmail();
   }
+
+  final Ref ref;
 
   Future<void> initUserEmail() async {
     final email = await _fetchEmail();
@@ -24,7 +27,8 @@ class _UserEmail extends StateNotifier<String?> {
   }
 
   Future<String?> _fetchEmail() async {
-    return AuthRepository.readEmail();
+    final authFacade = ref.read(authFacadeProvider);
+    return authFacade.fetchUserEmail();
   }
 
   Future<bool> changeEmail(
@@ -38,12 +42,12 @@ class _UserEmail extends StateNotifier<String?> {
       return false;
     }
 
-    final emailVerification = await AuthRepository.sendConfirmationEmail();
+    final authFacade = ref.read(authFacadeProvider);
+    final emailVerification = await authFacade.sendConfirmationEmail();
     if (!emailVerification) {
       return false;
     }
-
-    return AuthRepository.updateUserEmail(
+    return authFacade.updateUserEmail(
       state!,
       newEmail,
       password,

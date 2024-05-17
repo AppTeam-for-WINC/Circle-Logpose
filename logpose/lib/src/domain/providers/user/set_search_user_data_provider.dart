@@ -1,13 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/user/user.dart';
+import '../../../../validation/validator/validator_controller.dart';
 
-import '../../validator/validator_controller.dart';
+import '../../../data/models/user.dart';
 
-import '../../usecase/auth_use_case.dart';
-import '../../usecase/group_membership_use_case.dart';
-import '../../usecase/user_use_case.dart';
+import '../../usecase/facade/group_membership_facade.dart';
+import '../../usecase/facade/user_service_facade.dart';
 
 import '../validator/validator_controller_provider.dart';
 
@@ -18,9 +17,8 @@ final setSearchUserDataProvider =
 
 class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   _SearchUserNotifier(this.ref, this.groupId)
-      : authController = ref.read(authUseCaseProvider),
-        userController = ref.read(userUseCaseProvider),
-        membershipController = ref.read(groupMembershipUseCaseProvider),
+      : _userServiceFacade = ref.read(userServiceFacadeProvider),
+        memberFacade = ref.read(groupMembershipFacadeProvider),
         validator = ref.read(validatorControllerProvider),
         super(null) {
     accountIdController.addListener(() {
@@ -30,9 +28,8 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
 
   final StateNotifierProviderRef<_SearchUserNotifier, UserProfile?> ref;
   final String? groupId;
-  final AuthUseCase authController;
-  final UserUseCase userController;
-  final GroupMembershipUseCase membershipController;
+  final UserServiceFacade _userServiceFacade;
+  final GroupMembershipFacade memberFacade;
   final ValidatorController validator;
 
   TextEditingController accountIdController = TextEditingController();
@@ -63,10 +60,10 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _memberAddController(String? groupId) async {
-    final myDocId = await authController.fetchCurrentUserId();
-    final myAccount = await userController.fetchUserProfile(myDocId);
+    final myDocId = await _userServiceFacade.fetchCurrentUserId();
+    final myAccount = await _userServiceFacade.fetchUserProfile(myDocId);
     final accountId = accountIdController.text;
-    user = await userController.fetchUserProfileWithAccountId(accountId);
+    user = await _userServiceFacade.fetchUserProfileWithAccountId(accountId);
 
     // アカウントIDが見つからない場合は、nullを返す。
     if (user == null) {
@@ -95,9 +92,10 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _noReturnIfUserIsMember(String accountId) async {
-    final userId = await userController.fetchUserDocIdWithAccountId(accountId);
+    final userId =
+        await _userServiceFacade.fetchUserDocIdWithAccountId(accountId);
     final isAlreadyMember =
-        await membershipController.doesMemberExist(groupId!, userId);
+        await memberFacade.doesMemberExist(groupId!, userId);
 
     if (isAlreadyMember) {
       state = null;

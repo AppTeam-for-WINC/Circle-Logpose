@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../models/database/group/invitation.dart';
+import '../../../domain/interface/i_group_invitation_repository.dart';
 
 import '../../../utils/time/time_utils.dart';
 
-class GroupInvitationRepository {
+import '../../models/invitation.dart';
+
+class GroupInvitationRepository implements IGroupInvitationRepository {
   GroupInvitationRepository._internal();
   static final GroupInvitationRepository _instance =
       GroupInvitationRepository._internal();
@@ -14,7 +16,8 @@ class GroupInvitationRepository {
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'group_invitations';
 
-  ///Create invitation link, and return group invitation info.
+  // To-do modified link.
+  @override
   Future<GroupInvitation> create(String groupId) async {
     try {
       final groupInvitationDoc = db.collection(collectionPath).doc();
@@ -32,13 +35,14 @@ class GroupInvitationRepository {
         }
       }
 
-      ///Create invitation link.
+      /// Create invitation link.
       final invitationLink = '$baseURL?code=$link';
 
-      ///Set Expires limit.
+      /// Set Expires limit.
       final expiresAt = convertTimestampToTimestamp(
         DateTime.now().add(const Duration(days: 7)),
       );
+      
       await groupInvitationDoc.set({
         'group_id': groupId,
         'invitation_link': invitationLink,
@@ -48,11 +52,12 @@ class GroupInvitationRepository {
 
       return fetch(groupInvitationDoc.id);
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to create invitation link. $e');
+      throw Exception('Error: Failed to create invitation link. ${e.message}');
     }
   }
 
-  static Future<GroupInvitation> fetch(String docId) async {
+  @override
+  Future<GroupInvitation> fetch(String docId) async {
     try {
       final data =
           (await db.collection(collectionPath).doc(docId).get()).data();
@@ -62,16 +67,20 @@ class GroupInvitationRepository {
 
       return GroupInvitation.fromMap(data);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch group invitation data. $e');
+      throw Exception(
+        'Error: failed to fetch group invitation data. ${e.message}',
+      );
     }
   }
 
-  /// Delete Invitation link.
-  static Future<void> delete(String docId) async {
+  @override
+  Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to delete group invitation link. $e');
+      throw Exception(
+        'Error: failed to delete group invitation link. ${e.message}',
+      );
     }
   }
 }

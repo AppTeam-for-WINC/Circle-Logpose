@@ -9,7 +9,7 @@ import '../../../../domain/providers/group/members/membership/set_group_member_l
 import '../../../../domain/providers/group/schedule/image_provider.dart';
 import '../../../../domain/providers/text_field/name_field_provider.dart';
 
-import '../../../../domain/usecase/group_use_case.dart';
+import '../../../../domain/usecase/facade/group_use_case.dart';
 import '../../../../models/custom/group_creator_params_model.dart';
 
 import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
@@ -27,8 +27,8 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
 
   Future<String?> _createGroup() async {
     try {
-      final groupController = ref.read(groupUseCaseProvider);
-      return groupController.createGroup(
+      final groupFacade = ref.read(groupFacadeProvider);
+      return groupFacade.createGroup(
         GroupCreatorParams(
           groupName: ref.read(nameFieldProvider('')).text,
           image: ref.read(imageControllerProvider),

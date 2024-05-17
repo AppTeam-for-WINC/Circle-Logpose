@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/database/group/group_schedule.dart';
+import '../../../../data/models/group_schedule.dart';
 
 import '../../../../utils/color/color_exchanger.dart';
 
-import '../../../usecase/group_schedule_use_case.dart';
+import '../../../usecase/facade/group_schedule_facade.dart';
 import '../../text_field/schedule/schedule_detail_controller_provider.dart';
 import '../../text_field/schedule/schedule_place_controller_provider.dart';
 import '../../text_field/schedule/schedule_title_controller_provider.dart';
@@ -98,8 +98,8 @@ class _SetGroupScheduleNotifier extends StateNotifier<_GroupScheduleViewer?> {
         ref,
     String scheduleId,
   ) async {
-    final groupScheduleController = ref.read(groupScheduleUseCaseProvider);
-    return groupScheduleController.fetchGroupSchedule(scheduleId);
+    final groupScheduleFacade = ref.read(groupScheduleFacadeProvider);
+    return groupScheduleFacade.fetchGroupSchedule(scheduleId);
   }
 
   void _setTitleController(

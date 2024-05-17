@@ -1,4 +1,4 @@
-import '../database/user/user.dart';
+import '../../data/models/user.dart';
 
 class GroupIdAndScheduleIdAndMemberList {
   GroupIdAndScheduleIdAndMemberList({

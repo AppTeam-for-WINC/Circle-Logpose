@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/group/group_membership.dart';
-import '../../../models/database/user/user.dart';
+import '../../../domain/interface/i_group_membership_repository.dart';
+import '../../../domain/providers/repository/user_repository_provider.dart';
 
-import 'user_repository.dart';
+import '../../models/group_membership.dart';
+import '../../models/user.dart';
 
-class GroupMembershipRepository {
-  GroupMembershipRepository._internal();
-  static final GroupMembershipRepository _instance =
-      GroupMembershipRepository._internal();
-  static GroupMembershipRepository get instance => _instance;
+class GroupMembershipRepository implements IGroupMembershipRepository {
+  GroupMembershipRepository({required this.ref});
 
+  final Ref ref;
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'group_memberships';
 
-  /// Added the group to new member.
-  Future<void> create(
+  @override
+  Future<void> createMemmbership(
     String userDocId,
     String role,
     String groupId,
@@ -43,7 +43,7 @@ class GroupMembershipRepository {
     }
   }
 
-  /// Watch all memgber's doc ID.
+  @override
   Stream<List<String>> listenAllMembershipIdList(String groupId) async* {
     try {
       final stream = db
@@ -55,7 +55,7 @@ class GroupMembershipRepository {
         yield _fetchMembershipIdList(snapshot);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch user docId list. $e');
+      throw Exception('Error: failed to listen user docId list. ${e.message}');
     }
   }
 
@@ -65,10 +65,8 @@ class GroupMembershipRepository {
     return snapshot.docs.map((doc) => doc.id).toList();
   }
 
-  /// Read all memgber's userDoc ID.
-  Future<List<String>> fetchAllUserDocIdWithGroupId(
-    String groupId,
-  ) async {
+  @override
+  Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)
@@ -77,14 +75,14 @@ class GroupMembershipRepository {
 
       return _fetchuserDocIdList(snapshot);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch group member docId. $e');
+      throw Exception(
+        'Error: failed to fetch group member docId. ${e.message}',
+      );
     }
   }
 
-  /// Watch all memgber's userDoc ID.
-  static Stream<List<String?>> watchAllUserDocIdWithGroupId(
-    String groupId,
-  ) async* {
+  @override
+  Stream<List<String?>> watchAllUserDocIdWithGroupId(String groupId) async* {
     try {
       final stream = db
           .collection(collectionPath)
@@ -95,7 +93,7 @@ class GroupMembershipRepository {
         yield _fetchuserDocIdList(snapshot);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch user docId list. $e');
+      throw Exception('Error: failed to listen user docId list. ${e.message}');
     }
   }
 
@@ -112,6 +110,7 @@ class GroupMembershipRepository {
   }
 
   /// Check member is Exist by groupId, userDocId.
+  @override
   Future<bool> doesMemberExist({
     required String groupId,
     required String userDocId,
@@ -132,11 +131,11 @@ class GroupMembershipRepository {
         return data != null;
       });
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to check member. $e');
+      throw Exception('Error: failed to check member. ${e.message}');
     }
   }
 
-  /// Watch all member's profiles with 'groupId'.
+  @override
   Stream<List<UserProfile?>> listenAllMember(
     String groupId,
   ) async* {
@@ -150,12 +149,13 @@ class GroupMembershipRepository {
         yield await _fetchUserProfileList(snapshot: snapshot);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch user profile list. $e');
+      throw Exception('Error: failed to watch user profile list. ${e.message}');
     }
   }
 
   /// Watch all role(Selected 'admin', or 'membership')
   /// member's profiles.
+  @override
   Stream<List<UserProfile?>> listenAllUserProfileWithGroupIdAndRole(
     String groupId,
     String role,
@@ -171,11 +171,11 @@ class GroupMembershipRepository {
         yield await _fetchUserProfileList(snapshot: snapshot, role: role);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch user profile list. $e');
+      throw Exception('Error: failed to watch user profile list. ${e.message}');
     }
   }
 
-  static Future<List<UserProfile?>> _fetchUserProfileList({
+  Future<List<UserProfile?>> _fetchUserProfileList({
     required QuerySnapshot<Map<String, dynamic>> snapshot,
     String? role,
   }) async {
@@ -191,10 +191,12 @@ class GroupMembershipRepository {
     );
   }
 
-  static Future<UserProfile> _fetchUserProfile(String userId) async {
-    return UserRepository.fetchWithStatic(userId);
+  Future<UserProfile> _fetchUserProfile(String userId) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    return userRepository.fetchUser(userId);
   }
 
+  @override
   Stream<List<GroupMembership?>> watchAllWithUserId(
     String userDocId,
   ) async* {
@@ -208,7 +210,7 @@ class GroupMembershipRepository {
         yield _fetchGroupMembershipList(snapshot);
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch group member list. $e');
+      throw Exception('Error: failed to watch group member list. ${e.message}');
     }
   }
 
@@ -230,8 +232,8 @@ class GroupMembershipRepository {
     }).toList();
   }
 
-  /// Read specified member.
-  static Future<GroupMembership> read(String docId) async {
+  @override
+  Future<GroupMembership> fetch(String docId) async {
     try {
       final memberDoc = await db.collection(collectionPath).doc(docId).get();
       final data = memberDoc.data();
@@ -241,12 +243,12 @@ class GroupMembershipRepository {
 
       return GroupMembership.fromMap(data);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch group membership. $e');
+      throw Exception('Error: failed to fetch group membership. ${e.message}');
     }
   }
 
-  /// Read Group member's Doc Id.
-  Future<String> fetchMemberDocIdWithGroupIdAndUserId(
+  @override
+  Future<String> fetchMembershipIdWithGroupIdAndUserId(
     String groupId,
     String userId,
   ) async {
@@ -263,12 +265,12 @@ class GroupMembershipRepository {
         throw Exception('No document found for the specified user and group.');
       }
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to watch user profile list. $e');
+      throw Exception('Error: failed to watch user profile list. ${e.message}');
     }
   }
 
-  /// Update membership users
-  static Future<void> update({
+  @override
+  Future<void> update({
     required String docId,
     required String userId,
     required String username,
@@ -287,16 +289,18 @@ class GroupMembershipRepository {
       };
       await db.collection(collectionPath).doc(docId).update(updateData);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to update group member database. $e');
+      throw Exception(
+        'Error: failed to update group member database. ${e.message}',
+      );
     }
   }
 
-  /// Delete specified member.
+  @override
   Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to delete group member. $e');
+      throw Exception('Error: failed to delete group member. ${e.message}');
     }
   }
 }

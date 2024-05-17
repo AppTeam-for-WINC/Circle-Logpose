@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
-import '../../../../../domain/providers/utils/group_and_id_provider.dart';
+import '../../../../../domain/providers/group/group/group_and_id_provider.dart';
 
 class AsyncGroupAndId extends ConsumerWidget {
   const AsyncGroupAndId({super.key, required this.groupId});

@@ -1,5 +1,5 @@
-import '../database/group/group_profile.dart';
-import '../database/group/group_schedule.dart';
+import '../../data/models/group_profile.dart';
+import '../../data/models/group_schedule.dart';
 
 class GroupProfileAndScheduleAndId {
   GroupProfileAndScheduleAndId({

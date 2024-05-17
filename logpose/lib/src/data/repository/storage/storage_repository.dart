@@ -1,11 +1,16 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final storageRepositoryProvider = Provider<StorageRepository>(
+  (ref) => const StorageRepository(),
+);
 
 class StorageRepository {
   const StorageRepository();
   static final storage = FirebaseStorage.instance.ref();
 
-  static Future<String> uploadUserImageToStorage(
+  Future<String> uploadUserImageToStorage(
     String userId,
     String image,
   ) async {
@@ -22,7 +27,7 @@ class StorageRepository {
     }
   }
 
-  static Future<String> uploadGroupImageToStorage(
+  Future<String> uploadGroupImageToStorage(
     String groupId,
     String image,
   ) async {
@@ -64,7 +69,7 @@ class StorageRepository {
     return imageRef.getDownloadURL();
   }
 
-  static Future<String> downloadGroupDefaultImageToStorage() async {
+  Future<String> downloadGroupDefaultImageToStorage() async {
     try {
       final gsReference = FirebaseStorage.instance.refFromURL(
         'gs://fir-15300.appspot.com/images/default/default_group_jpg.png',
@@ -75,7 +80,7 @@ class StorageRepository {
     }
   }
 
-  static Future<String> downloadUserDefaultImageToStorage() async {
+  Future<String> downloadUserDefaultImageToStorage() async {
     try {
       final gsReference = FirebaseStorage.instance.refFromURL(
         'gs://fir-15300.appspot.com/images/default/default_user.jpg',

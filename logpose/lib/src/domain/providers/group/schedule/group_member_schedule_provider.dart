@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/custom/schedule_response_params_model.dart';
-import '../../../../models/database/group/group_schedule.dart';
-import '../../../../models/database/group/member_schedule.dart';
+import '../../../../data/models/group_schedule.dart';
+import '../../../../data/models/member_schedule.dart';
 
-import '../../../usecase/auth_use_case.dart';
-import '../../../usecase/group_member_schedule_use_case.dart';
-import '../../../usecase/group_schedule_use_case.dart';
+import '../../../../models/custom/schedule_response_params_model.dart';
+
+import '../../../usecase/facade/group_member_schedule_facade.dart';
+import '../../../usecase/facade/group_schedule_facade.dart';
+import '../../../usecase/facade/user_service_facade.dart';
+import '../../../usecase/usecase_member_schedule/group_member_schedule_id_use_case.dart';
 
 final groupMemberScheduleProvider = StateNotifierProvider.family<
     _MemberScheduleNotifier, GroupMemberSchedule?, String>(
@@ -15,10 +17,12 @@ final groupMemberScheduleProvider = StateNotifierProvider.family<
 
 class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   _MemberScheduleNotifier(this.ref, this.groupScheduleId)
-      : scheduleController = ref.read(groupScheduleUseCaseProvider),
-        memberScheduleController =
-            ref.read(groupMemberScheduleUseCaseProvider),
-        authController = ref.read(authUseCaseProvider),
+      : groupScheduleFacade = ref.read(groupScheduleFacadeProvider),
+        _memberScheduleIdUseCase=
+            ref.read(groupMemberScheduleIdUseCaseProvider),
+        _memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider),
+        memberScheduleController = ref.read(groupMemberScheduleFacadeProvider),
+        _userServiceFacade = ref.read(userServiceFacadeProvider),
         super(null) {
     initSchedule();
   }
@@ -26,9 +30,11 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   final StateNotifierProviderRef<_MemberScheduleNotifier, GroupMemberSchedule?>
       ref;
   final String groupScheduleId;
-  final GroupScheduleUseCase scheduleController;
-  final GroupMemberScheduleUseCase memberScheduleController;
-  final AuthUseCase authController;
+  final GroupScheduleFacade groupScheduleFacade;
+  final GroupMemberScheduleIdUseCase _memberScheduleIdUseCase;
+  final GroupMemberScheduleFacade _memberScheduleFacade;
+  final GroupMemberScheduleFacade memberScheduleController;
+  final UserServiceFacade _userServiceFacade;
 
   Future<void> initSchedule() async {
     try {
@@ -58,15 +64,15 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   }
 
   Future<GroupSchedule> _fetchGroupSchedule() async {
-    return scheduleController.fetchGroupSchedule(groupScheduleId);
+    return groupScheduleFacade.fetchGroupSchedule(groupScheduleId);
   }
 
   Future<String> _fetchCurrentUserId() async {
-    return authController.fetchCurrentUserId();
+    return _userServiceFacade.fetchCurrentUserId();
   }
 
   Future<String> _fetchMemberScheduleId(String userDocId) async {
-    return memberScheduleController.fetchMemberScheduleId(
+    return _memberScheduleIdUseCase.fetchMemberScheduleId(
       groupScheduleId,
       userDocId,
     );
@@ -75,7 +81,7 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   Future<GroupMemberSchedule> _fetchMemberSchedule(
     String memberScheduleId,
   ) async {
-    return memberScheduleController.fetchMemberSchedule(memberScheduleId);
+    return _memberScheduleFacade.fetchMemberSchedule(memberScheduleId);
   }
 
   Future<void> setStartAt(DateTime startAt) async {
@@ -123,7 +129,6 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
     state = updatedState;
   }
 
-  /// Update Group membership's schedule of leaveEarly.
   Future<void> updateLeaveEarly({required bool leaveEarly}) async {
     try {
       await _attemptToLeaveEarly(leaveEarly: leaveEarly);
@@ -153,7 +158,6 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
     state = updatedState;
   }
 
-  /// Update Group membership's schedule of lateness.
   Future<void> updateLateness({required bool lateness}) async {
     try {
       await _attemptToLateness(lateness: lateness);

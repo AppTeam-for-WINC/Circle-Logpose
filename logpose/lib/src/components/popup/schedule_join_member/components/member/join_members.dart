@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/database/user/user.dart';
+import '../../../../../data/models/user.dart';
 import 'components/member_and_attendance.dart';
 
 class JoinMembers extends ConsumerWidget {

@@ -3,15 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../models/custom/group_schedule_and_id_model.dart';
 
-import '../../../usecase/group_schedule_use_case.dart';
-import 'group_schedule_controller_provider.dart';
+import '../../../usecase/facade/group_schedule_facade.dart';
+
+import '../../repository/group_schedule_repository_provider.dart';
 
 /// Watch group schedule and schedule ID.
 final watchGroupScheduleAndIdProvider =
     StreamProvider.family<List<GroupScheduleAndId?>, String>(
   (ref, groupId) async* {
     try {
-      final scheduleFetcher = ref.read(groupScheduleUseCaseProvider);
+      final scheduleFetcher = ref.read(groupScheduleFacadeProvider);
       final groupScheduleRepository = ref.read(groupScheduleRepositoryProvider);
 
       yield* groupScheduleRepository.listenAllScheduleId(groupId).asyncMap(

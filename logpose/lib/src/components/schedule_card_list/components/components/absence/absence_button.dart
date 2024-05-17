@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../data/models/group_schedule.dart';
+
 import '../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
-import '../../../../../models/database/group/group_schedule.dart';
+
 import '../../../../../utils/schedule/schedule_response.dart';
 
 class AbsenceButton extends ConsumerWidget {

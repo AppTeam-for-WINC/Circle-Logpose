@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/loading_progress.dart';
 
-import '../../domain/providers/auth/login_usecase_provider.dart';
 import '../../domain/providers/text_field/email_field_provider.dart';
 import '../../domain/providers/text_field/password_field_provider.dart';
 
+import '../../domain/usecase/facade/auth_facade.dart';
 import '../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
 class LoginButton extends ConsumerStatefulWidget {
@@ -57,8 +57,8 @@ class _LoginService {
 
   Future<void> performLogin(String email, String password) async {
     _updateLoadingStatus(true);
-    final errorMessage =
-        await ref.read(loginUseCaseProvider).login(email, password);
+    final authfacade = ref.read(authFacadeProvider);
+    final errorMessage = await authfacade.login(email, password);
     _updateLoadingStatus(false);
 
     if (errorMessage != null) {

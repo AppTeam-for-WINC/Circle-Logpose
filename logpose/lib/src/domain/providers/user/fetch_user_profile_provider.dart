@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/user/user.dart';
+import '../../../data/models/user.dart';
 
-import '../../usecase/user_use_case.dart';
-import '../auth/auth_controller_provider.dart';
+import '../../usecase/facade/user_service_facade.dart';
+
+import '../repository/auth_repository_provider.dart';
 
 /// Fetch user profile.
 final fetchUserProfileProvider = FutureProvider<UserProfile>((ref) async {
@@ -12,6 +13,6 @@ final fetchUserProfileProvider = FutureProvider<UserProfile>((ref) async {
     throw Exception('User not logged in.');
   }
 
-  final userRepository = ref.read(userUseCaseProvider);
-  return userRepository.fetchUserProfile(userDocId);
+  final userServiceFacade = ref.read(userServiceFacadeProvider);
+  return userServiceFacade.fetchUserProfile(userDocId);
 });

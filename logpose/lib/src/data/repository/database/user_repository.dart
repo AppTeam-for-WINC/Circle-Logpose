@@ -1,23 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../exceptions/user/user_exception.dart';
+
 import '../../../common/error_messages.dart';
-import '../../../models/database/user/user.dart';
+
+import '../../../domain/interface/i_user_repository.dart';
+
+import '../../models/user.dart';
+
 import '../storage/storage_repository.dart';
 
-class UserRepository {
-  // Hoge constructor
-  UserRepository._internal();
-  static final UserRepository _instance = UserRepository._internal();
-  static UserRepository get instance => _instance;
+class UserRepository implements IUserRepository {
+  UserRepository({required this.ref});
 
+  final Ref ref;
   static final db = FirebaseFirestore.instance;
   static const uuid = Uuid();
   static const collectionPath = 'users';
 
-  static Future<void> create({
+  @override
+  Future<void> createUser({
     required String docId,
     String? accountId,
     String? name,
@@ -53,26 +58,25 @@ class UserRepository {
         'created_at': FieldValue.serverTimestamp(),
       });
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to create user account. $e');
+      throw Exception('Error: failed to create user account. ${e.message}');
     }
   }
 
-  static Future<String> _downloadUserDefaultImageToStorage() async {
-    return StorageRepository.downloadUserDefaultImageToStorage();
+  Future<String> _downloadUserDefaultImageToStorage() async {
+    final storageRepository = ref.read(storageRepositoryProvider);
+    return storageRepository.downloadUserDefaultImageToStorage();
   }
 
-  static Future<String> _uploadUserImageToStorage(
+  Future<String> _uploadUserImageToStorage(
     String userDocId,
     String image,
   ) async {
-    return StorageRepository.uploadUserImageToStorage(
-      userDocId,
-      image,
-    );
+    final storageRepository = ref.read(storageRepositoryProvider);
+    return storageRepository.uploadUserImageToStorage(userDocId, image);
   }
 
-  /// Fetch user database.
-  Future<UserProfile> fetch(String docId) async {
+  @override
+  Future<UserProfile> fetchUser(String docId) async {
     try {
       final data =
           (await db.collection(collectionPath).doc(docId).get()).data();
@@ -86,23 +90,8 @@ class UserRepository {
     }
   }
 
-  /// To-do delete.
-  static Future<UserProfile> fetchWithStatic(String docId) async {
-    try {
-      final data =
-          (await db.collection(collectionPath).doc(docId).get()).data();
-      if (data == null) {
-        throw RepositoryException(DBErrorMessages.userNotFound + docId);
-      }
-
-      return UserProfile.fromMap(data);
-    } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch user profile. ${e.message}');
-    }
-  }
-
-  /// Watch(Listen) user database.
-  static Stream<UserProfile?> watch(String docId) {
+  @override
+  Stream<UserProfile?> listenUser(String docId) {
     try {
       return db
           .collection(collectionPath)
@@ -116,14 +105,12 @@ class UserRepository {
         return UserProfile.fromMap(snapshot.data()!);
       });
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch user profile. $e');
+      throw Exception('Error: failed to fetch user profile. ${e.message}');
     }
   }
 
-  /// Read userProfile with accountId.
-  Future<UserProfile?> fetchUserProfileWithAccountId(
-    String accountId,
-  ) async {
+  @override
+  Future<UserProfile?> fetchUserProfileWithAccountId(String accountId) async {
     try {
       final snapshot = await db
           .collection(collectionPath)
@@ -136,7 +123,7 @@ class UserRepository {
 
       return _fetchUserProfile(snapshot);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch accountId. $e');
+      throw Exception('Error: failed to fetch accountId. ${e.message}');
     }
   }
 
@@ -156,7 +143,7 @@ class UserRepository {
         .firstOrNull;
   }
 
-  /// Read userDocId with accountId.
+  @override
   Future<String> fetchUserDocIdWithAccountId(String accountId) async {
     try {
       final snapshot = await db
@@ -180,6 +167,7 @@ class UserRepository {
     }
   }
 
+  @override
   Future<void> updateUser(
     String docId,
     String? name,
@@ -194,8 +182,9 @@ class UserRepository {
         updateData['name'] = name;
       }
       if (image != '') {
+        final storageRepository = ref.read(storageRepositoryProvider);
         updateData['image'] =
-            await StorageRepository.uploadUserImageToStorage(docId, image!);
+            await storageRepository.uploadUserImageToStorage(docId, image!);
       }
       if (description != null) {
         updateData['description'] = description;
@@ -207,6 +196,7 @@ class UserRepository {
     }
   }
 
+  @override
   Future<bool> updateAccountId(String docId, String accountId) async {
     try {
       final snapshot = await db
@@ -230,8 +220,9 @@ class UserRepository {
     }
   }
 
-  ///テーブルはこの関数で削除できるが、authenticationには反映されない。
-  static Future<void> delete(String docId) async {
+  /// To-do update.
+  /// テーブルはこの関数で削除できるが、authenticationには反映されない。
+  Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {

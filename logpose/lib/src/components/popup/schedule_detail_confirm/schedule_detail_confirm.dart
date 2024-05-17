@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/database/group/group_profile.dart';
-import '../../../models/database/group/group_schedule.dart';
+import '../../../data/models/group_profile.dart';
+import '../../../data/models/group_schedule.dart';
 
 import '../components/background/background.dart';
 import '../components/header/header.dart';

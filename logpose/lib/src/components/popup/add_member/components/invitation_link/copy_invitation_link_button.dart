@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/providers/group/group/group_invitation_controller_provider.dart';
+import '../../../../../domain/providers/repository/group_invitation_repository_provider.dart';
 import '../../../../../utils/clipboard/copy_to_clipboard.dart';
 
 class CopyInvitationLinkButton extends ConsumerStatefulWidget {

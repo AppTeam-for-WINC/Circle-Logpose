@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/providers/error/schedule_error_msg_provider.dart';
-import '../../../../domain/providers/group/group/group_schedule_updater_provider.dart';
 import '../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../domain/providers/text_field/schedule/schedule_detail_controller_provider.dart';
 import '../../../../domain/providers/text_field/schedule/schedule_place_controller_provider.dart';
 import '../../../../domain/providers/text_field/schedule/schedule_title_controller_provider.dart';
+import '../../../../domain/usecase/facade/group_schedule_facade.dart';
 
-import '../../../../domain/usecase/group_schedule_use_case.dart';
 import '../../../../models/custom/schedule_params_model.dart';
 
 /// createOrUpdate is 'create' or 'update'.
@@ -54,8 +53,8 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
         return 'No selected group.';
       }
 
-      final scheduleController = ref.read(groupScheduleUseCaseProvider);
-      return scheduleController.createSchedule(
+      final scheduleFacade = ref.read(groupScheduleFacadeProvider);
+      return scheduleFacade.createSchedule(
         ScheduleParams(
           groupId: ref.read(setGroupScheduleProvider(null))!.groupId!,
           title: ref.read(scheduleTitleControllerProvider).text,
@@ -72,8 +71,8 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
       if (groupScheduleId == null) {
         throw Exception('GroupSchedule ID is null.');
       }
-      final groupScheduleUpdater = ref.read(groupScheduleUpdateHelperProvider);
-      return groupScheduleUpdater.update(
+      final groupScheduleFacade = ref.read(groupScheduleFacadeProvider);
+      return groupScheduleFacade.update(
         groupScheduleId,
         ScheduleParams(
           groupId: schedule.groupId!,
