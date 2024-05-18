@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
-
-import '../../providers/repository/auth_repository_provider.dart';
-import '../../providers/validator/validator_controller_provider.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 
 final logInUseCaseProvider = Provider<LogInUseCase>(
   (ref) {

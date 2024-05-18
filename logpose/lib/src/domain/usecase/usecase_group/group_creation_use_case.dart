@@ -3,14 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/group_repository.dart';
 
-import '../../../models/custom/group_creator_params_model.dart';
+import '../../entity/user_profile.dart';
 
 import '../../interface/i_group_repository.dart';
 
-import '../../providers/repository/group_repository_provider.dart';
-import '../../providers/validator/validator_controller_provider.dart';
+import '../../model/group_creator_params_model.dart';
 
 import '../usecase_group_membership/group_member_creation_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';

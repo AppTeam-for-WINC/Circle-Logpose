@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../data/models/group_membership.dart';
-import '../../../data/models/group_profile.dart';
-import '../../../data/models/group_schedule.dart';
-import '../../../models/custom/group_profile_and_schedule_and_id_model.dart';
+import '../../../data/repository/database/group_membership_repository.dart';
+import '../../entity/group_membership.dart';
+import '../../entity/group_profile.dart';
+import '../../entity/group_schedule.dart';
 
 import '../../interface/i_group_membership_repository.dart';
 
-import '../../providers/repository/group_membership_repository_provider.dart';
+import '../../model/group_profile_and_schedule_and_id_model.dart';
 
 import '../usecase_group_schedule/group_schedule_listen_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_use_case.dart';

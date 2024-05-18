@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/repository/auth_repository_provider.dart';
+import '../../../data/repository/auth/auth_repository.dart';
 
 final logOutUseCaseProvider = Provider<LogOutUseCase>(
   (ref) => LogOutUseCase(ref: ref),

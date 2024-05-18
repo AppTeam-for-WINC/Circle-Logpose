@@ -1,23 +1,22 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/group_membership_repository.dart';
 
-import '../../interface/i_group_member_schedule_repository.dart';
+import '../../entity/user_profile.dart';
 
-import '../../providers/repository/group_member_schedule_repository_provider.dart';
+import '../../interface/i_group_membership_repository.dart';
 
 import '../usecase_user/user_profile_use_case.dart';
 import 'group_member_id_use_case.dart';
 
 final groupMemberUseCaseProvider = Provider<GroupMemberUseCase>((ref) {
-  final memberScheduleRepository =
-      ref.read(groupMemberScheduleRepositoryProvider);
+  final memberRepository = ref.read(groupMembershipRepositoryProvider);
   final userProfileUseCase = ref.read(userProfileUseCaseProvider);
   final groupMemberIdUseCase = ref.read(groupMemberIdUseCaseProvider);
 
   return GroupMemberUseCase(
-    memberScheduleRepository: memberScheduleRepository,
+    memberRepository: memberRepository,
     userProfileUseCase: userProfileUseCase,
     groupMemberIdUseCase: groupMemberIdUseCase,
   );
@@ -25,23 +24,23 @@ final groupMemberUseCaseProvider = Provider<GroupMemberUseCase>((ref) {
 
 class GroupMemberUseCase {
   const GroupMemberUseCase({
-    required this.memberScheduleRepository,
+    required this.memberRepository,
     required this.userProfileUseCase,
     required this.groupMemberIdUseCase,
   });
 
-  final IGroupMemberScheduleRepository memberScheduleRepository;
+  final IGroupMembershipRepository memberRepository;
   final UserProfileUseCase userProfileUseCase;
   final GroupMemberIdUseCase groupMemberIdUseCase;
 
   Future<List<UserProfile?>> fetchUserProfilesNotAbsentList(
-    List<String?> userIdList,
+    List<String?> membershipIdList,
     String scheduleId,
   ) async {
     try {
       return await Future.wait(
-        userIdList.where((id) => id != null).map((userId) {
-          return _retrieveUserProfile(scheduleId, userId);
+        membershipIdList.where((id) => id != null).map((membershipId) {
+          return _retrieveUserProfile(scheduleId, membershipId);
         }).toList(),
       );
     } on Exception catch (e) {
@@ -51,16 +50,22 @@ class GroupMemberUseCase {
 
   Future<UserProfile?> _retrieveUserProfile(
     String scheduleId,
-    String? userId,
+    String? membershipId,
   ) async {
     try {
-      if (userId == null) {
+      if (membershipId == null) {
         throw Exception('Error: user ID is null.');
       }
+
+      final userId = await _fetchUserIdWithMembershipId(membershipId);
       return await _fetchUserProfilesNotAbsent(scheduleId, userId);
     } on Exception catch (e) {
       throw Exception('Error: unexcepted error occured. $e');
     }
+  }
+
+  Future<String> _fetchUserIdWithMembershipId(String membershipId) async {
+    return groupMemberIdUseCase.fetchUserIdWithMembershipId(membershipId);
   }
 
   Future<UserProfile?> _fetchUserProfilesNotAbsent(
@@ -79,7 +84,7 @@ class GroupMemberUseCase {
     String scheduleId,
     String userId,
   ) async {
-    final responsedUserId = await _fetchMembershipIdWithScheduleIdAndUserId(
+    final responsedUserId = await _fetchUserIdWithScheduleIdAndUserIdByTerm(
       scheduleId,
       userId,
     );
@@ -90,17 +95,17 @@ class GroupMemberUseCase {
     return _fetchUserProfile(responsedUserId);
   }
 
-  Future<String?> _fetchMembershipIdWithScheduleIdAndUserId(
+  Future<String?> _fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userId,
   ) async {
-    return groupMemberIdUseCase.fetchMembershipIdWithScheduleIdAndUserId(
+    return groupMemberIdUseCase.fetchUserIdWithScheduleIdAndUserIdByTerm(
       scheduleId,
       userId,
     );
   }
 
-  Future<UserProfile> _fetchUserProfile(String userId) async {
+  Future<UserProfile?> _fetchUserProfile(String userId) async {
     return userProfileUseCase.fetchUserProfile(userId);
   }
 }

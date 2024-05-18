@@ -4,7 +4,7 @@ import '../../../../../validation/validator/validation/email_validation.dart';
 
 import '../../../usecase/facade/auth_facade.dart';
 
-import '../../error/email_error_message_provider.dart';
+import '../../error_message/email_error_message_provider.dart';
 
 final userEmailProvider =
     StateNotifierProvider.autoDispose<_UserEmail, String?>(

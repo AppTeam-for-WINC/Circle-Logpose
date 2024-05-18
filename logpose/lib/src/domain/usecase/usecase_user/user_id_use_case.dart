@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/repository/auth_repository_provider.dart';
-import '../../providers/repository/user_repository_provider.dart';
+import '../../../data/repository/auth/auth_repository.dart';
+import '../../../data/repository/database/user_repository.dart';
 
 final userIdUseCaseProvider = Provider<UserIdUseCase>(
   (ref) => UserIdUseCase(ref: ref),

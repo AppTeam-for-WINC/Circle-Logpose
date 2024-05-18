@@ -1,5 +1,11 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'validation/email_validation.dart';
 import 'validation/password_validation.dart';
+
+final credentialsValidatorProvider = Provider<CredentialsValidator>(
+  (ref) => const CredentialsValidator(),
+);
 
 class CredentialsValidator {
   const CredentialsValidator();

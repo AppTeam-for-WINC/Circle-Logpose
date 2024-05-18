@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../entity/user_profile.dart';
 
 import '../usecase_group_membership/group_member_creation_use_case.dart';
 import '../usecase_group_membership/group_member_delete_use_case.dart';
@@ -39,7 +39,6 @@ class GroupMembershipFacade {
   final GroupMemberDeleteUseCase _groupMemberDeleteUseCase;
   final GroupMemberExistUseCase _groupMemberExistUseCase;
 
-
   Future<void> createAdminRole(String userDocId, String groupId) async {
     await _groupMemberCreationUseCase.createAdminRole(userDocId, groupId);
   }
@@ -64,11 +63,15 @@ class GroupMembershipFacade {
     );
   }
 
-  Future<String?> fetchMembershipIdWithScheduleIdAndUserId(
+  Future<String> fetchUserIdWithMembershipId(String membershipId) async {
+    return _groupMemberIdUseCase.fetchUserIdWithMembershipId(membershipId);
+  }
+
+  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userId,
   ) async {
-    return _groupMemberIdUseCase.fetchMembershipIdWithScheduleIdAndUserId(
+    return _groupMemberIdUseCase.fetchUserIdWithScheduleIdAndUserIdByTerm(
       scheduleId,
       userId,
     );
@@ -89,11 +92,11 @@ class GroupMembershipFacade {
   }
 
   Future<List<UserProfile?>> fetchUserProfilesNotAbsentList(
-    List<String?> userIdList,
+    List<String?> membershipIdList,
     String scheduleId,
   ) async {
     return _groupMemberUseCase.fetchUserProfilesNotAbsentList(
-      userIdList,
+      membershipIdList,
       scheduleId,
     );
   }
@@ -129,6 +132,6 @@ class GroupMembershipFacade {
   }
 
   Future<bool> doesMemberExist(String groupId, String userId) async {
-  return _groupMemberExistUseCase.doesMemberExist(groupId, userId);
+    return _groupMemberExistUseCase.doesMemberExist(groupId, userId);
   }
 }

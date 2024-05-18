@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../repository/auth_repository_provider.dart';
-import '../../repository/group_membership_repository_provider.dart';
+import '../../../../data/repository/auth/auth_repository.dart';
+import '../../../../data/repository/database/group_membership_repository.dart';
 
-/// Watch bool whether group is exist or not.
 final watchJoinedGroupExistProvider = StreamProvider<bool>((ref) async* {
   final authRepository = ref.read(authRepositoryProvider);
   final userDocId = await authRepository.fetchCurrentUserId();

@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/member_schedule_repository.dart';
 
-import '../../providers/repository/group_member_schedule_repository_provider.dart';
+import '../../entity/user_profile.dart';
 
 import '../usecase_user/user_id_use_case.dart';
 import 'group_member_schedule_id_use_case.dart';

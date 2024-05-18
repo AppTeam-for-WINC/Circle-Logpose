@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/repository/database/group_membership_repository.dart';
+import '../../../data/repository/database/member_schedule_repository.dart';
+
 import '../../interface/i_group_member_schedule_repository.dart';
 import '../../interface/i_group_membership_repository.dart';
 
-import '../../providers/repository/group_member_schedule_repository_provider.dart';
-import '../../providers/repository/group_membership_repository_provider.dart';
 import '../usecase_user/user_id_use_case.dart';
 
 final groupMemberIdUseCaseProvider = Provider<GroupMemberIdUseCase>((ref) {
@@ -35,13 +36,21 @@ class GroupMemberIdUseCase {
   final IGroupMembershipRepository memberRepository;
   final IGroupMemberScheduleRepository memberScheduleRepository;
 
-  Future<String?> fetchMembershipIdWithScheduleIdAndUserId(
+  Future<String> fetchUserIdWithMembershipId(String membershipId) async {
+    try {
+      return await memberRepository.fetchUserIdWithMembershipId(membershipId);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch membership ID. ${e.message}');
+    }
+  }
+
+  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userId,
   ) async {
     try {
       return await memberScheduleRepository
-          .fetchMembershipIdWithScheduleIdAndUserId(
+          .fetchUserIdWithScheduleIdAndUserIdByTerm(
         scheduleId,
         userId,
       );

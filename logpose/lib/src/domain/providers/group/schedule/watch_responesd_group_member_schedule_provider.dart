@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/models/member_schedule.dart';
+import '../../../entity/group_member_schedule.dart';
 
 import '../../../usecase/facade/group_member_schedule_facade.dart';
 import '../../../usecase/facade/user_service_facade.dart';

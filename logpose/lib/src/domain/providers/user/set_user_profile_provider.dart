@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../entity/user_profile.dart';
 
 import '../../usecase/facade/user_service_facade.dart';
 
@@ -14,28 +14,24 @@ class _UserProfileNotifier extends StateNotifier<UserProfile?> {
   _UserProfileNotifier(this.ref)
       : _userServiceFacade = ref.read(userServiceFacadeProvider),
         super(null) {
-    _initUserProfile();
+    _init();
   }
 
   final StateNotifierProviderRef<_UserProfileNotifier, UserProfile?> ref;
   final UserServiceFacade _userServiceFacade;
 
-  Future<void> _initUserProfile() async {
+  Future<void> _init() async {
     try {
-      final userId = await _fetchUserDocId();
-      state = await _fetchUserProfile(userId);
+      await _executeToInit();
     } on Exception catch (e) {
       state = null;
       throw Exception('Error read user data: $e');
     }
   }
 
-  Future<String> _fetchUserDocId() async {
-    return _userServiceFacade.fetchCurrentUserId();
-  }
-
-  Future<UserProfile> _fetchUserProfile(String userDocId) async {
-    return _userServiceFacade.fetchUserProfile(userDocId);
+  Future<void> _executeToInit() async {
+    final userId = await _userServiceFacade.fetchCurrentUserId();
+    state = await _userServiceFacade.fetchUserProfile(userId);
   }
 
   void setNewImage(File newImage) {

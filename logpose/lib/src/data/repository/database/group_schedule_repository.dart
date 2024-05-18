@@ -1,11 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../domain/entity/group_schedule.dart';
 import '../../../domain/interface/i_group_schedule_repository.dart';
 
-import '../../models/group_schedule.dart';
+import '../../mapper/group_schedule_mapper.dart';
 
-class GroupScheduleRepository  implements IGroupScheduleRepository {
+import '../../model/group_schedule_model.dart';
+
+final groupScheduleRepositoryProvider = Provider<IGroupScheduleRepository>(
+  (ref) => GroupScheduleRepository.instance,
+);
+
+class GroupScheduleRepository implements IGroupScheduleRepository {
   // Singleton pattern.
   GroupScheduleRepository._internal();
   static final GroupScheduleRepository _instance =
@@ -74,7 +82,8 @@ class GroupScheduleRepository  implements IGroupScheduleRepository {
         return null;
       }
 
-      return GroupSchedule.fromMap(data);
+      final model = GroupScheduleModel.fromMap(data);
+      return GroupScheduleMapper.toEntity(model);
     }).toList();
   }
 
@@ -150,7 +159,8 @@ class GroupScheduleRepository  implements IGroupScheduleRepository {
         throw Exception('Error: No data.');
       }
 
-      return GroupSchedule.fromMap(data);
+      final model = GroupScheduleModel.fromMap(data);
+      return GroupScheduleMapper.toEntity(model);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch schedule. ${e.message}');
     }

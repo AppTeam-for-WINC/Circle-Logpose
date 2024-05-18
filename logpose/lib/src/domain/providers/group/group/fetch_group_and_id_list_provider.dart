@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/custom/group_and_id_model.dart';
+import '../../../model/group_and_id_model.dart';
 
-import '../../../usecase/facade/group_use_case.dart';
+import '../../../usecase/facade/group_facade.dart';
 
 final fetchGroupAndIdListProvider =
     FutureProvider.family<List<GroupAndId>, List<String>>(

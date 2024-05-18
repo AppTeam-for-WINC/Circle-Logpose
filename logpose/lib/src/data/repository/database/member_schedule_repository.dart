@@ -1,8 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../domain/entity/group_member_schedule.dart';
 
 import '../../../domain/interface/i_group_member_schedule_repository.dart';
 
-import '../../models/member_schedule.dart';
+import '../../mapper/group_member_schedule_mapper.dart';
+
+import '../../model/group_member_schedule_model.dart';
+
+final groupMemberScheduleRepositoryProvider =
+    Provider<IGroupMemberScheduleRepository>(
+  (ref) => GroupMemberScheduleRepository.instance,
+);
 
 class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   GroupMemberScheduleRepository._internal();
@@ -49,9 +60,13 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
       final data =
           (await db.collection(collectionPath).doc(docId).get()).data();
       if (data == null) {
-        throw Exception('Error : No found document data.');
+        debugPrint('Error : No found document data.');
+        return null;
       }
-      return GroupMemberSchedule.fromMap(data);
+
+      final model = GroupMemberScheduleModel.fromMap(data);
+
+      return GroupMemberScheduleMapper.toEntity(model);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to read member schedule. $e');
     }
@@ -126,7 +141,9 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
         return null;
       }
 
-      return GroupMemberSchedule.fromMap(data);
+      final model = GroupMemberScheduleModel.fromMap(data);
+
+      return GroupMemberScheduleMapper.toEntity(model);
     }).first;
   }
 
@@ -160,7 +177,9 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
             if (data == null) {
               return null;
             }
-            return GroupMemberSchedule.fromMap(data);
+            final model = GroupMemberScheduleModel.fromMap(data);
+
+            return GroupMemberScheduleMapper.toEntity(model);
           })
           .whereType<GroupMemberSchedule?>()
           .toList();
@@ -174,7 +193,7 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   // Fetch Membership ID under conditions
   // absence != null, absence == false.
   @override
-  Future<String?> fetchMembershipIdWithScheduleIdAndUserId(
+  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userDocId,
   ) async {
@@ -185,40 +204,46 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
           .where('user_id', isEqualTo: userDocId)
           .get();
 
-      return _fetchGroupMemberIdByTerm(snapshot);
+      return _fetchUserIdByTerm(snapshot);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch member docId list by term. $e');
+      throw Exception(
+        'Error: failed to fetch member docId list by term. ${e.message}',
+      );
     }
   }
 
-  static String? _fetchGroupMemberIdByTerm(
+  static String? _fetchUserIdByTerm(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
-    return snapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data == null) {
-        return null;
-      }
+    try {
+      return snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>?;
+        if (data == null) {
+          return null;
+        }
 
-      final absence = data['absence'] as bool?;
-      final lateness = data['lateness'] as bool?;
-      final attendance = data['attendance'] as bool?;
-      final leaveEarly = data['leave_early'] as bool?;
+        final absence = data['absence'] as bool?;
+        final lateness = data['lateness'] as bool?;
+        final attendance = data['attendance'] as bool?;
+        final leaveEarly = data['leave_early'] as bool?;
 
-      if (absence == null ||
-          lateness == null ||
-          attendance == null ||
-          leaveEarly == null) {
+        if (absence == null ||
+            lateness == null ||
+            attendance == null ||
+            leaveEarly == null) {
+          return null;
+        }
+        if (!absence && !lateness && !attendance && !leaveEarly) {
+          return null;
+        }
+        if (!absence) {
+          return data['user_id'] as String;
+        }
         return null;
-      }
-      if (!absence && !lateness && !attendance && !leaveEarly) {
-        return null;
-      }
-      if (!absence) {
-        return data['user_id'] as String;
-      }
-      return null;
-    }).first;
+      }).first;
+    } on Exception catch (e) {
+      throw Exception('Error: failed to fetch group member ID. $e');
+    }
   }
 
   // Fetch All Memberships's Group member schedules under conditions
@@ -267,7 +292,9 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
       }
 
       if (!absence) {
-        return GroupMemberSchedule.fromMap(data);
+        final model = GroupMemberScheduleModel.fromMap(data);
+
+        return GroupMemberScheduleMapper.toEntity(model);
       }
       return null;
     }).toList();

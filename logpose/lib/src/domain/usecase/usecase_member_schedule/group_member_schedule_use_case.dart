@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/member_schedule.dart';
+import '../../../data/repository/database/member_schedule_repository.dart';
 
-import '../../providers/repository/group_member_schedule_repository_provider.dart';
+import '../../entity/group_member_schedule.dart';
 
 final groupMemberScheduleUseCaseProvider = Provider<GroupMemberScheduleUseCase>(
   (ref) => GroupMemberScheduleUseCase(ref: ref),

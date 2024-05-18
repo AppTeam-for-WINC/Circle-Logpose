@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/group_profile.dart';
+import '../../entity/group_profile.dart';
 
-import '../../../models/custom/group_and_id_model.dart';
+import '../../model/group_and_id_model.dart';
 
 import 'group_use_case.dart';
 

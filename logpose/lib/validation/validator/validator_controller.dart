@@ -1,10 +1,30 @@
-import '../../src/models/custom/schedule_validation_params.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../src/domain/model/schedule_validation_params.dart';
 
 import 'account_id_validator.dart';
 import 'credentials_validator.dart';
 import 'group_validator.dart';
 import 'schedule_validator.dart';
 import 'username_validator.dart';
+
+final validatorControllerProvider = Provider<ValidatorController>(
+  (ref) {
+    final credentialsValidator = ref.read(credentialsValidatorProvider);
+    final groupValidator = ref.read(groupValidatorProvider);
+    final scheduleValidator = ref.read(scheduleValidatorProvider);
+    final usernameValidator = ref.read(usernameValidatorProvider);
+    final accountIdValidator = ref.read(accountIdValidatorProvider);
+
+    return ValidatorController(
+      credentialsValidator: credentialsValidator,
+      groupValidator: groupValidator,
+      scheduleValidator: scheduleValidator,
+      usernameValidator: usernameValidator,
+      accountIdValidator: accountIdValidator,
+    );
+  }
+);
 
 class ValidatorController {
   const ValidatorController({

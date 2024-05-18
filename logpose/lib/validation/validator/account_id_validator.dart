@@ -1,4 +1,10 @@
-import 'validation/user/account_id_validation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'validation/account_id_validation.dart';
+
+final accountIdValidatorProvider = Provider<AccountIdValidator>(
+  (ref) => const AccountIdValidator(),
+);
 
 class AccountIdValidator {
   const AccountIdValidator();

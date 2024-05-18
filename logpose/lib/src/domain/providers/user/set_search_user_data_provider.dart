@@ -3,36 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
-import '../../../data/models/user.dart';
+import '../../entity/user_profile.dart';
 
 import '../../usecase/facade/group_membership_facade.dart';
 import '../../usecase/facade/user_service_facade.dart';
 
-import '../validator/validator_controller_provider.dart';
-
-final setSearchUserDataProvider =
-    StateNotifierProvider.family<_SearchUserNotifier, UserProfile?, String?>(
+final setSearchUserDataProvider = StateNotifierProvider.family
+    .autoDispose<_SearchUserNotifier, UserProfile?, String?>(
   _SearchUserNotifier.new,
 );
 
 class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   _SearchUserNotifier(this.ref, this.groupId)
       : _userServiceFacade = ref.read(userServiceFacadeProvider),
-        memberFacade = ref.read(groupMembershipFacadeProvider),
-        validator = ref.read(validatorControllerProvider),
+        _memberFacade = ref.read(groupMembershipFacadeProvider),
+        _validator = ref.read(validatorControllerProvider),
         super(null) {
-    accountIdController.addListener(() {
-      _accountDataController(groupId);
-    });
+    _init();
   }
 
   final StateNotifierProviderRef<_SearchUserNotifier, UserProfile?> ref;
   final String? groupId;
   final UserServiceFacade _userServiceFacade;
-  final GroupMembershipFacade memberFacade;
-  final ValidatorController validator;
+  final GroupMembershipFacade _memberFacade;
+  final ValidatorController _validator;
 
-  TextEditingController accountIdController = TextEditingController();
+  final TextEditingController accountIdController = TextEditingController();
   UserProfile? user;
   String? username;
   String? userImage;
@@ -49,14 +45,24 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     addedMemberIds.add(accountId);
   }
 
-  Future<void> _accountDataController(String? groupId) async {
-    _validateAccountId();
+  void _init() {
+    accountIdController.addListener(() {
+      _onAccountIdChanged(groupId);
+    });
+  }
+
+  Future<void> _onAccountIdChanged(String? groupId) async {
+    final validationError = _validateAccountId();
+    if (validationError != null) {
+      state = null;
+    }
+
     await _memberAddController(groupId);
   }
 
   String? _validateAccountId() {
     final accountId = accountIdController.text;
-    return validator.validateAccountId(accountId);
+    return _validator.validateAccountId(accountId);
   }
 
   Future<void> _memberAddController(String? groupId) async {
@@ -72,14 +78,15 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     }
 
     // 自分のアカウントを検索した場合は、何も返さない。
-    if (myAccount.accountId == user!.accountId) {
+    if (myAccount == null || myAccount.accountId == user!.accountId) {
       state = null;
       return;
     }
 
     // 既にGroup memberの場合は何も返さない。
     if (groupId != null) {
-      return _noReturnIfUserIsMember(accountId);
+      await _noReturnIfUserIsMember(accountId);
+      return;
     }
 
     // 既に追加済みのメンバーの場合は何も返さない。
@@ -88,18 +95,17 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
       return;
     }
 
-    return _setUserProfile();
+    _setUserProfile();
   }
 
   Future<void> _noReturnIfUserIsMember(String accountId) async {
     final userId =
         await _userServiceFacade.fetchUserDocIdWithAccountId(accountId);
     final isAlreadyMember =
-        await memberFacade.doesMemberExist(groupId!, userId);
+        await _memberFacade.doesMemberExist(groupId!, userId);
 
     if (isAlreadyMember) {
       state = null;
-      return;
     }
   }
 

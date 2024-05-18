@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
-import '../../../models/custom/user_setting_model.dart';
+import '../../../data/repository/database/user_repository.dart';
 
-import '../../providers/repository/user_repository_provider.dart';
+import '../../model/user_setting_model.dart';
 
-import '../../providers/validator/validator_controller_provider.dart';
 import 'user_id_use_case.dart';
 
 final userProfileUpdateUseCaseProvider =

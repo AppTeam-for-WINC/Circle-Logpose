@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/models/group_profile.dart';
+import '../../../../data/repository/database/group_repository.dart';
 
-import '../../repository/group_repository_provider.dart';
+import '../../../entity/group_profile.dart';
 
 final groupSettingNotifierProvider = StateNotifierProvider.family
     .autoDispose<_GroupSettingNotifier, GroupProfile?, String>(

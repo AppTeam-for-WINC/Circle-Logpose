@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/group_membership_repository.dart';
+
+import '../../entity/user_profile.dart';
 
 import '../../interface/i_group_membership_repository.dart';
-
-import '../../providers/repository/group_membership_repository_provider.dart';
 
 final groupMemberListenUseCaseProvider =
     Provider<GroupMemberListenUseCase>((ref) {

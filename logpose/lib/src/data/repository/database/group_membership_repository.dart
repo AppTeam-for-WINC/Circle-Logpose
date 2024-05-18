@@ -2,11 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/interface/i_group_membership_repository.dart';
-import '../../../domain/providers/repository/user_repository_provider.dart';
+import '../../../domain/entity/group_membership.dart';
+import '../../../domain/entity/user_profile.dart';
 
-import '../../models/group_membership.dart';
-import '../../models/user.dart';
+import '../../../domain/interface/i_group_membership_repository.dart';
+
+import '../../mapper/group_membership_mapper.dart';
+
+import '../../model/group_membership_model.dart';
+import 'user_repository.dart';
+
+final groupMembershipRepositoryProvider = Provider<IGroupMembershipRepository>(
+  (ref) => GroupMembershipRepository(ref: ref),
+);
 
 class GroupMembershipRepository implements IGroupMembershipRepository {
   GroupMembershipRepository({required this.ref});
@@ -228,7 +236,8 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
         return null;
       }
 
-      return GroupMembership.fromMap(data);
+      final model = GroupMembershipModel.fromMap(data);
+      return GroupMembershipMapper.toEntity(model);
     }).toList();
   }
 
@@ -240,8 +249,23 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
       if (data == null) {
         throw Exception('Error : No found document data.');
       }
+      final model = GroupMembershipModel.fromMap(data);
+      return GroupMembershipMapper.toEntity(model);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch group membership. ${e.message}');
+    }
+  }
 
-      return GroupMembership.fromMap(data);
+  @override
+  Future<String> fetchUserIdWithMembershipId(String docId) async {
+    try {
+      final memberDoc = await db.collection(collectionPath).doc(docId).get();
+      final data = memberDoc.data();
+      if (data == null) {
+        throw Exception('Error : No found document data.');
+      }
+
+      return data['user_id'] as String;
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch group membership. ${e.message}');
     }

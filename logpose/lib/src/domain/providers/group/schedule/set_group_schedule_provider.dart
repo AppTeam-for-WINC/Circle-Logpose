@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/models/group_schedule.dart';
-
 import '../../../../utils/color/color_exchanger.dart';
 
+import '../../../entity/group_schedule.dart';
+
 import '../../../usecase/facade/group_schedule_facade.dart';
-import '../../text_field/schedule/schedule_detail_controller_provider.dart';
-import '../../text_field/schedule/schedule_place_controller_provider.dart';
-import '../../text_field/schedule/schedule_title_controller_provider.dart';
+
+import '../../text_field/schedule_detail_controller_provider.dart';
+import '../../text_field/schedule_place_controller_provider.dart';
+import '../../text_field/schedule_title_controller_provider.dart';
 
 /// Set group schedule.
 final setGroupScheduleProvider = StateNotifierProvider.family

@@ -1,4 +1,4 @@
-import '../../data/models/member_schedule.dart';
+import '../entity/group_member_schedule.dart';
 
 abstract class IGroupMemberScheduleRepository {
   Future<void> createMemberSchedule({
@@ -29,7 +29,7 @@ abstract class IGroupMemberScheduleRepository {
     String userDocId,
   );
 
-  Future<String?> fetchMembershipIdWithScheduleIdAndUserId(
+  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userDocId,
   );

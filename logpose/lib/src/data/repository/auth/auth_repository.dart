@@ -4,10 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/interface/i_auth_repository.dart';
-import '../../../domain/providers/repository/user_repository_provider.dart';
+import '../database/user_repository.dart';
 
 ///How to manage email.
 ///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
+
+final authRepositoryProvider = Provider<IAuthRepository>(
+  (ref) => AuthRepository(ref: ref),
+);
 
 class AuthRepository implements IAuthRepository {
   AuthRepository({required this.ref});
@@ -72,7 +76,6 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
-  /// Watch whether users remain logged in.
   /// True is signed in. False is signed out.
   @override
   Stream<bool> userLoginState(String docId) async* {
@@ -164,7 +167,6 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
-  /// Set auth code of language to japanese.
   static Future<void> _setLanguageCode() async {
     await auth.setLanguageCode('ja');
   }
@@ -180,8 +182,6 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
-  /// Send a password reset email to the user
-  /// registered with Firebase Authentication.
   @override
   Future<bool> sendPasswordResetEmail(String email) async {
     try {

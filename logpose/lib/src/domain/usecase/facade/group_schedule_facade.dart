@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/group_schedule.dart';
-import '../../../data/models/user.dart';
+import '../../entity/group_schedule.dart';
+import '../../entity/user_profile.dart';
 
-import '../../../models/custom/group_schedule_and_id_model.dart';
-import '../../../models/custom/schedule_params_model.dart';
+import '../../model/group_schedule_and_id_model.dart';
+import '../../model/schedule_params_model.dart';
 
 import '../usecase_group_schedule/group_id_with_schedule_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_and_id_use_case.dart';

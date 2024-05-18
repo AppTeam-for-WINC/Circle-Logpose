@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/models/user.dart';
+import '../../../entity/user_profile.dart';
 
 import '../../../usecase/facade/group_membership_facade.dart';
 import '../../../usecase/facade/group_schedule_facade.dart';
@@ -22,6 +23,7 @@ final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
       );
     });
   } on FirebaseException catch (e) {
-    throw Exception('Error: failed to watch member profile. ${e.message}');
+    debugPrint('Error: failed to watch member profile. ${e.message}');
+    yield [];
   }
 });

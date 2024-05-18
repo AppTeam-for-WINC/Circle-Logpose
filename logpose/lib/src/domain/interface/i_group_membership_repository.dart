@@ -1,5 +1,5 @@
-import '../../data/models/group_membership.dart';
-import '../../data/models/user.dart';
+import '../entity/group_membership.dart';
+import '../entity/user_profile.dart';
 
 abstract class IGroupMembershipRepository {
   Future<void> createMemmbership(
@@ -29,6 +29,8 @@ abstract class IGroupMembershipRepository {
   Stream<List<GroupMembership?>> watchAllWithUserId(String userDocId);
 
   Future<GroupMembership> fetch(String docId);
+
+  Future<String> fetchUserIdWithMembershipId(String docId);
 
   Future<String> fetchMembershipIdWithGroupIdAndUserId(
     String groupId,

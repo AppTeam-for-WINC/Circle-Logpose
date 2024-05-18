@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../entity/user_profile.dart';
 
-import '../../../models/custom/user_setting_model.dart';
+import '../../model/user_setting_model.dart';
 
 import '../usecase_user/account_id_update_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
@@ -39,11 +39,11 @@ class UserServiceFacade {
     return _userIdUseCase.fetchUserDocIdWithAccountId(accountId);
   }
 
-  Future<UserProfile> fetchUserProfile(String userId) async {
+  Future<UserProfile?> fetchUserProfile(String userId) async {
     return _userProfileUseCase.fetchUserProfile(userId);
   }
 
-  Future<UserProfile> fetchUserProfileWithAccountId(String accountId) async {
+  Future<UserProfile?> fetchUserProfileWithAccountId(String accountId) async {
     return _userProfileUseCase.fetchUserProfileWithAccountId(accountId);
   }
 

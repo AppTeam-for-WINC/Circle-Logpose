@@ -6,15 +6,14 @@ import '../../../../exceptions/custom_exception.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
-import '../../../data/models/member_schedule.dart';
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/group_repository.dart';
 
-import '../../../models/custom/group_setting_params_model.dart';
+import '../../entity/group_member_schedule.dart';
+import '../../entity/user_profile.dart';
 
 import '../../interface/i_group_repository.dart';
 
-import '../../providers/repository/group_repository_provider.dart';
-import '../../providers/validator/validator_controller_provider.dart';
+import '../../model/group_setting_params_model.dart';
 
 import '../usecase_group_membership/group_member_creation_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart';

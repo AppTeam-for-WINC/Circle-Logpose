@@ -3,10 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../exceptions/group/group_setting_exception.dart';
 
+import '../../../domain/entity/group_profile.dart';
+
 import '../../../domain/interface/i_group_repository.dart';
-import '../../models/group_profile.dart';
+
+import '../../mapper/group_profile_mapper.dart';
+
+import '../../model/group_profile_model.dart';
 
 import '../storage/storage_repository.dart';
+
+final groupRepositoryProvider = Provider<IGroupRepository>(
+  (ref) => GroupRepository(ref: ref),
+);
 
 class GroupRepository implements IGroupRepository {
   GroupRepository({required this.ref});
@@ -33,7 +42,7 @@ class GroupRepository implements IGroupRepository {
         throw Exception('Error: failed to set group data.');
       }
 
-      /// ここで createdAt変数に敢えて格納することで、 serverTimestampの取得処理時間を獲得できる。
+      /// ここで createdAt変数に敢えて格納することで、serverTimestampの取得処理時間を獲得できる。
       final createdAt = FieldValue.serverTimestamp();
 
       await groupDoc.set({
@@ -83,11 +92,14 @@ class GroupRepository implements IGroupRepository {
   @override
   Stream<GroupProfile?> watch(String docId) {
     return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
-      if (!snapshot.exists) {
-        throw Exception('Error : No found document data.');
+      final data = snapshot.data();
+      if (data == null) {
+        return null;
       }
 
-      return GroupProfile.fromMap(snapshot.data()!);
+      final model = GroupProfileModel.fromMap(data);
+
+      return GroupProfileMapper.toEntity(model);
     });
   }
 
@@ -101,7 +113,9 @@ class GroupRepository implements IGroupRepository {
         throw Exception('Error: No data found for document ID $docId');
       }
 
-      return GroupProfile.fromMap(data);
+      final model = GroupProfileModel.fromMap(data);
+
+      return GroupProfileMapper.toEntity(model);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch Group. ${e.message}');
     }

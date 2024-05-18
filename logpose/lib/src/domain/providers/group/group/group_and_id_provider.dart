@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/custom/group_and_id_model.dart';
+import '../../../../data/repository/database/group_repository.dart';
 
-import '../../repository/group_repository_provider.dart';
+import '../../../model/group_and_id_model.dart';
 
 final watchGroupAndIdProvider =
     StreamProvider.family<GroupAndId?, String>((ref, groupId) {

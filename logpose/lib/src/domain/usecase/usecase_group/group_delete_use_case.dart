@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/user.dart';
+import '../../../data/repository/database/group_repository.dart';
 
-import '../../../models/custom/group_id_and_schedule_id_and_member_list_model.dart';
+import '../../entity/user_profile.dart';
 
 import '../../interface/i_group_repository.dart';
 
-import '../../providers/repository/group_repository_provider.dart';
+import '../../model/group_id_and_schedule_id_and_member_list_model.dart';
 
 import '../usecase_group_membership/group_member_delete_use_case.dart';
 import '../usecase_group_membership/group_member_id_use_case.dart';

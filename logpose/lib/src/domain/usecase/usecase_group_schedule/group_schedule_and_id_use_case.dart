@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/group_schedule.dart';
+import '../../entity/group_schedule.dart';
 
-import '../../../models/custom/group_schedule_and_id_model.dart';
+import '../../model/group_schedule_and_id_model.dart';
 
 import 'group_schedule_use_case.dart';
 

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/custom/schedule_response_params_model.dart';
-import '../../providers/repository/group_member_schedule_repository_provider.dart';
+import '../../../data/repository/database/member_schedule_repository.dart';
+
+import '../../model/schedule_response_params_model.dart';
 
 final groupMemberScheduleUpdateUseCaseProvider =
     Provider<GroupMemberScheduleUpdateUseCase>(

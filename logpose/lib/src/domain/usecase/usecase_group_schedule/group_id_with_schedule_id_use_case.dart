@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../interface/i_group_schedule_repository.dart';
+import '../../../data/repository/database/group_schedule_repository.dart';
 
-import '../../providers/repository/group_schedule_repository_provider.dart';
+import '../../interface/i_group_schedule_repository.dart';
 
 final groupIdWithScheduleIdUseCaseProvider =
     Provider<GroupIdWithScheduleIdUseCase>(

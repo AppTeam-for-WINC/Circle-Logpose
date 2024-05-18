@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../components/slide/src/slide_tab.dart';
-import '../../components/slide/src/tab_manager.dart';
+import '../../presentation/components/components/slide/src/slide_tab.dart';
+import '../../presentation/components/components/slide/src/tab_manager.dart';
 
 Future<void> onTapSegmentTab(
   BuildContext context,

@@ -1,4 +1,10 @@
-import 'validation/group/group_validation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'validation/group_validation.dart';
+
+final groupValidatorProvider = Provider<GroupValidator>(
+  (ref) => const GroupValidator(),
+);
 
 class GroupValidator {
   const GroupValidator();

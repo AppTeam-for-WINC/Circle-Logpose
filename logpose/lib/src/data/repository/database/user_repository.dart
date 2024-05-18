@@ -5,13 +5,21 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../exceptions/user/user_exception.dart';
 
-import '../../../common/error_messages.dart';
+import '../../../domain/entity/user_profile.dart';
 
 import '../../../domain/interface/i_user_repository.dart';
 
-import '../../models/user.dart';
+import '../../../presentation/components/common/error_messages.dart';
+
+import '../../mapper/user_profile_mapper.dart';
+
+import '../../model/user_profile_model.dart';
 
 import '../storage/storage_repository.dart';
+
+final userRepositoryProvider = Provider<IUserRepository>(
+  (ref) => UserRepository(ref: ref),
+);
 
 class UserRepository implements IUserRepository {
   UserRepository({required this.ref});
@@ -84,7 +92,9 @@ class UserRepository implements IUserRepository {
         throw RepositoryException(DBErrorMessages.userNotFound + docId);
       }
 
-      return UserProfile.fromMap(data);
+      final model = UserProfileModel.fromMap(data);
+
+      return UserProfileMapper.toEntity(model);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch user profile. ${e.message}');
     }
@@ -98,11 +108,15 @@ class UserRepository implements IUserRepository {
           .doc(docId)
           .snapshots()
           .map((snapshot) {
-        if (!snapshot.exists) {
-          throw Exception('Error : No found document data.');
+        final data = snapshot.data();
+        if (data == null) {
+          debugPrint('Error : No found document data.');
+          return null;
         }
 
-        return UserProfile.fromMap(snapshot.data()!);
+        final model = UserProfileModel.fromMap(data);
+
+        return UserProfileMapper.toEntity(model);
       });
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch user profile. ${e.message}');
@@ -137,7 +151,9 @@ class UserRepository implements IUserRepository {
             return null;
           }
 
-          return UserProfile.fromMap(data);
+          final model = UserProfileModel.fromMap(data);
+
+          return UserProfileMapper.toEntity(model);
         })
         .whereType<UserProfile>()
         .firstOrNull;

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/member_schedule.dart';
-import '../../../data/models/user.dart';
+import '../../entity/group_member_schedule.dart';
+import '../../entity/user_profile.dart';
 
-import '../../../models/custom/schedule_response_params_model.dart';
+import '../../model/schedule_response_params_model.dart';
 
 import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_delete_use_case.dart';

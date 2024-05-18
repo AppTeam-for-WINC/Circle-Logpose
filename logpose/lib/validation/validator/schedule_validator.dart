@@ -1,6 +1,12 @@
-import '../../src/models/custom/schedule_validation_params.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../src/domain/model/schedule_validation_params.dart';
 import '../../src/utils/time/time_utils.dart';
 import 'validation/schedule_validation.dart';
+
+final scheduleValidatorProvider = Provider<ScheduleValidator>(
+  (ref) => const ScheduleValidator(),
+);
 
 class ScheduleValidator {
   const ScheduleValidator();
@@ -10,7 +16,7 @@ class ScheduleValidator {
   }
 
   static String? _validatePlace(String place) {
-    return ScheduleValidation.titleValidation(place);
+    return ScheduleValidation.placeValidation(place);
   }
 
   static String? _validateDetail(String detail) {

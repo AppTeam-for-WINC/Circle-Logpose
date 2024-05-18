@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../data/models/group_schedule.dart';
-import '../../../../data/models/member_schedule.dart';
+import '../../../entity/group_member_schedule.dart';
+import '../../../entity/group_schedule.dart';
 
-import '../../../../models/custom/schedule_response_params_model.dart';
+import '../../../model/schedule_response_params_model.dart';
 
 import '../../../usecase/facade/group_member_schedule_facade.dart';
 import '../../../usecase/facade/group_schedule_facade.dart';

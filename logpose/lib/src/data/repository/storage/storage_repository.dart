@@ -23,7 +23,7 @@ class StorageRepository {
 
       return await _getDownloadURL(imageRef);
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to upload image file. $e');
+      throw Exception('Error: Failed to upload image file. ${e.message}');
     }
   }
 
@@ -40,7 +40,7 @@ class StorageRepository {
 
       return await _getDownloadURL(imageRef);
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to upload image file. $e');
+      throw Exception('Error: Failed to upload image file. ${e.message}');
     }
   }
 
@@ -50,7 +50,11 @@ class StorageRepository {
     String docId,
     String path,
   ) {
-    return storage.child('images/$folder/$docId/$path');
+    try {
+      return storage.child('images/$folder/$docId/$path');
+    } on FirebaseStorage catch (e) {
+      throw Exception('Error: failed to set image of reference. $e');
+    }
   }
 
   static UploadTask _uploadFile(
@@ -58,15 +62,27 @@ class StorageRepository {
     File imageFile,
     SettableMetadata metadata,
   ) {
-    return imagesRef.putFile(imageFile, metadata);
+    try {
+      return imagesRef.putFile(imageFile, metadata);
+    } on FirebaseStorage catch (e) {
+      throw Exception('Error: failed to set image of reference. $e');
+    }
   }
 
   static Future<void> _whenComplete(UploadTask uploadFile) async {
-    await uploadFile.whenComplete(() => null);
+    try {
+      await uploadFile.whenComplete(() => null);
+    } on FirebaseStorage catch (e) {
+      throw Exception('Error: failed to set image of reference. $e');
+    }
   }
 
   static Future<String> _getDownloadURL(Reference imageRef) async {
-    return imageRef.getDownloadURL();
+    try {
+      return imageRef.getDownloadURL();
+    } on FirebaseStorage catch (e) {
+      throw Exception('Error: failed to set image of reference. $e');
+    }
   }
 
   Future<String> downloadGroupDefaultImageToStorage() async {
@@ -76,7 +92,7 @@ class StorageRepository {
       );
       return await gsReference.getDownloadURL();
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to upload image file. $e');
+      throw Exception('Error: Failed to upload image file. ${e.message}');
     }
   }
 
@@ -87,7 +103,7 @@ class StorageRepository {
       );
       return await gsReference.getDownloadURL();
     } on FirebaseException catch (e) {
-      throw Exception('Error: Failed to upload image file. $e');
+      throw Exception('Error: Failed to upload image file. ${e.message}');
     }
   }
 }

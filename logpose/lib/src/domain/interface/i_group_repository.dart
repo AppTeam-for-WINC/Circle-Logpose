@@ -1,4 +1,4 @@
-import '../../data/models/group_profile.dart';
+import '../entity/group_profile.dart';
 
 abstract class IGroupRepository {
   Future<String> create(String name, String? image, String? description);

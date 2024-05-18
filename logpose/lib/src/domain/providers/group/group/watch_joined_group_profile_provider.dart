@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../repository/auth_repository_provider.dart';
-import '../../repository/group_membership_repository_provider.dart';
+import '../../../../data/repository/auth/auth_repository.dart';
+import '../../../../data/repository/database/group_membership_repository.dart';
 
 /// Watch user joined list of group's profile.
 final watchJoinedGroupsProfileProvider = StreamProvider<List<String>>(

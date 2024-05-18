@@ -1,4 +1,10 @@
-import 'validation/user/user_validation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'validation/user_validation.dart';
+
+final usernameValidatorProvider = Provider<UsernameValidator>(
+  (ref) => const UsernameValidator(),
+);
 
 class UsernameValidator {
   const UsernameValidator();

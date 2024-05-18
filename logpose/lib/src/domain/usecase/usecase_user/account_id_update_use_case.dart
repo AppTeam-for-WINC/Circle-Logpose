@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
-import '../../providers/repository/user_repository_provider.dart';
-import '../../providers/validator/validator_controller_provider.dart';
+
+import '../../../data/repository/database/user_repository.dart';
 
 import 'user_id_use_case.dart';
 
