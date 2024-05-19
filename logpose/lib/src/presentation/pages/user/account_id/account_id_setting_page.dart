@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/user/set_user_profile_provider.dart';
-
 import '../../../components/components/accouunt_id_setting/account_id_section.dart';
 import '../../../components/components/accouunt_id_setting/save_button.dart';
 import '../../../components/components/navigation_bar/account_id_setting_navigation_bar.dart';
+
+import '../../../notifiers/user_profile_notifier.dart';
 
 class AccountIdSettingPage extends ConsumerStatefulWidget {
   const AccountIdSettingPage({super.key});
@@ -17,7 +17,7 @@ class AccountIdSettingPage extends ConsumerStatefulWidget {
 class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
   @override
   Widget build(BuildContext context) {
-    final userProfile = ref.watch(setUserProfileDataProvider);
+    final userProfile = ref.watch(userProfileNotifierProvider);
     if (userProfile == null) {
       return const SizedBox.shrink();
     }

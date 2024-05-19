@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
+import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
 
@@ -63,7 +63,7 @@ class _MemberSectionState extends ConsumerState<MemberSection> {
                         groupId: groupId,
                       ),
                       // Set user's image list.
-                      ...ref.watch(setGroupMemberListProvider).map(
+                      ...ref.watch(setGroupMemberListNotifierProvider).map(
                             (memberProfile) => CustomImage(
                               imagePath: memberProfile.image,
                               width: 30,

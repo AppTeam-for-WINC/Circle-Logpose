@@ -7,7 +7,6 @@ import '../../../entity/user_profile.dart';
 import '../../../usecase/facade/group_membership_facade.dart';
 import '../../../usecase/facade/group_schedule_facade.dart';
 
-/// Group membership user list controller under condition not absence.
 final watchGroupMembershipProfileNotAbsenceListProvider = StreamProvider.family
     .autoDispose<List<UserProfile?>, String>((ref, scheduleId) async* {
   try {

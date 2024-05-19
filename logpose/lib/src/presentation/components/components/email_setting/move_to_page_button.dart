@@ -17,7 +17,6 @@ class MoveToNextPageButton extends ConsumerStatefulWidget {
 }
 
 class _MoveToNextPageButtonState extends ConsumerState<MoveToNextPageButton> {
-  // Validate password
   String? _validationPassword(String password) {
     return PasswordValidation.validation(password);
   }

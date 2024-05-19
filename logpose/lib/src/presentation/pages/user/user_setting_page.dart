@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/providers/error_message/update_user_profile_error_provider.dart';
-import '../../../domain/providers/user/set_user_profile_provider.dart';
 
 import '../../components/common/photo_button.dart';
 import '../../components/common/red_error_message.dart';
@@ -15,6 +14,7 @@ import '../../components/components/user_setting/sections/group_section.dart';
 import '../../components/components/user_setting/sections/password_section.dart';
 import '../../components/components/user_setting/user_image_view.dart';
 
+import '../../notifiers/user_profile_notifier.dart';
 // import '../../common/progress/progress_indicator.dart';
 
 class UserSettingPage extends ConsumerStatefulWidget {
@@ -31,7 +31,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
     final userProfileError = ref.watch(updateUserProfileErrorMessageProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
-    final userProfile = ref.watch(setUserProfileDataProvider);
+    final userProfile = ref.watch(userProfileNotifierProvider);
     if (userProfile == null) {
       return const SizedBox.shrink();
     }

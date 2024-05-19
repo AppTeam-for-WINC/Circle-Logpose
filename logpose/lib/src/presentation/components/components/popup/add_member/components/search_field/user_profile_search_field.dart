@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/user/set_search_user_data_provider.dart';
+import '../../../../../../notifiers/search_user_notifier_provider.dart';
 
 class UserProfileSearchField extends ConsumerStatefulWidget {
   const UserProfileSearchField({
@@ -20,7 +20,7 @@ class _UserProfileSearchFieldState
   @override
   Widget build(BuildContext context) {
     final userProfileNotifier =
-        ref.watch(setSearchUserDataProvider(widget.groupId).notifier);
+        ref.watch(searchUserNotifierProvider(widget.groupId).notifier);
 
     return Container(
       padding: const EdgeInsets.only(

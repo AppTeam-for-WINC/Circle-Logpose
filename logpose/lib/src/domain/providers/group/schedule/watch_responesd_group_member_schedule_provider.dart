@@ -6,7 +6,6 @@ import '../../../entity/group_member_schedule.dart';
 import '../../../usecase/facade/group_member_schedule_facade.dart';
 import '../../../usecase/facade/user_service_facade.dart';
 
-/// Watch responsed group member's schedule.
 final watchResponsedGroupMemberScheduleProvider = StreamProvider.family
     .autoDispose<GroupMemberSchedule?, ({String scheduleId, String accountId})>(
         (ref, args) async* {

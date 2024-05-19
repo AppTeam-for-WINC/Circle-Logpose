@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../domain/providers/error_message/email_error_message_provider.dart';
 import '../../../../domain/providers/text_field/email_field_provider.dart';
-import '../../../../domain/providers/user/account/email_provider.dart';
 
+import '../../../../domain/usecase/facade/auth_facade.dart';
 import '../../../pages/user/user_setting_page.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -16,11 +17,11 @@ class SaveButton extends ConsumerStatefulWidget {
 }
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
-  Future<bool> _updateEmail() async {
-    final email = ref.watch(emailFieldProvider('')).text;
-    return ref
-        .watch(userEmailProvider.notifier)
-        .changeEmail(ref, email, widget.password);
+  Future<String?> _updateEmail() async {
+    final authFacade = ref.read(authFacadeProvider);
+    final newEmail = ref.watch(emailFieldProvider('')).text;
+
+    return authFacade.updateUserEmail(newEmail, widget.password);
   }
 
   Future<void> _pushAndRemoveUntil() async {
@@ -34,8 +35,9 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
   }
 
   Future<void> _save() async {
-    final success = await _updateEmail();
-    if (!success) {
+    final updateError = await _updateEmail();
+    if (updateError != null) {
+      ref.watch(emailErrorMessageProvider.notifier).state = updateError;
       return;
     }
 

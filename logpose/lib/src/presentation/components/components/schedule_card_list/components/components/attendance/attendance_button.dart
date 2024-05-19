@@ -3,9 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../../domain/model/schedule_response_params_model.dart';
+
+import '../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
 
 import '../../../../../../../utils/schedule/schedule_response.dart';
+
+import '../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 class AttendanceButton extends ConsumerWidget {
   const AttendanceButton({
@@ -23,14 +27,42 @@ class AttendanceButton extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    Future<void> updateAttendance({required bool attendance}) async {
+      final memberScheduleNotifier = ref.watch(
+        groupMemberScheduleNotifierProvider(groupScheduleId).notifier,
+      );
+      await memberScheduleNotifier.updateAttendance(attendance: attendance);
+    }
+
+    Future<void> updateResponse({
+      required String memberScheduleId,
+      required bool attendance,
+    }) async {
+      final memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider);
+      final scheduleParams = ScheduleResponseParams(
+        memberScheduleId: memberScheduleId,
+        attendance: !attendance,
+        leaveEarly: false,
+        lateness: false,
+        absence: false,
+      );
+      await memberScheduleFacade.updateResponse(scheduleParams);
+    }
+
     Future<void> onTap() async {
-      final schedule = ref.read(groupMemberScheduleProvider(groupScheduleId));
-      if (schedule == null) {
+      final memberScheduleController =
+          ref.read(groupMemberScheduleNotifierProvider(groupScheduleId));
+      if (memberScheduleController == null) {
         return;
       }
-      await ref
-          .watch(groupMemberScheduleProvider(groupScheduleId).notifier)
-          .updateAttendance(attendance: schedule.attendance);
+
+      final attendance = memberScheduleController.attendance;
+
+      await updateAttendance(attendance: attendance);
+      await updateResponse(
+        memberScheduleId: memberScheduleController.scheduleId,
+        attendance: attendance,
+      );
     }
 
     return GestureDetector(

@@ -5,11 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../domain/model/group_creator_params_model.dart';
 
-import '../../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../../../../domain/providers/image_provider.dart';
 import '../../../../../../domain/providers/text_field/name_field_provider.dart';
 
 import '../../../../../../domain/usecase/facade/group_facade.dart';
+
+import '../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../common/loading_progress.dart';
 
@@ -34,7 +35,7 @@ class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
           groupName: ref.read(nameFieldProvider('')).text,
           image: ref.read(imageControllerProvider),
           description: null,
-          memberList: ref.read(setGroupMemberListProvider),
+          memberList: ref.read(setGroupMemberListNotifierProvider),
         ),
       );
     } on Exception catch (e) {

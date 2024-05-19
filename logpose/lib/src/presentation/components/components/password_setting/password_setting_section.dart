@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/providers/text_field/new_password_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
-import '../../../../domain/providers/user/set_user_profile_provider.dart';
+import '../../../notifiers/user_profile_notifier.dart';
 
 class PasswordSettingSection extends ConsumerWidget {
   const PasswordSettingSection({super.key});
@@ -12,7 +12,7 @@ class PasswordSettingSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    final userProfile = ref.watch(setUserProfileDataProvider);
+    final userProfile = ref.watch(userProfileNotifierProvider);
     if (userProfile == null) {
       return const SizedBox.shrink();
     }

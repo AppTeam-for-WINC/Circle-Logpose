@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
-
 import '../../../../../../../../utils/time/time_utils.dart';
+
+import '../../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 import 'components/date_picker_dialog.dart';
 
@@ -32,8 +32,10 @@ class _StartPickerButtonState extends ConsumerState<StartPickerButton> {
     final groupScheduleId = widget.groupScheduleId;
     final groupSchedule = widget.groupSchedule;
 
-    final schedule = ref.watch(groupMemberScheduleProvider(groupScheduleId));
-    if (schedule == null) {
+    final memberSchedule = ref.watch(
+      groupMemberScheduleNotifierProvider(groupScheduleId),
+    );
+    if (memberSchedule == null) {
       return const SizedBox.shrink();
     }
 
@@ -44,7 +46,7 @@ class _StartPickerButtonState extends ConsumerState<StartPickerButton> {
           return JoinDatePickerDialog(
             startOrEnd: 'start',
             groupScheduleId: groupScheduleId,
-            initialDateTime: schedule.startAt!,
+            initialDateTime: memberSchedule.startAt!,
             minimumDate: groupSchedule.startAt,
             maximumDate: groupSchedule.endAt.add(
               const Duration(minutes: -1),
@@ -59,7 +61,7 @@ class _StartPickerButtonState extends ConsumerState<StartPickerButton> {
       padding: EdgeInsets.zero,
       child: Consumer(
         builder: (context, watch, child) {
-          return Text(_formatDateTimeExcYear(schedule.startAt!));
+          return Text(_formatDateTimeExcYear(memberSchedule.startAt!));
         },
       ),
     );

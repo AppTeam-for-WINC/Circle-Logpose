@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/providers/error_message/password_error_message_provider.dart';
-import '../../../../domain/providers/user/account/password_provider.dart';
+import '../../../../domain/providers/text_field/new_password_field_provider.dart';
+import '../../../../domain/providers/text_field/password_field_provider.dart';
+
+import '../../../../domain/usecase/facade/auth_facade.dart';
+
 import '../../../pages/user/user_setting_page.dart';
 
 class SaveButton extends ConsumerStatefulWidget {
@@ -14,7 +18,11 @@ class SaveButton extends ConsumerStatefulWidget {
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
   Future<String?> _updatePassword() async {
-    return ref.watch(passwordSettingProvider).update(ref);
+    final password = ref.read(passwordFieldProvider('')).text;
+    final newPassword = ref.read(newPasswordFieldProvider).text;
+    final authFacade = ref.watch(authFacadeProvider);
+
+    return authFacade.updateUserPassword(password, newPassword);
   }
 
   Future<void> _pushAndRemoveUntil() async {

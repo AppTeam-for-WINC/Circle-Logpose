@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/entity/user_profile.dart';
 
-import '../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../../domain/providers/group/members/membership/watch_group_member_profile_list_provider.dart';
+import '../../../../../domain/providers/group/members/watch_group_member_profile_list_provider.dart';
 import '../../../../../domain/providers/user/fetch_user_profile_provider.dart';
+
+import '../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../group/group_member_tile/group_member_tile.dart';
 
@@ -68,7 +69,7 @@ class _DeleteMemberListState extends ConsumerState<DeleteMemberList> {
                             children: <Widget>[
                               ref.watch(fetchUserProfileProvider).when(
                                     data: (adminUserProfile) {
-                                      if (adminUserProfile == null ) {
+                                      if (adminUserProfile == null) {
                                         return const SizedBox.shrink();
                                       }
                                       return GroupMemberTile(
@@ -109,7 +110,9 @@ class _DeleteMemberListState extends ConsumerState<DeleteMemberList> {
                                     loading: () => const SizedBox.shrink(),
                                     error: (error, stack) => Text('$error'),
                                   ),
-                              ...ref.watch(setGroupMemberListProvider).map(
+                              ...ref
+                                  .watch(setGroupMemberListNotifierProvider)
+                                  .map(
                                     (memberProfile) => GroupMemberTile(
                                       memberProfile: memberProfile,
                                       adminOrMembership: 'membership',

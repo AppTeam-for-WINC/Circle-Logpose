@@ -5,11 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../domain/model/group_setting_params_model.dart';
 
 import '../../../../../../domain/providers/error_message/group_name_error_msg_provider.dart';
-import '../../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../../../../domain/providers/image_provider.dart';
 import '../../../../../../domain/providers/text_field/name_field_provider.dart';
 
 import '../../../../../../domain/usecase/facade/group_facade.dart';
+
+import '../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../common/loading_progress.dart';
 
@@ -35,7 +36,7 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
           groupName: ref.read(nameFieldProvider(widget.groupName)).text,
           image: ref.read(imageControllerProvider),
           description: null,
-          memberList: ref.read(setGroupMemberListProvider),
+          memberList: ref.read(setGroupMemberListNotifierProvider),
         ),
       );
     }

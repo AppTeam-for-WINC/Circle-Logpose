@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logpose/src/domain/providers/text_field/account_id_field_provider.dart';
 
 import '../../../../domain/providers/error_message/account_id_error_message_provider.dart';
-import '../../../../domain/providers/user/set_user_profile_provider.dart';
 
 import '../../../../utils/clipboard/copy_to_clipboard.dart';
+
+import '../../../notifiers/user_profile_notifier.dart';
+
 import '../../common/red_error_message.dart';
 
 class AccountIdSection extends ConsumerWidget {
@@ -21,7 +23,7 @@ class AccountIdSection extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final accountIdErrorMessage = ref.watch(accountIdErrorMessageProvider);
 
-    final userProfile = ref.watch(setUserProfileDataProvider);
+    final userProfile = ref.watch(userProfileNotifierProvider);
     if (userProfile == null) {
       return const SizedBox.shrink();
     }

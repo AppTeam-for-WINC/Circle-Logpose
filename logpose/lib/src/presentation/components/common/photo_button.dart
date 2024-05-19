@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../domain/providers/image_provider.dart';
 import '../../../entities/device/image_controller.dart';
 
 class PhotoButton extends ConsumerStatefulWidget {

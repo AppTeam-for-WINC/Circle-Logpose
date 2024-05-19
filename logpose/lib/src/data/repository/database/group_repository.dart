@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../exceptions/group/group_setting_exception.dart';
@@ -90,17 +91,24 @@ class GroupRepository implements IGroupRepository {
   }
 
   @override
-  Stream<GroupProfile?> watch(String docId) {
-    return db.collection(collectionPath).doc(docId).snapshots().map((snapshot) {
-      final data = snapshot.data();
-      if (data == null) {
-        return null;
-      }
+  Stream<GroupProfile?> listenGroup(String docId) {
+    try {
+      final stream = db.collection(collectionPath).doc(docId).snapshots();
 
-      final model = GroupProfileModel.fromMap(data);
+      return stream.map((snapshot) {
+        final data = snapshot.data();
+        if (data == null) {
+          debugPrint('group is not exist.');
+          return null;
+        }
 
-      return GroupProfileMapper.toEntity(model);
-    });
+        final model = GroupProfileModel.fromMap(data);
+
+        return GroupProfileMapper.toEntity(model);
+      });
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to listen group. ${e.message}');
+    }
   }
 
   @override

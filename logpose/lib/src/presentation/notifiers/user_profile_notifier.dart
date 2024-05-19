@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../entity/user_profile.dart';
+import '../../domain/entity/user_profile.dart';
 
-import '../../usecase/facade/user_service_facade.dart';
+import '../../domain/usecase/facade/user_service_facade.dart';
 
-final setUserProfileDataProvider =
+final userProfileNotifierProvider =
     StateNotifierProvider.autoDispose<_UserProfileNotifier, UserProfile?>(
   _UserProfileNotifier.new,
 );
@@ -17,7 +17,7 @@ class _UserProfileNotifier extends StateNotifier<UserProfile?> {
     _init();
   }
 
-  final StateNotifierProviderRef<_UserProfileNotifier, UserProfile?> ref;
+  final Ref ref;
   final UserServiceFacade _userServiceFacade;
 
   Future<void> _init() async {

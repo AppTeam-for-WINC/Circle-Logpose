@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/providers/error_message/schedule_error_msg_provider.dart';
-import '../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../notifiers/group_schedule_notifier.dart';
 
+import '../../../common/back_to_page_button.dart';
 import '../../../common/red_error_message.dart';
 
 import '../../popup/components/schedule_color/color_button.dart';
@@ -13,8 +14,6 @@ import '../../popup/components/schedule_group_selector/group_selector.dart';
 import '../../popup/components/schedule_place/place.dart';
 import '../../popup/components/schedule_time/schedule_activity_time.dart';
 import '../../popup/components/schedule_title/title_field.dart';
-
-import 'components/back_to_page_button.dart';
 
 class CreateSchedule extends ConsumerStatefulWidget {
   const CreateSchedule({super.key, this.groupId});
@@ -31,7 +30,7 @@ class _CreateScheduleState extends ConsumerState<CreateSchedule> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
 
-    final schedule = ref.watch(setGroupScheduleProvider(null));
+    final schedule = ref.watch(groupScheduleNotifierProvider(null));
     if (schedule == null) {
       return const SizedBox.shrink();
     }

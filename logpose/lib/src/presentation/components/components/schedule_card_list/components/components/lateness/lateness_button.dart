@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
-import '../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../../domain/model/schedule_response_params_model.dart';
 
+import '../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
 import '../../../../../../../utils/schedule/schedule_response.dart';
+
+import '../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 import '../../../../popup/behind_and_early_setting/behind_and_early_setting.dart';
 
@@ -33,20 +36,50 @@ class _LatenessButtonState extends ConsumerState<LatenessButton> {
     final groupScheduleId = widget.groupScheduleId;
     final groupProfileAndScheduleAndId = widget.groupProfileAndScheduleAndId;
 
+    Future<void> updateLateness({required bool lateness}) async {
+      final memberScheduleNotifier = ref.watch(
+        groupMemberScheduleNotifierProvider(groupScheduleId).notifier,
+      );
+      await memberScheduleNotifier.updateLateness(lateness: lateness);
+    }
+
+    Future<void> updateResponse({
+      required String memberScheduleId,
+      required bool lateness,
+    }) async {
+      final memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider);
+      final scheduleParams = ScheduleResponseParams(
+        memberScheduleId: memberScheduleId,
+        attendance: false,
+        leaveEarly: false,
+        lateness: !lateness,
+        absence: false,
+      );
+      await memberScheduleFacade.updateResponse(scheduleParams);
+    }
+
     Future<void> onTap() async {
-      final schedule = ref.read(groupMemberScheduleProvider(groupScheduleId));
-      if (schedule == null) {
-        return;
-      }
-      await ref
-          .watch(groupMemberScheduleProvider(groupScheduleId).notifier)
-          .updateLateness(lateness: schedule.lateness);
-      if (!mounted) {
+      final memberScheduleController =
+          ref.read(groupMemberScheduleNotifierProvider(groupScheduleId));
+      if (memberScheduleController == null) {
         return;
       }
 
+      final lateness = memberScheduleController.lateness;
+
+      await updateLateness(lateness: lateness);
+      await updateResponse(
+        memberScheduleId: memberScheduleController.scheduleId,
+        lateness: lateness,
+      );
+
+      if (!mounted) {
+        return;
+      }
       // ref.read()におけるデータの変更が即座に反映されないため、再度呼び出している。
-      if (ref.read(groupMemberScheduleProvider(groupScheduleId))!.lateness) {
+      if (ref
+          .read(groupMemberScheduleNotifierProvider(groupScheduleId))!
+          .lateness) {
         await showCupertinoModalPopup<BehindAndEarlySetting>(
           context: context,
           builder: (BuildContext context) {

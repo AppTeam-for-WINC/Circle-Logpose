@@ -5,7 +5,7 @@ import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
 
 
-import '../../../../../../../domain/providers/group/schedule/watch_group_member_profile_not_absence_list_provider.dart';
+import '../../../../../../../domain/providers/group/members/watch_group_member_profile_not_absence_list_provider.dart';
 
 
 import '../../../schedule_join_member/schedule_join_member.dart';

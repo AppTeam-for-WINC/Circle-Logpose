@@ -5,7 +5,7 @@ abstract class IGroupRepository {
 
   Future<List<String>> fetchAllGroupId(String userId);
 
-  Stream<GroupProfile?> watch(String docId);
+  Stream<GroupProfile?> listenGroup(String docId);
 
   Future<GroupProfile> fetchGroup(String docId);
 

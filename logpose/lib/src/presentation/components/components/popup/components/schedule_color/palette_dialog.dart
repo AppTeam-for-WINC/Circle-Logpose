@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../../notifiers/group_schedule_notifier.dart';
 
 import '../../../../common/schedule_color_palette.dart';
 
@@ -40,9 +40,11 @@ class _ColorObject extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scheduleNotifier =
-        ref.watch(setGroupScheduleProvider(groupScheduleId).notifier);
+        ref.watch(groupScheduleNotifierProvider(groupScheduleId).notifier);
 
-    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
+    final schedule = ref.watch(
+      groupScheduleNotifierProvider(groupScheduleId),
+    );
     if (schedule == null) {
       return const SizedBox.shrink();
     }

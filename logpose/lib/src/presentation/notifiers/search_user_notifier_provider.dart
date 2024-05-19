@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../validation/validator/validator_controller.dart';
+import '../../../validation/validator/validator_controller.dart';
 
-import '../../entity/user_profile.dart';
+import '../../domain/entity/user_profile.dart';
 
-import '../../usecase/facade/group_membership_facade.dart';
-import '../../usecase/facade/user_service_facade.dart';
+import '../../domain/usecase/facade/group_membership_facade.dart';
+import '../../domain/usecase/facade/user_service_facade.dart';
 
-final setSearchUserDataProvider = StateNotifierProvider.family
+final searchUserNotifierProvider = StateNotifierProvider.family
     .autoDispose<_SearchUserNotifier, UserProfile?, String?>(
   _SearchUserNotifier.new,
 );
@@ -22,7 +22,7 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     _init();
   }
 
-  final StateNotifierProviderRef<_SearchUserNotifier, UserProfile?> ref;
+  final Ref ref;
   final String? groupId;
   final UserServiceFacade _userServiceFacade;
   final GroupMembershipFacade _memberFacade;
@@ -34,11 +34,6 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   String? userImage;
   String? userDescription;
   Set<String> addedMemberIds = {};
-
-  void resetState() {
-    accountIdController.text = '';
-    state = null;
-  }
 
   void setMemberState() {
     final accountId = accountIdController.text;

@@ -4,12 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../domain/model/schedule_params_model.dart';
 
 import '../../../../../../domain/providers/error_message/schedule_error_msg_provider.dart';
-import '../../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_detail_controller_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_place_controller_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_title_controller_provider.dart';
 
 import '../../../../../../domain/usecase/facade/group_schedule_facade.dart';
+
+import '../../../../../notifiers/group_schedule_notifier.dart';
 
 /// createOrUpdate is 'create' or 'update'.
 class SaveButton extends ConsumerStatefulWidget {
@@ -32,9 +33,11 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
     final groupId = widget.groupId;
     final groupScheduleId = widget.groupScheduleId;
     final scheduleNotifier =
-        ref.watch(setGroupScheduleProvider(groupScheduleId).notifier);
+        ref.watch(groupScheduleNotifierProvider(groupScheduleId).notifier);
 
-    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
+    final schedule = ref.watch(
+      groupScheduleNotifierProvider(groupScheduleId),
+    );
     if (schedule == null) {
       return const SizedBox.shrink();
     }
@@ -50,14 +53,14 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
     }
 
     Future<String?> createGroupSchedule() async {
-      if (ref.read(setGroupScheduleProvider(null))!.groupId == null) {
+      if (ref.read(groupScheduleNotifierProvider(null))!.groupId == null) {
         return 'No selected group.';
       }
 
       final scheduleFacade = ref.read(groupScheduleFacadeProvider);
       return scheduleFacade.createSchedule(
         ScheduleParams(
-          groupId: ref.read(setGroupScheduleProvider(null))!.groupId!,
+          groupId: ref.read(groupScheduleNotifierProvider(null))!.groupId!,
           title: ref.read(scheduleTitleControllerProvider).text,
           color: schedule.color!,
           place: ref.read(schedulePlaceControllerProvider).text,
@@ -108,7 +111,6 @@ class _SaveButtonState extends ConsumerState<SaveButton> {
         ref.watch(scheduleErrorMessageProvider.notifier).state = errorMessage;
         return;
       }
-      scheduleNotifier.initSchedule();
 
       if (!mounted) {
         return;

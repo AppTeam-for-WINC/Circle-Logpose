@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
-
 import '../../../../../../../utils/schedule/schedule_response.dart';
+
+import '../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 import '../../../../popup/schedule_detail_confirm/schedule_detail_confirm.dart';
 
@@ -30,7 +30,7 @@ class ScheduleDetailConfirmButton extends ConsumerWidget {
         context: context,
         builder: (BuildContext context) {
           final schedule = ref.read(
-            groupMemberScheduleProvider(groupScheduleId),
+            groupMemberScheduleNotifierProvider(groupScheduleId),
           );
           if (schedule == null) {
             return const SizedBox.shrink();

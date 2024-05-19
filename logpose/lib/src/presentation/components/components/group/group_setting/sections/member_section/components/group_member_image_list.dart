@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../domain/providers/group/members/admin/watch_group_admin_profile_list_provider.dart';
-import '../../../../../../../../domain/providers/group/members/membership/watch_group_member_profile_list_provider.dart';
+import '../../../../../../../../domain/providers/group/members/watch_group_admin_profile_list_provider.dart';
+import '../../../../../../../../domain/providers/group/members/watch_group_member_profile_list_provider.dart';
 
 import '../../../../../../common/custom_image/custom_image.dart';
 

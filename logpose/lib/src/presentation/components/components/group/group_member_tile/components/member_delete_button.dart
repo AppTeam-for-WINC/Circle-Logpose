@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
 import '../../../../../../domain/usecase/facade/group_membership_facade.dart';
+
+import '../../../../../notifiers/set_group_member_list_notifier.dart';
 
 class MemberDeleteButton extends ConsumerWidget {
   const MemberDeleteButton({super.key, required this.accountId, this.groupId});
@@ -20,7 +21,9 @@ class MemberDeleteButton extends ConsumerWidget {
               accountId,
             );
       }
-      ref.watch(setGroupMemberListProvider.notifier).removeMember(accountId);
+      ref
+          .watch(setGroupMemberListNotifierProvider.notifier)
+          .removeMember(accountId);
     }
 
     return CupertinoButton(

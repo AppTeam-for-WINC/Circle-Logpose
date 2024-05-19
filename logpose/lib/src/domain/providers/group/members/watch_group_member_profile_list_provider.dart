@@ -4,8 +4,8 @@ import '../../../entity/user_profile.dart';
 
 import '../../../usecase/facade/group_membership_facade.dart';
 
-final watchGroupMemberProfileListProvider =
+final watchGroupMembershipProfileListProvider =
     StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
   final memberFacade = ref.read(groupMembershipFacadeProvider);
-  return memberFacade.listenAllMember(groupId);
+  return memberFacade.listenAllMembershipProfile(groupId);
 });

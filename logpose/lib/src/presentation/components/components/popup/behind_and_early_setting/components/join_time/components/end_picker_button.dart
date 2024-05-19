@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
-
 import '../../../../../../../../utils/time/time_utils.dart';
+
+import '../../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 import 'components/date_picker_dialog.dart';
 
@@ -32,8 +32,10 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
     final groupScheduleId = widget.groupScheduleId;
     final groupSchedule = widget.groupSchedule;
 
-    final schedule = ref.watch(groupMemberScheduleProvider(groupScheduleId));
-    if (schedule == null) {
+    final memberSchedule = ref.watch(
+      groupMemberScheduleNotifierProvider(groupScheduleId),
+    );
+    if (memberSchedule == null) {
       return const SizedBox.shrink();
     }
 
@@ -44,8 +46,8 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
           return JoinDatePickerDialog(
             startOrEnd: 'end',
             groupScheduleId: groupScheduleId,
-            initialDateTime: schedule.endAt!,
-            minimumDate: schedule.startAt!,
+            initialDateTime: memberSchedule.endAt!,
+            minimumDate: memberSchedule.startAt!,
             maximumDate: groupSchedule.endAt,
           );
         },
@@ -57,7 +59,7 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
       padding: EdgeInsets.zero,
       child: Consumer(
         builder: (context, watch, child) {
-          return Text(_formatDateTimeExcYear(schedule.endAt!));
+          return Text(_formatDateTimeExcYear(memberSchedule.endAt!));
         },
       ),
     );

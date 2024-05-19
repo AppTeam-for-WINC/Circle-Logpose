@@ -37,20 +37,18 @@ class AuthFacade {
     return _emailUseCase.fetchUserEmail();
   }
 
-  Future<bool> updateUserEmail(
-    String oldEmail,
+  Future<String?> updateUserEmail(
     String newEmail,
     String password,
   ) async {
-    return _emailUseCase.updateUserEmail(oldEmail, newEmail, password);
+    return _emailUseCase.updateUserEmail(newEmail, password);
   }
 
   Future<String?> updateUserPassword(
-    String email,
     String password,
     String newPassword,
   ) async {
-    return _passwordUseCase.updateUserPassword(email, password, newPassword);
+    return _passwordUseCase.updateUserPassword(password, newPassword);
   }
 
   Future<bool> sendConfirmationEmail() async {

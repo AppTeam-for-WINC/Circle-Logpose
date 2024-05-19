@@ -8,6 +8,7 @@ import '../../model/schedule_response_params_model.dart';
 import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_delete_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_id_use_case.dart';
+import '../usecase_member_schedule/group_member_schedule_init_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_update_use_case.dart';
 import '../usecase_member_schedule/group_member_schedule_use_case.dart';
 
@@ -26,7 +27,9 @@ class GroupMemberScheduleFacade {
         _groupMemberScheduleUpdateUseCase =
             ref.read(groupMemberScheduleUpdateUseCaseProvider),
         _groupMemberScheduleDeleteUseCase =
-            ref.read(groupMemberScheduleDeleteUseCaseProvider);
+            ref.read(groupMemberScheduleDeleteUseCaseProvider),
+        _groupMemberScheduleInitUseCase =
+            ref.read(groupMemberScheduleInitUseCaseProvider);
 
   final Ref ref;
   final GroupMemberScheduleCreationUseCase _groupMemberScheduleCreationUseCase;
@@ -34,6 +37,7 @@ class GroupMemberScheduleFacade {
   final GroupMemberScheduleUseCase _groupMemberScheduleUseCase;
   final GroupMemberScheduleUpdateUseCase _groupMemberScheduleUpdateUseCase;
   final GroupMemberScheduleDeleteUseCase _groupMemberScheduleDeleteUseCase;
+  final GroupMemberScheduleInitUseCase _groupMemberScheduleInitUseCase;
 
   Future<void> createMemberSchedule(String scheduleId, String userId) async {
     await _groupMemberScheduleCreationUseCase.createMemberSchedule(
@@ -109,5 +113,9 @@ class GroupMemberScheduleFacade {
       groupMemberList,
       groupScheduleId,
     );
+  }
+
+  Future<GroupMemberSchedule> initMemberSchedule(String groupScheduleId) async {
+    return _groupMemberScheduleInitUseCase.initMemberSchedule(groupScheduleId);
   }
 }

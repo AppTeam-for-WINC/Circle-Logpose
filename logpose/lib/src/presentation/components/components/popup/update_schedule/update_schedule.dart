@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/providers/error_message/schedule_error_msg_provider.dart';
-import '../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../notifiers/group_schedule_notifier.dart';
 
 import '../../../common/back_to_page_button.dart';
 import '../../../common/red_error_message.dart';
@@ -31,7 +31,9 @@ class _UpdateScheduleState extends ConsumerState<UpdateSchedule> {
     final groupScheduleId = widget.groupScheduleId;
     final scheduleErrorMessage = ref.watch(scheduleErrorMessageProvider);
 
-    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
+    final schedule = ref.watch(
+      groupScheduleNotifierProvider(groupScheduleId),
+    );
     if (schedule == null) {
       return const SizedBox.shrink();
     }

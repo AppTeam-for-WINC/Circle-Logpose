@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../../../notifiers/group_schedule_notifier.dart';
 
 class ActivityEndAtPicker extends ConsumerStatefulWidget {
   const ActivityEndAtPicker({super.key, this.groupScheduleId});
@@ -31,9 +31,11 @@ class _ActivityEndAtPickerState extends ConsumerState<ActivityEndAtPicker> {
   Widget build(BuildContext context) {
     final groupScheduleId = widget.groupScheduleId;
     final scheduleNotifier =
-        ref.watch(setGroupScheduleProvider(groupScheduleId).notifier);
+        ref.watch(groupScheduleNotifierProvider(groupScheduleId).notifier);
 
-    final schedule = ref.watch(setGroupScheduleProvider(groupScheduleId));
+    final schedule = ref.watch(
+      groupScheduleNotifierProvider(groupScheduleId),
+    );
     if (schedule == null) {
       return const SizedBox.shrink();
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
+import '../../../../../../notifiers/group_schedule_notifier.dart';
 
 class ActivityStartAtPicker extends ConsumerStatefulWidget {
   const ActivityStartAtPicker({super.key, this.groupScheduleId});
@@ -28,8 +28,9 @@ class _ActivityStartAtPickerState extends ConsumerState<ActivityStartAtPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final scheduleNotifier =
-        ref.watch(setGroupScheduleProvider(widget.groupScheduleId).notifier);
+    final scheduleNotifier = ref.watch(
+      groupScheduleNotifierProvider(widget.groupScheduleId).notifier,
+    );
 
     return Container(
       height: 300,

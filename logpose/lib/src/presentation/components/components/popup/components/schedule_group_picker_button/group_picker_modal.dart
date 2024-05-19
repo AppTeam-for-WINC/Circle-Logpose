@@ -6,9 +6,10 @@ import '../../../../../../domain/model/group_and_id_model.dart';
 
 import '../../../../../../domain/providers/group/group/fetch_group_and_id_list_provider.dart';
 import '../../../../../../domain/providers/group/group/selected_group_name_provider.dart';
-import '../../../../../../domain/providers/group/schedule/set_group_schedule_provider.dart';
 
 import '../../../../../../domain/usecase/facade/group_facade.dart';
+
+import '../../../../../notifiers/group_schedule_notifier.dart';
 
 class GroupPickerModal extends ConsumerStatefulWidget {
   const GroupPickerModal({super.key, required this.groupIdList});
@@ -32,7 +33,7 @@ class _GroupPickerModalState extends ConsumerState<GroupPickerModal> {
   }
 
   void _setGroupId(String id) {
-    ref.read(setGroupScheduleProvider(null).notifier).setGroupId(id);
+    ref.read(groupScheduleNotifierProvider(null).notifier).setGroupId(id);
   }
 
   Future<void> _setGroupName() async {
@@ -83,14 +84,14 @@ class _AsyncGroupWithIdListState extends ConsumerState<_AsyncGroupWithIdList> {
   void _onSelectedItemChanged(List<GroupAndId> data, int index) {
     final id = data[index].groupId;
     final name = data[index].groupProfile.name;
-    ref.watch(setGroupScheduleProvider(null).notifier).setGroupId(id);
+    ref.watch(groupScheduleNotifierProvider(null).notifier).setGroupId(id);
     ref.watch(selectedGroupNameProvider.notifier).state = name;
   }
 
   @override
   Widget build(BuildContext context) {
     final groupIdList = widget.groupIdList;
-    
+
     final asyncGroupAndIdList =
         ref.watch(fetchGroupAndIdListProvider(groupIdList));
 

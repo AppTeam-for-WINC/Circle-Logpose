@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/model/user_setting_model.dart';
 
 import '../../../../domain/providers/error_message/update_user_profile_error_provider.dart';
-import '../../../../domain/providers/group/schedule/image_provider.dart';
+import '../../../../domain/providers/image_provider.dart';
 import '../../../../domain/providers/text_field/name_field_provider.dart';
 
 import '../../../../domain/usecase/facade/user_service_facade.dart';

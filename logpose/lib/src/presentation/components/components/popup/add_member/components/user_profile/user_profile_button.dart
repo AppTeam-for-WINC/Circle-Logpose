@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/group/members/membership/set_group_member_list_provider.dart';
-import '../../../../../../../domain/providers/user/set_search_user_data_provider.dart';
+import '../../../../../../notifiers/search_user_notifier_provider.dart';
+import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
 
@@ -25,19 +25,20 @@ class _UserProfileButtonState extends ConsumerState<UserProfileButton> {
     final groupId = widget.groupId;
 
     // userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
-    final userProfile = ref.watch(setSearchUserDataProvider(groupId));
+    final userProfile = ref.watch(searchUserNotifierProvider(groupId));
     if (userProfile == null) {
       return const SizedBox.shrink();
     }
 
     // userProfileNotifierは、値の変更を行うが、追跡は行わない。
     final userProfileNotifier =
-        ref.watch(setSearchUserDataProvider(groupId).notifier);
+        ref.watch(searchUserNotifierProvider(groupId).notifier);
 
     void handlAddMember() {
-      ref.read(setSearchUserDataProvider(groupId).notifier).setMemberState();
-      ref.read(setSearchUserDataProvider(groupId).notifier).resetState();
-      ref.read(setGroupMemberListProvider.notifier).addMember(userProfile);
+      ref.read(searchUserNotifierProvider(groupId).notifier).setMemberState();
+      ref
+          .read(setGroupMemberListNotifierProvider.notifier)
+          .addMember(userProfile);
     }
 
     return Container(

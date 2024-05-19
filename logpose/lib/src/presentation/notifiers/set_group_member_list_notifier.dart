@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../entity/user_profile.dart';
+import '../../domain/entity/user_profile.dart';
 
-/// Used to set group membership.
-final setGroupMemberListProvider = StateNotifierProvider.autoDispose<
+final setGroupMemberListNotifierProvider = StateNotifierProvider.autoDispose<
     _GroupMemberListNotifier, List<UserProfile>>(
   (ref) => _GroupMemberListNotifier(),
 );
@@ -18,9 +17,5 @@ class _GroupMemberListNotifier extends StateNotifier<List<UserProfile>> {
 
   void removeMember(String accountId) {
     state = state.where((member) => member.accountId != accountId).toList();
-  }
-
-  void resetMemberList() {
-    state = [];
   }
 }

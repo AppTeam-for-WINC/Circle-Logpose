@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
-import '../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../notifiers/group_member_schedule_notifier.dart';
 
 import '../../../common/custom_image/custom_image.dart';
 
@@ -35,7 +35,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
     final groupSchedule = widget.groupData.groupSchedule;
     final groupScheduleId = widget.groupData.groupScheduleId;
     final userSchedule =
-        ref.watch(groupMemberScheduleProvider(groupScheduleId));
+        ref.watch(groupMemberScheduleNotifierProvider(groupScheduleId));
     final isAttendance = userSchedule?.attendance ?? false;
     final isLeaveEarly = userSchedule?.leaveEarly ?? false;
     final isLateness = userSchedule?.lateness ?? false;

@@ -3,9 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../../domain/model/schedule_response_params_model.dart';
+
+import '../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
 
 import '../../../../../../../utils/schedule/schedule_response.dart';
+
+import '../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 class AbsenceButton extends ConsumerWidget {
   const AbsenceButton({
@@ -23,14 +27,42 @@ class AbsenceButton extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    Future<void> updateAbsence({required bool absence}) async {
+      final memberScheduleNotifier = ref.watch(
+        groupMemberScheduleNotifierProvider(groupScheduleId).notifier,
+      );
+      await memberScheduleNotifier.updateAbsence(absence: absence);
+    }
+
+    Future<void> updateResponse({
+      required String memberScheduleId,
+      required bool absence,
+    }) async {
+      final memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider);
+      final scheduleParams = ScheduleResponseParams(
+        memberScheduleId: memberScheduleId,
+        attendance: false,
+        leaveEarly: false,
+        lateness: false,
+        absence: !absence,
+      );
+      await memberScheduleFacade.updateResponse(scheduleParams);
+    }
+
     Future<void> onTap() async {
-      final schedule = ref.read(groupMemberScheduleProvider(groupScheduleId));
-      if (schedule == null) {
+      final memberScheduleController =
+          ref.read(groupMemberScheduleNotifierProvider(groupScheduleId));
+      if (memberScheduleController == null) {
         return;
       }
-      await ref
-          .watch(groupMemberScheduleProvider(groupScheduleId).notifier)
-          .updateAbsence(absence: schedule.absence);
+
+      final absence = memberScheduleController.absence;
+
+      await updateAbsence(absence: absence);
+      await updateResponse(
+        memberScheduleId: memberScheduleController.scheduleId,
+        absence: absence,
+      );
     }
 
     return GestureDetector(

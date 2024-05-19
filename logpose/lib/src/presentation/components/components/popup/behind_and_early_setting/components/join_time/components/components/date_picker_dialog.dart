@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../domain/providers/group/schedule/group_member_schedule_provider.dart';
+import '../../../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
+import '../../../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 class JoinDatePickerDialog extends ConsumerStatefulWidget {
   const JoinDatePickerDialog({
@@ -31,42 +32,58 @@ class _JoinDatePickerDialogState extends ConsumerState<JoinDatePickerDialog> {
     final initialDateTime = widget.initialDateTime;
     final minimumDate = widget.minimumDate;
     final maximumDate = widget.maximumDate;
-    final scheduleNotifier =
-        ref.watch(groupMemberScheduleProvider(groupScheduleId).notifier);
+    final memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider);
 
-    Future<void> updateJoinTime() async {
-      if (startOrEnd == 'start') {
-        final startAt =
-            ref.read(groupMemberScheduleProvider(groupScheduleId))!.startAt;
-        await scheduleNotifier.updateStartAt(startAt);
-      } else if (startOrEnd == 'end') {
-        final endAt =
-            ref.read(groupMemberScheduleProvider(groupScheduleId))!.endAt;
-        await scheduleNotifier.updateEndAt(endAt);
-      } else {
-        throw Exception('Error: Please set start or end.');
-      }
+    final memberScheduleController =
+        ref.watch(groupMemberScheduleNotifierProvider(groupScheduleId));
+    if (memberScheduleController == null) {
+      return const SizedBox.shrink();
+    }
+
+    final memberScheduleNotifier = ref.watch(
+      groupMemberScheduleNotifierProvider(groupScheduleId).notifier,
+    );
+
+    Future<void> updateStartAt() async {
+      final startAt = memberScheduleController.startAt;
+      await memberScheduleFacade.updateStartAt(groupScheduleId, startAt);
+    }
+
+    Future<void> updateEndAt() async {
+      final endAt = memberScheduleController.endAt;
+      await memberScheduleFacade.updateEndAt(groupScheduleId, endAt);
+    }
+
+    void pop() {
       if (!mounted) {
         return;
       }
       Navigator.of(context).pop();
     }
 
+    Future<void> updateJoinTime() async {
+      if (startOrEnd == 'start') {
+        await updateStartAt();
+      } else if (startOrEnd == 'end') {
+        await updateEndAt();
+      } else {
+        throw Exception('Error: Please set start or end.');
+      }
+
+      pop();
+    }
+
     Future<void> setJoinTime(DateTime newTime) async {
       if (startOrEnd == 'start') {
-        await scheduleNotifier.setStartAt(newTime);
+        await memberScheduleNotifier.setStartAt(newTime);
       } else if (startOrEnd == 'end') {
-        await scheduleNotifier.setEndAt(newTime);
+        await memberScheduleNotifier.setEndAt(newTime);
       } else {
         throw Exception('Error: Please set start or end.');
       }
     }
 
     Future<void> cancel() async {
-      await scheduleNotifier.initSchedule();
-      if (!mounted) {
-        return;
-      }
       Navigator.of(context).pop();
     }
 

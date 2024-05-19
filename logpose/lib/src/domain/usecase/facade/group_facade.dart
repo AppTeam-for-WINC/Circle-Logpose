@@ -10,6 +10,7 @@ import '../../model/group_setting_params_model.dart';
 
 import '../../providers/sort/sort_option_provider.dart';
 
+import '../usecase_group/group_and_id_listen_use_case.dart';
 import '../usecase_group/group_and_id_use_case.dart';
 import '../usecase_group/group_and_schedule_and_id_list_listen_use_case.dart';
 import '../usecase_group/group_and_schedule_sorted_stream_use_case.dart';
@@ -27,6 +28,7 @@ class GroupFacade {
       : _groupCreationUseCase = ref.read(groupCreationUseCaseProvider),
         _groupUseCase = ref.read(groupUseCaseProvider),
         _groupAndIdUseCase = ref.read(groupAndIdUseCaseProvider),
+        _groupAndIdListenUseCase = ref.read(groupAndIdListenUseCaseProvider),
         _groupAndScheduleAndIdListListenUseCase =
             ref.read(groupAndScheduleAndIdListListenUseCaseProvider),
         _groupUpdateUseCase = ref.read(groupUpdateUseCaseProvider),
@@ -38,6 +40,7 @@ class GroupFacade {
   final GroupCreationUseCase _groupCreationUseCase;
   final GroupUseCase _groupUseCase;
   final GroupAndIdUseCase _groupAndIdUseCase;
+  final GroupAndIdListenUseCase _groupAndIdListenUseCase;
   final GroupAndScheduleAndIdListListenUseCase
       _groupAndScheduleAndIdListListenUseCase;
   final GroupUpdateUseCase _groupUpdateUseCase;
@@ -58,6 +61,10 @@ class GroupFacade {
 
   Future<List<GroupAndId>> fetchGroupAndIdList(List<String> groupIdList) async {
     return _groupAndIdUseCase.fetchGroupAndIdList(groupIdList);
+  }
+
+  Stream<GroupAndId?> listenGroupAndId(String groupId) {
+    return _groupAndIdListenUseCase.listenGroupAndId(groupId);
   }
 
   Stream<List<GroupProfileAndScheduleAndId>>
