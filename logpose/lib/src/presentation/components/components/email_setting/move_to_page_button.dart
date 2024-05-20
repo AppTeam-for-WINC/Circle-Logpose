@@ -7,7 +7,7 @@ import '../../../../../validation/validator/validation/password_validation.dart'
 import '../../../../domain/providers/error_message/password_error_message_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
 
-import '../../../pages/user/email/email_setting_next_page.dart';
+import '../../../pages/user/email_setting_next_page.dart';
 
 class MoveToNextPageButton extends ConsumerStatefulWidget {
   const MoveToNextPageButton({super.key});

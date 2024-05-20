@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/error_message/email_error_message_provider.dart';
+import '../../../domain/providers/error_message/email_error_message_provider.dart';
 
-import '../../../components/common/red_error_message.dart';
-import '../../../components/components/email_setting/email_setting_next_section.dart';
-import '../../../components/components/email_setting/save_button.dart';
-import '../../../components/components/navigation_bar/email_setting_navigation_bar.dart';
+import '../../components/common/red_error_message.dart';
+import '../../components/components/email_setting/email_setting_next_section.dart';
+import '../../components/components/email_setting/save_button.dart';
+import '../../components/components/navigation_bar/email_setting_navigation_bar.dart';
 
 class EmailSettingNextPage extends ConsumerStatefulWidget {
   const EmailSettingNextPage({super.key, required this.password});

@@ -5,7 +5,7 @@ import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
 
 
-import '../../../../../../../domain/providers/group/members/watch_group_member_profile_not_absence_list_provider.dart';
+import '../../../../../../../domain/providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
 
 
 import '../../../schedule_join_member/schedule_join_member.dart';
@@ -30,7 +30,7 @@ class _ResponsedMembersState extends ConsumerState<ResponsedMembers> {
   Future<void> _onTap() async {
     final scheduleId = widget.scheduleId;
     final asyncGroupMember = ref.watch(
-      watchGroupMembershipProfileNotAbsenceListProvider(scheduleId),
+      listenGroupMemberProfileNotAbsenceListProvider(scheduleId),
     );
     await showCupertinoModalPopup<ScheduleJoinMember>(
       context: context,

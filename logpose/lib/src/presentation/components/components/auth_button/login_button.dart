@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import '../../../../domain/providers/text_field/email_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
 
@@ -21,14 +20,6 @@ class LoginButton extends ConsumerStatefulWidget {
 }
 
 class _LoginButtonState extends ConsumerState<LoginButton> {
-  Future<void> _handleLogin() async {
-    final email = ref.read(emailFieldProvider('')).text;
-    final password = ref.read(passwordFieldProvider('')).text;
-
-    final loginService = _LoginService(context, ref);
-    await loginService.performLogin(email, password);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +30,7 @@ class _LoginButtonState extends ConsumerState<LoginButton> {
         padding: EdgeInsets.zero,
         color: const Color.fromRGBO(80, 49, 238, 0.9),
         borderRadius: BorderRadius.circular(30),
-        onPressed: _handleLogin,
+        onPressed: () => _LoginHandler(context, ref).handleLogin(),
         child: const Text(
           'Login',
           style: TextStyle(
@@ -52,9 +43,27 @@ class _LoginButtonState extends ConsumerState<LoginButton> {
   }
 }
 
-class _LoginService {
-  _LoginService(this.context, this.ref);
+class _LoginHandler {
+  _LoginHandler(this.context, this.ref);
+
   final BuildContext context;
+  final WidgetRef ref;
+
+  Future<void> handleLogin() async {
+    final email = ref.read(emailFieldProvider('')).text;
+    final password = ref.read(passwordFieldProvider('')).text;
+
+    final loginService = _LoginService(ref);
+    await loginService.performLogin(email, password);
+    
+    if (context.mounted) {
+      await _NavigationService(context).moveToNextPage();
+    }
+  }
+}
+
+class _LoginService {
+  _LoginService(this.ref);
   final WidgetRef ref;
 
   Future<void> performLogin(String email, String password) async {
@@ -66,10 +75,6 @@ class _LoginService {
     if (errorMessage != null) {
       _displayErrorMessage(errorMessage);
       return;
-    }
-
-    if (context.mounted) {
-      await _NavigationService(context).moveToNextPage();
     }
   }
 

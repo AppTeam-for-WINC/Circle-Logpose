@@ -205,7 +205,7 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   }
 
   @override
-  Stream<List<GroupMembership?>> watchAllWithUserId(
+  Stream<List<GroupMembership?>> listenAllMembershipListWithUserId(
     String userDocId,
   ) async* {
     try {

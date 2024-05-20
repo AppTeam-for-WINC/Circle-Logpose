@@ -6,8 +6,8 @@ import '../../usecase/facade/user_service_facade.dart';
 
 final fetchUserProfileProvider = FutureProvider<UserProfile?>((ref) async {
   final userFacade = ref.read(userServiceFacadeProvider);
-  final userDocId = await userFacade.fetchCurrentUserId();
+  final userId = await userFacade.fetchCurrentUserId();
   final userServiceFacade = ref.read(userServiceFacadeProvider);
   
-  return userServiceFacade.fetchUserProfile(userDocId);
+  return userServiceFacade.fetchUserProfile(userId);
 });

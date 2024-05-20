@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../domain/providers/group/schedule/watch_responesd_group_member_schedule_provider.dart';
+import '../../../../../../../../../domain/providers/group/schedule/listen_responesd_group_member_schedule_provider.dart';
 import '../../../../../../../../../utils/time/time_utils.dart';
 
 class AsyncMemberSchedule extends ConsumerStatefulWidget {
@@ -26,7 +26,7 @@ class _AsyncMemberScheduleState extends ConsumerState<AsyncMemberSchedule> {
   @override
   Widget build(BuildContext context) {
     final asyncMemberSchedule = ref.watch(
-      watchResponsedGroupMemberScheduleProvider(
+      listenResponsedGroupMemberScheduleProvider(
         (scheduleId: widget.scheduleId, accountId: widget.accountId),
       ),
     );

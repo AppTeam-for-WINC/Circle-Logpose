@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/account_id/account_id_setting_page.dart';
+import '../../../../pages/user/account_id_setting_page.dart';
 
 class AccountIdSection extends ConsumerStatefulWidget {
   const AccountIdSection({super.key});

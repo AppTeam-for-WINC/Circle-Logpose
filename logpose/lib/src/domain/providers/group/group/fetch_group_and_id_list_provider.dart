@@ -8,5 +8,6 @@ final fetchGroupAndIdListProvider =
     FutureProvider.family<List<GroupAndId>, List<String>>(
         (ref, groupIdList) async {
   final groupFacade = ref.read(groupFacadeProvider);
+  
   return groupFacade.fetchGroupAndIdList(groupIdList);
 });

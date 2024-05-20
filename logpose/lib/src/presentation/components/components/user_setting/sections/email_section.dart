@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/email/email_setting_page.dart';
+import '../../../../pages/user/email_setting_page.dart';
 
 class EmailSection extends ConsumerStatefulWidget {
   const EmailSection({super.key});

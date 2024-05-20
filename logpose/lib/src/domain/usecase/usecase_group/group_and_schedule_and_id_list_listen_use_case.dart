@@ -2,23 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../data/repository/database/group_membership_repository.dart';
 import '../../entity/group_membership.dart';
 import '../../entity/group_profile.dart';
 import '../../entity/group_schedule.dart';
 
-import '../../interface/i_group_membership_repository.dart';
-
 import '../../model/group_profile_and_schedule_and_id_model.dart';
 
+import '../usecase_group_membership/group_member_listen_use_case.dart';
 import '../usecase_group_schedule/group_schedule_listen_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
-
 import 'group_use_case.dart';
-
-// このコードでは、BLoCパターンの構造をしたRxDartを使用しています。以下リンクは参考サイトです。
-// https://qiita.com/tetsufe/items/521014ddc59f8d1df581
 
 final groupAndScheduleAndIdListListenUseCaseProvider =
     Provider<GroupAndScheduleAndIdListListenUseCase>((ref) {
@@ -27,7 +21,7 @@ final groupAndScheduleAndIdListListenUseCaseProvider =
   final groupScheduleUseCase = ref.read(groupScheduleUseCaseProvider);
   final groupScheduleListenIdUseCase =
       ref.read(groupScheduleListenIdUseCaseProvider);
-  final memberRepository = ref.read(groupMembershipRepositoryProvider);
+  final memberListenUseCase = ref.read(groupMemberListenUseCaseProvider);
 
   return GroupAndScheduleAndIdListListenUseCase(
     ref: ref,
@@ -35,7 +29,7 @@ final groupAndScheduleAndIdListListenUseCaseProvider =
     groupUseCase: groupUseCase,
     groupScheduleUseCase: groupScheduleUseCase,
     groupScheduleListenIdUseCase: groupScheduleListenIdUseCase,
-    memberRepository: memberRepository,
+    memberListenUseCase: memberListenUseCase,
   );
 });
 
@@ -46,7 +40,7 @@ class GroupAndScheduleAndIdListListenUseCase {
     required this.groupUseCase,
     required this.groupScheduleUseCase,
     required this.groupScheduleListenIdUseCase,
-    required this.memberRepository,
+    required this.memberListenUseCase,
   });
 
   final Ref ref;
@@ -54,13 +48,15 @@ class GroupAndScheduleAndIdListListenUseCase {
   final GroupUseCase groupUseCase;
   final GroupScheduleUseCase groupScheduleUseCase;
   final GroupScheduleListenIdUseCase groupScheduleListenIdUseCase;
-  final IGroupMembershipRepository memberRepository;
+  final GroupMemberListenUseCase memberListenUseCase;
 
   Stream<List<GroupProfileAndScheduleAndId>>
       listenGroupAndScheduleAndIdList() async* {
     final userDocId = await _fetchUserDocId();
 
-    await for (final membershipList in _watchAllWithUserId(userDocId)) {
+    await for (final membershipList in _listenAllMembershipListWithUserId(
+      userDocId,
+    )) {
       yield* _aggregateGroupData(membershipList);
     }
   }
@@ -69,9 +65,11 @@ class GroupAndScheduleAndIdListListenUseCase {
     return userIdUseCase.fetchCurrentUserId();
   }
 
-  Stream<List<GroupMembership?>> _watchAllWithUserId(String userDocId) {
+  Stream<List<GroupMembership?>> _listenAllMembershipListWithUserId(
+    String userDocId,
+  ) {
     try {
-      return memberRepository.watchAllWithUserId(userDocId);
+      return memberListenUseCase.listenAllMembershipListWithUserId(userDocId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to watch user ID. ${e.message}');
     }

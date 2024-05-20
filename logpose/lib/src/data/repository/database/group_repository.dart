@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../exceptions/group/group_setting_exception.dart';
@@ -98,7 +97,6 @@ class GroupRepository implements IGroupRepository {
       return stream.map((snapshot) {
         final data = snapshot.data();
         if (data == null) {
-          debugPrint('group is not exist.');
           return null;
         }
 

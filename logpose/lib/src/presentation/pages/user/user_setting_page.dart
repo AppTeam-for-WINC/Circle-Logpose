@@ -5,8 +5,9 @@ import '../../../domain/providers/error_message/update_user_profile_error_provid
 
 import '../../components/common/photo_button.dart';
 import '../../components/common/red_error_message.dart';
+import '../../components/common/text_field/name_field.dart';
+
 import '../../components/components/navigation_bar/user_setting_navigation_bar.dart';
-import '../../components/components/text_field/name_field.dart';
 import '../../components/components/user_setting/save_button.dart';
 import '../../components/components/user_setting/sections/account_id_section.dart';
 import '../../components/components/user_setting/sections/email_section.dart';

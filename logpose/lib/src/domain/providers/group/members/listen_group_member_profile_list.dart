@@ -1,10 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../entity/user_profile.dart';
+
 import '../../../usecase/facade/group_membership_facade.dart';
 
-final watchGroupAdminProfileListProvider =
+final listenGroupMemberProfileListProvider =
     StreamProvider.family<List<UserProfile?>, String>((ref, groupId) {
-  final membberFacade = ref.read(groupMembershipFacadeProvider);
-  return membberFacade.listenAllAdminProfile(groupId);
+  final memberFacade = ref.read(groupMembershipFacadeProvider);
+  return memberFacade.listenAllMember(groupId);
 });

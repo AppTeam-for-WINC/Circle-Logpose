@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../pages/group/setting/group_setting_page.dart';
+import '../../../../../pages/group/group_setting_page.dart';
 import 'components/async_group_and_id.dart';
 
 class GroupBox extends ConsumerStatefulWidget {

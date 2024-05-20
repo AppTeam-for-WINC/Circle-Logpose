@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../entity/group_membership.dart';
 import '../../entity/user_profile.dart';
 
 import '../usecase_group_membership/group_member_creation_use_case.dart';
@@ -8,6 +9,7 @@ import '../usecase_group_membership/group_member_exist_use_case.dart';
 import '../usecase_group_membership/group_member_id_listen_use_case.dart';
 import '../usecase_group_membership/group_member_id_use_case.dart';
 import '../usecase_group_membership/group_member_listen_by_role_use_case.dart';
+import '../usecase_group_membership/group_member_listen_not_absence_liste_use_case.dart';
 import '../usecase_group_membership/group_member_listen_use_case.dart';
 import '../usecase_group_membership/group_member_use_case.dart';
 
@@ -26,6 +28,8 @@ class GroupMembershipFacade {
         _groupMemberListenUseCase = ref.read(groupMemberListenUseCaseProvider),
         _groupMemberListenByRoleUseCase =
             ref.read(groupMemberListenByRoleUseCaseProvider),
+        _groupMemberListenNotAbsenceUseCase =
+            ref.read(groupMemberListenNotAbsenceUseCaseProvider),
         _groupMemberDeleteUseCase = ref.read(groupMemberDeleteUseCaseProvider),
         _groupMemberExistUseCase = ref.read(groupMemberExistUseCaseProvider);
 
@@ -36,6 +40,7 @@ class GroupMembershipFacade {
   final GroupMemberIdListenUseCase _groupMemberIdListenUseCase;
   final GroupMemberListenUseCase _groupMemberListenUseCase;
   final GroupMemberListenByRoleUseCase _groupMemberListenByRoleUseCase;
+  final GroupMemberListenNotAbsenceUseCase _groupMemberListenNotAbsenceUseCase;
   final GroupMemberDeleteUseCase _groupMemberDeleteUseCase;
   final GroupMemberExistUseCase _groupMemberExistUseCase;
 
@@ -105,6 +110,14 @@ class GroupMembershipFacade {
     yield* _groupMemberListenUseCase.listenAllMember(groupId);
   }
 
+  Stream<List<GroupMembership?>> listenAllMembershipListWithUserId(
+    String userDocId,
+  ) async* {
+    yield* _groupMemberListenUseCase.listenAllMembershipListWithUserId(
+      userDocId,
+    );
+  }
+
   Stream<List<String?>> listenAllMembershipIdList(String groupId) async* {
     yield* _groupMemberIdListenUseCase.listenAllMembershipIdList(groupId);
   }
@@ -115,6 +128,15 @@ class GroupMembershipFacade {
 
   Stream<List<UserProfile?>> listenAllMembershipProfile(String groupId) async* {
     yield* _groupMemberListenByRoleUseCase.listenAllMembershipProfile(groupId);
+  }
+
+  Stream<List<UserProfile?>> listenAllMemberProfileNotAbsenceList(
+    String scheduleId,
+  ) async* {
+    yield* _groupMemberListenNotAbsenceUseCase
+        .listenAllMemberProfileNotAbsenceList(
+      scheduleId,
+    );
   }
 
   Future<void> deleteMember(String membershipDocId) async {

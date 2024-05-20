@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../domain/providers/group/members/watch_group_member_profile_not_absence_list_provider.dart';
+import '../../../../../../../../domain/providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
 
 import '../../../../../../common/custom_image/custom_image.dart';
 
@@ -21,7 +21,7 @@ class _AsyncGroupMemberState extends ConsumerState<AsyncGroupMember> {
   Widget build(BuildContext context) {
     final scheduleId = widget.scheduleId;
     final asyncGroupMember = ref.watch(
-      watchGroupMembershipProfileNotAbsenceListProvider(scheduleId),
+      listenGroupMemberProfileNotAbsenceListProvider(scheduleId),
     );
 
     return asyncGroupMember.when(

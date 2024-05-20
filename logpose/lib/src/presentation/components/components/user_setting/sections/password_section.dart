@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/password/password_setting_page.dart';
+import '../../../../pages/user/password_setting_page.dart';
 
 class PasswordSection extends ConsumerStatefulWidget {
   const PasswordSection({super.key});

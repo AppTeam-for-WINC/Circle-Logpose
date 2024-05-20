@@ -7,6 +7,7 @@ import '../../model/group_schedule_and_id_model.dart';
 import '../../model/schedule_params_model.dart';
 
 import '../usecase_group_schedule/group_id_with_schedule_id_use_case.dart';
+import '../usecase_group_schedule/group_schedule_and_id_list_listen_use_case.dart';
 import '../usecase_group_schedule/group_schedule_and_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_creation_use_case.dart';
 import '../usecase_group_schedule/group_schedule_delete_use_case.dart';
@@ -33,8 +34,10 @@ class GroupScheduleFacade {
             ref.read(groupScheduleUpdateUseCaseProvider),
         _groupScheduleDeleteUseCase =
             ref.read(groupScheduleDeleteUseCaseProvider),
-        _groupScheduleListenIdUseCase =
-            ref.read(groupScheduleListenIdUseCaseProvider);
+        _groupScheduleIdListenUseCase =
+            ref.read(groupScheduleListenIdUseCaseProvider),
+        _groupScheduleAndIdListListenUseCase =
+            ref.read(groupScheduleAndIdListListenUseCaseProvider);
 
   final Ref ref;
   final GroupScheduleCreationUseCase _groupScheduleCreationUseCase;
@@ -44,7 +47,9 @@ class GroupScheduleFacade {
   final GroupIdWithScheduleIdUseCase _groupIdWithScheduleIdUseCase;
   final GroupScheduleUpdateUseCase _groupScheduleUpdateUseCase;
   final GroupScheduleDeleteUseCase _groupScheduleDeleteUseCase;
-  final GroupScheduleListenIdUseCase _groupScheduleListenIdUseCase;
+  final GroupScheduleListenIdUseCase _groupScheduleIdListenUseCase;
+  final GroupScheduleAndIdListListenUseCase
+      _groupScheduleAndIdListListenUseCase;
 
   Future<String?> createSchedule(ScheduleParams scheduleViewParams) async {
     return _groupScheduleCreationUseCase.createSchedule(scheduleViewParams);
@@ -88,6 +93,14 @@ class GroupScheduleFacade {
   }
 
   Stream<List<String?>> listenAllScheduleId(String groupId) async* {
-    yield* _groupScheduleListenIdUseCase.listenAllScheduleId(groupId);
+    yield* _groupScheduleIdListenUseCase.listenAllScheduleId(groupId);
+  }
+
+  Stream<List<GroupScheduleAndId?>> listenAllGroupScheduleAndIdList(
+    String groupId,
+  ) {
+    return _groupScheduleAndIdListListenUseCase.listenAllGroupScheduleAndIdList(
+      groupId,
+    );
   }
 }

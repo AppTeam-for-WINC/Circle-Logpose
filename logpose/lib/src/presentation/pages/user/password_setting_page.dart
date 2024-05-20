@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/error_message/password_error_message_provider.dart';
+import '../../../domain/providers/error_message/password_error_message_provider.dart';
 
-import '../../../components/common/red_error_message.dart';
-import '../../../components/components/navigation_bar/password_setting_navigation_bar.dart';
-import '../../../components/components/password_setting/password_setting_section.dart';
-import '../../../components/components/password_setting/save_button.dart';
+import '../../components/common/red_error_message.dart';
+import '../../components/components/navigation_bar/password_setting_navigation_bar.dart';
+import '../../components/components/password_setting/password_setting_section.dart';
+import '../../components/components/password_setting/save_button.dart';
 
 class PasswordSettingPage extends ConsumerStatefulWidget {
   const PasswordSettingPage({super.key});

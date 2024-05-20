@@ -45,13 +45,15 @@ class _JoinDatePickerDialogState extends ConsumerState<JoinDatePickerDialog> {
     );
 
     Future<void> updateStartAt() async {
+      final memberScheduleId = memberScheduleController.scheduleId;
       final startAt = memberScheduleController.startAt;
-      await memberScheduleFacade.updateStartAt(groupScheduleId, startAt);
+      await memberScheduleFacade.updateStartAt(memberScheduleId, startAt);
     }
 
     Future<void> updateEndAt() async {
+      final memberScheduleId = memberScheduleController.scheduleId;
       final endAt = memberScheduleController.endAt;
-      await memberScheduleFacade.updateEndAt(groupScheduleId, endAt);
+      await memberScheduleFacade.updateEndAt(memberScheduleId, endAt);
     }
 
     void pop() {

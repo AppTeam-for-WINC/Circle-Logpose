@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/providers/group/group/watch_joined_group_exist_provider.dart';
+import '../../../domain/providers/group/group/listen_is_joined_group_exist_provider.dart';
 
 import '../../components/components/bottom_gradation/bottom_gradation.dart';
 import '../../components/components/schedule_card_list/schedule_card_list.dart';
@@ -19,7 +19,7 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final groupExist = ref.watch(watchJoinedGroupExistProvider);
+    final isJoinedGroupExist = ref.watch(listenIsJoinedGroupExistProvider);
 
     return Container(
       width: double.infinity,
@@ -38,16 +38,17 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
             child: const ScheduleCardList(),
           ),
           const Positioned(
-            bottom: 0, // 画面の底部に配置
+            bottom: 0,
             child: BottomGradation(),
           ),
-          if (groupExist is AsyncLoading)
+          if (isJoinedGroupExist is AsyncLoading)
             const Center(child: CupertinoActivityIndicator()),
-          if (groupExist is AsyncError)
-            Center(child: Text('Error: ${groupExist.error}')),
+          if (isJoinedGroupExist is AsyncError)
+            Center(child: Text('Error: ${isJoinedGroupExist.error}')),
 
           // グループが存在する場合のみボタンを表示
-          if (groupExist is AsyncData && groupExist.value == true)
+          if (isJoinedGroupExist is AsyncData &&
+              isJoinedGroupExist.value == true)
             Positioned(
               top: deviceHeight * 0.875,
               child: const ScheduleCreationButton(),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/providers/group/group/watch_joined_group_profile_provider.dart';
+import '../../../../../domain/providers/group/group/listen_joined_group_profile_provider.dart';
 import 'group_box/group_box.dart';
 
 class GridGroupList extends ConsumerStatefulWidget {
@@ -16,7 +16,7 @@ class _GridGroupListState extends ConsumerState<GridGroupList> {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-       final groupsProfile = ref.watch(watchJoinedGroupsProfileProvider);
+       final groupsProfile = ref.watch(listenJoinedGroupsProfileProvider);
 
     return SizedBox(
       width: deviceWidth,

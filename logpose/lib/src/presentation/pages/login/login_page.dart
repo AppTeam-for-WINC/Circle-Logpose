@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/common/loading_progress.dart';
-
 import '../../components/common/red_error_message.dart';
+import '../../components/common/text_field/email_field.dart';
+import '../../components/common/text_field/password_field.dart';
+
 import '../../components/components/app_logo_and_title/app_logo_and_title.dart';
 import '../../components/components/auth_button/login_button.dart';
 import '../../components/components/navigation_bar/auth_navigation_bar.dart';
 import '../../components/components/progress/progress_indicator.dart';
-import '../../components/components/text_field/email_field.dart';
-import '../../components/components/text_field/password_field.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});

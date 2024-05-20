@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../../domain/model/group_schedule_and_id_model.dart';
 
-import '../../../../../../../../../domain/providers/group/members/watch_group_member_profile_list.dart';
-import '../../../../../../../../../domain/providers/group/schedule/watch_group_schedule_and_id_provider.dart';
+import '../../../../../../../../../domain/providers/group/members/listen_group_member_profile_list.dart';
+import '../../../../../../../../../domain/providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
 
 import '../../../../../group_schedule_tile/group_schedule_tile.dart';
 
@@ -31,9 +31,9 @@ class _AsyncGroupScheduleListState
     final deviceWidth = MediaQuery.of(context).size.width;
     final groupId = widget.groupId;
     final asyncGroupScheduleList =
-        ref.watch(watchGroupScheduleAndIdProvider(groupId));
+        ref.watch(listenAllGroupScheduleAndIdListProvider(groupId));
     final asyncGroupMemberProfileList =
-        ref.watch(watchGroupMemberProfileListProvider(groupId));
+        ref.watch(listenGroupMemberProfileListProvider(groupId));
 
     Widget asyncGroupScheduleTile(GroupScheduleAndId groupScheduleData) {
       return asyncGroupMemberProfileList.when(

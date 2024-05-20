@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/entity/user_profile.dart';
 
-import '../../../../../domain/providers/group/members/watch_group_member_profile_list_provider.dart';
+import '../../../../../domain/providers/group/members/listen_group_member_profile_list_provider.dart';
 import '../../../../../domain/providers/user/fetch_user_profile_provider.dart';
 
 import '../../../../notifiers/set_group_member_list_notifier.dart';
@@ -82,7 +82,7 @@ class _DeleteMemberListState extends ConsumerState<DeleteMemberList> {
                                   ),
                               ref
                                   .watch(
-                                    watchGroupMembershipProfileListProvider(
+                                    listenGroupMembershipProfileListProvider(
                                       groupId,
                                     ),
                                   )

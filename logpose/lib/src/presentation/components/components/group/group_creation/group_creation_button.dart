@@ -3,26 +3,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/model/group_creator_params_model.dart';
+import '../../../../../domain/model/group_creator_params_model.dart';
 
-import '../../../../../../domain/providers/image_provider.dart';
-import '../../../../../../domain/providers/text_field/name_field_provider.dart';
+import '../../../../../domain/providers/image_provider.dart';
+import '../../../../../domain/providers/text_field/name_field_provider.dart';
 
-import '../../../../../../domain/usecase/facade/group_facade.dart';
+import '../../../../../domain/usecase/facade/group_facade.dart';
 
-import '../../../../../notifiers/set_group_member_list_notifier.dart';
+import '../../../../notifiers/set_group_member_list_notifier.dart';
 
-import '../../../../common/loading_progress.dart';
+import '../../../common/loading_progress.dart';
 
-import '../../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
 
-class CreateGroupButton extends ConsumerStatefulWidget {
-  const CreateGroupButton({super.key});
+class GroupCreationButton extends ConsumerStatefulWidget {
+  const GroupCreationButton({super.key});
   @override
-  ConsumerState createState() => _CreateGroupButtonState();
+  ConsumerState createState() => _GroupCreationButtonState();
 }
 
-class _CreateGroupButtonState extends ConsumerState<CreateGroupButton> {
+class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
   void _loadingProgress(bool loading) {
     LoadingProgressController(ref).loadingProgress = loading;
   }

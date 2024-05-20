@@ -26,7 +26,9 @@ abstract class IGroupMembershipRepository {
     String role,
   );
 
-  Stream<List<GroupMembership?>> watchAllWithUserId(String userDocId);
+  Stream<List<GroupMembership?>> listenAllMembershipListWithUserId(
+    String userDocId,
+  );
 
   Future<GroupMembership> fetch(String docId);
 

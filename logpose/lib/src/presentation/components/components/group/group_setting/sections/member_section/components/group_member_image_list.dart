@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../domain/providers/group/members/watch_group_admin_profile_list_provider.dart';
-import '../../../../../../../../domain/providers/group/members/watch_group_member_profile_list_provider.dart';
+import '../../../../../../../../domain/providers/group/members/listen_group_admin_profile_list_provider.dart';
+import '../../../../../../../../domain/providers/group/members/listen_group_member_profile_list_provider.dart';
 
 import '../../../../../../common/custom_image/custom_image.dart';
 
@@ -27,7 +27,7 @@ class _GroupMemberImageListState extends ConsumerState<GroupMemberImageList> {
 
     if (role == 'admin') {
       final groupAdminProfileList =
-          ref.watch(watchGroupAdminProfileListProvider(widget.groupId));
+          ref.watch(listenGroupAdminProfileListProvider(widget.groupId));
 
       return groupAdminProfileList.when(
         data: (adminProfiles) {
@@ -48,7 +48,7 @@ class _GroupMemberImageListState extends ConsumerState<GroupMemberImageList> {
       );
     } else if (role == 'membership') {
       final groupMembershipProfileList =
-          ref.watch(watchGroupMembershipProfileListProvider(widget.groupId));
+          ref.watch(listenGroupMembershipProfileListProvider(widget.groupId));
       return groupMembershipProfileList.when(
         data: (membershipProfiles) {
           return Row(

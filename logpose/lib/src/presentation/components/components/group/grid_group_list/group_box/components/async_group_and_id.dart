@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/providers/group/group/group_and_id_provider.dart';
+import '../../../../../../../domain/providers/group/group/listen_group_and_id_provider.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
 
@@ -11,7 +11,7 @@ class AsyncGroupAndId extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncGroupAndId = ref.watch(watchGroupAndIdProvider(groupId));
+    final asyncGroupAndId = ref.watch(listenGroupAndIdProvider(groupId));
     
     return asyncGroupAndId.when(
       data: (data) {

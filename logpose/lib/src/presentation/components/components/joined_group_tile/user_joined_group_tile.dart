@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/group/group/group_and_id_provider.dart';
+import '../../../../domain/providers/group/group/listen_group_and_id_provider.dart';
 
 import '../../common/custom_image/custom_cached_network_image.dart';
 
@@ -16,7 +16,7 @@ class UserJoinedGroupTile extends ConsumerStatefulWidget {
 class _UserJoinedGroupTileState extends ConsumerState<UserJoinedGroupTile> {
   @override
   Widget build(BuildContext context) {
-    final asyncGroupAndId = ref.watch(watchGroupAndIdProvider(widget.groupId));
+    final asyncGroupAndId = ref.watch(listenGroupAndIdProvider(widget.groupId));
 
     return asyncGroupAndId.when(
       data: (data) {
