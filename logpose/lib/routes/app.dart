@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../src/components/slide/slider/group_creation_and_list_tab_slider.dart';
-import '../src/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
-import '../src/views/login/login_page.dart';
-import '../src/views/signup/signup_page.dart';
-import '../src/views/start/start_page.dart';
+import '../src/presentation/components/components/slide/slider/group_creation_and_list_tab_slider.dart';
+import '../src/presentation/components/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../src/presentation/pages/login/login_page.dart';
+import '../src/presentation/pages/signup/signup_page.dart';
+import '../src/presentation/pages/start/start_page.dart';
 import 'app_controller.dart';
 
-class LogposeApp extends StatelessWidget {
+class LogposeApp extends ConsumerWidget {
   const LogposeApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CupertinoApp(
       localizationsDelegates: const [
         GlobalWidgetsLocalizations.delegate,
@@ -24,16 +25,16 @@ class LogposeApp extends StatelessWidget {
           primaryColor: CupertinoColors.white,
           textStyle: TextStyle(color: CupertinoColors.black),
           dateTimePickerTextStyle: TextStyle(color: CupertinoColors.black),
-          pickerTextStyle: TextStyle(color: CupertinoColors.black,),
+          pickerTextStyle: TextStyle(
+            color: CupertinoColors.black,
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,
-      supportedLocales: const [
-        Locale('ja'),
-      ],
+      supportedLocales: const [Locale('ja')],
       locale: const Locale('ja'),
       home: FutureBuilder(
-        future: firstPage(),
+        future: firstPage(ref),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const CupertinoActivityIndicator();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ResponseType { attendance, leavingEarly, lateness, absence }
+enum ResponseType { attendance, leaveEarly, lateness, absence }
 
 class ScheduleResponse {
   const ScheduleResponse();
@@ -13,7 +13,7 @@ class ScheduleResponse {
           size: 25,
           color: Colors.black,
         );
-      case ResponseType.leavingEarly:
+      case ResponseType.leaveEarly:
         return const Icon(
           Icons.sentiment_dissatisfied,
           size: 25,
@@ -38,7 +38,7 @@ class ScheduleResponse {
     switch (type) {
       case ResponseType.attendance:
         return const Text('出席', style: TextStyle(fontSize: 18));
-      case ResponseType.leavingEarly:
+      case ResponseType.leaveEarly:
         return const Text('早退', style: TextStyle(fontSize: 18));
       case ResponseType.lateness:
         return const Text('遅刻', style: TextStyle(fontSize: 18));
