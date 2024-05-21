@@ -1,25 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_member_schedule_repository.dart';
+
 import '../../../data/repository/database/member_schedule_repository.dart';
 
 import '../../entity/group_member_schedule.dart';
 
-final groupMemberScheduleUseCaseProvider = Provider<GroupMemberScheduleUseCase>(
-  (ref) => GroupMemberScheduleUseCase(ref: ref),
-);
+import '../../interface/group_member_schedule/i_group_member_schedule_use_case.dart';
 
-class GroupMemberScheduleUseCase {
-  const GroupMemberScheduleUseCase({required this.ref});
+final groupMemberScheduleUseCaseProvider =
+    Provider<IGroupMemberScheduleUseCase>((ref) {
+  final memberScheduleRepository =
+      ref.read(groupMemberScheduleRepositoryProvider);
+  return GroupMemberScheduleUseCase(
+    ref: ref,
+    memberScheduleRepository: memberScheduleRepository,
+  );
+});
+
+class GroupMemberScheduleUseCase implements IGroupMemberScheduleUseCase {
+  const GroupMemberScheduleUseCase({
+    required this.ref,
+    required this.memberScheduleRepository,
+  });
+
   final Ref ref;
+  final IGroupMemberScheduleRepository memberScheduleRepository;
 
+  @override
   Future<GroupMemberSchedule> fetchMemberSchedule(
     String memberScheduleId,
   ) async {
     try {
-      final memberScheduleRepository =
-          ref.read(groupMemberScheduleRepositoryProvider);
-
       final memberSchedule =
           await memberScheduleRepository.fetchMemberSchedule(memberScheduleId);
       if (memberSchedule == null) {
@@ -31,14 +44,13 @@ class GroupMemberScheduleUseCase {
     }
   }
 
+  @override
   Future<GroupMemberSchedule?> fetchMemberScheduleWithUserIdAndScheduleId(
     String userDocId,
     String scheduleId,
   ) async {
     try {
-      final memberScheduleRepository =
-          ref.read(groupMemberScheduleRepositoryProvider);
-      return memberScheduleRepository
+      return await memberScheduleRepository
           .fetchMemberScheduleWithUserIdAndScheduleId(
         userDocId: userDocId,
         scheduleId: scheduleId,

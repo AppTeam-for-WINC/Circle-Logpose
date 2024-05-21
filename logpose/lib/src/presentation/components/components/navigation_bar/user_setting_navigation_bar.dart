@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/usecase/facade/auth_facade.dart';
+import '../../../../app/facade/auth_facade.dart';
 
 import '../../../pages/start/start_page.dart';
 

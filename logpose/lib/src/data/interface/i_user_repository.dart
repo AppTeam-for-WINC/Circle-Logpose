@@ -1,4 +1,4 @@
-import '../entity/user_profile.dart';
+import '../../domain/entity/user_profile.dart';
 
 abstract class IUserRepository {
   Future<void> createUser({

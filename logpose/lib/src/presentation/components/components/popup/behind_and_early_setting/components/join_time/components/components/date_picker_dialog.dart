@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
+import '../../../../../../../../../app/facade/group_member_schedule_facade.dart';
 import '../../../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 class JoinDatePickerDialog extends ConsumerStatefulWidget {

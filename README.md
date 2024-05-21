@@ -176,77 +176,173 @@ Used: pedantic_mono
 
 ```
 lib
-├── firebase_options.dart
-├── main.dart
+├── exceptions
+│   ├── group
+│   └── user
 ├── routes
 ├── src
-│   ├── common
-│   │   ├── back_to_page_button.dart
-│   │   ├── custom_image
-│   │   ├── custom_text.dart
-│   │   ├── error_messages.dart
-│   │   ├── group_image_view.dart
-│   │   ├── loading_progress.dart
-│   │   ├── photo_button.dart
-│   │   ├── progress_indicator.dart
-│   │   ├── red_error_message.dart
-│   │   └── schedule_color_palette.dart
-│   ├── components
-│   │   ├── accouunt_id_setting
-│   │   ├── app_logo_and_title
-│   │   ├── auth_button
-│   │   ├── bottom_gradation
-│   │   ├── email_setting
-│   │   ├── group
-│   │   ├── joined_group_tile
-│   │   ├── navigation_bar
-│   │   ├── password_setting
-│   │   ├── popup
-│   │   ├── progress
-│   │   ├── schedule_card_list
-│   │   ├── schedule_creation_button
-│   │   ├── slide
-│   │   ├── start_button
-│   │   ├── text_field
-│   │   ├── user
-│   │   └── user_setting
-│   ├── controllers
-│   │   ├── controllers
-│   │   │   ├── auth
+│   ├── data
+│   │   ├── mapper
+│   │   ├── model
+│   │   └── repository
+│   │       ├── auth
+│   │       ├── database
+│   │       └── storage
+│   ├── device
+│   ├── domain
+│   │   ├── entity
+│   │   ├── interface
+│   │   ├── model
+│   │   ├── providers
+│   │   │   ├── error_message
+│   │   │   ├── group
+│   │   │   │   ├── group
+│   │   │   │   ├── members
+│   │   │   │   ├── mode
+│   │   │   │   └── schedule
+│   │   │   ├── sort
+│   │   │   ├── text_field
+│   │   │   └── user
+│   │   └── usecase
+│   │       ├── facade
+│   │       ├── usecase_auth
+│   │       ├── usecase_group
+│   │       │   └── helper
+│   │       ├── usecase_group_invitation
+│   │       ├── usecase_group_membership
+│   │       ├── usecase_group_schedule
+│   │       ├── usecase_member_schedule
+│   │       └── usecase_user
+│   ├── presentation
+│   │   ├── components
+│   │   │   ├── common
+│   │   │   │   ├── custom_image
+│   │   │   │   └── text_field
+│   │   │   └── components
+│   │   │       ├── accouunt_id_setting
+│   │   │       ├── app_logo_and_title
+│   │   │       ├── auth_button
+│   │   │       ├── bottom_gradation
+│   │   │       ├── email_setting
+│   │   │       ├── group
+│   │   │       │   ├── create_new_group_button
+│   │   │       │   ├── grid_group_list
+│   │   │       │   │   └── group_box
+│   │   │       │   │       └── components
+│   │   │       │   ├── group_creation
+│   │   │       │   │   └── member_section
+│   │   │       │   │       └── components
+│   │   │       │   ├── group_member_tile
+│   │   │       │   │   └── components
+│   │   │       │   ├── group_schedule_tile
+│   │   │       │   │   └── components
+│   │   │       │   ├── group_setting
+│   │   │       │   │   ├── member_section
+│   │   │       │   │   │   └── components
+│   │   │       │   │   ├── save
+│   │   │       │   │   └── sections
+│   │   │       │   │       ├── member_section
+│   │   │       │   │       │   └── components
+│   │   │       │   │       └── schedule_section
+│   │   │       │   │           └── components
+│   │   │       │   │               ├── async_group_schedule_list
+│   │   │       │   │               └── switch
+│   │   │       │   └── switch
+│   │   │       ├── joined_group_tile
+│   │   │       ├── navigation_bar
+│   │   │       ├── password_setting
+│   │   │       ├── popup
+│   │   │       │   ├── add_member
+│   │   │       │   │   └── components
+│   │   │       │   │       ├── invitation_link
+│   │   │       │   │       ├── search_field
+│   │   │       │   │       └── user_profile
+│   │   │       │   ├── behind_and_early_setting
+│   │   │       │   │   └── components
+│   │   │       │   │       ├── join_time
+│   │   │       │   │       │   └── components
+│   │   │       │   │       │       └── components
+│   │   │       │   │       ├── response_icon_and_text
+│   │   │       │   │       └── title
+│   │   │       │   ├── components
+│   │   │       │   │   ├── background
+│   │   │       │   │   ├── detail
+│   │   │       │   │   ├── header
+│   │   │       │   │   ├── place
+│   │   │       │   │   ├── schedule_color
+│   │   │       │   │   ├── schedule_detail
+│   │   │       │   │   ├── schedule_footer
+│   │   │       │   │   ├── schedule_group_picker_button
+│   │   │       │   │   ├── schedule_group_selector
+│   │   │       │   │   │   └── components
+│   │   │       │   │   ├── schedule_place
+│   │   │       │   │   ├── schedule_time
+│   │   │       │   │   │   └── components
+│   │   │       │   │   ├── schedule_time_view
+│   │   │       │   │   ├── schedule_title
+│   │   │       │   │   ├── title
+│   │   │       │   │   └── user_name
+│   │   │       │   ├── delete_member_list
+│   │   │       │   ├── group_filtering
+│   │   │       │   │   └── components
+│   │   │       │   ├── schedule_creation
+│   │   │       │   ├── schedule_detail_confirm
+│   │   │       │   │   └── components
+│   │   │       │   │       ├── detail
+│   │   │       │   │       ├── group_image
+│   │   │       │   │       ├── member
+│   │   │       │   │       │   └── components
+│   │   │       │   │       ├── place
+│   │   │       │   │       ├── response_icon_and_text.dart
+│   │   │       │   │       └── title
+│   │   │       │   ├── schedule_join_member
+│   │   │       │   │   └── components
+│   │   │       │   │       ├── member
+│   │   │       │   │       │   └── components
+│   │   │       │   │       │       └── components
+│   │   │       │   │       └── title
+│   │   │       │   └── update_schedule
+│   │   │       ├── progress
+│   │   │       ├── schedule_card_list
+│   │   │       │   └── components
+│   │   │       │       └── components
+│   │   │       │           ├── absence
+│   │   │       │           ├── attendance
+│   │   │       │           ├── date_label
+│   │   │       │           ├── lateness
+│   │   │       │           ├── leave_early
+│   │   │       │           ├── move_to_page
+│   │   │       │           └── time_view
+│   │   │       ├── schedule_creation_button
+│   │   │       │   └── create_schedule
+│   │   │       ├── schedule_sort_button
+│   │   │       ├── slide
+│   │   │       │   ├── slider
+│   │   │       │   ├── src
+│   │   │       │   │   └── utils
+│   │   │       │   └── tabs
+│   │   │       ├── start_button
+│   │   │       ├── user
+│   │   │       └── user_setting
+│   │   │           └── sections
+│   │   ├── notifiers
+│   │   ├── pages
 │   │   │   ├── group
 │   │   │   ├── login
-│   │   │   ├── tab
+│   │   │   ├── schedule
+│   │   │   ├── signup
+│   │   │   ├── start
 │   │   │   └── user
-│   │   ├── providers
-│   │   │   ├── error
-│   │   │   ├── group
-│   │   │   ├── text_field
-│   │   │   ├── user
-│   │   │   └── utils
-│   │   └── validation
-│   ├── entities
-│   │   └── device
-│   ├── models
-│   │   ├── auth
-│   │   ├── custom
-│   │   └── database
-│   ├── services
-│   │   ├── auth
-│   │   ├── database
-│   │   └── storage
-│   ├── utils
-│   │   ├── clipboard
-│   │   ├── color
-│   │   ├── schedule
-│   │   └── time
-│   └── views
-│       ├── group
-│       ├── login
+│   │   └── states
+│   └── utils
+│       ├── clipboard
+│       ├── color
 │       ├── schedule
-│       ├── signup
-│       ├── start
-│       └── user
+│       ├── tab
+│       └── time
 ├── test
 └── validation
+    └── validator
+        └── validation
 
 183 directories, 255 files

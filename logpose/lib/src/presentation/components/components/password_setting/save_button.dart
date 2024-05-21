@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/facade/auth_facade.dart';
+
 import '../../../../domain/providers/error_message/password_error_message_provider.dart';
 import '../../../../domain/providers/text_field/new_password_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
-
-import '../../../../domain/usecase/facade/auth_facade.dart';
 
 import '../../../pages/user/user_setting_page.dart';
 

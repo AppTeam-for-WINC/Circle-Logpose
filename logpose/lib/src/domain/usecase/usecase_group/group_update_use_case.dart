@@ -6,12 +6,19 @@ import '../../../../exceptions/custom_exception.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_group_repository.dart';
+
 import '../../../data/repository/database/group_repository.dart';
 
 import '../../entity/group_member_schedule.dart';
 import '../../entity/user_profile.dart';
 
-import '../../interface/i_group_repository.dart';
+import '../../interface/group/i_group_update_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_creation_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_use_case.dart';
+import '../../interface/group_membership/i_group_member_creation_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_id_use_case.dart';
+import '../../interface/user/i_user_id_use_case.dart';
 
 import '../../model/group_setting_params_model.dart';
 
@@ -20,7 +27,7 @@ import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart'
 import '../usecase_member_schedule/group_member_schedule_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
 
-final groupUpdateUseCaseProvider = Provider<GroupUpdateUseCase>(
+final groupUpdateUseCaseProvider = Provider<IGroupUpdateUseCase>(
   (ref) {
     final userIdUseCase = ref.read(userIdUseCaseProvider);
     final memberCreationUseCase = ref.read(groupMemberCreationUseCaseProvider);
@@ -43,7 +50,7 @@ final groupUpdateUseCaseProvider = Provider<GroupUpdateUseCase>(
   },
 );
 
-class GroupUpdateUseCase {
+class GroupUpdateUseCase implements IGroupUpdateUseCase{
   const GroupUpdateUseCase({
     required this.userIdUseCase,
     required this.memberCreationUseCase,
@@ -54,15 +61,16 @@ class GroupUpdateUseCase {
     required this.validator,
   });
 
-  final UserIdUseCase userIdUseCase;
-  final GroupMemberCreationUseCase memberCreationUseCase;
-  final GroupMemberScheduleCreationUseCase memberScheduleCreationUseCase;
-  final GroupMemberScheduleUseCase memberScheduleUseCase;
-  final GroupScheduleIdUseCase groupScheduleIdUseCase;
+  final IUserIdUseCase userIdUseCase;
+  final IGroupMemberCreationUseCase memberCreationUseCase;
+  final IGroupMemberScheduleCreationUseCase memberScheduleCreationUseCase;
+  final IGroupMemberScheduleUseCase memberScheduleUseCase;
+  final IGroupScheduleIdUseCase groupScheduleIdUseCase;
 
   final IGroupRepository groupRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> updateGroup(GroupSettingParams groupData) async {
     try {
       return await _attemptToUpdate(groupData);

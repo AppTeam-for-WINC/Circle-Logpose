@@ -3,10 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/facade/auth_facade.dart';
+
 import '../../../../domain/providers/text_field/email_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
-
-import '../../../../domain/usecase/facade/auth_facade.dart';
 
 import '../../common/loading_progress.dart';
 
@@ -69,7 +69,7 @@ class _LoginService {
   Future<void> performLogin(String email, String password) async {
     _updateLoadingStatus(true);
     final authfacade = ref.read(authFacadeProvider);
-    final errorMessage = await authfacade.login(email, password);
+    final errorMessage = await authfacade.logIn(email, password);
     _updateLoadingStatus(false);
 
     if (errorMessage != null) {

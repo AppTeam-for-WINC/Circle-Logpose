@@ -3,11 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/facade/auth_facade.dart';
 
 import '../../../../domain/providers/text_field/email_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
-
-import '../../../../domain/usecase/facade/auth_facade.dart';
 
 import '../../../pages/login/login_page.dart';
 

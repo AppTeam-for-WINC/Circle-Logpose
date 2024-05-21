@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../app/facade/group_schedule_facade.dart';
+
 import '../../../../../../domain/model/schedule_params_model.dart';
 
 import '../../../../../../domain/providers/error_message/schedule_error_msg_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_detail_controller_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_place_controller_provider.dart';
 import '../../../../../../domain/providers/text_field/schedule_title_controller_provider.dart';
-
-import '../../../../../../domain/usecase/facade/group_schedule_facade.dart';
 
 import '../../../../../notifiers/group_schedule_notifier.dart';
 

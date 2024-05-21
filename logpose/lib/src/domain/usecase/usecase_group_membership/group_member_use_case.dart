@@ -1,38 +1,49 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_membership_repository.dart';
+
 import '../../../data/repository/database/group_membership_repository.dart';
 
 import '../../entity/user_profile.dart';
 
-import '../../interface/i_group_membership_repository.dart';
-
+import '../../interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
+import '../../interface/group_membership/i_group_member_id_use_case.dart';
+import '../../interface/group_membership/i_group_member_use_case.dart';
+import '../../interface/user/i_user_profile_use_case.dart';
+import '../usecase_member_schedule/group_member_schedule_id_use_case.dart';
 import '../usecase_user/user_profile_use_case.dart';
 import 'group_member_id_use_case.dart';
 
-final groupMemberUseCaseProvider = Provider<GroupMemberUseCase>((ref) {
-  final memberRepository = ref.read(groupMembershipRepositoryProvider);
+final groupMemberUseCaseProvider = Provider<IGroupMemberUseCase>((ref) {
   final userProfileUseCase = ref.read(userProfileUseCaseProvider);
   final groupMemberIdUseCase = ref.read(groupMemberIdUseCaseProvider);
+  final memberScheduleIdUseCase =
+      ref.read(groupMemberScheduleIdUseCaseProvider);
+  final memberRepository = ref.read(groupMembershipRepositoryProvider);
 
   return GroupMemberUseCase(
-    memberRepository: memberRepository,
     userProfileUseCase: userProfileUseCase,
     groupMemberIdUseCase: groupMemberIdUseCase,
+    memberScheduleIdUseCase: memberScheduleIdUseCase,
+    memberRepository: memberRepository,
   );
 });
 
-class GroupMemberUseCase {
+class GroupMemberUseCase implements IGroupMemberUseCase {
   const GroupMemberUseCase({
-    required this.memberRepository,
     required this.userProfileUseCase,
     required this.groupMemberIdUseCase,
+    required this.memberScheduleIdUseCase,
+    required this.memberRepository,
   });
 
+  final IUserProfileUseCase userProfileUseCase;
+  final IGroupMemberIdUseCase groupMemberIdUseCase;
+  final IGroupMemberScheduleIdUseCase memberScheduleIdUseCase;
   final IGroupMembershipRepository memberRepository;
-  final UserProfileUseCase userProfileUseCase;
-  final GroupMemberIdUseCase groupMemberIdUseCase;
 
+  @override
   Future<List<UserProfile?>> fetchUserProfilesNotAbsentList(
     List<String?> membershipIdList,
     String scheduleId,
@@ -99,7 +110,7 @@ class GroupMemberUseCase {
     String scheduleId,
     String userId,
   ) async {
-    return groupMemberIdUseCase.fetchUserIdWithScheduleIdAndUserIdByTerm(
+    return memberScheduleIdUseCase.fetchUserIdWithScheduleIdAndUserIdByTerm(
       scheduleId,
       userId,
     );

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/facade/group_schedule_facade.dart';
+
 import '../../domain/entity/group_schedule.dart';
 
 import '../../domain/providers/text_field/schedule_detail_controller_provider.dart';
 import '../../domain/providers/text_field/schedule_place_controller_provider.dart';
 import '../../domain/providers/text_field/schedule_title_controller_provider.dart';
-
-import '../../domain/usecase/facade/group_schedule_facade.dart';
 
 import '../../utils/color/color_exchanger.dart';
 import '../states/group_schedule_state.dart';

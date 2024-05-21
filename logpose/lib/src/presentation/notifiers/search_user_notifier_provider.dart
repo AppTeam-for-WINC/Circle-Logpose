@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../validation/validator/validator_controller.dart';
 
-import '../../domain/entity/user_profile.dart';
+import '../../app/facade/auth_facade.dart';
+import '../../app/facade/group_membership_facade.dart';
+import '../../app/facade/user_service_facade.dart';
 
-import '../../domain/usecase/facade/group_membership_facade.dart';
-import '../../domain/usecase/facade/user_service_facade.dart';
+import '../../domain/entity/user_profile.dart';
 
 final searchUserNotifierProvider = StateNotifierProvider.family
     .autoDispose<_SearchUserNotifier, UserProfile?, String?>(
@@ -61,8 +62,9 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _memberAddController(String? groupId) async {
-    final myDocId = await _userServiceFacade.fetchCurrentUserId();
-    final myAccount = await _userServiceFacade.fetchUserProfile(myDocId);
+    final authFacade = ref.read(authFacadeProvider);
+    final userId = await authFacade.fetchCurrentUserId();
+    final myAccount = await _userServiceFacade.fetchUserProfile(userId);
     final accountId = accountIdController.text;
     user = await _userServiceFacade.fetchUserProfileWithAccountId(accountId);
 

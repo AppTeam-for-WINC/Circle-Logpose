@@ -1,17 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../entity/group_member_schedule.dart';
-import '../../entity/user_profile.dart';
+import '../../domain/entity/group_member_schedule.dart';
+import '../../domain/entity/user_profile.dart';
 
-import '../../model/schedule_response_params_model.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_creation_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_delete_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_init_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_listen_reponsed_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_update_use_case.dart';
+import '../../domain/interface/group_member_schedule/i_group_member_schedule_use_case.dart';
 
-import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_delete_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_id_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_init_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_listen_responsed_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_update_use_case.dart';
-import '../usecase_member_schedule/group_member_schedule_use_case.dart';
+import '../../domain/model/schedule_response_params_model.dart';
+
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_creation_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_delete_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_id_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_init_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_listen_responsed_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_update_use_case.dart';
+import '../../domain/usecase/usecase_member_schedule/group_member_schedule_use_case.dart';
 
 final groupMemberScheduleFacadeProvider = Provider<GroupMemberScheduleFacade>(
   (ref) => GroupMemberScheduleFacade(ref: ref),
@@ -35,13 +43,13 @@ class GroupMemberScheduleFacade {
             ref.read(groupMemberScheduleListenResponsedUseCaseProvider);
 
   final Ref ref;
-  final GroupMemberScheduleCreationUseCase _groupMemberScheduleCreationUseCase;
-  final GroupMemberScheduleIdUseCase _groupMemberScheduleIdUseCase;
-  final GroupMemberScheduleUseCase _groupMemberScheduleUseCase;
-  final GroupMemberScheduleUpdateUseCase _groupMemberScheduleUpdateUseCase;
-  final GroupMemberScheduleDeleteUseCase _groupMemberScheduleDeleteUseCase;
-  final GroupMemberScheduleInitUseCase _groupMemberScheduleInitUseCase;
-  final GroupMemberScheduleListenResponsedUseCase
+  final IGroupMemberScheduleCreationUseCase _groupMemberScheduleCreationUseCase;
+  final IGroupMemberScheduleIdUseCase _groupMemberScheduleIdUseCase;
+  final IGroupMemberScheduleUseCase _groupMemberScheduleUseCase;
+  final IGroupMemberScheduleUpdateUseCase _groupMemberScheduleUpdateUseCase;
+  final IGroupMemberScheduleDeleteUseCase _groupMemberScheduleDeleteUseCase;
+  final IGroupMemberScheduleInitUseCase _groupMemberScheduleInitUseCase;
+  final IGroupMemberScheduleListenResponsedUseCase
       _groupMemberScheduleListenResponsedUseCase;
 
   Future<void> createMemberSchedule(String scheduleId, String userId) async {
@@ -69,10 +77,6 @@ class GroupMemberScheduleFacade {
       groupScheduleId,
       userDocId,
     );
-  }
-
-  Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
-    return _groupMemberScheduleIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
   }
 
   Future<GroupMemberSchedule> fetchMemberSchedule(

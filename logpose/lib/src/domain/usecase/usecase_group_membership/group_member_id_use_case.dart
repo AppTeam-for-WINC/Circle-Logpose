@@ -1,41 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_membership_repository.dart';
+
 import '../../../data/repository/database/group_membership_repository.dart';
-import '../../../data/repository/database/member_schedule_repository.dart';
 
-import '../../interface/i_group_member_schedule_repository.dart';
-import '../../interface/i_group_membership_repository.dart';
-
+import '../../interface/group_membership/i_group_member_id_use_case.dart';
+import '../../interface/user/i_user_id_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
 
-final groupMemberIdUseCaseProvider = Provider<GroupMemberIdUseCase>((ref) {
+final groupMemberIdUseCaseProvider = Provider<IGroupMemberIdUseCase>((ref) {
   final userIdUseCase = ref.read(userIdUseCaseProvider);
   final memberRepository = ref.read(groupMembershipRepositoryProvider);
-  final memberScheduleRepository =
-      ref.read(groupMemberScheduleRepositoryProvider);
 
   return GroupMemberIdUseCase(
     ref: ref,
     userIdUseCase: userIdUseCase,
     memberRepository: memberRepository,
-    memberScheduleRepository: memberScheduleRepository,
   );
 });
 
-class GroupMemberIdUseCase {
+class GroupMemberIdUseCase implements IGroupMemberIdUseCase {
   const GroupMemberIdUseCase({
     required this.ref,
     required this.userIdUseCase,
     required this.memberRepository,
-    required this.memberScheduleRepository,
   });
 
   final Ref ref;
-  final UserIdUseCase userIdUseCase;
+  final IUserIdUseCase userIdUseCase;
   final IGroupMembershipRepository memberRepository;
-  final IGroupMemberScheduleRepository memberScheduleRepository;
 
+  @override
   Future<String> fetchUserIdWithMembershipId(String membershipId) async {
     try {
       return await memberRepository.fetchUserIdWithMembershipId(membershipId);
@@ -44,21 +40,16 @@ class GroupMemberIdUseCase {
     }
   }
 
-  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
-    String scheduleId,
-    String userId,
-  ) async {
+  @override
+  Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
     try {
-      return await memberScheduleRepository
-          .fetchUserIdWithScheduleIdAndUserIdByTerm(
-        scheduleId,
-        userId,
-      );
+      return await memberRepository.fetchAllUserDocIdWithGroupId(groupId);
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch user ID. ${e.message}');
+      throw Exception('Error: failed to fetch all user doc Id. ${e.message}');
     }
   }
 
+  @override
   Future<List<String>> fetchAllMembershipIdList(String groupId) async {
     try {
       return await memberRepository.listenAllMembershipIdList(groupId).first;
@@ -69,6 +60,7 @@ class GroupMemberIdUseCase {
     }
   }
 
+  @override
   Future<String> fetchMembershipIdWithGroupIdAndUserId(
     String groupId,
     String accountId,

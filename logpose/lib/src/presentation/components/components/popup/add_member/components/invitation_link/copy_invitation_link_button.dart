@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/usecase/facade/group_invitation_facade.dart';
+import '../../../../../../../app/facade/group_invitation_facade.dart';
 
 import '../../../../../../../utils/clipboard/copy_to_clipboard.dart';
 

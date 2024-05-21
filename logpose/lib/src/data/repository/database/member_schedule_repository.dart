@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entity/group_member_schedule.dart';
 
-import '../../../domain/interface/i_group_member_schedule_repository.dart';
+import '../../interface/i_group_member_schedule_repository.dart';
 
 import '../../mapper/group_member_schedule_mapper.dart';
 

@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/facade/group_member_schedule_facade.dart';
+
+import '../../../data/interface/i_group_schedule_repository.dart';
+
 import '../../../data/repository/database/group_schedule_repository.dart';
 
 import '../../entity/user_profile.dart';
+import '../../interface/group_schedule/i_group_schedule_delete_use_case.dart';
 
-import '../../interface/i_group_schedule_repository.dart';
-
-import '../facade/group_member_schedule_facade.dart';
 
 final groupScheduleDeleteUseCaseProvider =
-    Provider<GroupScheduleDeleteUseCase>((ref) {
+    Provider<IGroupScheduleDeleteUseCase>((ref) {
   final memberScheduleUseCase = ref.read(groupMemberScheduleFacadeProvider);
   final scheduleRepository = ref.read(groupScheduleRepositoryProvider);
 
@@ -20,7 +22,7 @@ final groupScheduleDeleteUseCaseProvider =
   );
 });
 
-class GroupScheduleDeleteUseCase {
+class GroupScheduleDeleteUseCase implements IGroupScheduleDeleteUseCase {
   const GroupScheduleDeleteUseCase({
     required this.memberScheduleUseCase,
     required this.scheduleRepository,
@@ -29,6 +31,7 @@ class GroupScheduleDeleteUseCase {
   final GroupMemberScheduleFacade memberScheduleUseCase;
   final IGroupScheduleRepository scheduleRepository;
 
+  @override
   Future<void> deleteSchedule(
     List<UserProfile?> groupMemberList,
     String groupScheduleId,

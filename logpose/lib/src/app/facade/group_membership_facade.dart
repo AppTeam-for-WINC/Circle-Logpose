@@ -1,17 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../entity/group_membership.dart';
-import '../../entity/user_profile.dart';
+import '../../domain/entity/group_membership.dart';
+import '../../domain/entity/user_profile.dart';
 
-import '../usecase_group_membership/group_member_creation_use_case.dart';
-import '../usecase_group_membership/group_member_delete_use_case.dart';
-import '../usecase_group_membership/group_member_exist_use_case.dart';
-import '../usecase_group_membership/group_member_id_listen_use_case.dart';
-import '../usecase_group_membership/group_member_id_use_case.dart';
-import '../usecase_group_membership/group_member_listen_by_role_use_case.dart';
-import '../usecase_group_membership/group_member_listen_not_absence_liste_use_case.dart';
-import '../usecase_group_membership/group_member_listen_use_case.dart';
-import '../usecase_group_membership/group_member_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_creation_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_delete_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_exist_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_id_listen_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_id_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_listen_by_role_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_listen_not_absence_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_listen_use_case.dart';
+import '../../domain/interface/group_membership/i_group_member_use_case.dart';
+
+import '../../domain/usecase/usecase_group_membership/group_member_creation_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_delete_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_exist_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_id_listen_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_id_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_listen_by_role_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_listen_not_absence_liste_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_listen_use_case.dart';
+import '../../domain/usecase/usecase_group_membership/group_member_use_case.dart';
 
 final groupMembershipFacadeProvider = Provider<GroupMembershipFacade>(
   (ref) => GroupMembershipFacade(ref: ref),
@@ -34,15 +44,15 @@ class GroupMembershipFacade {
         _groupMemberExistUseCase = ref.read(groupMemberExistUseCaseProvider);
 
   final Ref ref;
-  final GroupMemberCreationUseCase _groupMemberCreationUseCase;
-  final GroupMemberIdUseCase _groupMemberIdUseCase;
-  final GroupMemberUseCase _groupMemberUseCase;
-  final GroupMemberIdListenUseCase _groupMemberIdListenUseCase;
-  final GroupMemberListenUseCase _groupMemberListenUseCase;
-  final GroupMemberListenByRoleUseCase _groupMemberListenByRoleUseCase;
-  final GroupMemberListenNotAbsenceUseCase _groupMemberListenNotAbsenceUseCase;
-  final GroupMemberDeleteUseCase _groupMemberDeleteUseCase;
-  final GroupMemberExistUseCase _groupMemberExistUseCase;
+  final IGroupMemberCreationUseCase _groupMemberCreationUseCase;
+  final IGroupMemberIdUseCase _groupMemberIdUseCase;
+  final IGroupMemberUseCase _groupMemberUseCase;
+  final IGroupMemberIdListenUseCase _groupMemberIdListenUseCase;
+  final IGroupMemberListenUseCase _groupMemberListenUseCase;
+  final IGroupMemberListenByRoleUseCase _groupMemberListenByRoleUseCase;
+  final IGroupMemberListenNotAbsenceUseCase _groupMemberListenNotAbsenceUseCase;
+  final IGroupMemberDeleteUseCase _groupMemberDeleteUseCase;
+  final IGroupMemberExistUseCase _groupMemberExistUseCase;
 
   Future<void> createAdminRole(String userDocId, String groupId) async {
     await _groupMemberCreationUseCase.createAdminRole(userDocId, groupId);
@@ -72,14 +82,8 @@ class GroupMembershipFacade {
     return _groupMemberIdUseCase.fetchUserIdWithMembershipId(membershipId);
   }
 
-  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
-    String scheduleId,
-    String userId,
-  ) async {
-    return _groupMemberIdUseCase.fetchUserIdWithScheduleIdAndUserIdByTerm(
-      scheduleId,
-      userId,
-    );
+  Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
+    return _groupMemberIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
   }
 
   Future<String> fetchMembershipIdWithGroupIdAndUserId(

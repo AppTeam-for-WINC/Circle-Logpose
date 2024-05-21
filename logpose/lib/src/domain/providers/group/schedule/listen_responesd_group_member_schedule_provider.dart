@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../entity/group_member_schedule.dart';
+import '../../../../app/facade/group_member_schedule_facade.dart';
 
-import '../../../usecase/facade/group_member_schedule_facade.dart';
+import '../../../entity/group_member_schedule.dart';
 
 final listenResponsedGroupMemberScheduleProvider = StreamProvider.family
     .autoDispose<GroupMemberSchedule?, ({String scheduleId, String accountId})>(

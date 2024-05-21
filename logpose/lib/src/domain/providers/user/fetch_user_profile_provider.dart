@@ -1,12 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/facade/auth_facade.dart';
+import '../../../app/facade/user_service_facade.dart';
+
 import '../../entity/user_profile.dart';
 
-import '../../usecase/facade/user_service_facade.dart';
-
 final fetchUserProfileProvider = FutureProvider<UserProfile?>((ref) async {
-  final userFacade = ref.read(userServiceFacadeProvider);
-  final userId = await userFacade.fetchCurrentUserId();
+  final authFacade = ref.read(authFacadeProvider);
+  final userId = await authFacade.fetchCurrentUserId();
   final userServiceFacade = ref.read(userServiceFacadeProvider);
   
   return userServiceFacade.fetchUserProfile(userId);

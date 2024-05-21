@@ -1,4 +1,4 @@
-import '../entity/group_invitation.dart';
+import '../../domain/entity/group_invitation.dart';
 
 abstract class IGroupInvitationRepository {
   Future<GroupInvitation> create(String groupId);

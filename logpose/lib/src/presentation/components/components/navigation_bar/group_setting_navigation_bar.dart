@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/facade/group_facade.dart';
+
 import '../../../../domain/entity/user_profile.dart';
 
 import '../../../../domain/model/group_id_and_schedule_id_and_member_list_model.dart';
@@ -8,8 +10,6 @@ import '../../../../domain/model/group_schedule_and_id_model.dart';
 
 import '../../../../domain/providers/group/members/listen_group_member_profile_list.dart';
 import '../../../../domain/providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
-
-import '../../../../domain/usecase/facade/group_facade.dart';
 
 import '../../common/back_to_page_button.dart';
 

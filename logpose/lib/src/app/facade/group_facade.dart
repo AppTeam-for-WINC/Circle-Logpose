@@ -1,23 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../entity/group_profile.dart';
+import '../../domain/entity/group_profile.dart';
 
-import '../../model/group_and_id_model.dart';
-import '../../model/group_creator_params_model.dart';
-import '../../model/group_id_and_schedule_id_and_member_list_model.dart';
-import '../../model/group_profile_and_schedule_and_id_model.dart';
-import '../../model/group_setting_params_model.dart';
+import '../../domain/interface/group/i_group_and_id_listen_use_case.dart';
+import '../../domain/interface/group/i_group_and_id_use_case.dart';
+import '../../domain/interface/group/i_group_and_schedule_and_id_list_listen_use_case.dart';
+import '../../domain/interface/group/i_group_and_schedule_sorted_listen_use_case.dart';
+import '../../domain/interface/group/i_group_creation_use_case.dart';
+import '../../domain/interface/group/i_group_delete_use_case.dart';
+import '../../domain/interface/group/i_group_update_use_case.dart';
+import '../../domain/interface/group/i_group_use_case.dart';
 
-import '../../providers/sort/sort_option_provider.dart';
+import '../../domain/model/group_and_id_model.dart';
+import '../../domain/model/group_creator_params_model.dart';
+import '../../domain/model/group_id_and_schedule_id_and_member_list_model.dart';
+import '../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../domain/model/group_setting_params_model.dart';
 
-import '../usecase_group/group_and_id_listen_use_case.dart';
-import '../usecase_group/group_and_id_use_case.dart';
-import '../usecase_group/group_and_schedule_and_id_list_listen_use_case.dart';
-import '../usecase_group/group_and_schedule_sorted_stream_use_case.dart';
-import '../usecase_group/group_creation_use_case.dart';
-import '../usecase_group/group_delete_use_case.dart';
-import '../usecase_group/group_update_use_case.dart';
-import '../usecase_group/group_use_case.dart';
+import '../../domain/providers/sort/sort_option_provider.dart';
+
+import '../../domain/usecase/usecase_group/group_and_id_listen_use_case.dart';
+import '../../domain/usecase/usecase_group/group_and_id_use_case.dart';
+import '../../domain/usecase/usecase_group/group_and_schedule_and_id_list_listen_use_case.dart';
+import '../../domain/usecase/usecase_group/group_and_schedule_sorted_stream_use_case.dart';
+import '../../domain/usecase/usecase_group/group_creation_use_case.dart';
+import '../../domain/usecase/usecase_group/group_delete_use_case.dart';
+import '../../domain/usecase/usecase_group/group_update_use_case.dart';
+import '../../domain/usecase/usecase_group/group_use_case.dart';
 
 final groupFacadeProvider = Provider<GroupFacade>(
   (ref) => GroupFacade(ref: ref),
@@ -34,18 +43,18 @@ class GroupFacade {
         _groupUpdateUseCase = ref.read(groupUpdateUseCaseProvider),
         _groupDeleteUseCase = ref.read(groupDeleteUseCaseProvider),
         _groupAndScheduleSortedUseCase =
-            ref.read(groupAndScheduleSortedStreamUseCaseProvider);
+            ref.read(groupAndScheduleSortedListenUseCaseProvider);
 
   final Ref ref;
-  final GroupCreationUseCase _groupCreationUseCase;
-  final GroupUseCase _groupUseCase;
-  final GroupAndIdUseCase _groupAndIdUseCase;
-  final GroupAndIdListenUseCase _groupAndIdListenUseCase;
-  final GroupAndScheduleAndIdListListenUseCase
+  final IGroupCreationUseCase _groupCreationUseCase;
+  final IGroupUseCase _groupUseCase;
+  final IGroupAndIdUseCase _groupAndIdUseCase;
+  final IGroupAndIdListenUseCase _groupAndIdListenUseCase;
+  final IGroupAndScheduleAndIdListListenUseCase
       _groupAndScheduleAndIdListListenUseCase;
-  final GroupUpdateUseCase _groupUpdateUseCase;
-  final GroupDeleteUseCase _groupDeleteUseCase;
-  final GroupAndScheduleSortedStreamUseCase _groupAndScheduleSortedUseCase;
+  final IGroupUpdateUseCase _groupUpdateUseCase;
+  final IGroupDeleteUseCase _groupDeleteUseCase;
+  final IGroupAndScheduleSortedListenUseCase _groupAndScheduleSortedUseCase;
 
   Future<String?> createGroup(GroupCreatorParams groupData) async {
     return _groupCreationUseCase.createGroup(groupData);

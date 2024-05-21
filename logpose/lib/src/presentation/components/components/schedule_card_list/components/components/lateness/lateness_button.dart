@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../../../../app/facade/group_member_schedule_facade.dart';
 
+import '../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 import '../../../../../../../domain/model/schedule_response_params_model.dart';
 
-import '../../../../../../../domain/usecase/facade/group_member_schedule_facade.dart';
 import '../../../../../../../utils/schedule/schedule_response.dart';
 
 import '../../../../../../notifiers/group_member_schedule_notifier.dart';

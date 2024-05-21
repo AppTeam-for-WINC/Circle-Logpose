@@ -3,12 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../app/facade/group_facade.dart';
+
 import '../../../../../domain/model/group_creator_params_model.dart';
 
 import '../../../../../domain/providers/image_provider.dart';
 import '../../../../../domain/providers/text_field/name_field_provider.dart';
-
-import '../../../../../domain/usecase/facade/group_facade.dart';
 
 import '../../../../notifiers/set_group_member_list_notifier.dart';
 

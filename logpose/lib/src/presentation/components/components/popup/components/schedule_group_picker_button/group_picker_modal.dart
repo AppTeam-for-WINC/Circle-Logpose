@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../app/facade/group_facade.dart';
+
 import '../../../../../../domain/model/group_and_id_model.dart';
 
 import '../../../../../../domain/providers/group/group/fetch_group_and_id_list_provider.dart';
 import '../../../../../../domain/providers/group/group/selected_group_name_provider.dart';
-
-import '../../../../../../domain/usecase/facade/group_facade.dart';
 
 import '../../../../../notifiers/group_schedule_notifier.dart';
 

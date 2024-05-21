@@ -3,28 +3,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/repository/database/member_schedule_repository.dart';
 
-import 'group_member_schedule_id_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_creation_use_case.dart';
+import '../../interface/group_membership/i_group_member_id_use_case.dart';
+
+import '../usecase_group_membership/group_member_id_use_case.dart';
 
 final groupMemberScheduleCreationUseCaseProvider =
-    Provider<GroupMemberScheduleCreationUseCase>((ref) {
-  final memberScheduleIdUseCase =
-      ref.read(groupMemberScheduleIdUseCaseProvider);
-      
+    Provider<IGroupMemberScheduleCreationUseCase>((ref) {
+  final memberIdUseCase = ref.read(groupMemberIdUseCaseProvider);
+
   return GroupMemberScheduleCreationUseCase(
     ref: ref,
-    memberScheduleIdUseCase: memberScheduleIdUseCase,
+    memberIdUseCase: memberIdUseCase,
   );
 });
 
-class GroupMemberScheduleCreationUseCase {
+class GroupMemberScheduleCreationUseCase
+    implements IGroupMemberScheduleCreationUseCase {
   const GroupMemberScheduleCreationUseCase({
     required this.ref,
-    required this.memberScheduleIdUseCase,
+    required this.memberIdUseCase,
   });
 
   final Ref ref;
-  final GroupMemberScheduleIdUseCase memberScheduleIdUseCase;
+  final IGroupMemberIdUseCase memberIdUseCase;
 
+  @override
   Future<void> createMemberSchedule(String scheduleId, String userId) async {
     try {
       final groupMemberScheduleRepository =
@@ -38,6 +42,7 @@ class GroupMemberScheduleCreationUseCase {
     }
   }
 
+  @override
   Future<void> createAllMemberSchedule(
     String groupId,
     String scheduleId,
@@ -64,6 +69,6 @@ class GroupMemberScheduleCreationUseCase {
   }
 
   Future<List<String>> _fetchAllUserDocIdWithGroupId(String groupId) async {
-    return memberScheduleIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
+    return memberIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
   }
 }

@@ -3,35 +3,44 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_user_repository.dart';
 import '../../../data/repository/database/user_repository.dart';
+
+import '../../interface/auth/i_auth_user_id_use_case.dart';
+import '../../interface/user/i_user_profile_update_use_case.dart';
 
 import '../../model/user_setting_model.dart';
 
-import 'user_id_use_case.dart';
+import '../usecase_auth/user_id_use_case.dart';
 
 final userProfileUpdateUseCaseProvider =
-    Provider<UserProfileUpdateUseCase>((ref) {
-  final userIdUseCase = ref.read(userIdUseCaseProvider);
+    Provider<IUserProfileUpdateUseCase>((ref) {
+  final authIdUseCase = ref.read(authUserIdUseCaseProvider);
+      final userRepository = ref.read(userRepositoryProvider);
   final validator = ref.read(validatorControllerProvider);
 
   return UserProfileUpdateUseCase(
     ref: ref,
-    userIdUseCase: userIdUseCase,
+    authIdUseCase: authIdUseCase,
+    userRepository: userRepository,
     validator: validator,
   );
 });
 
-class UserProfileUpdateUseCase {
+class UserProfileUpdateUseCase implements IUserProfileUpdateUseCase {
   const UserProfileUpdateUseCase({
     required this.ref,
-    required this.userIdUseCase,
+    required this.authIdUseCase,
+    required this.userRepository,
     required this.validator,
   });
 
   final Ref ref;
-  final UserIdUseCase userIdUseCase;
+  final IAuthUserIdUseCase authIdUseCase;
+  final IUserRepository userRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> updateUser(UserSettingParams userData) async {
     try {
       return await _attemptToUpdate(userData);
@@ -57,7 +66,7 @@ class UserProfileUpdateUseCase {
   }
 
   Future<String> _fetchUserDocId() async {
-    return userIdUseCase.fetchCurrentUserId();
+    return authIdUseCase.fetchCurrentUserId();
   }
 
   Future<void> _executeToUpdate(
@@ -65,7 +74,6 @@ class UserProfileUpdateUseCase {
     UserSettingParams userData,
   ) async {
     try {
-      final userRepository = ref.read(userRepositoryProvider);
       await userRepository.updateUser(
         userId,
         userData.name,

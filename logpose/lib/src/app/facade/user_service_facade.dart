@@ -1,13 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../entity/user_profile.dart';
+import '../../domain/entity/user_profile.dart';
 
-import '../../model/user_setting_model.dart';
+import '../../domain/interface/user/i_account_id_update_use_case.dart';
+import '../../domain/interface/user/i_user_id_use_case.dart';
+import '../../domain/interface/user/i_user_profile_update_use_case.dart';
+import '../../domain/interface/user/i_user_profile_use_case.dart';
 
-import '../usecase_user/account_id_update_use_case.dart';
-import '../usecase_user/user_id_use_case.dart';
-import '../usecase_user/user_profile_update_use_case.dart';
-import '../usecase_user/user_profile_use_case.dart';
+import '../../domain/model/user_setting_model.dart';
+
+import '../../domain/usecase/usecase_user/account_id_update_use_case.dart';
+import '../../domain/usecase/usecase_user/user_id_use_case.dart';
+import '../../domain/usecase/usecase_user/user_profile_update_use_case.dart';
+import '../../domain/usecase/usecase_user/user_profile_use_case.dart';
 
 /// Facade pattern （ファサードパターン）
 final userServiceFacadeProvider = Provider<UserServiceFacade>(
@@ -22,18 +27,10 @@ class UserServiceFacade {
         _accountIdUpdateUseCase = ref.read(accountIdUpdateUseCaseProvider);
 
   final Ref ref;
-  final UserIdUseCase _userIdUseCase;
-  final UserProfileUseCase _userProfileUseCase;
-  final UserProfileUpdateUseCase _userProfileUpdateUseCase;
-  final AccountIdUpdateUseCase _accountIdUpdateUseCase;
-
-  Future<String> fetchCurrentUserId() async {
-    return _userIdUseCase.fetchCurrentUserId();
-  }
-
-  Future<String?> fetchCurrentUserIdNullable() async {
-    return _userIdUseCase.fetchCurrentUserIdNullable();
-  }
+  final IUserIdUseCase _userIdUseCase;
+  final IUserProfileUseCase _userProfileUseCase;
+  final IUserProfileUpdateUseCase _userProfileUpdateUseCase;
+  final IAccountIdUpdateUseCase _accountIdUpdateUseCase;
 
   Future<String> fetchUserDocIdWithAccountId(String accountId) async {
     return _userIdUseCase.fetchUserDocIdWithAccountId(accountId);

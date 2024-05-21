@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/facade/user_service_facade.dart';
+
 import '../../../../domain/providers/error_message/account_id_error_message_provider.dart';
 import '../../../../domain/providers/text_field/account_id_field_provider.dart';
-
-import '../../../../domain/usecase/facade/user_service_facade.dart';
 
 import '../../../notifiers/user_profile_notifier.dart';
 

@@ -4,19 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_group_schedule_repository.dart';
+
 import '../../../data/repository/database/group_schedule_repository.dart';
 
 import '../../../utils/color/color_exchanger.dart';
 
-import '../../interface/i_group_schedule_repository.dart';
-
+import '../../interface/group_member_schedule/i_group_member_schedule_creation_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_creation_use_case.dart';
 import '../../model/schedule_params_model.dart';
 import '../../model/schedule_validation_params.dart';
 
 import '../usecase_member_schedule/group_member_schedule_creation_use_case.dart';
 
 final groupScheduleCreationUseCaseProvider =
-    Provider<GroupScheduleCreationUseCase>((ref) {
+    Provider<IGroupScheduleCreationUseCase>((ref) {
   final memberScheduleCreationUseCase =
       ref.read(groupMemberScheduleCreationUseCaseProvider);
   final groupScheduleRepository = ref.read(groupScheduleRepositoryProvider);
@@ -29,17 +31,18 @@ final groupScheduleCreationUseCaseProvider =
   );
 });
 
-class GroupScheduleCreationUseCase {
+class GroupScheduleCreationUseCase implements IGroupScheduleCreationUseCase {
   const GroupScheduleCreationUseCase({
     required this.memberScheduleCreationUseCase,
     required this.groupScheduleRepository,
     required this.validator,
   });
 
-  final GroupMemberScheduleCreationUseCase memberScheduleCreationUseCase;
+  final IGroupMemberScheduleCreationUseCase memberScheduleCreationUseCase;
   final IGroupScheduleRepository groupScheduleRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> createSchedule(ScheduleParams scheduleViewParams) async {
     try {
       return await _attemptToCreateSchedule(scheduleViewParams);

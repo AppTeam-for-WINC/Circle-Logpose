@@ -6,17 +6,25 @@ import '../../entity/group_membership.dart';
 import '../../entity/group_profile.dart';
 import '../../entity/group_schedule.dart';
 
+import '../../interface/auth/i_auth_user_id_use_case.dart';
+import '../../interface/group/i_group_and_schedule_and_id_list_listen_use_case.dart';
+import '../../interface/group/i_group_use_case.dart';
+import '../../interface/group_membership/i_group_member_listen_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_listen_id_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_use_case.dart';
+
 import '../../model/group_profile_and_schedule_and_id_model.dart';
 
+import '../usecase_auth/user_id_use_case.dart';
 import '../usecase_group_membership/group_member_listen_use_case.dart';
 import '../usecase_group_schedule/group_schedule_listen_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_use_case.dart';
-import '../usecase_user/user_id_use_case.dart';
+
 import 'group_use_case.dart';
 
 final groupAndScheduleAndIdListListenUseCaseProvider =
-    Provider<GroupAndScheduleAndIdListListenUseCase>((ref) {
-  final userIdUseCase = ref.read(userIdUseCaseProvider);
+    Provider<IGroupAndScheduleAndIdListListenUseCase>((ref) {
+  final authIdUseCase = ref.read(authUserIdUseCaseProvider);
   final groupUseCase = ref.read(groupUseCaseProvider);
   final groupScheduleUseCase = ref.read(groupScheduleUseCaseProvider);
   final groupScheduleListenIdUseCase =
@@ -25,7 +33,7 @@ final groupAndScheduleAndIdListListenUseCaseProvider =
 
   return GroupAndScheduleAndIdListListenUseCase(
     ref: ref,
-    userIdUseCase: userIdUseCase,
+    authIdUseCase: authIdUseCase,
     groupUseCase: groupUseCase,
     groupScheduleUseCase: groupScheduleUseCase,
     groupScheduleListenIdUseCase: groupScheduleListenIdUseCase,
@@ -33,10 +41,11 @@ final groupAndScheduleAndIdListListenUseCaseProvider =
   );
 });
 
-class GroupAndScheduleAndIdListListenUseCase {
+class GroupAndScheduleAndIdListListenUseCase
+    implements IGroupAndScheduleAndIdListListenUseCase {
   const GroupAndScheduleAndIdListListenUseCase({
     required this.ref,
-    required this.userIdUseCase,
+    required this.authIdUseCase,
     required this.groupUseCase,
     required this.groupScheduleUseCase,
     required this.groupScheduleListenIdUseCase,
@@ -44,12 +53,13 @@ class GroupAndScheduleAndIdListListenUseCase {
   });
 
   final Ref ref;
-  final UserIdUseCase userIdUseCase;
-  final GroupUseCase groupUseCase;
-  final GroupScheduleUseCase groupScheduleUseCase;
-  final GroupScheduleListenIdUseCase groupScheduleListenIdUseCase;
-  final GroupMemberListenUseCase memberListenUseCase;
+  final IAuthUserIdUseCase authIdUseCase;
+  final IGroupUseCase groupUseCase;
+  final IGroupScheduleUseCase groupScheduleUseCase;
+  final IGroupScheduleListenIdUseCase groupScheduleListenIdUseCase;
+  final IGroupMemberListenUseCase memberListenUseCase;
 
+  @override
   Stream<List<GroupProfileAndScheduleAndId>>
       listenGroupAndScheduleAndIdList() async* {
     final userDocId = await _fetchUserDocId();
@@ -62,7 +72,7 @@ class GroupAndScheduleAndIdListListenUseCase {
   }
 
   Future<String> _fetchUserDocId() async {
-    return userIdUseCase.fetchCurrentUserId();
+    return authIdUseCase.fetchCurrentUserId();
   }
 
   Stream<List<GroupMembership?>> _listenAllMembershipListWithUserId(

@@ -1,5 +1,5 @@
-import '../entity/group_membership.dart';
-import '../entity/user_profile.dart';
+import '../../domain/entity/group_membership.dart';
+import '../../domain/entity/user_profile.dart';
 
 abstract class IGroupMembershipRepository {
   Future<void> createMemmbership(

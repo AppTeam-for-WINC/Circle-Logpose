@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entity/group_profile.dart';
+import '../../app/facade/group_facade.dart';
 
-import '../../domain/usecase/facade/group_facade.dart';
+import '../../domain/entity/group_profile.dart';
 
 final groupSettingNotifierProvider = StateNotifierProvider.family
     .autoDispose<_GroupSettingNotifier, GroupProfile?, String>(
@@ -24,12 +23,7 @@ class _GroupSettingNotifier extends StateNotifier<GroupProfile?> {
   final GroupFacade groupFacade;
 
   Future<void> _initGroupProfile() async {
-    try {
-      state = await groupFacade.fetchGroup(groupId);
-    } on Exception catch (e) {
-      state = null;
-      debugPrint('Error: No found group $e');
-    }
+    state = await groupFacade.fetchGroup(groupId);
   }
 
   Future<void> changeImage(File newImage) async {

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../app/facade/group_schedule_facade.dart';
+
 import '../../../../../../domain/entity/user_profile.dart';
-import '../../../../../../domain/usecase/facade/group_schedule_facade.dart';
 
 class DeleteGroupScheduleButton extends ConsumerWidget {
   const DeleteGroupScheduleButton({

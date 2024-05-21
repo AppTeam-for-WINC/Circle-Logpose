@@ -1,4 +1,4 @@
-import '../entity/group_schedule.dart';
+import '../../domain/entity/group_schedule.dart';
 
 abstract class IGroupScheduleRepository {
   Future<String> createAndRetrieveScheduleId({

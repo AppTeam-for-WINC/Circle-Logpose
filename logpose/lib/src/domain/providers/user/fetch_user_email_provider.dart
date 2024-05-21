@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../usecase/facade/auth_facade.dart';
+import '../../../app/facade/auth_facade.dart';
 
 final fetchUserEmailProvider = FutureProvider<String>((ref) async {
   final authFacade = ref.watch(authFacadeProvider);

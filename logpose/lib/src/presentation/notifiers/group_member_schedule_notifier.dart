@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entity/group_member_schedule.dart';
+import '../../app/facade/group_member_schedule_facade.dart';
 
-import '../../domain/usecase/facade/group_member_schedule_facade.dart';
+import '../../domain/entity/group_member_schedule.dart';
 
 final groupMemberScheduleNotifierProvider = StateNotifierProvider.family
     .autoDispose<_MemberScheduleNotifier, GroupMemberSchedule?, String>(

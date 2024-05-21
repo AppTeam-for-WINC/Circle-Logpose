@@ -2,14 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../entity/group_member_schedule.dart';
 
+import '../../interface/auth/i_auth_user_id_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_init_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_use_case.dart';
+
+import '../usecase_auth/user_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_use_case.dart';
-import '../usecase_user/user_id_use_case.dart';
 import 'group_member_schedule_id_use_case.dart';
 import 'group_member_schedule_use_case.dart';
 
 final groupMemberScheduleInitUseCaseProvider =
-    Provider<GroupMemberScheduleInitUseCase>((ref) {
-  final userIdUseCase = ref.read(userIdUseCaseProvider);
+    Provider<IGroupMemberScheduleInitUseCase>((ref) {
+  final authIdUseCase = ref.read(authUserIdUseCaseProvider);
   final groupScheduleUseCase = ref.read(groupScheduleUseCaseProvider);
   final memberScheduleIdUseCase =
       ref.read(groupMemberScheduleIdUseCaseProvider);
@@ -17,28 +23,30 @@ final groupMemberScheduleInitUseCaseProvider =
 
   return GroupMemberScheduleInitUseCase(
     ref: ref,
-    userIdUseCase: userIdUseCase,
+    authIdUseCase: authIdUseCase,
     groupScheduleUseCase: groupScheduleUseCase,
     memberScheduleIdUseCase: memberScheduleIdUseCase,
     memberScheduleUseCase: memberScheduleUseCase,
   );
 });
 
-class GroupMemberScheduleInitUseCase {
+class GroupMemberScheduleInitUseCase
+    implements IGroupMemberScheduleInitUseCase {
   const GroupMemberScheduleInitUseCase({
     required this.ref,
-    required this.userIdUseCase,
+    required this.authIdUseCase,
     required this.groupScheduleUseCase,
     required this.memberScheduleIdUseCase,
     required this.memberScheduleUseCase,
   });
 
   final Ref ref;
-  final UserIdUseCase userIdUseCase;
-  final GroupScheduleUseCase groupScheduleUseCase;
-  final GroupMemberScheduleIdUseCase memberScheduleIdUseCase;
-  final GroupMemberScheduleUseCase memberScheduleUseCase;
+  final IAuthUserIdUseCase authIdUseCase;
+  final IGroupScheduleUseCase groupScheduleUseCase;
+  final IGroupMemberScheduleIdUseCase memberScheduleIdUseCase;
+  final IGroupMemberScheduleUseCase memberScheduleUseCase;
 
+  @override
   Future<GroupMemberSchedule> initMemberSchedule(String groupScheduleId) async {
     try {
       return await _attemptToInitSchedule(groupScheduleId);
@@ -53,7 +61,7 @@ class GroupMemberScheduleInitUseCase {
     final groupSchedule = await groupScheduleUseCase.fetchGroupSchedule(
       groupScheduleId,
     );
-    final userDocId = await userIdUseCase.fetchCurrentUserId();
+    final userDocId = await authIdUseCase.fetchCurrentUserId();
     final memberScheduleId =
         await memberScheduleIdUseCase.fetchMemberScheduleId(
       groupScheduleId,

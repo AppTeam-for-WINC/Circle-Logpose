@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/usecase/facade/group_membership_facade.dart';
+import '../../../../../../app/facade/group_membership_facade.dart';
 
 import '../../../../../notifiers/set_group_member_list_notifier.dart';
 
