@@ -73,7 +73,7 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   }
 
   @override
-  Future<String> fetchDocIdWithScheduleIdAndUserId({
+  Future<String?> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
   }) async {
@@ -98,10 +98,18 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
     }
   }
 
-  static String _fetchMemberScheduleId(
+  static String? _fetchMemberScheduleId(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
-    return snapshot.docs.map((doc) => doc.id).first;
+    try {
+      return snapshot.docs.map((doc) => doc.id).first;
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Error: failed to fetch member schedule ID. ${e.message}',
+      );
+    } on Exception catch (e) {
+      throw Exception('Member schedule ID does not exist. $e');
+    }
   }
 
   @override

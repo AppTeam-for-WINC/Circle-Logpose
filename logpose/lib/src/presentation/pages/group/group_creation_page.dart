@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../components/common/group_name_and_image_section.dart';
 import '../../components/common/loading_progress.dart';
+import '../../components/common/progress_indicator.dart';
 
 import '../../components/components/group/group_creation/group_creation_button.dart';
-import '../../components/components/group/group_creation/group_name_and_image_section.dart';
-import '../../components/components/group/group_creation/member_section/member_section.dart';
-import '../../components/components/group/switch/add_member_switch.dart';
+import '../../components/components/group/group_creation/member_section/group_creation_member_section.dart';
 import '../../components/components/group/switch/delete_member_switch.dart';
-import '../../components/components/progress/progress_indicator.dart';
+import '../../components/components/group/switch/member_addition_switch.dart';
 
 class GroupCreationPage extends ConsumerStatefulWidget {
   const GroupCreationPage({super.key});
@@ -37,7 +37,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
             ),
             Positioned(
               top: deviceHeight * 0.38,
-              child: const MemberSection(),
+              child: const GroupCreationMemberSection(),
             ),
             Positioned(
               top: deviceHeight * 0.86,
@@ -47,7 +47,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
             Positioned(
               top: deviceHeight * 0.45,
               left: deviceWidth * 0.84,
-              child: const AddMemberSwitch(),
+              child: const MemberAdditionSwitch(),
             ),
             Positioned(
               top: deviceHeight * 0.505,

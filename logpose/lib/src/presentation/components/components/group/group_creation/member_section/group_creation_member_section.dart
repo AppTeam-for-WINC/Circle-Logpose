@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'components/member_section_label.dart';
-import 'components/member_section_member_list.dart';
+import 'components/group_creation_member_section_label.dart';
+import 'components/group_creation_member_section_member_list.dart';
 
-class MemberSection extends ConsumerStatefulWidget {
-  const MemberSection({super.key});
+class GroupCreationMemberSection extends ConsumerStatefulWidget {
+  const GroupCreationMemberSection({super.key});
 
   @override
-  ConsumerState createState() => _MemberSectionState();
+  ConsumerState createState() => _GroupCreationMemberSectionState();
 }
 
-class _MemberSectionState extends ConsumerState<MemberSection> {
+class _GroupCreationMemberSectionState
+    extends ConsumerState<GroupCreationMemberSection> {
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
@@ -36,8 +37,8 @@ class _MemberSectionState extends ConsumerState<MemberSection> {
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MemberSectionLabel(),
-          MemberSectionMemberList(),
+          GroupCreationMemberSectionLabel(),
+          GroupCreationMemberSectionMemberList(),
         ],
       ),
     );

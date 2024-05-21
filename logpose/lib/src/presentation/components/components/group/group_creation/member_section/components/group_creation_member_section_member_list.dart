@@ -6,15 +6,15 @@ import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../group_member_tile/group_member_tile.dart';
 
-class MemberSectionMemberList extends ConsumerStatefulWidget {
-  const MemberSectionMemberList({super.key});
+class GroupCreationMemberSectionMemberList extends ConsumerStatefulWidget {
+  const GroupCreationMemberSectionMemberList({super.key});
 
   @override
-  ConsumerState createState() => _MemberSectionMemberListState();
+  ConsumerState createState() => _GroupCreationMemberSectionMemberListState();
 }
 
-class _MemberSectionMemberListState
-    extends ConsumerState<MemberSectionMemberList> {
+class _GroupCreationMemberSectionMemberListState
+    extends ConsumerState<GroupCreationMemberSectionMemberList> {
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;

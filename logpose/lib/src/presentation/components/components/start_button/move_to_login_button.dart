@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../pages/login/login_page.dart';
+import '../../../pages/login/log_in_page.dart';
 
 class MoveToLoginButton extends ConsumerStatefulWidget {
   const MoveToLoginButton({super.key});
@@ -15,7 +15,7 @@ class _MoveToLoginButtonState extends ConsumerState<MoveToLoginButton> {
     await Navigator.push(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const LoginPage(),
+        builder: (context) => const LogInPage(),
       ),
     );
   }

@@ -1,15 +1,14 @@
-// ignore_for_file: use_setters_to_change_properties
+// ignore_for_file: use_setters_to_change_properties, unused_element
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/facade/auth_facade.dart';
-
 import '../../../../domain/providers/text_field/email_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
 
-import '../../../pages/login/login_page.dart';
+import '../../../controllers/sign_up_controller.dart';
 
+import '../../../navigations/sign_up_navigator.dart';
 import '../../common/loading_progress.dart';
 
 class SignUpButton extends ConsumerStatefulWidget {
@@ -21,10 +20,8 @@ class SignUpButton extends ConsumerStatefulWidget {
 
 class _SignUpButtonState extends ConsumerState<SignUpButton> {
   Future<void> _handleSignUp() async {
-    final email = ref.read(emailFieldProvider('')).text;
-    final password = ref.read(passwordFieldProvider('')).text;
-    final signUpService = _SignUpService(context, ref);
-    await signUpService.performSignUp(email, password);
+    final signUphandler = SignUpHandler(context, ref);
+    await signUphandler.handleSignUp();
   }
 
   @override
@@ -50,15 +47,19 @@ class _SignUpButtonState extends ConsumerState<SignUpButton> {
   }
 }
 
-class _SignUpService {
-  _SignUpService(this.context, this.ref);
+class SignUpHandler {
+  const SignUpHandler(this.context, this.ref);
+
   final BuildContext context;
   final WidgetRef ref;
 
-  Future<void> performSignUp(String email, String password) async {
+  Future<void> handleSignUp() async {
+    final email = ref.read(emailFieldProvider('')).text;
+    final password = ref.read(passwordFieldProvider('')).text;
+    final signUpController = ref.read(signUpControllerProvider);
+
     _loadingProgress(true);
-    final authFacade = ref.read(authFacadeProvider);
-    final errorMessage = await authFacade.signUp(email, password);
+    final errorMessage = await signUpController.performSignUp(email, password);
     _loadingProgress(false);
 
     if (errorMessage != null) {
@@ -67,30 +68,16 @@ class _SignUpService {
     }
 
     if (context.mounted) {
-      await _NavigationService(context).moveToNextPage(context);
+      await SignUpNavigator(context).moveToNextPage(context);
     }
   }
 
   void _loadingProgress(bool loading) {
-    LoadingProgressController(ref).loadingProgress = loading;
+    ref.read(loadingProgressControllerProvider).loadingProgress = loading;
   }
 
   void _loadingErrorMessage(String errorMessage) {
-    LoadingProgressController(ref).loadingErrorMessage = errorMessage;
-  }
-}
-
-class _NavigationService {
-  _NavigationService(this.context);
-  final BuildContext context;
-
-  Future<void> moveToNextPage(BuildContext context) async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<LoginPage>>(
-        builder: (context) => const LoginPage(),
-      ),
-      (_) => false,
-    );
+    ref.read(loadingProgressControllerProvider).loadingErrorMessage =
+        errorMessage;
   }
 }

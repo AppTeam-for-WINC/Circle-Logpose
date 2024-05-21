@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../common/group_image_view.dart';
-import '../../../common/photo_button.dart';
-import '../../../common/red_error_message.dart';
-import '../../../common/text_field/name_field.dart';
+import 'group_image_view.dart';
+import 'photo_button.dart';
+import 'red_error_message.dart';
+import 'text_field/name_field.dart';
 
 class GroupNameAndImageSection extends ConsumerStatefulWidget {
   const GroupNameAndImageSection({
     super.key,
     required this.loadingErrorMessage,
+    this.imagePath,
+    this.groupName,
   });
 
   final String? loadingErrorMessage;
+  final String? imagePath;
+  final String? groupName;
   @override
   ConsumerState createState() => _GroupNameAndImageSectionState();
 }
@@ -43,22 +47,18 @@ class _GroupNameAndImageSectionState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(
-              left: 60,
-              right: 60,
-              bottom: 20,
-            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(60, 0, 60, 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GroupImageView(),
-                Icon(
+                GroupImageView(imagePath: widget.imagePath),
+                const Icon(
                   CupertinoIcons.arrow_right_arrow_left,
                   size: 30,
                   color: CupertinoColors.systemGrey,
                 ),
-                PhotoButton(),
+                const PhotoButton(),
               ],
             ),
           ),
@@ -67,7 +67,7 @@ class _GroupNameAndImageSectionState
               errorMessage: loadingErrorMessage,
               fontSize: 14,
             ),
-          const NameField(placeholder: '団体名'),
+          NameField(placeholder: '団体名', name: widget.groupName),
         ],
       ),
     );

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/presentation/components/components/popup/delete_member_list/delete_member_list.dart';
 
-import '../../../../../domain/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../../handlers/delete_member_switch_handler.dart';
 
-/// Select mode which is create or setting.
 class DeleteMemberSwitch extends ConsumerWidget {
   const DeleteMemberSwitch({super.key, this.groupId, required this.mode});
   final String? groupId;
@@ -12,27 +10,18 @@ class DeleteMemberSwitch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> onPressed() async {
-      if (mode == 'create') {
-        ref.watch(groupMemberDeleteModeProvider.notifier).state =
-            !ref.watch(groupMemberDeleteModeProvider);
-      } else if (mode == 'setting') {
-        ref.watch(groupMemberDeleteModeProvider.notifier).state = true;
-        await showCupertinoModalPopup<DeleteMemberList>(
-          context: context,
-          builder: (BuildContext context) {
-            return DeleteMemberList(groupId: groupId!);
-          },
-        );
-        return;
-      } else {
-        debugPrint('Please set another mode.');
-        return;
-      }
+    Future<void> handleDeleteSwitch() async {
+      final handler = DeleteMemberSwitchHandler(
+        context: context,
+        ref: ref,
+        groupId: groupId,
+        mode: mode,
+      );
+      await handler.handleDeleteSwitch();
     }
 
     return CupertinoButton(
-      onPressed: onPressed,
+      onPressed: handleDeleteSwitch,
       child: Container(
         width: 40,
         height: 40,

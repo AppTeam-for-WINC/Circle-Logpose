@@ -69,7 +69,7 @@ class GroupMemberScheduleFacade {
     );
   }
 
-  Future<String> fetchMemberScheduleId(
+  Future<String?> fetchMemberScheduleId(
     String groupScheduleId,
     String userDocId,
   ) async {

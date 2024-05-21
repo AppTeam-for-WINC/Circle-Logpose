@@ -16,7 +16,7 @@ class _GridGroupListState extends ConsumerState<GridGroupList> {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-       final groupsProfile = ref.watch(listenJoinedGroupsProfileProvider);
+    final groupsProfile = ref.watch(listenJoinedGroupsProfileProvider);
 
     return SizedBox(
       width: deviceWidth,

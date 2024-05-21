@@ -14,7 +14,7 @@ abstract class IGroupMemberScheduleRepository {
 
   Future<GroupMemberSchedule?> fetchMemberSchedule(String docId);
 
-  Future<String> fetchDocIdWithScheduleIdAndUserId({
+  Future<String?> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
   });

@@ -26,7 +26,7 @@ class GroupMemberScheduleIdUseCase implements IGroupMemberScheduleIdUseCase {
   final IGroupMemberScheduleRepository memberScheduleRepository;
 
   @override
-  Future<String> fetchMemberScheduleId(
+  Future<String?> fetchMemberScheduleId(
     String groupScheduleId,
     String userDocId,
   ) async {

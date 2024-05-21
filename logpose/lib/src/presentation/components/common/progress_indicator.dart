@@ -24,7 +24,6 @@ class _ProgressIndicatorState extends ConsumerState<PageProgressIndicator> {
         ),
       );
     } else {
-      // Returns an empty widget when not loading.
       return const SizedBox.expand();
     }
   }

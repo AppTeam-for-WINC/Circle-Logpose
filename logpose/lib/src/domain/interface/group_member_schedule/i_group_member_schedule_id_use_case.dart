@@ -1,5 +1,5 @@
 abstract class IGroupMemberScheduleIdUseCase {
-  Future<String> fetchMemberScheduleId(
+  Future<String?> fetchMemberScheduleId(
     String groupScheduleId,
     String userDocId,
   );

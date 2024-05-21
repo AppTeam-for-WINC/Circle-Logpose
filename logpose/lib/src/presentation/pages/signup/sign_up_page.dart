@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/common/loading_progress.dart';
+import '../../components/common/progress_indicator.dart';
 import '../../components/common/red_error_message.dart';
 import '../../components/common/text_field/email_field.dart';
 import '../../components/common/text_field/password_field.dart';
@@ -9,23 +10,22 @@ import '../../components/common/text_field/password_field.dart';
 import '../../components/components/app_logo_and_title/app_logo_and_title.dart';
 import '../../components/components/auth_button/sign_up_button.dart';
 import '../../components/components/navigation_bar/auth_navigation_bar.dart';
-import '../../components/components/progress/progress_indicator.dart';
 
-class SignupPage extends ConsumerWidget {
-  const SignupPage({super.key});
+class SignUpPage extends ConsumerWidget {
+  const SignUpPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const SignupScreen();
+    return const SignUpScreen();
   }
 }
 
-class SignupScreen extends ConsumerStatefulWidget {
-  const SignupScreen({super.key});
+class SignUpScreen extends ConsumerStatefulWidget {
+  const SignUpScreen({super.key});
   @override
-  ConsumerState<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignupScreenState extends ConsumerState<SignupScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);

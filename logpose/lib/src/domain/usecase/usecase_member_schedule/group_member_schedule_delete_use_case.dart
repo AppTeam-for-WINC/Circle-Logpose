@@ -71,10 +71,14 @@ class GroupMemberScheduleDeleteUseCase
       member.accountId,
       groupScheduleId,
     );
+    if (memberScheduleId == null) {
+      return;
+    }
+    
     await _deleteMemberSchedule(memberScheduleId);
   }
 
-  Future<String> _executeToFetchMemberScheduleId(
+  Future<String?> _executeToFetchMemberScheduleId(
     String accountId,
     String groupScheduleId,
   ) async {
@@ -85,7 +89,7 @@ class GroupMemberScheduleDeleteUseCase
     }
   }
 
-  Future<String> _attemptToFetchMemberScheduleId(
+  Future<String?> _attemptToFetchMemberScheduleId(
     String accountId,
     String groupScheduleId,
   ) async {
@@ -100,7 +104,7 @@ class GroupMemberScheduleDeleteUseCase
     return userIdUseCase.fetchUserDocIdWithAccountId(accountId);
   }
 
-  Future<String> _fetchMemberScheduleId(
+  Future<String?> _fetchMemberScheduleId(
     String groupScheduleId,
     String userDocId,
   ) async {

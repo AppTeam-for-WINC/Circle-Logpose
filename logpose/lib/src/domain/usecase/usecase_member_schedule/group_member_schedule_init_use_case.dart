@@ -67,6 +67,9 @@ class GroupMemberScheduleInitUseCase
       groupScheduleId,
       userDocId,
     );
+    if (memberScheduleId == null) {
+      throw Exception('Error: failed to fetch member schedule ID.');
+    }
     final memberSchedule =
         await memberScheduleUseCase.fetchMemberSchedule(memberScheduleId);
 

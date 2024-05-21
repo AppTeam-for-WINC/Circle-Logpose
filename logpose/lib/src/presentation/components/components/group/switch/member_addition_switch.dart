@@ -1,25 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../popup/add_member/add_member.dart';
+import '../../../../navigations/modals/member_addition_switch_navigator.dart';
 
-class AddMemberSwitch extends ConsumerWidget {
-  const AddMemberSwitch({super.key, this.groupId});
+class MemberAdditionSwitch extends ConsumerWidget {
+  const MemberAdditionSwitch({super.key, this.groupId});
   final String? groupId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> onPressed() async {
-      await showCupertinoModalPopup<AddMember>(
-        context: context,
-        builder: (BuildContext context) {
-          return AddMember(groupId: groupId);
-        },
-      );
+    Future<void> showModal() async {
+      final navigator = MemberAdditionSwitchModalNavigator(context, groupId);
+      await navigator.showModal();
     }
 
     return CupertinoButton(
-      onPressed: onPressed,
+      onPressed: showModal,
       child: Container(
         width: 40,
         height: 40,

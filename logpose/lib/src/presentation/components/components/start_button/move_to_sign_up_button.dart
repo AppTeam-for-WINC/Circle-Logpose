@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../pages/signup/signup_page.dart';
+import '../../../pages/signup/sign_up_page.dart';
 
 class MoveToSignUpButton extends ConsumerStatefulWidget {
   const MoveToSignUpButton({super.key});
@@ -15,7 +15,7 @@ class _MoveToSignUpButtonState extends ConsumerState<MoveToSignUpButton> {
     await Navigator.push(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const SignupPage(),
+        builder: (context) => const SignUpPage(),
       ),
     );
   }

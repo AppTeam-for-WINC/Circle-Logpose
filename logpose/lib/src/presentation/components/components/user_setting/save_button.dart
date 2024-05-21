@@ -25,7 +25,7 @@ class SaveButton extends ConsumerStatefulWidget {
 
 class _SaveButtonState extends ConsumerState<SaveButton> {
   void _loadingProgress(bool loading) {
-    LoadingProgressController(ref).loadingProgress = loading;
+    ref.watch(loadingProgressControllerProvider).loadingProgress = loading;
   }
 
   Future<String?> _update() async {
