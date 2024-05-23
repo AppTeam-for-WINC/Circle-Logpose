@@ -13,12 +13,9 @@ class NameField extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
-    TextEditingController nameController;
-    if (name == null) {
-      nameController = ref.watch(nameFieldProvider(''));
-    } else {
-      nameController = ref.watch(nameFieldProvider(name!));
-    }
+    final nameController = name == null
+        ? ref.watch(nameFieldProvider(''))
+        : ref.watch(nameFieldProvider(name!));
 
     return Container(
       width: deviceWidth * 0.65,
@@ -42,9 +39,7 @@ class NameField extends ConsumerWidget {
           prefix: const Icon(CupertinoIcons.pencil),
           style: const TextStyle(fontSize: 18),
           placeholder: placeholder,
-          decoration: const BoxDecoration(
-            color: Color(0x00000000),
-          ),
+          decoration: const BoxDecoration(color: Color(0x00000000)),
         ),
       ),
     );

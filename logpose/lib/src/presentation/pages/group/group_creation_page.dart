@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/common/group_name_and_image_section.dart';
 import '../../components/common/loading_progress.dart';
 import '../../components/common/progress_indicator.dart';
+import '../../components/common/switch/delete_member_switch.dart';
+import '../../components/common/switch/member_addition_switch.dart';
 
 import '../../components/components/group/group_creation/group_creation_button.dart';
 import '../../components/components/group/group_creation/member_section/group_creation_member_section.dart';
-import '../../components/components/group/switch/delete_member_switch.dart';
-import '../../components/components/group/switch/member_addition_switch.dart';
 
 class GroupCreationPage extends ConsumerStatefulWidget {
   const GroupCreationPage({super.key});
@@ -52,7 +52,7 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
             Positioned(
               top: deviceHeight * 0.505,
               left: deviceWidth * 0.84,
-              child: const DeleteMemberSwitch(mode: 'create'),
+              child: const MemberDeleteSwitch(mode: 'create'),
             ),
             const PageProgressIndicator(),
           ],

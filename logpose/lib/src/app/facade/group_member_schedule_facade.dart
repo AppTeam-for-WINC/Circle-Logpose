@@ -124,7 +124,9 @@ class GroupMemberScheduleFacade {
     );
   }
 
-  Future<GroupMemberSchedule> initMemberSchedule(String groupScheduleId) async {
+  Future<GroupMemberSchedule?> initMemberSchedule(
+    String groupScheduleId,
+  ) async {
     return _groupMemberScheduleInitUseCase.initMemberSchedule(groupScheduleId);
   }
 

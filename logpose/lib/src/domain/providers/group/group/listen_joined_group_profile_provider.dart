@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/facade/auth_facade.dart';
 import '../../../../app/facade/group_membership_facade.dart';
 
-final listenJoinedGroupsProfileProvider = StreamProvider<List<String>>(
+final listenJoinedGroupIdListProvider = StreamProvider<List<String>>(
   (ref) async* {
   final authFacade = ref.read(authFacadeProvider);
   final userId = await authFacade.fetchCurrentUserId();

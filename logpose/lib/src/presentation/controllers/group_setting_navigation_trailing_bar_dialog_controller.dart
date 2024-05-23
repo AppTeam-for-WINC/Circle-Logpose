@@ -16,7 +16,19 @@ class GroupSettingNavigationTrailingBarDialogController {
 
   final Ref ref;
 
-  Future<void> delete(
+  Future<void> deleteGroup(
+    String groupId,
+    String? groupScheduleId,
+    List<UserProfile?> groupMemberList,
+  ) async {
+    try {
+      await _attemptToDelete(groupId, groupScheduleId, groupMemberList);
+    } on Exception catch (e) {
+      throw Exception('Error: failed to delete group. $e');
+    }
+  }
+
+  Future<void> _attemptToDelete(
     String groupId,
     String? groupScheduleId,
     List<UserProfile?> groupMemberList,

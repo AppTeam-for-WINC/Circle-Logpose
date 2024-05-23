@@ -4,9 +4,10 @@ import '../components/components/slide/slider/schedule_list_and_joined_group_tab
 
 class LoginNavigator {
   LoginNavigator(this.context);
+  
   final BuildContext context;
 
-  Future<void> moveToNextPage() async {
+  Future<void> moveToPage() async {
     await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute<

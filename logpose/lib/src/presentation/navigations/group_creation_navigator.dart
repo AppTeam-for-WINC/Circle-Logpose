@@ -7,7 +7,7 @@ class GroupCreationNavigator {
 
   final BuildContext context;
 
-  Future<void> pushAndRemoveUntil() async {
+  Future<void> moveToPage() async {
     await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute<CupertinoPageRoute<dynamic>>(

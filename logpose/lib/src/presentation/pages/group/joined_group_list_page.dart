@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../components/components/bottom_gradation/bottom_gradation.dart';
-import '../../components/components/group/create_new_group_button/create_new_group_button.dart';
-import '../../components/components/group/grid_group_list/grid_group_list.dart';
+import '../../components/common/bottom_gradation.dart';
+
+import '../../components/components/group/joined_group_list/grid_group_list.dart';
+import '../../components/components/group/joined_group_list/new_group_creation_button.dart';
 
 class JoinedGroupListPage extends ConsumerWidget {
   const JoinedGroupListPage({super.key});
@@ -24,12 +25,12 @@ class JoinedGroupListPage extends ConsumerWidget {
             child: const GridGroupList(),
           ),
           const Positioned(
-            bottom: 0, // 画面の底部に配置
+            bottom: 0,
             child: BottomGradation(),
           ),
           Positioned(
             top: deviceHeight * 0.875,
-            child: const CreateNewGroupButton(),
+            child: const NewGroupCreationButton(),
           ),
         ],
       ),

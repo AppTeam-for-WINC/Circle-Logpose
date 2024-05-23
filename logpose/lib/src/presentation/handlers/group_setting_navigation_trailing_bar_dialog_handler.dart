@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
+
 import '../../domain/model/group_schedule_and_id_model.dart';
+
 import '../../domain/providers/group/members/listen_group_member_profile_list.dart';
 import '../../domain/providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
+
 import '../controllers/group_setting_navigation_trailing_bar_dialog_controller.dart';
-import '../navigations/group_setting_navigation_trailing_bar_navigator.dart';
+import '../navigations/group_setting_navigation_trailing_bar_dialog_navigator.dart';
 
 class GroupSettingNavigationTrailingBarDialogHandler {
   GroupSettingNavigationTrailingBarDialogHandler(
@@ -20,44 +23,32 @@ class GroupSettingNavigationTrailingBarDialogHandler {
   final String groupId;
 
   Future<void> handleToDelete() async {
-    await _deleteSchedule(context, groupId);
+    await _executeToDelete(context, groupId);
     await _moveToPage();
   }
 
-  Future<void> _deleteSchedule(BuildContext context, String groupId) async {
-    ref.watch(listenGroupMemberProfileListProvider(groupId)).when(
-          data: (groupMemberList) async {
-            await _watchGroupScheduleAndId(groupId, groupMemberList);
-          },
-          loading: () => [const SizedBox.shrink()],
-          error: (error, stack) => [Text('$error')],
-        );
+  Future<void> _executeToDelete(BuildContext context, String groupId) async {
+    final memberList = await _fetchMemberProfileList();
+    final groupScheduleAndIdList = await _fetchGroupScheduleAndIdList();
+    await _executeToDeleteGroup(groupScheduleAndIdList, groupId, memberList);
   }
 
-  Future<void> _watchGroupScheduleAndId(
-    String groupId,
-    List<UserProfile?> groupMemberList,
-  ) async {
-    ref.watch(listenAllGroupScheduleAndIdListProvider(groupId)).when(
-          data: (groupScheduleList) async {
-            await _deleteGroup(
-              groupScheduleList,
-              groupId,
-              groupMemberList,
-            );
-          },
-          loading: () => [const SizedBox.shrink()],
-          error: (error, stack) => [Text('$error')],
-        );
+  Future<List<UserProfile?>> _fetchMemberProfileList() async {
+    return await ref.read(listenGroupMemberProfileListProvider(groupId).future);
   }
 
-  Future<void> _deleteGroup(
+  Future<List<GroupScheduleAndId?>> _fetchGroupScheduleAndIdList() async {
+    return await ref
+        .watch(listenAllGroupScheduleAndIdListProvider(groupId).future);
+  }
+
+  Future<void> _executeToDeleteGroup(
     List<GroupScheduleAndId?> groupScheduleList,
     String groupId,
-    List<UserProfile?> groupMemberList,
+    List<UserProfile?> memberList,
   ) async {
     try {
-      await _attemptToDelete(groupScheduleList, groupId, groupMemberList);
+      await _attemptToDelete(groupScheduleList, groupId, memberList);
     } on Exception catch (e) {
       debugPrint('Error: failed to delete group. $e');
     }
@@ -66,32 +57,37 @@ class GroupSettingNavigationTrailingBarDialogHandler {
   Future<void> _attemptToDelete(
     List<GroupScheduleAndId?> groupScheduleList,
     String groupId,
-    List<UserProfile?> groupMemberList,
+    List<UserProfile?> memberList,
   ) async {
-    final deleteController =
-        ref.read(groupSettingNavigationTrailingBarDialogControllerProvider);
     if (groupScheduleList.isEmpty) {
-      await deleteController.delete(groupId, null, groupMemberList);
+      await _deleteGroup(groupId, null, memberList);
+      return;
     }
+
     await Future.wait(
       groupScheduleList.map((data) async {
-        if (data == null) {
-          return;
+        if (data != null) {
+          await _deleteGroup(groupId, data.groupScheduleId, memberList);
         }
-        await deleteController.delete(
-          groupId,
-          data.groupScheduleId,
-          groupMemberList,
-        );
       }),
     );
   }
 
+  Future<void> _deleteGroup(
+    String groupId,
+    String? groupScheduleId,
+    List<UserProfile?> memberList,
+  ) async {
+    final deleteController =
+        ref.read(groupSettingNavigationTrailingBarDialogControllerProvider);
+    await deleteController.deleteGroup(groupId, groupScheduleId, memberList);
+  }
+
   Future<void> _moveToPage() async {
-    if (!context.mounted) {
-      return;
+    if (context.mounted) {
+      final navigator =
+          GroupSettingNavigationTrailingBarDialogNavigator(context);
+      await navigator.moveToPage();
     }
-    final navigator = GroupSettingNavigationTrailingBarNavigator(context);
-    await navigator.moveToScheduleListPage();
   }
 }

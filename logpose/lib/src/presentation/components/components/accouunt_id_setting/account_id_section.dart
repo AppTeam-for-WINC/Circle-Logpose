@@ -4,29 +4,21 @@ import 'package:logpose/src/domain/providers/text_field/account_id_field_provide
 
 import '../../../../domain/providers/error_message/account_id_error_message_provider.dart';
 
-import '../../../../utils/clipboard/copy_to_clipboard.dart';
-
-import '../../../notifiers/user_profile_notifier.dart';
-
 import '../../common/red_error_message.dart';
+
+import 'current_account_id_section/current_account_id_section.dart';
+import 'new_account_id_section/new_account_id_section.dart';
 
 class AccountIdSection extends ConsumerWidget {
   const AccountIdSection({super.key, required this.accountId});
-  final String accountId;
 
-  void _copyToClipboard(String accountId) {
-    copyToClipboard(accountId);
-  }
+  final String accountId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    final accountIdController = ref.watch(accountIdFieldProvider(''));
     final accountIdErrorMessage = ref.watch(accountIdErrorMessageProvider);
-
-    final userProfile = ref.watch(userProfileNotifierProvider);
-    if (userProfile == null) {
-      return const SizedBox.shrink();
-    }
 
     return Container(
       width: deviceWidth * 0.85,
@@ -35,65 +27,11 @@ class AccountIdSection extends ConsumerWidget {
         children: [
           DecoratedBox(
             decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Color.fromARGB(255, 124, 122, 122)),
-              ),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: deviceWidth * 0.85,
-                  child: const Text(
-                    '現在のアカウントID',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 124, 122, 122),
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                CupertinoButton(
-                  onPressed: () => _copyToClipboard(userProfile.accountId),
-                  child: Row(
-                    children: [
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxWidth: deviceWidth * 0.75),
-                        child: Text(
-                          userProfile.accountId,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 124, 122, 122),
-                            fontSize: 14,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: deviceWidth * 0.8,
-            margin: const EdgeInsets.only(top: 30),
-            child: const Text(
-              '新しいアカウントID',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 124, 122, 122),
-                fontSize: 14,
-              ),
-            ),
-          ),
-          CupertinoTextField(
-            controller: ref.watch(accountIdFieldProvider('')),
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 243, 254),
               border: Border(bottom: BorderSide()),
             ),
-            autofocus: true,
+            child: CurrentAccountIdSection(accountId: accountId),
           ),
+          NewAccountIdSection(accountIdController: accountIdController),
           if (accountIdErrorMessage != null)
             RedErrorMessage(errorMessage: accountIdErrorMessage, fontSize: 14),
         ],

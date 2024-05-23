@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/providers/image_provider.dart';
+import '../../notifiers/image_provider.dart';
 import 'custom_image/custom_image.dart';
 
 class GroupImageView extends ConsumerStatefulWidget {
@@ -18,13 +18,11 @@ class _GroupImageViewState extends ConsumerState<GroupImageView> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    String imagePath;
-    if (ref.watch(imageControllerProvider).path == '' &&
-        widget.imagePath != null) {
-      imagePath = widget.imagePath!;
-    } else {
-      imagePath = ref.watch(imageControllerProvider).path;
-    }
+    final imageNotifier = ref.watch(imageControllerProvider);
+
+    final imagePath = imageNotifier.path == '' && widget.imagePath != null
+        ? widget.imagePath!
+        : imageNotifier.path;
 
     return imagePath == ''
         ? Icon(

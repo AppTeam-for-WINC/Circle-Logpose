@@ -6,7 +6,7 @@ class SignUpNavigator {
   SignUpNavigator(this.context);
   final BuildContext context;
 
-  Future<void> moveToNextPage(BuildContext context) async {
+  Future<void> moveToPage() async {
     await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute<CupertinoPageRoute<LogInPage>>(

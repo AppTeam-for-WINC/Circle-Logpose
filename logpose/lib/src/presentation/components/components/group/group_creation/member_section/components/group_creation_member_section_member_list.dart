@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../notifiers/member_section_admin_membersnotiifer.dart';
+import '../../../../../../notifiers/member_section_admin_members_notiifer.dart';
 import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
-import '../../../group_member_tile/group_member_tile.dart';
+import '../../../../../common/group_member_tile/group_member_tile.dart';
 
 class GroupCreationMemberSectionMemberList extends ConsumerStatefulWidget {
   const GroupCreationMemberSectionMemberList({super.key});

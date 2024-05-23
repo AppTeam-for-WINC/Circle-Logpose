@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/error_message/group_name_error_msg_provider.dart';
 
 import '../../components/common/group_name_and_image_section.dart';
-import '../../components/components/group/group_setting/save/save_button.dart';
+import '../../components/components/group/group_setting/save_button.dart';
 import '../../components/components/group/group_setting/sections/member_section/group_setting_member_section.dart';
-import '../../components/components/group/group_setting/sections/schedule_section/schedule_section.dart';
+import '../../components/components/group/group_setting/sections/schedule_section/group_setting_schedule_section.dart';
 import '../../components/components/navigation_bar/group_setting_navigation/group_setting_navigation_bar.dart';
 
 import '../../notifiers/group_setting_notifier_provider.dart';
@@ -59,9 +59,15 @@ class _GroupSettingPageState extends ConsumerState<GroupSettingPage> {
                 child: GroupSettingMemberSection(groupId: groupId),
               ),
               const SizedBox(height: 15),
-              ScheduleSection(groupId: groupId, groupName: groupProfile.name),
+              GroupSettingScheduleSection(
+                groupId: groupId,
+                groupName: groupProfile.name,
+              ),
               const SizedBox(height: 20),
-              SaveButton(groupId: groupId, groupName: groupProfile.name),
+              GroupSettingSaveButton(
+                groupId: groupId,
+                groupName: groupProfile.name,
+              ),
             ],
           ),
         ),

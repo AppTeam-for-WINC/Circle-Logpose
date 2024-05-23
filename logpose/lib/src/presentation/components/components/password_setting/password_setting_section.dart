@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/providers/text_field/new_password_field_provider.dart';
 import '../../../../domain/providers/text_field/password_field_provider.dart';
+
 import '../../../notifiers/user_profile_notifier.dart';
+
+import '../../common/custom_text_field/custom_text_field.dart';
+import '../../common/custom_text_field/custom_text_field_label.dart';
 
 class PasswordSettingSection extends ConsumerWidget {
   const PasswordSettingSection({super.key});
@@ -11,6 +15,8 @@ class PasswordSettingSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    final passwordController = ref.watch(passwordFieldProvider(''));
+    final newPasswordController = ref.watch(newPasswordFieldProvider);
 
     final userProfile = ref.watch(userProfileNotifierProvider);
     if (userProfile == null) {
@@ -22,48 +28,15 @@ class PasswordSettingSection extends ConsumerWidget {
       margin: const EdgeInsets.only(top: 100),
       child: Column(
         children: [
-          SizedBox(
-            width: deviceWidth * 0.8,
-            child: const Text(
-              '現在のパスワード',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 124, 122, 122),
-                fontSize: 14,
-              ),
-            ),
-          ),
-          CupertinoTextField(
-            controller:  ref.watch(passwordFieldProvider('')),
-            obscureText: true,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 243, 254),
-              border: Border(
-                bottom: BorderSide(),
-              ),
-            ),
-            autofocus: true,
-          ),
+          const CustomTextFieldLabel(label: '現在のパスワード'),
+          CustomTextField(textController: passwordController),
           Container(
-            width: deviceWidth * 0.8,
             margin: const EdgeInsets.only(top: 30),
-            child: const Text(
-              '新しいパスワード',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Color.fromARGB(255, 124, 122, 122),
-                fontSize: 14,
-              ),
-            ),
-          ),
-          CupertinoTextField(
-            controller: ref.watch(newPasswordFieldProvider),
-            obscureText: true,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 243, 254),
-              border: Border(
-                bottom: BorderSide(),
-              ),
+            child: Column(
+              children: [
+                const CustomTextFieldLabel(label: '新しいパスワード'),
+                CustomTextField(textController: newPasswordController),
+              ],
             ),
           ),
         ],

@@ -10,6 +10,7 @@ import '../../domain/providers/text_field/schedule_place_controller_provider.dar
 import '../../domain/providers/text_field/schedule_title_controller_provider.dart';
 
 import '../../utils/color/color_exchanger.dart';
+
 import '../states/group_schedule_state.dart';
 
 final groupScheduleNotifierProvider = StateNotifierProvider.family

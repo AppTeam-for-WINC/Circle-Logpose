@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../handlers/group_setting_navigation_trailing_bar_dialog_handler.dart';
-import '../../../../../navigations/group_setting_navigation_trailing_bar_navigator.dart';
+import '../../../../../navigations/group_setting_navigation_trailing_bar_dialog_navigator.dart';
 
 class GroupSettingNavigationTrailingBarDialog extends ConsumerStatefulWidget {
   const GroupSettingNavigationTrailingBarDialog({
@@ -32,7 +32,7 @@ class _GroupSettingNavigationTrailingBarDialogState
     }
 
     void cancel() {
-      GroupSettingNavigationTrailingBarNavigator(context).cancel();
+      GroupSettingNavigationTrailingBarDialogNavigator(context).cancel();
     }
 
     return CupertinoAlertDialog(

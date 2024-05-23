@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/providers/group/group/listen_is_joined_group_exist_provider.dart';
 
-import '../../components/components/bottom_gradation/bottom_gradation.dart';
-import '../../components/components/schedule_card_list/schedule_card_list.dart';
-import '../../components/components/schedule_creation_button/schedule_creation_button.dart';
-import '../../components/components/schedule_sort_button/schedule_sort_button.dart';
+import '../../components/common/bottom_gradation.dart';
+
+import '../../components/components/schedule_list/schedule_card_list.dart';
+import '../../components/components/schedule_list/schedule_creation_button.dart';
+import '../../components/components/schedule_list/schedule_sort_button.dart';
 
 class ScheduleListPage extends ConsumerStatefulWidget {
   const ScheduleListPage({super.key});

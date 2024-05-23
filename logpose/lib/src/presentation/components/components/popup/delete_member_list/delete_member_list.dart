@@ -8,7 +8,7 @@ import '../../../../../domain/providers/user/fetch_user_profile_provider.dart';
 
 import '../../../../notifiers/set_group_member_list_notifier.dart';
 
-import '../../group/group_member_tile/group_member_tile.dart';
+import '../../../common/group_member_tile/group_member_tile.dart';
 
 class DeleteMemberList extends ConsumerStatefulWidget {
   const DeleteMemberList({super.key, required this.groupId});

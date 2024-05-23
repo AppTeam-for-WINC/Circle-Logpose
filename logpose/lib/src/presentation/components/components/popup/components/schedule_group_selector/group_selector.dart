@@ -11,7 +11,7 @@ class GroupSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final asyncGroupsIdList = ref.watch(listenJoinedGroupsProfileProvider);
+    final asyncGroupsIdList = ref.watch(listenJoinedGroupIdListProvider);
 
     return asyncGroupsIdList.when(
       data: (data) {

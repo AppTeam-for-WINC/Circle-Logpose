@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/password_setting_page.dart';
+import '../../../../navigations/password_section_navigator.dart';
 
 class PasswordSection extends ConsumerStatefulWidget {
   const PasswordSection({super.key});
@@ -10,14 +10,9 @@ class PasswordSection extends ConsumerStatefulWidget {
 }
 
 class _PasswordSectionState extends ConsumerState<PasswordSection> {
-  Future<void> _onPressed() async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const PasswordSettingPage(),
-      ),
-      (_) => false,
-    );
+  Future<void> _handleToTap() async {
+    final navigator = PasswordSectionNavigator(context);
+    await navigator.moveToPage();
   }
 
   @override
@@ -41,13 +36,11 @@ class _PasswordSectionState extends ConsumerState<PasswordSection> {
         ],
         color: CupertinoColors.white,
         borderRadius: const BorderRadius.all(Radius.circular(60)),
-        border: Border.all(
-          color: const Color(0xFFD9D9D9),
-        ),
+        border: Border.all(color: const Color(0xFFD9D9D9)),
       ),
       child: CupertinoButton(
         padding: EdgeInsets.zero,
-        onPressed: _onPressed,
+        onPressed: _handleToTap,
         child: const Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Row(
@@ -63,9 +56,7 @@ class _PasswordSectionState extends ConsumerState<PasswordSection> {
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       'パスワード',
-                      style: TextStyle(
-                        color: CupertinoColors.black,
-                      ),
+                      style: TextStyle(color: CupertinoColors.black),
                     ),
                   ),
                 ],

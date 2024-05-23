@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../switch/delete_member_switch.dart';
-import '../../../switch/member_addition_switch.dart';
+import '../../../../../common/switch/delete_member_switch.dart';
+import '../../../../../common/switch/member_addition_switch.dart';
 
-import 'group_setting_member_panel.dart';
+import 'components/group_setting_member_panel.dart';
 
 class GroupSettingMemberSection extends ConsumerStatefulWidget {
   const GroupSettingMemberSection({super.key, required this.groupId});
@@ -32,7 +32,7 @@ class _GroupSettingMemberSectionState
         Positioned(
           top: 25,
           right: -15,
-          child: DeleteMemberSwitch(groupId: groupId, mode: 'setting'),
+          child: MemberDeleteSwitch(groupId: groupId, mode: 'setting'),
         ),
       ],
     );

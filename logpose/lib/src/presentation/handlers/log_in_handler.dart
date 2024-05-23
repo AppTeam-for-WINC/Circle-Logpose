@@ -18,12 +18,8 @@ class LoginHandler {
   final WidgetRef ref;
 
   Future<void> handleLogin() async {
-    final email = ref.read(emailFieldProvider('')).text;
-    final password = ref.read(passwordFieldProvider('')).text;
-    final logInController = ref.read(logInControllerProvider);
-
     _updateLoadingStatus(true);
-    final errorMessage = await logInController.performLogin(email, password);
+    final errorMessage = await _login();
     _updateLoadingStatus(false);
 
     if (errorMessage != null) {
@@ -31,9 +27,15 @@ class LoginHandler {
       return;
     }
 
-    if (context.mounted) {
-      await LoginNavigator(context).moveToNextPage();
-    }
+    await _moveToPage();
+  }
+
+  Future<String?> _login() async {
+    final email = ref.read(emailFieldProvider('')).text;
+    final password = ref.read(passwordFieldProvider('')).text;
+    final logInController = ref.read(logInControllerProvider);
+
+    return logInController.performLogin(email, password);
   }
 
   void _updateLoadingStatus(bool loading) {
@@ -43,5 +45,11 @@ class LoginHandler {
   void _displayErrorMessage(String errorMessage) {
     ref.read(loadingProgressControllerProvider).loadingErrorMessage =
         errorMessage;
+  }
+
+  Future<void> _moveToPage() async {
+    if (context.mounted) {
+      await LoginNavigator(context).moveToPage();
+    }
   }
 }

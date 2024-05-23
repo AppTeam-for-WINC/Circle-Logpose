@@ -2,14 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/common/loading_progress.dart';
-import '../../components/common/progress_indicator.dart';
-import '../../components/common/red_error_message.dart';
-import '../../components/common/text_field/email_field.dart';
-import '../../components/common/text_field/password_field.dart';
 
-import '../../components/components/app_logo_and_title/app_logo_and_title.dart';
-import '../../components/components/auth_button/sign_up_button.dart';
-import '../../components/components/navigation_bar/auth_navigation_bar.dart';
+import '../../components/components/auth/sign_up/sign_up_section.dart';
+import '../../components/components/navigation_bar/auth_navigation/auth_navigation_bar.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({super.key});
@@ -21,6 +16,7 @@ class SignUpPage extends ConsumerWidget {
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
+
   @override
   ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -32,7 +28,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.black,
-      navigationBar: AuthNavigationBar(context: context),
+      navigationBar: const AuthNavigationBar(),
       child: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -49,26 +45,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ],
               ),
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                const PageProgressIndicator(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const AppLogoAndTitle(),
-                    if (loadingErrorMessage != null)
-                      RedErrorMessage(
-                        errorMessage: loadingErrorMessage,
-                        fontSize: 20,
-                      ),
-                    const EmailField(label: 'メールアドレス登録'),
-                    const PasswordField(),
-                    const SignUpButton(),
-                  ],
-                ),
-              ],
-            ),
+            child: SignUpSection(loadingErrorMessage: loadingErrorMessage),
           ),
         ),
       ),
