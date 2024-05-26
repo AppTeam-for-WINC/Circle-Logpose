@@ -21,7 +21,7 @@ abstract class IGroupScheduleRepository {
 
   Future<String> fetchGroupId(String docId);
 
-  Future<void> update({
+  Future<void> updateSchedule({
     required String docId,
     required String groupId,
     required String title,
@@ -32,5 +32,5 @@ abstract class IGroupScheduleRepository {
     required DateTime endAt,
   });
 
-  Future<void> delete(String docId);
+  Future<void> deleteSchedule(String docId);
 }

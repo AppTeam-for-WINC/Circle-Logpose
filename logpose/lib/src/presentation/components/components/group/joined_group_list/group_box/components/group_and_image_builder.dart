@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../domain/model/group_and_id_model.dart';
-import '../../../../../../../domain/providers/group/group/listen_group_and_id_provider.dart';
+import '../../../../../../providers/group/group/listen_group_and_id_provider.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
 
 class GroupAndImageBuilder extends ConsumerWidget {
   const GroupAndImageBuilder({super.key, required this.groupId});
-  
+
   final String groupId;
 
   @override

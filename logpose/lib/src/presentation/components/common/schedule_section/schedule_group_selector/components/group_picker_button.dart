@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/providers/group/group/selected_group_name_provider.dart';
-import '../../../../../navigations/modals/group_picker_button_modal_navigator.dart';
+import '../../../../../navigations/modals/to_group_picker_navigator.dart';
+
+import '../../../../../providers/group/group/selected_group_name_provider.dart';
 
 class GroupPickerButton extends ConsumerStatefulWidget {
   const GroupPickerButton({super.key, required this.groupIdList});
@@ -14,20 +15,16 @@ class GroupPickerButton extends ConsumerStatefulWidget {
 }
 
 class _GroupPickerButtonState extends ConsumerState<GroupPickerButton> {
-  Future<void> showModal() async {
-    final navigator = GroupPickerButtonModalNavigator(
-      context: context,
-      groupIdList: widget.groupIdList,
-    );
-
-    await navigator.showModal();
+  Future<void> _handleToTap() async {
+    final navigator = ToGroupPickerNavigator(context);
+    await navigator.showModal(widget.groupIdList);
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
       padding: const EdgeInsets.only(left: 10),
-      onPressed: showModal,
+      onPressed: _handleToTap,
       child: Text(
         ref.watch(selectedGroupNameProvider),
         style: const TextStyle(

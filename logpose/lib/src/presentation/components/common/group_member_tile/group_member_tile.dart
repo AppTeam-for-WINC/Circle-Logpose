@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/entity/user_profile.dart';
 
-import '../../../../domain/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../../../providers/group/mode/group_member_delete_mode_provider.dart';
 
 import 'components/member_delete_button.dart';
 import 'components/member_name_and_image_view.dart';

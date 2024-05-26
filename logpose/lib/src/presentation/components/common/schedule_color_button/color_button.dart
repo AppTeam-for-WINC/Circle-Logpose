@@ -1,33 +1,27 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../navigations/dialogs/color_button_dialog_navigator.dart';
+import '../../../navigations/dialogs/to_palette_dialog_navigator.dart';
 
-class ColorButton extends ConsumerWidget {
+class ColorButton extends StatelessWidget {
   const ColorButton({super.key, this.groupScheduleId, required this.color});
 
   final String? groupScheduleId;
   final Color? color;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (color == null) {
       return const SizedBox.shrink();
     }
 
-    Future<void> showDialog() async {
-      final navigator = ColorButtonDialogNavigator(
-        context: context,
-        groupScheduleId: groupScheduleId,
-        color: color!,
-      );
-
-      await navigator.showDialog();
+    Future<void> handleToTap() async {
+      final navigator = ToPaletteDialogNavigator(context);
+      await navigator.showDialog(groupScheduleId, color!);
     }
 
     return CupertinoButton(
       padding: const EdgeInsets.only(left: 20),
-      onPressed: showDialog,
+      onPressed: handleToTap,
       child: Icon(
         CupertinoIcons.circle_fill,
         size: 50,

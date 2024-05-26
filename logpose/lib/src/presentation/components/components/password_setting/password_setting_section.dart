@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/text_field/new_password_field_provider.dart';
-import '../../../../domain/providers/text_field/password_field_provider.dart';
-
 import '../../../notifiers/user_profile_notifier.dart';
+
+import '../../../providers/text_field/new_password_field_provider.dart';
+import '../../../providers/text_field/password_field_provider.dart';
 
 import '../../common/custom_text_field/custom_text_field.dart';
 import '../../common/custom_text_field/custom_text_field_label.dart';

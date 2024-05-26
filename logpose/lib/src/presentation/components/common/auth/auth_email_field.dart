@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/text_field/email_field_provider.dart';
+import '../../../providers/text_field/email_field_provider.dart';
 
 class AuthEmailField extends ConsumerWidget {
   const AuthEmailField({super.key, required this.label, this.email});

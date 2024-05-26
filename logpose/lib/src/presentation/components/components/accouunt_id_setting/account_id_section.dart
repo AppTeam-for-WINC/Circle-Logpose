@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logpose/src/domain/providers/text_field/account_id_field_provider.dart';
+import 'package:logpose/src/presentation/providers/text_field/account_id_field_provider.dart';
 
-import '../../../../domain/providers/error_message/account_id_error_message_provider.dart';
+import '../../../providers/error_message/account_id_error_message_provider.dart';
 
 import '../../common/red_error_message.dart';
 

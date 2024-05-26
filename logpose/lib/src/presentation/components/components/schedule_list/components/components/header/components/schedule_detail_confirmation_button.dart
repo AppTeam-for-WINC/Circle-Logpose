@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../../navigations/modals/schedule_detail_confirmation_button_modal_navigator.dart';
+import '../../../../../../../navigations/modals/to_schedule_detail_confirm_navigator.dart';
 
 class ScheduleDetailConfirmationButton extends ConsumerWidget {
   const ScheduleDetailConfirmationButton({
@@ -13,7 +13,7 @@ class ScheduleDetailConfirmationButton extends ConsumerWidget {
     required this.groupProfile,
     required this.groupSchedule,
   });
-  
+
   final String groupScheduleId;
   final GroupProfile groupProfile;
   final GroupSchedule groupSchedule;
@@ -23,14 +23,13 @@ class ScheduleDetailConfirmationButton extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     Future<void> handleToTap() async {
-      final navigator = ScheduleDetailConfirmationButtonModalNavigator(
-        context: context,
-        ref: ref,
+      final navigator =
+          ToScheduleDetailConfirmNavigator(context: context, ref: ref);
+      await navigator.showModal(
         groupScheduleId: groupScheduleId,
         groupProfile: groupProfile,
         groupSchedule: groupSchedule,
       );
-      await navigator.showModal();
     }
 
     return GestureDetector(

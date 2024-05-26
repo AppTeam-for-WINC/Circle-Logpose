@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../navigations/email_setting_navigation_leading_bar_navigator.dart';
+import '../../../../../navigations/to_user_setting_page_navigator.dart';
 
 class EmailSettingNavigationLeadingBar extends StatelessWidget {
   const EmailSettingNavigationLeadingBar({super.key});
@@ -8,7 +8,7 @@ class EmailSettingNavigationLeadingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> handleToTap() async {
-      final navigator = EmailSettingNavigationLeadingBarNavigator(context);
+      final navigator = ToUserSettingPageNavigator(context);
       await navigator.moveToPage();
     }
 

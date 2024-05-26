@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/group/selected_group_name_provider.dart';
+import '../navigations/to_group_schedule_updater_navigator.dart';
 
-import '../navigations/group_schedule_tile_navigator.dart';
+import '../providers/group/group/selected_group_name_provider.dart';
 
 class GroupScheduleTileHandler {
   GroupScheduleTileHandler({
@@ -28,7 +28,7 @@ class GroupScheduleTileHandler {
   }
 
   Future<void> _showModal() async {
-    final navigator = GroupScheduleTileNavigator(context, groupScheduleId);
-    await navigator.showModal();
+    final navigator = ToGroupScheduleUpdaterNavigator(context);
+    await navigator.showModal(groupScheduleId);
   }
 }

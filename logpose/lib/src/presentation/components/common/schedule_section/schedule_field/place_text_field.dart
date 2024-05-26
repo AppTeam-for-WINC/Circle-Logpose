@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/providers/text_field/schedule_place_controller_provider.dart';
+import '../../../../providers/text_field/schedule_place_controller_provider.dart';
 import '../../custom_text_field/custom_schedule_text_field.dart';
 
 class PlaceTextField extends ConsumerStatefulWidget {

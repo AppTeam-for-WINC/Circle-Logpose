@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
 
-import '../../../../../../navigations/modals/responsed_members_modal_navigator.dart';
+import '../../../../../../navigations/modals/to_join_schedule_view_navigator.dart';
 import 'components/join_schedule_group_member_image_list.dart';
 
 class ResponsedMembers extends ConsumerStatefulWidget {
@@ -25,7 +25,7 @@ class ResponsedMembers extends ConsumerStatefulWidget {
 
 class _ResponsedMembersState extends ConsumerState<ResponsedMembers> {
   Future<void> _handleToTap() async {
-    final navigator = ResponsedMemebersModalNavigator(context, ref);
+    final navigator = ToJoinScheduleViewNavigator(context, ref);
     await navigator.showModal(
       scheduleId: widget.scheduleId,
       groupProfile: widget.groupProfile,

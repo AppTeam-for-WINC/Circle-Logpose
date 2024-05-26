@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../navigations/password_section_navigator.dart';
+import '../../../../navigations/to_password_setting_page_navigator.dart';
 
 class PasswordSection extends ConsumerStatefulWidget {
   const PasswordSection({super.key});
@@ -11,7 +11,7 @@ class PasswordSection extends ConsumerStatefulWidget {
 
 class _PasswordSectionState extends ConsumerState<PasswordSection> {
   Future<void> _handleToTap() async {
-    final navigator = PasswordSectionNavigator(context);
+    final navigator = ToPasswordSettingPageNavigator(context);
     await navigator.moveToPage();
   }
 

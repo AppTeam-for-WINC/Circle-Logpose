@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/user/fetch_user_email_provider.dart';
+import '../controllers/auth/auth_management_controller.dart';
 
 final userEmailNotifierProvider =
     StateNotifierProvider.autoDispose<_UserProfileNotifier, String>(
@@ -23,6 +23,14 @@ class _UserProfileNotifier extends StateNotifier<String> {
   }
 
   Future<void> _executeToInit() async {
-    state = await ref.read(fetchUserEmailProvider.future);
+    final authController = ref.read(authManagementControllerProvider);
+    final email = await authController.fetchUserEmail();
+    if (email == null) {
+      return;
+    }
+
+    if (mounted) {
+      state = email;
+    }
   }
 }

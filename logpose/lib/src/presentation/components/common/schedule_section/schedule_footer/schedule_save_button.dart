@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/providers/text_field/schedule_detail_controller_provider.dart';
-import '../../../../../domain/providers/text_field/schedule_place_controller_provider.dart';
-import '../../../../../domain/providers/text_field/schedule_title_controller_provider.dart';
-
 import '../../../../handlers/schedule_setting_save_button_handler.dart';
 import '../../../../notifiers/group_schedule_notifier.dart';
+
+import '../../../../providers/text_field/schedule_detail_controller_provider.dart';
+import '../../../../providers/text_field/schedule_place_controller_provider.dart';
+import '../../../../providers/text_field/schedule_title_controller_provider.dart';
 
 enum ActionType { create, update }
 

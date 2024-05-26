@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/sort/sorted_group_and_schedule_id_provider.dart';
-
 import '../components/components/schedule_list/components/schedule_card.dart';
+
+import '../providers/sort/sorted_group_and_schedule_id_provider.dart';
 
 final scheduleCardListNotifierProvider =
     StateNotifierProvider.autoDispose<_ScheduleCardListNotifier, List<Widget>>(

@@ -5,8 +5,9 @@ import '../../domain/model/group_profile_and_schedule_and_id_model.dart';
 import '../../domain/model/schedule_response_params_model.dart';
 
 import '../../utils/schedule/schedule_response.dart';
-import '../controllers/response_button_controller.dart';
-import '../navigations/modals/leave_early_and_lateness_button_modal_navigator.dart';
+
+import '../controllers/group_member_schedule/group_member_schedule_creation_and_update_controller.dart';
+import '../navigations/modals/to_behind_and_early_setting_navigator.dart';
 import '../notifiers/group_member_schedule_notifier.dart';
 
 class LeaveEarlyButtonHandler {
@@ -47,7 +48,8 @@ class LeaveEarlyButtonHandler {
     required String memberScheduleId,
     required bool leaveEarly,
   }) async {
-    final responseController = ref.read(responseButtonControllerProvider);
+    final responseController =
+        ref.read(groupMemberScheduleCreationAndUpdateControllerProvider);
     final scheduleParams = ScheduleResponseParams(
       memberScheduleId: memberScheduleId,
       attendance: false,
@@ -64,14 +66,12 @@ class LeaveEarlyButtonHandler {
         .read(groupMemberScheduleNotifierProvider(groupScheduleId))!
         .leaveEarly;
 
-    final navigator = LeaveEalryAndLatenessButtonModalNavigator(
-      context: context,
-      ref: ref,
+    final navigator = ToBehindAndEarlySettingNavigator(context);
+    await navigator.showModal(
       groupScheduleId: groupScheduleId,
       response: leaveEarly,
       groupProfileAndScheduleAndId: groupProfileAndScheduleAndId,
       responseType: ResponseType.leaveEarly,
     );
-    await navigator.showModal();
   }
 }

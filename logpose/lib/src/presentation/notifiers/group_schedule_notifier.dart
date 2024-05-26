@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app/facade/group_schedule_facade.dart';
-
 import '../../domain/entity/group_schedule.dart';
 
-import '../../domain/providers/text_field/schedule_detail_controller_provider.dart';
-import '../../domain/providers/text_field/schedule_place_controller_provider.dart';
-import '../../domain/providers/text_field/schedule_title_controller_provider.dart';
-
 import '../../utils/color/color_exchanger.dart';
+
+import '../controllers/group_schedule/group_schedule_management_controller.dart';
+
+import '../providers/text_field/schedule_detail_controller_provider.dart';
+import '../providers/text_field/schedule_place_controller_provider.dart';
+import '../providers/text_field/schedule_title_controller_provider.dart';
 
 import '../states/group_schedule_state.dart';
 
@@ -20,7 +20,8 @@ final groupScheduleNotifierProvider = StateNotifierProvider.family
 
 class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleState?> {
   _SetGroupScheduleNotifier(this.ref, String? scheduleId)
-      : groupScheduleFacade = ref.read(groupScheduleFacadeProvider),
+      : _groupScheduleController =
+            ref.read(groupScheduleManagementControllerProvider),
         super(GroupScheduleState()) {
     if (scheduleId != null) {
       _loadExistingSchedule(scheduleId);
@@ -28,11 +29,12 @@ class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleState?> {
   }
 
   final Ref ref;
-  final GroupScheduleFacade groupScheduleFacade;
+  final GroupScheduleManagementController _groupScheduleController;
 
   Future<void> _loadExistingSchedule(String scheduleId) async {
     try {
-      final schedule = await groupScheduleFacade.fetchGroupSchedule(scheduleId);
+      final schedule =
+          await _groupScheduleController.fetchGroupSchedule(scheduleId);
       _setScheduleControllers(schedule);
       final scheduleState = _mapToState(schedule);
       if (mounted) {

@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/model/user_setting_model.dart';
-import '../../domain/providers/text_field/name_field_provider.dart';
 
 import '../components/common/loading_progress.dart';
 
-import '../controllers/user_setting_updater_controller.dart';
-import '../navigations/user_setting_save_button_navigator.dart';
+import '../controllers/user/user_update_controller.dart';
+import '../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
 import '../notifiers/image_provider.dart';
+
+import '../providers/text_field/name_field_provider.dart';
 
 class UserSettingSaveButtonHandler {
   UserSettingSaveButtonHandler({
@@ -33,9 +34,7 @@ class UserSettingSaveButtonHandler {
       return;
     }
 
-    if (context.mounted) {
-      await _moveToPage();
-    }
+    await _moveToPage();
   }
 
   Future<String?> _update() async {
@@ -46,8 +45,8 @@ class UserSettingSaveButtonHandler {
       description: null,
     );
 
-    final userSettingController = ref.read(userSettingUpdaterController);
-    return userSettingController.update(userSettingParams);
+    final userSettingController = ref.read(userUpdateControllerProvider);
+    return userSettingController.updateUser(userSettingParams);
   }
 
   void _updateLoadingStatus(bool loading) {
@@ -61,7 +60,7 @@ class UserSettingSaveButtonHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      final navigator = UserSettingSaveButtonNavigator(context);
+      final navigator = ToScheduleListAndJoinedGroupTabSliderNavigator(context);
       await navigator.moveToPage();
     }
   }

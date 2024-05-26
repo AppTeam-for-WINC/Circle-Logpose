@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
 
-import '../../domain/providers/group/members/listen_group_admin_profile_list_provider.dart';
-import '../../domain/providers/group/members/listen_group_member_profile_list_provider.dart';
-
 import '../components/common/custom_image/custom_image.dart';
+
+import '../providers/group/members/listen_group_admin_profile_list_provider.dart';
+import '../providers/group/members/listen_group_member_profile_list_provider.dart';
 
 final groupMemberImageListNotifierProvider = StateNotifierProvider.family<
     _GroupMemberImageListNotifier, List<Widget>, (String role, String groupId)>(

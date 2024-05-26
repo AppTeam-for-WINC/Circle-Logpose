@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../navigations/dialogs/photo_button_dialog_navigator.dart';
+import '../navigations/dialogs/to_device_manager_navigator.dart';
 import '../notifiers/image_provider.dart';
 
 class PhotoButtonHandler {
@@ -48,7 +48,7 @@ class PhotoButtonHandler {
 
   Future<void> _showPhotoAccessDeniedDialog(BuildContext context) async {
     try {
-      final navigator = PhotoButtonDialogNavigator(context: context);
+      final navigator = ToDeviceManagerNavigator(context);
       await navigator.showPhotoAccessDeniedDialog();
     } on PlatformException catch (e) {
       debugPrint('Failed: $e');

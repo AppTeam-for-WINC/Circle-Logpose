@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/sort/sort_option_provider.dart';
+import '../providers/sort/sort_option_provider.dart';
 
 class ScheduleSortButtonHandler {
   ScheduleSortButtonHandler(this.context, this.ref);

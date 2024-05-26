@@ -2,9 +2,9 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/group/selected_group_name_provider.dart';
-
 import '../notifiers/group_schedule_notifier.dart';
+
+import '../providers/group/group/selected_group_name_provider.dart';
 
 class GroupNameModalHandler {
   GroupNameModalHandler({

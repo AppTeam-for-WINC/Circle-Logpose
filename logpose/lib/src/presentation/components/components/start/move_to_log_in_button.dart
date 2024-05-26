@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../navigations/move_to_login_button_navigator.dart';
+import '../../../navigations/to_log_in_page_navigator.dart';
 
 class MoveToLogInButton extends ConsumerStatefulWidget {
   const MoveToLogInButton({super.key});
@@ -12,7 +12,7 @@ class MoveToLogInButton extends ConsumerStatefulWidget {
 
 class _MoveToLogInButtonState extends ConsumerState<MoveToLogInButton> {
   Future<void> _handleToTap() async {
-    final navigator = MoveToLogInButtonNavigator(context);
+    final navigator = ToLogInPageNavigator(context);
     await navigator.moveToPage();
   }
 

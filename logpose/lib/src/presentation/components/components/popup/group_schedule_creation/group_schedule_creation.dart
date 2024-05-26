@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/providers/error_message/schedule_error_msg_provider.dart';
 import '../../../../notifiers/group_schedule_notifier.dart';
+
+import '../../../../providers/error_message/schedule_error_msg_provider.dart';
 
 import '../../../common/back_to_page_button.dart';
 import '../../../common/schedule_color_button/color_button.dart';

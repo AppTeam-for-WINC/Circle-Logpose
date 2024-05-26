@@ -3,11 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/error_message/email_error_message_provider.dart';
-import '../../domain/providers/text_field/email_field_provider.dart';
+import '../controllers/auth/auth_update_controller.dart';
 
-import '../controllers/email_save_button_controller.dart';
-import '../navigations/email_save_button_navigator.dart';
+import '../navigations/to_user_setting_page_navigator.dart';
+
+import '../providers/error_message/email_error_message_provider.dart';
+import '../providers/text_field/email_field_provider.dart';
 
 class EmailSaveButtonHandler {
   EmailSaveButtonHandler({
@@ -31,10 +32,10 @@ class EmailSaveButtonHandler {
   }
 
   Future<String?> _updateEmail() async {
-    final emailController = ref.read(emailSaveButtonControllerProvider);
+    final emailController = ref.read(authUpdateControllerProvider);
     final newEmail = ref.watch(emailFieldProvider('')).text;
 
-    return emailController.updateEmail(newEmail, password);
+    return emailController.updateUserEmail(newEmail, password);
   }
 
   void _setErrorMessage(String errorMessage) {
@@ -43,7 +44,7 @@ class EmailSaveButtonHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      final navigator = EmailSaveButtonNavigator(context);
+      final navigator = ToUserSettingPageNavigator(context);
       await navigator.moveToPage();
     }
   }

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/clipboard/copy_to_clipboard.dart';
 
-import '../controllers/copy_invitation_link_controller.dart';
+import '../controllers/group_invitation/group_invitation_management_controller.dart';
 
 class CopyInvitationLinkButtonHandler {
   CopyInvitationLinkButtonHandler({
@@ -22,7 +22,8 @@ class CopyInvitationLinkButtonHandler {
   }
 
   Future<String> _getInvitationLink() async {
-    final invitationController = ref.read(copyInvitationLinkControllerProvider);
+    final invitationController =
+        ref.read(groupInvitationManagementControllerProvider);
     return invitationController.createAndFetchGroupInvitationLink(groupId);
   }
 

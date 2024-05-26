@@ -3,12 +3,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/error_message/account_id_error_message_provider.dart';
-import '../../domain/providers/text_field/account_id_field_provider.dart';
+import '../controllers/user/user_update_controller.dart';
 
-import '../controllers/account_id_save_button_controller.dart';
-import '../navigations/account_id_save_button_navigator.dart';
+import '../navigations/to_user_setting_page_navigator.dart';
 import '../notifiers/user_profile_notifier.dart';
+
+import '../providers/error_message/account_id_error_message_provider.dart';
+import '../providers/text_field/account_id_field_provider.dart';
 
 class AccountIdSaveButtonHandler {
   const AccountIdSaveButtonHandler({required this.context, required this.ref});
@@ -32,7 +33,7 @@ class AccountIdSaveButtonHandler {
 
   Future<String?> _update(String newAccountId) async {
     final accountIdController =
-        ref.read(accountIdSaveButtonControllerrProvider);
+        ref.read(userUpdateControllerProvider);
     return accountIdController.updateAccountId(newAccountId);
   }
 
@@ -48,7 +49,7 @@ class AccountIdSaveButtonHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      final navigator = AccountIdSaveButtonNavigator(context);
+      final navigator = ToUserSettingPageNavigator(context);
       await navigator.moveToPage();
     }
   }

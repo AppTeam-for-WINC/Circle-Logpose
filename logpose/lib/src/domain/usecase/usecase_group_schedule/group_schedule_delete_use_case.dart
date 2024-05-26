@@ -66,7 +66,7 @@ class GroupScheduleDeleteUseCase implements IGroupScheduleDeleteUseCase {
 
   Future<void> _deleteGroupSchedule(String groupScheduleId) async {
     try {
-      await scheduleRepository.delete(groupScheduleId);
+      await scheduleRepository.deleteSchedule(groupScheduleId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to delete group schedule. ${e.message}');
     }

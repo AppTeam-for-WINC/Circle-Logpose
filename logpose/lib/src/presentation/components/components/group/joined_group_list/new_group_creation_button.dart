@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../navigations/new_group_creation_button_navigator.dart';
+import '../../../../navigations/to_group_creation_and_list_tab_slider_navigator.dart';
 
 class NewGroupCreationButton extends StatelessWidget {
   const NewGroupCreationButton({super.key});
@@ -8,7 +8,7 @@ class NewGroupCreationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> handleToTap() async {
-      final navigator = NewGroupCreationButtonNavigator(context);
+      final navigator = ToGroupCreationAndListTabSliderNavigator(context);
       await navigator.moveToPage();
     }
 

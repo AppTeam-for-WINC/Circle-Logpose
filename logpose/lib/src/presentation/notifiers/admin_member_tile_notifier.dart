@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
-import '../../domain/providers/user/fetch_user_profile_provider.dart';
+
 import '../components/common/group_member_tile/group_member_tile.dart';
+
+import '../providers/user/fetch_user_profile_provider.dart';
 
 final adminMemberTileNotifierNotifierProvider =
     StateNotifierProvider<_AdminMemberTileNotifier, Widget>(

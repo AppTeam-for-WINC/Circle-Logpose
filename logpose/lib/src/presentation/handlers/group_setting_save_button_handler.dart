@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/model/group_setting_params_model.dart';
 
-import '../../domain/providers/text_field/name_field_provider.dart';
-
 import '../components/common/loading_progress.dart';
 
-import '../controllers/group_setting_updater_controller.dart';
-import '../navigations/group_setting_save_button_navigator.dart';
+import '../controllers/group/group_creation_and_update_controller.dart';
+
+import '../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
 import '../notifiers/image_provider.dart';
 import '../notifiers/set_group_member_list_notifier.dart';
+
+import '../providers/text_field/name_field_provider.dart';
 
 class GroupSettingSaveButtonHandler {
   GroupSettingSaveButtonHandler({
@@ -48,7 +49,7 @@ class GroupSettingSaveButtonHandler {
       description: null,
       memberList: ref.read(setGroupMemberListNotifierProvider),
     );
-    final groupController = ref.read(groupSettingUpdaterControllerProvider);
+    final groupController = ref.read(groupCreationAndUpdateControllerProvider);
 
     return groupController.updateGroup(groupData);
   }
@@ -64,7 +65,7 @@ class GroupSettingSaveButtonHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      final navigator = GroupSettingSaveButtonNavigator(context);
+      final navigator = ToScheduleListAndJoinedGroupTabSliderNavigator(context);
       await navigator.moveToPage();
     }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../navigations/modals/group_setting_navigation_trailing_bar_modal_navigator.dart';
+import '../../../../../navigations/modals/to_group_setting_navigation_trailing_bar_dialog_navigator.dart';
 
 class GroupSettingNavigationTrailingBar extends ConsumerStatefulWidget {
   const GroupSettingNavigationTrailingBar({super.key, required this.groupId});
@@ -19,7 +19,7 @@ class _GroupSettingNavigationTrailingBarState
   Widget build(BuildContext context) {
     Future<void> showModal() async {
       final navigator =
-          GroupSettingNavigationTrailingBarModalNavigator(context);
+          ToGroupSettingNavigationTrailingBarDialogNavigator(context);
       await navigator.showModal(widget.groupId);
     }
 

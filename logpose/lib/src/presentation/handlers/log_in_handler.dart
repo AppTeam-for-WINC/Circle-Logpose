@@ -3,13 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/text_field/email_field_provider.dart';
-import '../../domain/providers/text_field/password_field_provider.dart';
-
 import '../components/common/loading_progress.dart';
 
-import '../controllers/log_in_controller.dart';
-import '../navigations/log_in_navigator.dart';
+import '../controllers/auth/auth_authentication_controller.dart';
+import '../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
+
+import '../providers/text_field/email_field_provider.dart';
+import '../providers/text_field/password_field_provider.dart';
 
 class LoginHandler {
   const LoginHandler(this.context, this.ref);
@@ -19,7 +19,7 @@ class LoginHandler {
 
   Future<void> handleLogin() async {
     _updateLoadingStatus(true);
-    final errorMessage = await _login();
+    final errorMessage = await _logIn();
     _updateLoadingStatus(false);
 
     if (errorMessage != null) {
@@ -30,12 +30,12 @@ class LoginHandler {
     await _moveToPage();
   }
 
-  Future<String?> _login() async {
+  Future<String?> _logIn() async {
     final email = ref.read(emailFieldProvider('')).text;
     final password = ref.read(passwordFieldProvider('')).text;
-    final logInController = ref.read(logInControllerProvider);
+    final logInController = ref.read(authAuthenticationControllerProvider);
 
-    return logInController.performLogin(email, password);
+    return logInController.logIn(email, password);
   }
 
   void _updateLoadingStatus(bool loading) {
@@ -49,7 +49,8 @@ class LoginHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      await LoginNavigator(context).moveToPage();
+      final navigator = ToScheduleListAndJoinedGroupTabSliderNavigator(context);
+      await navigator.moveToPage();
     }
   }
 }

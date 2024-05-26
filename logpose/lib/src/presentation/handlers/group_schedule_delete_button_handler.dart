@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
 
-import '../controllers/group_schedule_delete_controller.dart';
+import '../controllers/group_schedule/group_schedule_deletion_controller.dart';
 
 class GroupScheduleDeleteHandler {
   const GroupScheduleDeleteHandler({
@@ -16,7 +16,7 @@ class GroupScheduleDeleteHandler {
   final String groupScheduleId;
 
   Future<void> handleDeleteSchedule() async {
-    final deleteController = ref.read(groupScheduleDeleteControllerProvider);
+    final deleteController = ref.read(groupScheduleDeletionControllerProvider);
     await deleteController.deleteSchedule(groupMemberList, groupScheduleId);
   }
 }

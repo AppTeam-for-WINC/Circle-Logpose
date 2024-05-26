@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../navigations/account_id_section_navigator.dart';
+import '../../../../navigations/to_account_id_setting_page_navigator.dart';
 
 class AccountIdSection extends ConsumerStatefulWidget {
   const AccountIdSection({super.key});
@@ -11,7 +11,7 @@ class AccountIdSection extends ConsumerStatefulWidget {
 
 class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
   Future<void> _handleToTap() async {
-   final navigator = AccountIdSectionNavigator(context);
+   final navigator = ToAccountIdSettingPageNavigator(context);
    await navigator.moveToPage();
   }
 

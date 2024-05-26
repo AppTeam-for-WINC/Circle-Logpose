@@ -88,8 +88,11 @@ class GroupScheduleFacade {
     return _groupIdWithScheduleIdUseCase.fetchGroupIdWithScheduleId(scheduleId);
   }
 
-  Future<String?> update(String docId, ScheduleParams scheduleParams) async {
-    return _groupScheduleUpdateUseCase.update(docId, scheduleParams);
+  Future<String?> updateSchedule(
+    String docId,
+    ScheduleParams scheduleParams,
+  ) async {
+    return _groupScheduleUpdateUseCase.updateSchedule(docId, scheduleParams);
   }
 
   Future<void> deleteSchedule(

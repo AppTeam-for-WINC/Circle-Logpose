@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../controllers/log_out_controller.dart';
+import '../controllers/auth/auth_authentication_controller.dart';
 import '../navigations/user_setting_navigation_trailing_bar_navigator.dart';
 
 class UserSettingNavigationTrailingBarDialogHandler {
@@ -19,7 +19,7 @@ class UserSettingNavigationTrailingBarDialogHandler {
   }
 
   Future<void> _logout() async {
-    final logOutController = ref.read(logOutControllerProvider);
+    final logOutController = ref.read(authAuthenticationControllerProvider);
     await logOutController.logOut();
   }
 

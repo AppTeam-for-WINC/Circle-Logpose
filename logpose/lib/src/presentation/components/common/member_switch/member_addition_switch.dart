@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../navigations/modals/member_addition_switch_modal_navigator.dart';
+import '../../../navigations/modals/to_addition_navigator.dart';
 
 class MemberAdditionSwitch extends ConsumerWidget {
   const MemberAdditionSwitch({super.key, this.groupId});
@@ -10,8 +10,8 @@ class MemberAdditionSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> showModal() async {
-      final navigator = MemberAdditionSwitchModalNavigator(context, groupId);
-      await navigator.showModal();
+      final navigator = ToMemberAdditionNavigator(context);
+      await navigator.showModal(groupId);
     }
 
     return CupertinoButton(

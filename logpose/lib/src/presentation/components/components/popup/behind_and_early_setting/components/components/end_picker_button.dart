@@ -6,7 +6,7 @@ import '../../../../../../../domain/entity/group_schedule.dart';
 import '../../../../../../../utils/time/time_utils.dart';
 
 import '../../../../../../handlers/end_picker_button_handler.dart';
-import '../../../../../../navigations/modals/time_picker_button_modal_navigator.dart';
+import '../../../../../../navigations/modals/to_date_picker_setting_dialog_navigator.dart';
 import '../../../../../../notifiers/group_member_schedule_notifier.dart';
 
 class EndPickerButton extends ConsumerStatefulWidget {
@@ -64,8 +64,8 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
     }
 
     Future<void> handleModal() async {
-      final navigator = TimePickerButtonModalNavigator(
-        context: context,
+      final navigator = ToDatePickerSettingDialogNavigator(context);
+      await navigator.showModal(
         groupScheduleId: groupScheduleId,
         initialDateTime: memberScheduleController.endAt!,
         minimumDate: memberScheduleController.startAt!,
@@ -73,8 +73,6 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
         updateJoinTime: updateJoinTime,
         setJoinTime: setJoinTime,
       );
-
-      await navigator.showModal();
     }
 
     return CupertinoButton(

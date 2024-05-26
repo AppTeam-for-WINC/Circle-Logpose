@@ -5,9 +5,9 @@ import '../../../../../../../../../../domain/entity/user_profile.dart';
 
 import '../../../../../../../../../../domain/model/group_schedule_and_id_model.dart';
 
-import '../../../../../../../../../../domain/providers/group/mode/schedule_delete_mode_provider.dart';
-
 import '../../../../../../../../../handlers/group_schedule_tile_handler.dart';
+
+import '../../../../../../../../../providers/group/mode/schedule_delete_mode_provider.dart';
 
 import 'components/group_schedule_delete_button.dart';
 import 'components/group_schedule_tile_title_label.dart';

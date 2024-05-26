@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../controllers/member_delete_controller.dart';
+import '../controllers/group_membership/group_membership_deletion_controller.dart';
 import '../notifiers/set_group_member_list_notifier.dart';
 
 class MemberDeleteHandler {
@@ -23,8 +23,12 @@ class MemberDeleteHandler {
   }
 
   Future<void> _deleteMember() async {
-    final memberController = ref.read(memberDeleteControllerProvider);
-    await memberController.deleteMember(groupId!, accountId);
+    final memberController =
+        ref.read(groupMembershipDeletionControllerProvider);
+    await memberController.deleteMemberWithGroupIdAndAccountId(
+      groupId!,
+      accountId,
+    );
   }
 
   void _removeMember() {

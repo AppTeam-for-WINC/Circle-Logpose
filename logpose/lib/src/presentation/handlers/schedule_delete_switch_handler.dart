@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/mode/schedule_delete_mode_provider.dart';
+import '../providers/group/mode/schedule_delete_mode_provider.dart';
 
 class ScheduleDeleteSwitchHandler {
   ScheduleDeleteSwitchHandler(this.ref);

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../navigations/group_box_navigator.dart';
+import '../../../../../navigations/to_group_setting_page_navigator.dart';
 
 import 'components/group_and_image_builder.dart';
 
@@ -15,8 +15,8 @@ class GroupBox extends ConsumerStatefulWidget {
 
 class _GroupBoxState extends ConsumerState<GroupBox> {
   Future<void> handleToTap() async {
-    final navigator = GroupBoxNavigator(context, widget.groupId);
-    await navigator.moveToPage();
+    final navigator = ToGroupSettingPageNavigator(context);
+    await navigator.moveToPage(widget.groupId);
   }
 
   @override

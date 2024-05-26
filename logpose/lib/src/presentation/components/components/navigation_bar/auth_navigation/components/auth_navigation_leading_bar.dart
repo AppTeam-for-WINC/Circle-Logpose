@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../navigations/auth_navigation_leading_bar_navigator.dart';
+import '../../../../../navigations/pop_navigator.dart';
 
 class AuthNavigationLeadingBar extends StatelessWidget {
   const AuthNavigationLeadingBar({super.key});
@@ -8,7 +8,7 @@ class AuthNavigationLeadingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void handleToTap() {
-      AuthNavigationLeadingBarNavigator(context).moveToPage();
+      PopNavigator(context).pop();
     }
 
     return CupertinoButton(

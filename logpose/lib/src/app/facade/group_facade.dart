@@ -17,8 +17,6 @@ import '../../domain/model/group_id_and_schedule_id_and_member_list_model.dart';
 import '../../domain/model/group_profile_and_schedule_and_id_model.dart';
 import '../../domain/model/group_setting_params_model.dart';
 
-import '../../domain/providers/sort/sort_option_provider.dart';
-
 import '../../domain/usecase/usecase_group/group_and_id_listen_use_case.dart';
 import '../../domain/usecase/usecase_group/group_and_id_use_case.dart';
 import '../../domain/usecase/usecase_group/group_and_schedule_and_id_list_listen_use_case.dart';
@@ -27,6 +25,8 @@ import '../../domain/usecase/usecase_group/group_creation_use_case.dart';
 import '../../domain/usecase/usecase_group/group_delete_use_case.dart';
 import '../../domain/usecase/usecase_group/group_update_use_case.dart';
 import '../../domain/usecase/usecase_group/group_use_case.dart';
+
+import '../../presentation/providers/sort/sort_option_provider.dart';
 
 final groupFacadeProvider = Provider<GroupFacade>(
   (ref) => GroupFacade(ref: ref),

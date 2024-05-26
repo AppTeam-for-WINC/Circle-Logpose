@@ -3,13 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/text_field/email_field_provider.dart';
-import '../../domain/providers/text_field/password_field_provider.dart';
-
 import '../components/common/loading_progress.dart';
 
-import '../controllers/sign_up_controller.dart';
-import '../navigations/sign_up_navigator.dart';
+import '../controllers/auth/auth_authentication_controller.dart';
+import '../navigations/to_log_in_page_navigator.dart';
+
+import '../providers/text_field/email_field_provider.dart';
+import '../providers/text_field/password_field_provider.dart';
 
 class SignUpHandler {
   const SignUpHandler(this.context, this.ref);
@@ -33,9 +33,9 @@ class SignUpHandler {
   Future<String?> _signUp() async {
     final email = ref.read(emailFieldProvider('')).text;
     final password = ref.read(passwordFieldProvider('')).text;
-    final signUpController = ref.read(signUpControllerProvider);
+    final signUpController = ref.read(authAuthenticationControllerProvider);
 
-    return signUpController.performSignUp(email, password);
+    return signUpController.signUp(email, password);
   }
 
   void _loadingProgress(bool loading) {
@@ -49,7 +49,7 @@ class SignUpHandler {
 
   Future<void> _moveToPage() async {
     if (context.mounted) {
-      await SignUpNavigator(context).moveToPage();
+      await ToLogInPageNavigator(context).moveToPage();
     }
   }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../../domain/entity/group_member_schedule.dart';
-import '../../../../../../../../../domain/providers/group/schedule/listen_responesd_group_member_schedule_provider.dart';
 
 import '../../../../../../../../../utils/time/time_utils.dart';
+
+import '../../../../../../../../providers/group/schedule/listen_responesd_group_member_schedule_provider.dart';
 
 class MemberJoinTime extends ConsumerWidget {
   const MemberJoinTime({

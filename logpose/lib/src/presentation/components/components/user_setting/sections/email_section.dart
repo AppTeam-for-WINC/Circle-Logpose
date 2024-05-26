@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../navigations/email_section_navigator.dart';
+import '../../../../navigations/to_email_setting_page_navigator.dart';
 
 class EmailSection extends ConsumerStatefulWidget {
   const EmailSection({super.key});
@@ -11,7 +11,7 @@ class EmailSection extends ConsumerStatefulWidget {
 
 class _EmailSectionState extends ConsumerState<EmailSection> {
   Future<void> _handleToTap() async {
-    final navigator = EmailSectionNavigator(context);
+    final navigator = ToEmailSettingPageNavigator(context);
     await navigator.moveToPage();
   }
 

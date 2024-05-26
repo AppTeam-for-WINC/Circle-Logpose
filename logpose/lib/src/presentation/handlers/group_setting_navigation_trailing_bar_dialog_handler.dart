@@ -3,13 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
 
+import '../../domain/model/group_id_and_schedule_id_and_member_list_model.dart';
 import '../../domain/model/group_schedule_and_id_model.dart';
 
-import '../../domain/providers/group/members/listen_group_member_profile_list.dart';
-import '../../domain/providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
+import '../controllers/group/group_delete_controller.dart';
 
-import '../controllers/group_setting_navigation_trailing_bar_dialog_controller.dart';
 import '../navigations/group_setting_navigation_trailing_bar_dialog_navigator.dart';
+
+import '../providers/group/members/listen_group_member_profile_list.dart';
+import '../providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
+
 
 class GroupSettingNavigationTrailingBarDialogHandler {
   GroupSettingNavigationTrailingBarDialogHandler(
@@ -78,9 +81,13 @@ class GroupSettingNavigationTrailingBarDialogHandler {
     String? groupScheduleId,
     List<UserProfile?> memberList,
   ) async {
-    final deleteController =
-        ref.read(groupSettingNavigationTrailingBarDialogControllerProvider);
-    await deleteController.deleteGroup(groupId, groupScheduleId, memberList);
+    final deleteController = ref.read(groupDeletionControllerProvider);
+    final groupData = GroupIdAndScheduleIdAndMemberList(
+      groupId: groupId,
+      groupScheduleId: groupScheduleId,
+      groupMemberList: memberList,
+    );
+    await deleteController.deleteGroup(groupData);
   }
 
   Future<void> _moveToPage() async {

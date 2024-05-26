@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/model/schedule_response_params_model.dart';
 
-import '../controllers/response_button_controller.dart';
+import '../controllers/group_member_schedule/group_member_schedule_creation_and_update_controller.dart';
 import '../notifiers/group_member_schedule_notifier.dart';
 
 class AbsenceButtonHandler {
@@ -39,14 +39,15 @@ class AbsenceButtonHandler {
     required String memberScheduleId,
     required bool absence,
   }) async {
-    final responseController = ref.read(responseButtonControllerProvider);
-      final scheduleParams = ScheduleResponseParams(
-        memberScheduleId: memberScheduleId,
-        attendance: false,
-        leaveEarly: false,
-        lateness: false,
-        absence: !absence,
-      );
+    final responseController =
+        ref.read(groupMemberScheduleCreationAndUpdateControllerProvider);
+    final scheduleParams = ScheduleResponseParams(
+      memberScheduleId: memberScheduleId,
+      attendance: false,
+      leaveEarly: false,
+      lateness: false,
+      absence: !absence,
+    );
     await responseController.updateResponse(scheduleParams);
   }
 }

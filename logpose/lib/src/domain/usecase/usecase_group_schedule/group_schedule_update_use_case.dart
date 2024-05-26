@@ -35,7 +35,10 @@ class GroupScheduleUpdateUseCase implements IGroupScheduleUpdateUseCase {
   final ValidatorController validator;
 
   @override
-  Future<String?> update(String docId, ScheduleParams scheduleParams) async {
+  Future<String?> updateSchedule(
+    String docId,
+    ScheduleParams scheduleParams,
+  ) async {
     try {
       return await _attemptToUpdate(docId, scheduleParams);
     } on Exception catch (e) {
@@ -74,20 +77,20 @@ class GroupScheduleUpdateUseCase implements IGroupScheduleUpdateUseCase {
     ScheduleParams scheduleParams,
   ) async {
     final colorToString = _colorToHex(scheduleParams.color);
-    await _updateSchedule(docId, colorToString, scheduleParams);
+    await _update(docId, colorToString, scheduleParams);
   }
 
   String _colorToHex(Color color) {
     return colorToHex(color);
   }
 
-  Future<void> _updateSchedule(
+  Future<void> _update(
     String docId,
     String color,
     ScheduleParams scheduleParams,
   ) async {
     try {
-      await groupScheduleRepository.update(
+      await groupScheduleRepository.updateSchedule(
         docId: docId,
         groupId: scheduleParams.groupId!,
         title: scheduleParams.title,

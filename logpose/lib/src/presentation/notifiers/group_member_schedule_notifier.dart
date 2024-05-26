@@ -1,8 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app/facade/group_member_schedule_facade.dart';
-
 import '../../domain/entity/group_member_schedule.dart';
+import '../controllers/group_member_schedule/group_member_schedule_management_controller.dart';
 
 final groupMemberScheduleNotifierProvider = StateNotifierProvider.family
     .autoDispose<_MemberScheduleNotifier, GroupMemberSchedule?, String>(
@@ -11,18 +10,19 @@ final groupMemberScheduleNotifierProvider = StateNotifierProvider.family
 
 class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   _MemberScheduleNotifier(this.ref, this.groupScheduleId)
-      : _memberScheduleFacade = ref.read(groupMemberScheduleFacadeProvider),
+      : _memberScheduleController =
+            ref.read(groupMemberScheduleManagementControllerProvider),
         super(null) {
     _initSchedule();
   }
 
   final Ref ref;
   final String groupScheduleId;
-  final GroupMemberScheduleFacade _memberScheduleFacade;
+  final GroupMemberScheduleManagementController _memberScheduleController;
 
   Future<void> _initSchedule() async {
     final schedule =
-        await _memberScheduleFacade.initMemberSchedule(groupScheduleId);
+        await _memberScheduleController.initMemberSchedule(groupScheduleId);
     if (mounted) {
       state = schedule;
     }

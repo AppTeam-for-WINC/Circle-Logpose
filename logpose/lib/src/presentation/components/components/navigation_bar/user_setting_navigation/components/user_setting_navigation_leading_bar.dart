@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../navigations/user_setting_navigation_leading_bar_navigator.dart';
+import '../../../../../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
 
 class UserSettingNavigationLeadingBar extends StatelessWidget {
   const UserSettingNavigationLeadingBar({super.key});
@@ -8,7 +8,7 @@ class UserSettingNavigationLeadingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> handleToTap() async {
-      final navigator = UserSettingNavigationLeadingBarNavigator(context);
+      final navigator = ToScheduleListAndJoinedGroupTabSliderNavigator(context);
       await navigator.moveToPage();
     }
 

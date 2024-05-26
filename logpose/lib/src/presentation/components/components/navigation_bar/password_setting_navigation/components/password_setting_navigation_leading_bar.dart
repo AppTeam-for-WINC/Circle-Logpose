@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../navigations/password_setting_navigation_leading_bar_navigator.dart';
+import '../../../../../navigations/to_user_setting_page_navigator.dart';
 
 class PasswordSettingNavigationLeadingBar extends StatelessWidget {
   const PasswordSettingNavigationLeadingBar({super.key});
@@ -8,7 +8,7 @@ class PasswordSettingNavigationLeadingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> handleToTap() async {
-      final navigator = PasswordSettingNavigationLeadingBarNavigator(context);
+      final navigator = ToUserSettingPageNavigator(context);
       await navigator.moveToPage();
     }
 

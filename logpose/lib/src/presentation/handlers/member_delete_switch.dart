@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/mode/group_member_delete_mode_provider.dart';
+import '../navigations/modals/to_member_list_delete_navigator.dart';
 
-import '../navigations/modals/member_delete_switch_modal_navigator.dart';
+import '../providers/group/mode/group_member_delete_mode_provider.dart';
 
 class MemberDeleteSwitchHandler {
   MemberDeleteSwitchHandler({
@@ -39,7 +39,7 @@ class MemberDeleteSwitchHandler {
   }
 
   Future<void> _showModal() async {
-    final navigator = MemberDeleteSwitchModalNavigator(context, groupId);
-    await navigator.showModal();
+    final navigator = ToMemberListDeleteNavigator(context);
+    await navigator.showModal(groupId);
   }
 }

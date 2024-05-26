@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/providers/error_message/update_user_profile_error_provider.dart';
-
 import '../../components/components/navigation_bar/user_setting_navigation/user_setting_navigation_bar.dart';
 import '../../components/components/user_setting/sections/account_id_section.dart';
 import '../../components/components/user_setting/sections/email_section.dart';
@@ -12,6 +10,9 @@ import '../../components/components/user_setting/sections/user_setting_image_and
 import '../../components/components/user_setting/user_setting_save_button.dart';
 
 import '../../notifiers/user_profile_notifier.dart';
+
+import '../../providers/error_message/update_user_profile_error_provider.dart';
+
 // import '../../common/progress/progress_indicator.dart';
 
 class UserSettingPage extends ConsumerStatefulWidget {

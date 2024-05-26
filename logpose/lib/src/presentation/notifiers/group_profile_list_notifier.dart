@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/group/listen_joined_group_profile_provider.dart';
 import '../components/components/group/joined_group_list/group_box/group_box.dart';
+
+import '../providers/group/group/listen_joined_group_profile_provider.dart';
 
 final groupProfileListNotifierProvider =
     StateNotifierProvider<_GroupProfileListNotifier, List<Widget>>(

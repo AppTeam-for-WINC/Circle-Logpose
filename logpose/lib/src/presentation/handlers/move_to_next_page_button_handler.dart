@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../validation/validator/validator_controller.dart';
-import '../../domain/providers/error_message/password_error_message_provider.dart';
 
-import '../../domain/providers/text_field/password_field_provider.dart';
+import '../navigations/to_email_setting_nex_page_navigator.dart';
 
-import '../navigations/move_to_next_page_button_navigator.dart';
+import '../providers/error_message/password_error_message_provider.dart';
+import '../providers/text_field/password_field_provider.dart';
 
 class MoveToNextPageButtonHandler {
   MoveToNextPageButtonHandler({required this.context, required this.ref});
@@ -38,13 +38,9 @@ class MoveToNextPageButtonHandler {
   }
 
   Future<void> _moveToPage(String password) async {
-    if (!context.mounted) {
-      return;
+    if (context.mounted) {
+      final navigator = ToEmailSettingNextPageNavigator(context);
+      await navigator.moveToPage(password);
     }
-    final navigator = MoveToNextPageNavigator(
-      context: context,
-      password: password,
-    );
-    await navigator.moveToPage();
   }
 }

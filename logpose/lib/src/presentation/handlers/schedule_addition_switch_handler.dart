@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/providers/group/group/selected_group_name_provider.dart';
-import '../navigations/schedule_addition_switch_modal_navigator.dart';
+import '../navigations/modals/to_group_schedule_creation_navigator.dart';
+
+import '../providers/group/group/selected_group_name_provider.dart';
 
 class ScheduleAdditionSwitchHandler {
   const ScheduleAdditionSwitchHandler(
@@ -27,8 +28,9 @@ class ScheduleAdditionSwitchHandler {
   }
 
   Future<void> _showModal() async {
-    final navigator =
-        ScheduleAdditionSwitchModalNavigator(context, ref);
-    await navigator.showModal(groupId);
+    if (context.mounted) {
+      final navigator = ToGroupScheduleCreationNavigator(context);
+      await navigator.showModal(groupId);
+    }
   }
 }

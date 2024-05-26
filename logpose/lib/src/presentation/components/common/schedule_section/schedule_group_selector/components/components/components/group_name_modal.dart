@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../domain/model/group_and_id_model.dart';
-import '../../../../../../../../domain/providers/group/group/fetch_group_and_id_list_provider.dart';
 
 import '../../../../../../../handlers/group_name_modal_handler.dart';
+
+import '../../../../../../../providers/group/group/fetch_group_and_id_list_provider.dart';
 
 class GroupNameModal extends ConsumerWidget {
   const GroupNameModal({super.key, required this.groupIdList});

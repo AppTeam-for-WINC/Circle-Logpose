@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../controllers/member_schedule_time_updater_controller.dart';
+import '../controllers/group_member_schedule/group_member_schedule_creation_and_update_controller.dart';
 import '../navigations/pop_navigator.dart';
 import '../notifiers/group_member_schedule_notifier.dart';
 
@@ -34,7 +34,7 @@ class EndPickerButtonHandler {
 
   Future<void> _updateEndAt() async {
     final memberScheduleUpdater =
-        ref.read(memberScheduleUpdaterControllerProvider);
+        ref.read(groupMemberScheduleCreationAndUpdateControllerProvider);
     await memberScheduleUpdater.updateEndAt(memberScheduleId, endAt);
   }
 

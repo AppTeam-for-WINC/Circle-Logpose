@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/providers/text_field/email_field_provider.dart';
 import '../../../notifiers/user_email_notifier.dart';
+
+import '../../../providers/text_field/email_field_provider.dart';
 
 import 'components/current_email_field_section.dart';
 import 'components/email_field_section.dart';

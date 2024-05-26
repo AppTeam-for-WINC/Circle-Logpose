@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
-import '../../domain/providers/group/members/listen_group_member_profile_list_provider.dart';
 
 import '../components/common/group_member_tile/group_member_tile.dart';
+
+import '../providers/group/members/listen_group_member_profile_list_provider.dart';
 
 final membershipMemberTileNotifierProvider =
     StateNotifierProvider.family<_MembershipMemberTileNotifier, Widget, String>(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../navigations/account_id_setting_navigation_leading_bar_navigator.dart';
+import '../../../../../navigations/to_user_setting_page_navigator.dart';
 
 class AccountIdSettinghNavigationLeadingBar extends StatelessWidget {
   const AccountIdSettinghNavigationLeadingBar({super.key});
@@ -8,7 +8,7 @@ class AccountIdSettinghNavigationLeadingBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> handleToTap() async {
-      final navigator = AccountIdSettingNavigationLeadingBarNavigator(context);
+      final navigator = ToUserSettingPageNavigator(context);
       await navigator.moveToPage();
     }
 

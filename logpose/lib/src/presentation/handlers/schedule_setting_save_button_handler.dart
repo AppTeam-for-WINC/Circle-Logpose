@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/model/schedule_params_model.dart';
 
-import '../../domain/providers/error_message/schedule_error_msg_provider.dart';
-
-import '../controllers/group_schedule_controller.dart';
+import '../controllers/group_schedule/group_schedule_creation_and_update_controller.dart';
 import '../navigations/pop_navigator.dart';
 import '../notifiers/group_schedule_notifier.dart';
+
+import '../providers/error_message/schedule_error_msg_provider.dart';
 
 class ScheduleSettingSaveButtonHandler {
   ScheduleSettingSaveButtonHandler({
@@ -80,13 +80,15 @@ class ScheduleSettingSaveButtonHandler {
 
   Future<String?> _createSchedule() async {
     final scheduleData = _mapToScheduleParams();
-    final scheduleController = ref.read(groupScheduleControllerProvider);
+    final scheduleController =
+        ref.read(groupScheduleCreationAndUpdateControllerProvider);
     return scheduleController.createSchedule(scheduleData);
   }
 
   Future<String?> _updateSchedule() async {
     final scheduleData = _mapToScheduleParams();
-    final scheduleController = ref.read(groupScheduleControllerProvider);
+    final scheduleController =
+        ref.read(groupScheduleCreationAndUpdateControllerProvider);
     return scheduleController.updateSchedule(groupScheduleId!, scheduleData);
   }
 

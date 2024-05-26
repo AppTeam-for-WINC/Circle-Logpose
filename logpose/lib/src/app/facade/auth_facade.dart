@@ -22,18 +22,18 @@ class AuthFacade {
   AuthFacade({required this.ref})
       : _signUpUseCase = ref.read(signUpUsecaseProvider),
         _logInUseCase = ref.read(logInUseCaseProvider),
+        _logOutUseCase = ref.read(logOutUseCaseProvider),
         _authIdUseCase = ref.read(authUserIdUseCaseProvider),
         _emailUseCase = ref.read(emailUseCaseProvider),
-        _passwordUseCase = ref.read(passwordUseCaseProvider),
-        _logOutUseCase = ref.read(logOutUseCaseProvider);
+        _passwordUseCase = ref.read(passwordUseCaseProvider);
 
   final Ref ref;
   final ISignUpUseCase _signUpUseCase;
   final ILogInUseCase _logInUseCase;
+  final ILogOutUseCase _logOutUseCase;
   final IAuthUserIdUseCase _authIdUseCase;
   final IEmailUseCase _emailUseCase;
   final IPasswordUseCase _passwordUseCase;
-  final ILogOutUseCase _logOutUseCase;
 
   Future<String?> signUp(String email, String password) async {
     return _signUpUseCase.signUp(email, password);
@@ -43,7 +43,11 @@ class AuthFacade {
     return _logInUseCase.logIn(email, password);
   }
 
-    Future<String> fetchCurrentUserId() async {
+  Future<void> logOut() async {
+    return _logOutUseCase.logOut();
+  }
+
+  Future<String> fetchCurrentUserId() async {
     return _authIdUseCase.fetchCurrentUserId();
   }
 
@@ -71,9 +75,5 @@ class AuthFacade {
 
   Future<bool> sendConfirmationEmail() async {
     return _emailUseCase.sendConfirmationEmail();
-  }
-
-  Future<void> logOut() async {
-    return _logOutUseCase.logOut();
   }
 }

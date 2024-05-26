@@ -135,9 +135,6 @@ class GroupMemberScheduleFacade {
     String accountId,
   ) {
     return _groupMemberScheduleListenResponsedUseCase
-        .listenResponsedGroupMemberSchedule(
-      scheduleId,
-      accountId,
-    );
+        .listenResponsedGroupMemberSchedule(scheduleId, accountId);
   }
 }

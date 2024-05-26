@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../navigations/modals/schedule_creation_button_modal_navigator.dart';
+import '../../../navigations/modals/to_group_schedule_creation_navigator.dart';
 
 class ScheduleCreationButton extends ConsumerStatefulWidget {
   const ScheduleCreationButton({super.key});
@@ -13,8 +13,8 @@ class ScheduleCreationButton extends ConsumerStatefulWidget {
 class _ScheduleCreationButtonState
     extends ConsumerState<ScheduleCreationButton> {
   Future<void> handleToTap() async {
-    final navigator = ScheduleCreationButtonModalNavigator(context);
-    await navigator.showModal();
+    final navigator = ToGroupScheduleCreationNavigator(context);
+    await navigator.showModal(null);
   }
 
   @override

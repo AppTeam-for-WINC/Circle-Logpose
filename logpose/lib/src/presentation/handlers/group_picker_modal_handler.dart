@@ -3,10 +3,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/model/group_and_id_model.dart';
-import '../../domain/providers/group/group/selected_group_name_provider.dart';
 
-import '../controllers/group_and_id_list_controller.dart';
+import '../controllers/group/group_management_controller.dart';
+
 import '../notifiers/group_schedule_notifier.dart';
+
+import '../providers/group/group/selected_group_name_provider.dart';
 
 class GroupPickerModalHandler {
   GroupPickerModalHandler({
@@ -29,8 +31,8 @@ class GroupPickerModalHandler {
   }
 
   Future<List<GroupAndId>> _fetchGroupAndIdList() async {
-    final groupAndIdListController = ref.read(groupAndIdListControllerProvider);
-    return groupAndIdListController.fetchGroupAndIdList(groupIdList);
+    final groupController = ref.read(groupManagementControllerProvider);
+    return groupController.fetchGroupAndIdList(groupIdList);
   }
 
   Future<void> _setGroupName(List<GroupAndId> groupAndIdList) async {

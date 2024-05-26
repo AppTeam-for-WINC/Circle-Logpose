@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
+
 import '../../domain/model/group_schedule_and_id_model.dart';
-import '../../domain/providers/group/members/listen_group_member_profile_list.dart';
-import '../../domain/providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
 
 import '../components/components/group/group_setting/sections/schedule_section/components/components/group_schedule_tile/group_schedule_tile.dart';
+
+import '../providers/group/members/listen_group_member_profile_list.dart';
+import '../providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
 
 final groupScheduleTileListBuilderNotifierProvider =
     StateNotifierProvider.family<_GroupScheduleTileListNotifier, List<Widget>,

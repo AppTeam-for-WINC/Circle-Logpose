@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../domain/entity/user_profile.dart';
-import '../../../../../../../../domain/providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
+import '../../../../../../../providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
 
 import '../../../../../../common/custom_image/custom_image.dart';
 
