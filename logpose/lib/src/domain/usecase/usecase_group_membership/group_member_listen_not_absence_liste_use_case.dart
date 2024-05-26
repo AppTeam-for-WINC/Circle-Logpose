@@ -4,12 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../entity/user_profile.dart';
 
+import '../../interface/group_membership/i_group_member_id_listen_use_case.dart';
+import '../../interface/group_membership/i_group_member_listen_not_absence_use_case.dart';
+import '../../interface/group_membership/i_group_member_use_case.dart';
+import '../../interface/group_schedule/i_group_id_with_schedule_id_use_case.dart';
+
 import '../usecase_group_schedule/group_id_with_schedule_id_use_case.dart';
 import 'group_member_id_listen_use_case.dart';
 import 'group_member_use_case.dart';
 
 final groupMemberListenNotAbsenceUseCaseProvider =
-    Provider<GroupMemberListenNotAbsenceUseCase>((ref) {
+    Provider<IGroupMemberListenNotAbsenceUseCase>((ref) {
   final groupIdWithScheduleIdUseCase =
       ref.read(groupIdWithScheduleIdUseCaseProvider);
   final memberUseCase = ref.read(groupMemberUseCaseProvider);
@@ -23,7 +28,8 @@ final groupMemberListenNotAbsenceUseCaseProvider =
   );
 });
 
-class GroupMemberListenNotAbsenceUseCase {
+class GroupMemberListenNotAbsenceUseCase
+    implements IGroupMemberListenNotAbsenceUseCase {
   const GroupMemberListenNotAbsenceUseCase({
     required this.ref,
     required this.groupIdWithScheduleIdUseCase,
@@ -32,10 +38,11 @@ class GroupMemberListenNotAbsenceUseCase {
   });
 
   final Ref ref;
-  final GroupIdWithScheduleIdUseCase groupIdWithScheduleIdUseCase;
-  final GroupMemberUseCase memberUseCase;
-  final GroupMemberIdListenUseCase memberIdListenUseCase;
+  final IGroupIdWithScheduleIdUseCase groupIdWithScheduleIdUseCase;
+  final IGroupMemberUseCase memberUseCase;
+  final IGroupMemberIdListenUseCase memberIdListenUseCase;
 
+  @override
   Stream<List<UserProfile?>> listenAllMemberProfileNotAbsenceList(
     String scheduleId,
   ) async* {

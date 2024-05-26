@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../entity/group_schedule.dart';
 
+import '../../interface/group_schedule/i_group_schedule_and_id_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_use_case.dart';
 import '../../model/group_schedule_and_id_model.dart';
 
 import 'group_schedule_use_case.dart';
 
 final groupScheduleAndIdUseCaseProvider =
-    Provider<GroupScheduleAndIdUseCase>((ref) {
+    Provider<IGroupScheduleAndIdUseCase>((ref) {
   final groupScheduleUseCase = ref.read(groupScheduleUseCaseProvider);
 
   return GroupScheduleAndIdUseCase(
@@ -16,11 +18,12 @@ final groupScheduleAndIdUseCaseProvider =
   );
 });
 
-class GroupScheduleAndIdUseCase {
+class GroupScheduleAndIdUseCase implements IGroupScheduleAndIdUseCase {
   const GroupScheduleAndIdUseCase({required this.groupScheduleUseCase});
 
-  final GroupScheduleUseCase groupScheduleUseCase;
+  final IGroupScheduleUseCase groupScheduleUseCase;
 
+  @override
   Future<GroupScheduleAndId?> fetchGroupScheduleAndId(String scheduleId) async {
     try {
       return await _attemptToFetchGroupScheduleAndId(scheduleId);
@@ -30,6 +33,7 @@ class GroupScheduleAndIdUseCase {
     }
   }
 
+  @override
   Future<List<GroupScheduleAndId?>> fetchGroupScheduleAndIdList(
     List<String?> scheduleIdList,
   ) async {

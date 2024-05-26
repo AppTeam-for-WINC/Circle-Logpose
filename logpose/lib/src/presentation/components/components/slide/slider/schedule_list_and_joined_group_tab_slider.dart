@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../pages/group/joined_group_list_page.dart';
 import '../../../../pages/schedule/schedule_list_page.dart';
+
 import '../src/slide_tab.dart';
 import '../src/slide_tab_bar.dart';
 
@@ -13,8 +14,8 @@ class ScheduleListAndJoinedGroupTabSlider extends ConsumerStatefulWidget {
   ConsumerState createState() => _ScheduleListAndJoinedGroupTabSliderState();
 }
 
-class _ScheduleListAndJoinedGroupTabSliderState extends ConsumerState
-<ScheduleListAndJoinedGroupTabSlider> {
+class _ScheduleListAndJoinedGroupTabSliderState
+    extends ConsumerState<ScheduleListAndJoinedGroupTabSlider> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;

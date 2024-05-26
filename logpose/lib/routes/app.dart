@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../src/presentation/components/components/slide/slider/group_creation_and_list_tab_slider.dart';
 import '../src/presentation/components/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
-import '../src/presentation/pages/login/login_page.dart';
-import '../src/presentation/pages/signup/signup_page.dart';
+import '../src/presentation/pages/login/log_in_page.dart';
+import '../src/presentation/pages/signup/sign_up_page.dart';
 import '../src/presentation/pages/start/start_page.dart';
 import 'app_controller.dart';
 
@@ -47,8 +47,8 @@ class LogposeApp extends ConsumerWidget {
       routes: {
         '/home': (context) => const ScheduleListAndJoinedGroupTabSlider(),
         '/start': (context) => const StartPage(),
-        '/signup': (context) => const SignupPage(),
-        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/login': (context) => const LogInPage(),
         '/group_create': (context) => const GroupCreationAndListTabSlider(),
       },
     );

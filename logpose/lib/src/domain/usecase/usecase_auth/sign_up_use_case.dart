@@ -3,28 +3,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_auth_repository.dart';
 import '../../../data/repository/auth/auth_repository.dart';
+import '../../interface/auth/i_sign_up_use_case.dart';
 
-final signUpUsecaseProvider = Provider<SignUpUseCase>(
+final signUpUsecaseProvider = Provider<ISignUpUseCase>(
   (ref) {
+    final authRepository = ref.read(authRepositoryProvider);
     final validator = ref.read(validatorControllerProvider);
 
     return SignUpUseCase(
       ref: ref,
+      authRepository: authRepository,
       validator: validator,
     );
   },
 );
 
-class SignUpUseCase {
+class SignUpUseCase implements ISignUpUseCase {
   SignUpUseCase({
     required this.ref,
+    required this.authRepository,
     required this.validator,
   });
 
   final Ref ref;
+  final IAuthRepository authRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> signUp(String email, String password) async {
     try {
       return await _executeSignUp(email, password);
@@ -53,7 +60,6 @@ class SignUpUseCase {
 
   Future<bool> _createAccount(String email, String password) async {
     try {
-      final authRepository = ref.read(authRepositoryProvider);
       return await authRepository.createAccount(email, password);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to create account. ${e.message}');

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entity/group_schedule.dart';
-import '../../../domain/interface/i_group_schedule_repository.dart';
+import '../../interface/i_group_schedule_repository.dart';
 
 import '../../mapper/group_schedule_mapper.dart';
 
@@ -182,7 +182,7 @@ class GroupScheduleRepository implements IGroupScheduleRepository {
   }
 
   @override
-  Future<void> update({
+  Future<void> updateSchedule({
     required String docId,
     required String groupId,
     required String title,
@@ -211,7 +211,7 @@ class GroupScheduleRepository implements IGroupScheduleRepository {
   }
 
   @override
-  Future<void> delete(String docId) async {
+  Future<void> deleteSchedule(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {

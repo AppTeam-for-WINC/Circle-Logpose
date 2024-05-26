@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
-import '../components/header/header.dart';
-import '../components/schedule_time_view/schedule_time_view.dart';
-import 'components/join_time/join_time.dart';
-import 'components/response_icon_and_text/response_icon_and_text.dart';
-import 'components/title/schedule_title.dart';
+
+import '../../../common/popup_header_color.dart';
+
+import '../../../common/response_icon_and_text.dart';
+import '../../../common/schedule_time_view.dart';
+import '../components/schedule_title.dart';
+import 'components/join_time.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({
@@ -15,6 +17,7 @@ class BehindAndEarlySetting extends ConsumerStatefulWidget {
     required this.responseIcon,
     required this.responseText,
   });
+
   final GroupProfileAndScheduleAndId groupProfileAndScheduleAndId;
   final Icon responseIcon;
   final Text responseText;
@@ -42,10 +45,14 @@ class _BehindAndEarlySettingState extends ConsumerState<BehindAndEarlySetting> {
           decoration: const BoxDecoration(color: CupertinoColors.white),
           child: Stack(
             children: [
-              Header(color: groupSchedule.color),
+              PopupHeaderColor(color: groupSchedule.color),
               ResponseIconAndText(
                 responseIcon: responseIcon,
                 responseText: responseText,
+                width: 80,
+                height: 80,
+                marginTop: 100,
+                marginLeft: 260,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/account_id_setting_page.dart';
+import '../../../../navigations/to_account_id_setting_page_navigator.dart';
 
 class AccountIdSection extends ConsumerStatefulWidget {
   const AccountIdSection({super.key});
@@ -10,14 +10,9 @@ class AccountIdSection extends ConsumerStatefulWidget {
 }
 
 class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
-  Future<void> _onPressed() async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const AccountIdSettingPage(),
-      ),
-      (_) => false,
-    );
+  Future<void> _handleToTap() async {
+   final navigator = ToAccountIdSettingPageNavigator(context);
+   await navigator.moveToPage();
   }
 
   @override
@@ -47,7 +42,7 @@ class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
       ),
       child: CupertinoButton(
         padding: EdgeInsets.zero,
-        onPressed: _onPressed,
+        onPressed: _handleToTap,
         child: const Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Row(
@@ -68,10 +63,7 @@ class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
                   ),
                 ],
               ),
-              Icon(
-                CupertinoIcons.forward,
-                color: CupertinoColors.black,
-              ),
+              Icon(CupertinoIcons.forward, color: CupertinoColors.black),
             ],
           ),
         ),

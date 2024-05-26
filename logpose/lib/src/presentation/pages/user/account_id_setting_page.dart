@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../components/components/accouunt_id_setting/account_id_save_button.dart';
 import '../../components/components/accouunt_id_setting/account_id_section.dart';
-import '../../components/components/accouunt_id_setting/save_button.dart';
-import '../../components/components/navigation_bar/account_id_setting_navigation_bar.dart';
+import '../../components/components/navigation_bar/account_id_setting_navigation/account_id_setting_navigation_bar.dart';
 
 import '../../notifiers/user_profile_notifier.dart';
 
@@ -21,15 +21,15 @@ class AccountIdSettingPageState extends ConsumerState<AccountIdSettingPage> {
     if (userProfile == null) {
       return const SizedBox.shrink();
     }
-    
+
     return CupertinoPageScaffold(
       backgroundColor: const Color.fromARGB(255, 245, 243, 254),
-      navigationBar: AccountIdSettingNavigationBar(context: context, ref: ref),
+      navigationBar: const AccountIdSettingNavigationBar(),
       child: Center(
         child: Column(
           children: [
             AccountIdSection(accountId: userProfile.accountId),
-            const SaveButton(),
+            const AccountIdSaveButton(),
           ],
         ),
       ),

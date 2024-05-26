@@ -1,25 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_membership_repository.dart';
+
 import '../../../data/repository/database/group_membership_repository.dart';
 
 import '../../entity/group_membership.dart';
 import '../../entity/user_profile.dart';
 
-import '../../interface/i_group_membership_repository.dart';
+import '../../interface/group_membership/i_group_member_listen_use_case.dart';
 
 final groupMemberListenUseCaseProvider =
-    Provider<GroupMemberListenUseCase>((ref) {
+    Provider<IGroupMemberListenUseCase>((ref) {
   final memberRepository = ref.read(groupMembershipRepositoryProvider);
 
   return GroupMemberListenUseCase(memberRepository: memberRepository);
 });
 
-class GroupMemberListenUseCase {
+class GroupMemberListenUseCase implements IGroupMemberListenUseCase {
   GroupMemberListenUseCase({required this.memberRepository});
 
   final IGroupMembershipRepository memberRepository;
 
+  @override
   Stream<List<UserProfile?>> listenAllMember(String groupId) async* {
     try {
       yield* memberRepository.listenAllMember(groupId);
@@ -28,6 +31,7 @@ class GroupMemberListenUseCase {
     }
   }
 
+  @override
   Stream<List<GroupMembership?>> listenAllMembershipListWithUserId(
     String userDocId,
   ) async* {

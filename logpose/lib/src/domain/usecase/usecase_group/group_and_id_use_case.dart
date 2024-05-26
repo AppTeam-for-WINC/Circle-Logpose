@@ -2,22 +2,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../entity/group_profile.dart';
 
+import '../../interface/group/i_group_and_id_use_case.dart';
+import '../../interface/group/i_group_use_case.dart';
+
 import '../../model/group_and_id_model.dart';
 
 import 'group_use_case.dart';
 
-final groupAndIdUseCaseProvider =
-    Provider<GroupAndIdUseCase>((ref) {
+final groupAndIdUseCaseProvider = Provider<IGroupAndIdUseCase>((ref) {
   final groupUseCase = ref.read(groupUseCaseProvider);
 
   return GroupAndIdUseCase(groupUseCase: groupUseCase);
 });
 
-class GroupAndIdUseCase {
+class GroupAndIdUseCase implements IGroupAndIdUseCase {
   const GroupAndIdUseCase({required this.groupUseCase});
 
-  final GroupUseCase groupUseCase;
+  final IGroupUseCase groupUseCase;
 
+  @override
   Future<GroupAndId> fetchGroupAndId(String groupId) async {
     try {
       return await _attemptToFetchGroupAndId(groupId);
@@ -26,6 +29,7 @@ class GroupAndIdUseCase {
     }
   }
 
+  @override
   Future<List<GroupAndId>> fetchGroupAndIdList(List<String> groupIdList) async {
     try {
       /// tear-off system of Dart. (groupId) => fromGroupAndId(groupId)

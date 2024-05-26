@@ -1,26 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/repository/database/group_membership_repository.dart';
+import '../../../data/interface/i_group_member_schedule_repository.dart';
+
 import '../../../data/repository/database/member_schedule_repository.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
 
 final groupMemberScheduleIdUseCaseProvider =
-    Provider<GroupMemberScheduleIdUseCase>(
-  (ref) => GroupMemberScheduleIdUseCase(ref: ref),
-);
+    Provider<IGroupMemberScheduleIdUseCase>((ref) {
+  final memberScheduleRepository =
+      ref.read(groupMemberScheduleRepositoryProvider);
+  return GroupMemberScheduleIdUseCase(
+    ref: ref,
+    memberScheduleRepository: memberScheduleRepository,
+  );
+});
 
-class GroupMemberScheduleIdUseCase {
-  const GroupMemberScheduleIdUseCase({required this.ref});
+class GroupMemberScheduleIdUseCase implements IGroupMemberScheduleIdUseCase {
+  const GroupMemberScheduleIdUseCase({
+    required this.ref,
+    required this.memberScheduleRepository,
+  });
+
   final Ref ref;
+  final IGroupMemberScheduleRepository memberScheduleRepository;
 
-  Future<String> fetchMemberScheduleId(
+  @override
+  Future<String?> fetchMemberScheduleId(
     String groupScheduleId,
     String userDocId,
   ) async {
     try {
-      final memberScheduleRepository =
-          ref.read(groupMemberScheduleRepositoryProvider);
-
       return await memberScheduleRepository.fetchDocIdWithScheduleIdAndUserId(
         scheduleId: groupScheduleId,
         userDocId: userDocId,
@@ -32,14 +42,19 @@ class GroupMemberScheduleIdUseCase {
     }
   }
 
-  Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
+  @override
+  Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
+    String scheduleId,
+    String userId,
+  ) async {
     try {
-      final groupMembershipRepository =
-          ref.read(groupMembershipRepositoryProvider);
-      return await groupMembershipRepository
-          .fetchAllUserDocIdWithGroupId(groupId);
+      return await memberScheduleRepository
+          .fetchUserIdWithScheduleIdAndUserIdByTerm(
+        scheduleId,
+        userId,
+      );
     } on FirebaseException catch (e) {
-      throw Exception('Error: failed to fetch all user doc Id. ${e.message}');
+      throw Exception('Error: failed to fetch user ID. ${e.message}');
     }
   }
 }

@@ -5,7 +5,7 @@ import '../../../../exceptions/group/group_setting_exception.dart';
 
 import '../../../domain/entity/group_profile.dart';
 
-import '../../../domain/interface/i_group_repository.dart';
+import '../../interface/i_group_repository.dart';
 
 import '../../mapper/group_profile_mapper.dart';
 
