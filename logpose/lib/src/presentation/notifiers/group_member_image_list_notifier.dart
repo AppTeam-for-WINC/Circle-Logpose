@@ -9,12 +9,12 @@ import '../../domain/providers/group/members/listen_group_member_profile_list_pr
 import '../components/common/custom_image/custom_image.dart';
 
 final groupMemberImageListNotifierProvider = StateNotifierProvider.family<
-    GroupMemberImageListNotifier, List<Widget>, (String role, String groupId)>(
-  (ref, args) => GroupMemberImageListNotifier(ref, args.$1, args.$2),
+    _GroupMemberImageListNotifier, List<Widget>, (String role, String groupId)>(
+  (ref, args) => _GroupMemberImageListNotifier(ref, args.$1, args.$2),
 );
 
-class GroupMemberImageListNotifier extends StateNotifier<List<Widget>> {
-  GroupMemberImageListNotifier(this.ref, this.role, this.groupId) : super([]) {
+class _GroupMemberImageListNotifier extends StateNotifier<List<Widget>> {
+  _GroupMemberImageListNotifier(this.ref, this.role, this.groupId) : super([]) {
     _memberProfileList();
   }
 

@@ -34,7 +34,7 @@ class _GroupCreationMemberSectionMemberListState
               ...ref.watch(setGroupMemberListNotifierProvider).map(
                     (membershipUserProfile) => GroupMemberTile(
                       memberProfile: membershipUserProfile,
-                      adminOrMembership: 'membership',
+                      groupRoleType: GroupRoleType.membership,
                     ),
                   ),
             ],

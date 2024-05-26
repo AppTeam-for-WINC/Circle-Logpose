@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/red_error_message.dart';
 
-import '../../components/schedule_detail/detail.dart';
-import '../../components/schedule_group_selector/group_selector.dart';
-import '../../components/schedule_place/place.dart';
-import '../../components/schedule_time/schedule_activity_time.dart';
+import '../../../../common/schedule_section/detail_section.dart';
+import '../../../../common/schedule_section/place_section.dart';
+import '../../../../common/schedule_section/schedule_group_selector/group_selector.dart';
+import '../../../../common/schedule_section/schedule_time/schedule_activity_time.dart';
 
 class GroupScheduleUpdaterContainer extends ConsumerStatefulWidget {
   const GroupScheduleUpdaterContainer({
@@ -40,8 +40,8 @@ class _GroupScheduleUpdaterContainerState
               children: [
                 const GroupSelector(),
                 ScheduleActivityTime(groupScheduleId: groupScheduleId),
-                const Place(),
-                const Detail(),
+                const PlaceSection(),
+                const DetailSection(),
               ],
             ),
           ),

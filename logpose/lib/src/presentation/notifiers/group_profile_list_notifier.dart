@@ -5,12 +5,12 @@ import '../../domain/providers/group/group/listen_joined_group_profile_provider.
 import '../components/components/group/joined_group_list/group_box/group_box.dart';
 
 final groupProfileListNotifierProvider =
-    StateNotifierProvider<GroupProfileListNotifier, List<Widget>>(
-  GroupProfileListNotifier.new,
+    StateNotifierProvider<_GroupProfileListNotifier, List<Widget>>(
+  _GroupProfileListNotifier.new,
 );
 
-class GroupProfileListNotifier extends StateNotifier<List<Widget>> {
-  GroupProfileListNotifier(this.ref) : super([]) {
+class _GroupProfileListNotifier extends StateNotifier<List<Widget>> {
+  _GroupProfileListNotifier(this.ref) : super([]) {
     _groupProfileList();
   }
 

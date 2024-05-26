@@ -15,39 +15,29 @@ import '../states/group_schedule_state.dart';
 
 final groupScheduleNotifierProvider = StateNotifierProvider.family
     .autoDispose<_SetGroupScheduleNotifier, GroupScheduleState?, String?>(
-  // tear off -> (ref, scheduleId) => _SetGroupScheduleNotifier(ref, scheduleId)
   _SetGroupScheduleNotifier.new,
 );
 
 class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleState?> {
-  _SetGroupScheduleNotifier(
-    this.ref,
-    String? scheduleId,
-  )   : groupScheduleFacade = ref.read(groupScheduleFacadeProvider),
+  _SetGroupScheduleNotifier(this.ref, String? scheduleId)
+      : groupScheduleFacade = ref.read(groupScheduleFacadeProvider),
         super(GroupScheduleState()) {
     if (scheduleId != null) {
       _loadExistingSchedule(scheduleId);
-    } else {
-      _initSchedule();
     }
   }
 
   final Ref ref;
   final GroupScheduleFacade groupScheduleFacade;
 
-  void _initSchedule() {
-    state = GroupScheduleState(
-      color: const Color.fromARGB(255, 217, 0, 255),
-      startAt: DateTime.now(),
-      endAt: DateTime.now().add(const Duration(hours: 1)),
-    );
-  }
-
   Future<void> _loadExistingSchedule(String scheduleId) async {
     try {
       final schedule = await groupScheduleFacade.fetchGroupSchedule(scheduleId);
       _setScheduleControllers(schedule);
-      state = _mapToState(schedule);
+      final scheduleState = _mapToState(schedule);
+      if (mounted) {
+        state = scheduleState;
+      }
     } on Exception catch (e) {
       throw Exception('Failed to load schedule. $e');
     }
@@ -66,7 +56,7 @@ class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleState?> {
     return hexToColor(hexColorString);
   }
 
-    GroupScheduleState _mapToState(GroupSchedule schedule) {
+  GroupScheduleState _mapToState(GroupSchedule schedule) {
     return GroupScheduleState(
       groupId: schedule.groupId,
       color: _hexToColor(schedule.color),
@@ -74,7 +64,6 @@ class _SetGroupScheduleNotifier extends StateNotifier<GroupScheduleState?> {
       endAt: schedule.endAt,
     );
   }
-
 
   void setGroupId(String groupId) {
     state = state!.copyWith(groupId: groupId);

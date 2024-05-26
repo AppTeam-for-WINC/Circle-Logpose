@@ -21,7 +21,11 @@ class _MemberScheduleNotifier extends StateNotifier<GroupMemberSchedule?> {
   final GroupMemberScheduleFacade _memberScheduleFacade;
 
   Future<void> _initSchedule() async {
-    state = await _memberScheduleFacade.initMemberSchedule(groupScheduleId);
+    final schedule =
+        await _memberScheduleFacade.initMemberSchedule(groupScheduleId);
+    if (mounted) {
+      state = schedule;
+    }
   }
 
   Future<void> setStartAt(DateTime startAt) async {

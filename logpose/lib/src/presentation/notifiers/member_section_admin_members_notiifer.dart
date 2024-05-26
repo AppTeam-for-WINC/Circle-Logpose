@@ -25,7 +25,7 @@ class MemberSectionAdminMembersNotifier extends StateNotifier<List<Widget>> {
       }
       final adminTile = GroupMemberTile(
         memberProfile: userProfile,
-        adminOrMembership: 'admin',
+        groupRoleType: GroupRoleType.admin,
       );
 
       state = [adminTile];

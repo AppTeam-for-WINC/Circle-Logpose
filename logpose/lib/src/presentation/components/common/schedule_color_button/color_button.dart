@@ -7,15 +7,19 @@ class ColorButton extends ConsumerWidget {
   const ColorButton({super.key, this.groupScheduleId, required this.color});
 
   final String? groupScheduleId;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (color == null) {
+      return const SizedBox.shrink();
+    }
+
     Future<void> showDialog() async {
       final navigator = ColorButtonDialogNavigator(
         context: context,
         groupScheduleId: groupScheduleId,
-        color: color,
+        color: color!,
       );
 
       await navigator.showDialog();

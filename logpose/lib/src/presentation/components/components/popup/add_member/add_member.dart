@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'components/invitation_link/copy_invitation_link_button.dart';
-import 'components/search_field/user_profile_search_field.dart';
+import 'components/search_field_section/user_search_field_section.dart';
 import 'components/user_profile/user_profile_button.dart';
 
 class AddMember extends ConsumerStatefulWidget {
   const AddMember({super.key, required this.groupId});
+  
   final String? groupId;
 
   @override
@@ -31,12 +32,10 @@ class _AddMemberState extends ConsumerState<AddMember> {
             height: double.infinity,
             color: const Color(0xFFF5F3FE),
             child: Padding(
-              padding: const EdgeInsets.only(
-                top: 40,
-              ),
+              padding: const EdgeInsets.only(top: 40),
               child: Column(
                 children: [
-                  UserProfileSearchField(groupId: groupId),
+                  UserSearchFieldSection(groupId: groupId),
                   UserProfileButton(groupId: groupId),
                   if (groupId != null)
                     CopyInvitationLinkButton(groupId: groupId),

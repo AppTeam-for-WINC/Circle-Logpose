@@ -8,6 +8,7 @@ import '../../../../../common/custom_image/custom_image.dart';
 
 class GroupAndImageBuilder extends ConsumerWidget {
   const GroupAndImageBuilder({super.key, required this.groupId});
+  
   final String groupId;
 
   @override

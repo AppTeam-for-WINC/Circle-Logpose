@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/providers/error_message/group_name_error_msg_provider.dart';
 
 import '../../components/common/group_name_and_image_section.dart';
-import '../../components/components/group/group_setting/save_button.dart';
+import '../../components/components/group/group_setting/group_setting_save_button.dart';
 import '../../components/components/group/group_setting/sections/member_section/group_setting_member_section.dart';
 import '../../components/components/group/group_setting/sections/schedule_section/group_setting_schedule_section.dart';
 import '../../components/components/navigation_bar/group_setting_navigation/group_setting_navigation_bar.dart';

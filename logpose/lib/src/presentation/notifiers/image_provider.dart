@@ -5,12 +5,12 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final imageControllerProvider =
-    StateNotifierProvider<ImageControllerNotifier, File>(
-  (ref) => ImageControllerNotifier(),
+    StateNotifierProvider<_ImageControllerNotifier, File>(
+  (ref) => _ImageControllerNotifier(),
 );
 
-class ImageControllerNotifier extends StateNotifier<File> {
-  ImageControllerNotifier() : super(File(''));
+class _ImageControllerNotifier extends StateNotifier<File> {
+  _ImageControllerNotifier() : super(File(''));
 
   void setImagePath(File image) {
     state = image;

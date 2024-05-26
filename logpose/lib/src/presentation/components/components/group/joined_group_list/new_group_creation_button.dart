@@ -48,9 +48,7 @@ class NewGroupCreationButton extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(
-                left: 20,
-              ),
+              margin: const EdgeInsets.only(left: 20),
               child: const Text(
                 '新しい団体を作成',
                 style: TextStyle(

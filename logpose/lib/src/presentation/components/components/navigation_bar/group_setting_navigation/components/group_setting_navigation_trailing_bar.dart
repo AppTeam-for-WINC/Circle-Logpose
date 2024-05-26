@@ -18,11 +18,9 @@ class _GroupSettingNavigationTrailingBarState
   @override
   Widget build(BuildContext context) {
     Future<void> showModal() async {
-      final navigator = GroupSettingNavigationTrailingBarModalNavigator(
-        context,
-        widget.groupId,
-      );
-      await navigator.showModal();
+      final navigator =
+          GroupSettingNavigationTrailingBarModalNavigator(context);
+      await navigator.showModal(widget.groupId);
     }
 
     return CupertinoButton(

@@ -68,7 +68,7 @@ class GroupScheduleCreationUseCase implements IGroupScheduleCreationUseCase {
     }
 
     final scheduleId = await _createAndRetrieveScheduleId(scheduleViewParams);
-    await _createAllMemberSchedule(scheduleViewParams.groupId, scheduleId);
+    await _createAllMemberSchedule(scheduleViewParams.groupId!, scheduleId);
 
     return null;
   }
@@ -95,7 +95,7 @@ class GroupScheduleCreationUseCase implements IGroupScheduleCreationUseCase {
     final color = _colorToHex(scheduleViewParams.color);
 
     return groupScheduleRepository.createAndRetrieveScheduleId(
-      groupId: scheduleViewParams.groupId,
+      groupId: scheduleViewParams.groupId!,
       title: scheduleViewParams.title,
       color: color,
       place: scheduleViewParams.place,

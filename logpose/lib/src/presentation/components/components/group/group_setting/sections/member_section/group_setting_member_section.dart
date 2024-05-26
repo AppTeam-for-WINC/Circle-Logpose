@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../common/switch/delete_member_switch.dart';
-import '../../../../../common/switch/member_addition_switch.dart';
+import '../../../../../common/member_switch/delete_member_switch.dart';
+import '../../../../../common/member_switch/member_addition_switch.dart';
 
 import 'components/group_setting_member_panel.dart';
 

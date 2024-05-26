@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../handlers/user_profile_button_handler.dart';
 import '../../../../../../notifiers/search_user_notifier_provider.dart';
-import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';
 
-import '../../../components/user_name/user_name.dart';
+import '../../../../../common/user_name.dart';
 
 class UserProfileButton extends ConsumerStatefulWidget {
   const UserProfileButton({
     super.key,
     required this.groupId,
   });
+
   final String? groupId;
 
   @override
@@ -24,30 +25,24 @@ class _UserProfileButtonState extends ConsumerState<UserProfileButton> {
   Widget build(BuildContext context) {
     final groupId = widget.groupId;
 
-    // userProfileは、値の変化の追跡を行うが、変更を適用させることはない。
     final userProfile = ref.watch(searchUserNotifierProvider(groupId));
     if (userProfile == null) {
       return const SizedBox.shrink();
     }
 
-    // userProfileNotifierは、値の変更を行うが、追跡は行わない。
     final userProfileNotifier =
         ref.watch(searchUserNotifierProvider(groupId).notifier);
 
     void handlAddMember() {
-      ref.read(searchUserNotifierProvider(groupId).notifier).setMemberState();
-      ref
-          .read(setGroupMemberListNotifierProvider.notifier)
-          .addMember(userProfile);
+      UserProfileButtonHandler(
+        ref: ref,
+        groupId: groupId!,
+        userProfile: userProfile,
+      ).handleToAddMember();
     }
 
     return Container(
-      padding: const EdgeInsets.only(
-        left: 20,
-        top: 10,
-        right: 20,
-        bottom: 10,
-      ),
+      padding: const EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 10),
       color: const Color(0xFFF5F3FE),
       child: Container(
         height: 60,
@@ -72,11 +67,7 @@ class _UserProfileButtonState extends ConsumerState<UserProfileButton> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomImage(
-                imagePath: userProfile.image,
-                width: 40,
-                height: 40,
-              ),
+              CustomImage(imagePath: userProfile.image, width: 40, height: 40),
               Username(name: userProfileNotifier.username!),
             ],
           ),

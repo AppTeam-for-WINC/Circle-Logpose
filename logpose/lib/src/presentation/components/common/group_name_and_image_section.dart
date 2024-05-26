@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'group_image_view.dart';
+import 'name_field.dart';
 import 'photo_button.dart';
 import 'red_error_message.dart';
-import 'text_field/name_field.dart';
 
 class GroupNameAndImageSection extends ConsumerStatefulWidget {
   const GroupNameAndImageSection({

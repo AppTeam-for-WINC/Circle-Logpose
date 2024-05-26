@@ -89,7 +89,7 @@ class GroupScheduleUpdateUseCase implements IGroupScheduleUpdateUseCase {
     try {
       await groupScheduleRepository.update(
         docId: docId,
-        groupId: scheduleParams.groupId,
+        groupId: scheduleParams.groupId!,
         title: scheduleParams.title,
         color: color,
         place: scheduleParams.place,

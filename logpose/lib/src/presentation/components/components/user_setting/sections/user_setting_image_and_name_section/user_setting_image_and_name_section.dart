@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../common/name_field.dart';
 import '../../../../common/red_error_message.dart';
-import '../../../../common/text_field/name_field.dart';
 
 import 'components/user_photo_section.dart';
 

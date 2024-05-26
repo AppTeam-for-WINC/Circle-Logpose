@@ -28,7 +28,7 @@ class ScheduleAdditionSwitchHandler {
 
   Future<void> _showModal() async {
     final navigator =
-        ScheduleAdditionSwitchModalNavigator(context, ref, groupId);
-    await navigator.showModal();
+        ScheduleAdditionSwitchModalNavigator(context, ref);
+    await navigator.showModal(groupId);
   }
 }

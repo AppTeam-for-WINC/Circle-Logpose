@@ -3,14 +3,15 @@ import 'dart:ui';
 class GroupScheduleState {
   GroupScheduleState({
     this.groupId,
-    this.color,
+    Color? color,
     DateTime? startAt,
     DateTime? endAt,
-  })  : startAt = startAt ?? DateTime.now(),
+  })  : color = color ?? const Color.fromARGB(255, 217, 0, 255),
+        startAt = startAt ?? DateTime.now(),
         endAt = endAt ?? DateTime.now().add(const Duration(hours: 1));
 
   final String? groupId;
-  final Color? color;
+  final Color color;
   final DateTime startAt;
   final DateTime endAt;
 

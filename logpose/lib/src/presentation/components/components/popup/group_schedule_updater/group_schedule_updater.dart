@@ -6,15 +6,17 @@ import '../../../../notifiers/group_schedule_notifier.dart';
 
 import '../../../common/back_to_page_button.dart';
 import '../../../common/schedule_color_button/color_button.dart';
+import '../../../common/schedule_section/schedule_field/title_text_field.dart';
+import '../../../common/schedule_section/schedule_footer/schedule_footer.dart';
+import '../../../common/schedule_section/schedule_footer/schedule_save_button.dart';
 
-import '../components/schedule_footer/schedule_footer.dart';
-import '../components/schedule_title/title_field.dart';
 import 'components/group_schedule_updater_container.dart';
 
 class GroupScheduleUpdater extends ConsumerStatefulWidget {
   const GroupScheduleUpdater({super.key, required this.groupScheduleId});
 
   final String groupScheduleId;
+
   @override
   ConsumerState createState() => _GroupScheduleUpdaterState();
 }
@@ -45,16 +47,16 @@ class _GroupScheduleUpdaterState extends ConsumerState<GroupScheduleUpdater> {
               const BackToPageButton(),
               ColorButton(
                 groupScheduleId: groupScheduleId,
-                color: schedule.color!,
+                color: schedule.color,
               ),
-              const TitleField(),
+              const TitleTextField(),
               GroupScheduleUpdaterContainer(
                 groupScheduleId: groupScheduleId,
                 scheduleErrorMessage: scheduleErrorMessage,
               ),
               ScheduleFooter(
-                groupId: schedule.groupId,
-                createOrUpdate: 'update',
+                defaultGroupId: schedule.groupId,
+                actionType: ActionType.update,
                 groupScheduleId: groupScheduleId,
               ),
             ],

@@ -6,9 +6,10 @@ import '../../../../notifiers/group_schedule_notifier.dart';
 
 import '../../../common/back_to_page_button.dart';
 import '../../../common/schedule_color_button/color_button.dart';
+import '../../../common/schedule_section/schedule_field/title_text_field.dart';
+import '../../../common/schedule_section/schedule_footer/schedule_footer.dart';
+import '../../../common/schedule_section/schedule_footer/schedule_save_button.dart';
 
-import '../components/schedule_footer/schedule_footer.dart';
-import '../components/schedule_title/title_field.dart';
 import 'components/group_schedule_creation_container.dart';
 
 class GroupScheduleCreation extends ConsumerStatefulWidget {
@@ -42,12 +43,15 @@ class _GroupScheduleCreationState extends ConsumerState<GroupScheduleCreation> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const BackToPageButton(),
-              ColorButton(color: schedule.color!),
-              const TitleField(),
+              ColorButton(color: schedule.color),
+              const TitleTextField(),
               GroupScheduleCreationContainer(
                 scheduleErrorMessage: scheduleErrorMessage,
               ),
-              ScheduleFooter(groupId: widget.groupId, createOrUpdate: 'create'),
+              ScheduleFooter(
+                defaultGroupId: widget.groupId,
+                actionType: ActionType.create,
+              ),
             ],
           ),
         ),

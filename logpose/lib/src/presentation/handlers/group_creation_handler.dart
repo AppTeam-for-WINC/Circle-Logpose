@@ -20,7 +20,6 @@ class GroupCreationHandler {
   final WidgetRef ref;
 
   Future<void> handleToCreate() async {
-    final groupCreationController = ref.read(groupCreationControllerProvider);
     final groupData = GroupCreatorParams(
       groupName: ref.read(nameFieldProvider('')).text,
       image: ref.read(imageControllerProvider),
@@ -29,7 +28,7 @@ class GroupCreationHandler {
     );
 
     _loadingProgress(true);
-    final errorMessage = await groupCreationController.createGroup(groupData);
+    final errorMessage = await _createGroup(groupData);
     _loadingProgress(false);
 
     if (errorMessage != null) {
@@ -37,11 +36,16 @@ class GroupCreationHandler {
       return;
     }
 
-    await moveToPage();
+    await _moveToPage();
   }
 
   void _loadingProgress(bool loading) {
     ref.watch(loadingProgressControllerProvider).loadingProgress = loading;
+  }
+
+  Future<String?> _createGroup(GroupCreatorParams groupData) {
+    final groupCreationController = ref.read(groupCreationControllerProvider);
+    return groupCreationController.createGroup(groupData);
   }
 
   void _displayErrorMessage(String errorMessage) {
@@ -49,10 +53,9 @@ class GroupCreationHandler {
         errorMessage;
   }
 
-  Future<void> moveToPage() async {
-    if (!context.mounted) {
-      return;
+  Future<void> _moveToPage() async {
+    if (context.mounted) {
+      await GroupCreationNavigator(context).moveToPage();
     }
-    await GroupCreationNavigator(context).moveToPage();
   }
 }

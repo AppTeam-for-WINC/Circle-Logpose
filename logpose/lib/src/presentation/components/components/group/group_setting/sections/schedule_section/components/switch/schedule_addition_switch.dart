@@ -9,6 +9,7 @@ class ScheduleAdditionSwitch extends ConsumerWidget {
     required this.groupId,
     this.groupName,
   });
+  
   final String groupId;
   final String? groupName;
 

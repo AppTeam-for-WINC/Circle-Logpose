@@ -99,9 +99,12 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   }
 
   static String? _fetchMemberScheduleId(
-    QuerySnapshot<Map<String, dynamic>> snapshot,
+    QuerySnapshot<Map<String, dynamic>>? snapshot,
   ) {
     try {
+      if (snapshot == null) {
+        return null;
+      }
       return snapshot.docs.map((doc) => doc.id).first;
     } on FirebaseException catch (e) {
       throw Exception(

@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/common/group_name_and_image_section.dart';
 import '../../components/common/loading_progress.dart';
+import '../../components/common/member_switch/delete_member_switch.dart';
+import '../../components/common/member_switch/member_addition_switch.dart';
 import '../../components/common/progress_indicator.dart';
-import '../../components/common/switch/delete_member_switch.dart';
-import '../../components/common/switch/member_addition_switch.dart';
 
 import '../../components/components/group/group_creation/group_creation_button.dart';
 import '../../components/components/group/group_creation/member_section/group_creation_member_section.dart';

@@ -9,13 +9,13 @@ import '../../domain/providers/group/schedule/listen_all_group_schedule_and_id_l
 import '../components/components/group/group_setting/sections/schedule_section/components/components/group_schedule_tile/group_schedule_tile.dart';
 
 final groupScheduleTileListBuilderNotifierProvider =
-    StateNotifierProvider.family<GroupScheduleTileListNotifier, List<Widget>,
+    StateNotifierProvider.family<_GroupScheduleTileListNotifier, List<Widget>,
         (String groupId, String groupName)>(
-  (ref, args) => GroupScheduleTileListNotifier(ref, args.$1, args.$2),
+  (ref, args) => _GroupScheduleTileListNotifier(ref, args.$1, args.$2),
 );
 
-class GroupScheduleTileListNotifier extends StateNotifier<List<Widget>> {
-  GroupScheduleTileListNotifier(this.ref, this.groupId, this.groupName)
+class _GroupScheduleTileListNotifier extends StateNotifier<List<Widget>> {
+  _GroupScheduleTileListNotifier(this.ref, this.groupId, this.groupName)
       : super([]) {
     _initialize();
   }
