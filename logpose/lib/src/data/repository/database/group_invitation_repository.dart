@@ -4,9 +4,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../../domain/entity/group_invitation.dart';
 
-import '../../../domain/interface/i_group_invitation_repository.dart';
-
 import '../../../utils/time/time_utils.dart';
+
+import '../../interface/i_group_invitation_repository.dart';
 
 import '../../mapper/group_invitation_mapper.dart';
 

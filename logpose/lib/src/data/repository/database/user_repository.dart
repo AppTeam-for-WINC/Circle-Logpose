@@ -7,9 +7,9 @@ import '../../../../exceptions/user/user_exception.dart';
 
 import '../../../domain/entity/user_profile.dart';
 
-import '../../../domain/interface/i_user_repository.dart';
-
 import '../../../presentation/components/common/error_messages.dart';
+
+import '../../interface/i_user_repository.dart';
 
 import '../../mapper/user_profile_mapper.dart';
 

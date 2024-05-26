@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
-import '../../../data/repository/auth/auth_repository.dart';
-import '../../interface/i_auth_repository.dart';
 
-final emailUseCaseProvider = Provider<EmailUseCase>((ref) {
+import '../../../data/interface/i_auth_repository.dart';
+import '../../../data/repository/auth/auth_repository.dart';
+import '../../interface/auth/i_email_use_case.dart';
+
+final emailUseCaseProvider = Provider<IEmailUseCase>((ref) {
   final authRepository = ref.read(authRepositoryProvider);
   final validator = ref.read(validatorControllerProvider);
   return EmailUseCase(
@@ -15,7 +17,7 @@ final emailUseCaseProvider = Provider<EmailUseCase>((ref) {
   );
 });
 
-class EmailUseCase {
+class EmailUseCase implements IEmailUseCase {
   EmailUseCase({
     required this.ref,
     required this.authRepository,
@@ -26,6 +28,7 @@ class EmailUseCase {
   final IAuthRepository authRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> fetchUserEmail() async {
     try {
       return await authRepository.fetchUserEmail();
@@ -34,6 +37,7 @@ class EmailUseCase {
     }
   }
 
+  @override
   Future<String?> updateUserEmail(String newEmail, String password) async {
     try {
       return await _attemptToUpdate(newEmail, password);
@@ -91,6 +95,7 @@ class EmailUseCase {
     }
   }
 
+  @override
   Future<bool> sendConfirmationEmail() async {
     try {
       return await authRepository.sendConfirmationEmail();

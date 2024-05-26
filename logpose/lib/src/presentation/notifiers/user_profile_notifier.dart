@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
 
-import '../../domain/usecase/facade/user_service_facade.dart';
+import '../controllers/auth/auth_management_controller.dart';
+import '../controllers/user/user_management_controller.dart';
 
 final userProfileNotifierProvider =
     StateNotifierProvider.autoDispose<_UserProfileNotifier, UserProfile?>(
@@ -12,13 +13,16 @@ final userProfileNotifierProvider =
 
 class _UserProfileNotifier extends StateNotifier<UserProfile?> {
   _UserProfileNotifier(this.ref)
-      : _userServiceFacade = ref.read(userServiceFacadeProvider),
+      :
+      _authController = ref.read(authManagementControllerProvider),
+       _userManagementController = ref.read(userManagementControllerProvider),
         super(null) {
     _init();
   }
 
   final Ref ref;
-  final UserServiceFacade _userServiceFacade;
+  final AuthManagementController _authController;
+  final UserManagementController _userManagementController;
 
   Future<void> _init() async {
     try {
@@ -30,8 +34,8 @@ class _UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> _executeToInit() async {
-    final userId = await _userServiceFacade.fetchCurrentUserId();
-    state = await _userServiceFacade.fetchUserProfile(userId);
+    final userId = await _authController.fetchCurrentUserId();
+    state = await _userManagementController.fetchUserProfile(userId);
   }
 
   void setNewImage(File newImage) {

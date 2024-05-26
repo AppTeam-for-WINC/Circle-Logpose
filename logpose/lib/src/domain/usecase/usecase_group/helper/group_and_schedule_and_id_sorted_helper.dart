@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../presentation/providers/sort/sort_option_provider.dart';
 
-import '../../../providers/sort/sort_option_provider.dart';
+import '../../../model/group_profile_and_schedule_and_id_model.dart';
 
 final groupAndScheduleAndIdSortedHelperProvider =
     Provider<GroupAndScheduleAndIdSortedHelper>(

@@ -2,22 +2,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
+import '../../../data/interface/i_auth_repository.dart';
 import '../../../data/repository/auth/auth_repository.dart';
+import '../../interface/auth/i_log_in_use_case.dart';
 
-final logInUseCaseProvider = Provider<LogInUseCase>(
+final logInUseCaseProvider = Provider<ILogInUseCase>(
   (ref) {
+    final authRepository = ref.read(authRepositoryProvider);
     final validator = ref.read(validatorControllerProvider);
 
-    return LogInUseCase(ref: ref, validator: validator);
+    return LogInUseCase(
+      ref: ref,
+      authRepository: authRepository,
+      validator: validator,
+    );
   },
 );
 
-class LogInUseCase {
-  LogInUseCase({required this.ref, required this.validator});
+class LogInUseCase extends ILogInUseCase {
+  LogInUseCase({
+    required this.ref,
+    required this.authRepository,
+    required this.validator,
+  });
 
   final Ref ref;
+  final IAuthRepository authRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> logIn(String email, String password) async {
     try {
       return await _executeLogin(email, password);
@@ -46,7 +59,6 @@ class LogInUseCase {
 
   Future<bool> _logInAccount(String email, String password) async {
     try {
-      final authRepository = ref.read(authRepositoryProvider);
       return await authRepository.logInAccount(email, password);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to log in account. ${e.message}');

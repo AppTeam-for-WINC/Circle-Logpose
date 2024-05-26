@@ -1,21 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/providers/error_message/update_user_profile_error_provider.dart';
-
-import '../../components/common/photo_button.dart';
-import '../../components/common/red_error_message.dart';
-import '../../components/common/text_field/name_field.dart';
-
-import '../../components/components/navigation_bar/user_setting_navigation_bar.dart';
-import '../../components/components/user_setting/save_button.dart';
+import '../../components/components/navigation_bar/user_setting_navigation/user_setting_navigation_bar.dart';
 import '../../components/components/user_setting/sections/account_id_section.dart';
 import '../../components/components/user_setting/sections/email_section.dart';
-import '../../components/components/user_setting/sections/group_section.dart';
+import '../../components/components/user_setting/sections/group_section/group_section.dart';
 import '../../components/components/user_setting/sections/password_section.dart';
-import '../../components/components/user_setting/user_image_view.dart';
+import '../../components/components/user_setting/sections/user_setting_image_and_name_section/user_setting_image_and_name_section.dart';
+import '../../components/components/user_setting/user_setting_save_button.dart';
 
 import '../../notifiers/user_profile_notifier.dart';
+
+import '../../providers/error_message/update_user_profile_error_provider.dart';
+
 // import '../../common/progress/progress_indicator.dart';
 
 class UserSettingPage extends ConsumerStatefulWidget {
@@ -29,7 +26,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final userProfileError = ref.watch(updateUserProfileErrorMessageProvider);
+    final errorMessage = ref.watch(updateUserProfileErrorMessageProvider);
     // final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
     final userProfile = ref.watch(userProfileNotifierProvider);
@@ -39,11 +36,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
 
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFFF5F3FE),
-      navigationBar: UserSettingNavigationBar(
-        context: context,
-        ref: ref,
-        mounted: mounted,
-      ),
+      navigationBar: const UserSettingNavigationBar(),
       child: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -64,38 +57,17 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
                   borderRadius: const BorderRadius.all(Radius.circular(60)),
                   border: Border.all(color: const Color(0xFFD9D9D9)),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          UserImageView(imagePath: userProfile.image),
-                          const Icon(
-                            CupertinoIcons.arrow_right_arrow_left,
-                            size: 30,
-                            color: CupertinoColors.systemGrey,
-                          ),
-                          const PhotoButton(),
-                        ],
-                      ),
-                    ),
-                    if (userProfileError != null)
-                      RedErrorMessage(
-                        errorMessage: userProfileError,
-                        fontSize: 14,
-                      ),
-                    NameField(placeholder: 'username', name: userProfile.name),
-                  ],
+                child: UserSettingImageAndNameSection(
+                  imagePath: userProfile.image,
+                  name: userProfile.name,
+                  errorMessage: errorMessage,
                 ),
               ),
               const AccountIdSection(),
               const EmailSection(),
               const PasswordSection(),
               const GroupSection(),
-              SaveButton(name: userProfile.name),
+              UserSettingSaveButton(name: userProfile.name),
               // const PageProgressIndicator(),
             ],
           ),

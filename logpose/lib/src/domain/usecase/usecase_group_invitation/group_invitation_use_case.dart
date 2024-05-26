@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_invitation_repository.dart';
+
 import '../../../data/repository/database/group_invitation_repository.dart';
+import '../../interface/group_invitation/i_group_invitation_use_case.dart';
 
-import '../../interface/i_group_invitation_repository.dart';
-
-final groupInvitationUseCaseProvider = Provider<GroupInvitationUseCase>((ref) {
+final groupInvitationUseCaseProvider = Provider<IGroupInvitationUseCase>((ref) {
   final groupInvitationRepository = ref.read(groupInvitationRepositoryProvider);
 
   return GroupInvitationUseCase(
@@ -13,11 +14,12 @@ final groupInvitationUseCaseProvider = Provider<GroupInvitationUseCase>((ref) {
   );
 });
 
-class GroupInvitationUseCase {
+class GroupInvitationUseCase implements IGroupInvitationUseCase {
   const GroupInvitationUseCase({required this.groupInvitationRepository});
 
   final IGroupInvitationRepository groupInvitationRepository;
 
+  @override
   Future<String> createAndFetchGroupInvitationLink(String groupId) async {
     try {
       final data = await groupInvitationRepository.create(groupId);

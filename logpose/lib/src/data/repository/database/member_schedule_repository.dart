@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entity/group_member_schedule.dart';
 
-import '../../../domain/interface/i_group_member_schedule_repository.dart';
+import '../../interface/i_group_member_schedule_repository.dart';
 
 import '../../mapper/group_member_schedule_mapper.dart';
 
@@ -73,7 +73,7 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   }
 
   @override
-  Future<String> fetchDocIdWithScheduleIdAndUserId({
+  Future<String?> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
   }) async {
@@ -98,10 +98,21 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
     }
   }
 
-  static String _fetchMemberScheduleId(
-    QuerySnapshot<Map<String, dynamic>> snapshot,
+  static String? _fetchMemberScheduleId(
+    QuerySnapshot<Map<String, dynamic>>? snapshot,
   ) {
-    return snapshot.docs.map((doc) => doc.id).first;
+    try {
+      if (snapshot == null) {
+        return null;
+      }
+      return snapshot.docs.map((doc) => doc.id).first;
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Error: failed to fetch member schedule ID. ${e.message}',
+      );
+    } on Exception catch (e) {
+      throw Exception('Member schedule ID does not exist. $e');
+    }
   }
 
   @override

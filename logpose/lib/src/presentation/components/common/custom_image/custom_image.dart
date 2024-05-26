@@ -7,6 +7,7 @@ class CustomImage extends StatelessWidget {
     required this.width,
     required this.height,
   });
+  
   final String imagePath;
   final double width;
   final double height;

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 class ScheduleParams {
   ScheduleParams({
-    required this.groupId,
+    this.groupId,
     required this.title,
     required this.color,
     required this.place,
@@ -11,7 +11,7 @@ class ScheduleParams {
     required this.endAt,
   });
 
-  final String groupId;
+  final String? groupId;
   final String title;
   final Color color;
   final String place;

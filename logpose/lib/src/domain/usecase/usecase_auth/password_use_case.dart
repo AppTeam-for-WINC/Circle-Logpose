@@ -3,13 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_auth_repository.dart';
+
 import '../../../data/repository/auth/auth_repository.dart';
 
-import '../../interface/i_auth_repository.dart';
-
+import '../../interface/auth/i_email_use_case.dart';
+import '../../interface/auth/i_password_use_case.dart';
 import 'email_use_case.dart';
 
-final passwordUseCaseProvider = Provider.autoDispose<PasswordUseCase>((ref) {
+final passwordUseCaseProvider = Provider.autoDispose<IPasswordUseCase>((ref) {
   final emailUseCase = ref.read(emailUseCaseProvider);
   final authRepository = ref.read(authRepositoryProvider);
   final validator = ref.read(validatorControllerProvider);
@@ -22,7 +24,7 @@ final passwordUseCaseProvider = Provider.autoDispose<PasswordUseCase>((ref) {
   );
 });
 
-class PasswordUseCase {
+class PasswordUseCase implements IPasswordUseCase {
   PasswordUseCase({
     required this.ref,
     required this.emailUseCase,
@@ -31,10 +33,11 @@ class PasswordUseCase {
   });
 
   final Ref ref;
-  final EmailUseCase emailUseCase;
+  final IEmailUseCase emailUseCase;
   final IAuthRepository authRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> updateUserPassword(
     String password,
     String newPassword,

@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../navigations/pop_navigator.dart';
+
 class BackToPageButton extends StatelessWidget {
   const BackToPageButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     void onPresseed() {
-      Navigator.of(context).pop();
+      PopNavigator(context).pop();
     }
 
     return CupertinoButton(

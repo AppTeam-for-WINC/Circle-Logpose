@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_repository.dart';
+
 import '../../../data/repository/database/group_repository.dart';
 
 import '../../entity/user_profile.dart';
 
-import '../../interface/i_group_repository.dart';
+import '../../interface/group/i_group_delete_use_case.dart';
+import '../../interface/group_membership/i_group_member_delete_use_case.dart';
+import '../../interface/group_membership/i_group_member_id_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_delete_use_case.dart';
 
 import '../../model/group_id_and_schedule_id_and_member_list_model.dart';
 
@@ -13,7 +18,7 @@ import '../usecase_group_membership/group_member_delete_use_case.dart';
 import '../usecase_group_membership/group_member_id_use_case.dart';
 import '../usecase_group_schedule/group_schedule_delete_use_case.dart';
 
-final groupDeleteUseCaseProvider = Provider<GroupDeleteUseCase>((ref) {
+final groupDeleteUseCaseProvider = Provider<IGroupDeleteUseCase>((ref) {
   final groupMemberIdUseCase = ref.read(groupMemberIdUseCaseProvider);
   final memberDeleteUseCase = ref.read(groupMemberDeleteUseCaseProvider);
   final groupScheduleDeleteUseCase =
@@ -28,7 +33,7 @@ final groupDeleteUseCaseProvider = Provider<GroupDeleteUseCase>((ref) {
   );
 });
 
-class GroupDeleteUseCase {
+class GroupDeleteUseCase implements IGroupDeleteUseCase {
   const GroupDeleteUseCase({
     required this.groupMemberIdUseCase,
     required this.memberDeleteUseCase,
@@ -36,11 +41,12 @@ class GroupDeleteUseCase {
     required this.groupRepository,
   });
 
-  final GroupMemberIdUseCase groupMemberIdUseCase;
-  final GroupMemberDeleteUseCase memberDeleteUseCase;
-  final GroupScheduleDeleteUseCase groupScheduleDeleteUseCase;
+  final IGroupMemberIdUseCase groupMemberIdUseCase;
+  final IGroupMemberDeleteUseCase memberDeleteUseCase;
+  final IGroupScheduleDeleteUseCase groupScheduleDeleteUseCase;
   final IGroupRepository groupRepository;
 
+  @override
   Future<void> deleteGroup(GroupIdAndScheduleIdAndMemberList groupData) async {
     try {
       await _attemptToDelete(groupData);

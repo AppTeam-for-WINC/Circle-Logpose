@@ -126,127 +126,136 @@ Logpose is designed for managing club activities. It primarily features AI-power
   </tbody>
 </table>
 
-## License
+# License
 Reusing the design of the application without permission is prohibited.
 
-## ライセンス
+# ライセンス
 アプリ上のDesignを許可なく転用することを禁止します。
 
-## Linter & Formatter
+# Linter & Formatter
 Used: pedantic_mono
 
-## Composition of Files, Folders.
+# Composition of Files, Folders.
 
-<h3>common</h3>
+# ディレクトリ構成
 
-- アプリ全体で共通して使用されるcommonディレクトリ内に汎用的なコンポーネントやを含む。例えば、共通のスタイル設定など。
+このプロジェクトのディレクトリ構成は以下の通りです。各ディレクトリの役割について説明します。
 
-<h3> components </h3>
+## exceptions
+エラーや例外を定義するディレクトリです。プロジェクト内で発生する特定のエラーや例外を整理します。
 
-- 再利用可能なUIコンポーネントを格納。これにはボタン、カード、フォームフィールドなどの小さなウィジェットを提供する。
-  
-- また、下の階層のcomponentsでは、特定の機能やビューに特化したコンポーネントを提供する。
-  
-<h3>controllers</h3>
+## routes
+アプリケーションのルーティングを管理するディレクトリです。各画面やページへのルートを定義します。
 
-- ビジネスロジックとアプリケーションの状態管理を担当。例えば、ユーザーの入力に応じてデータを処理したり、APIからデータを取得して状態を更新するなど。このフォルダは、MVC（Model-View-Controller）やMVVM（Model-View-ViewModel）などのアーキテクチャパターンにおける「Controller」や「ViewModel」の役割を果たす。
+## src
+ソースコードの主要部分を含むディレクトリです。
 
-- また、下の階層のprovidersでは、ビジネスロジックの機能を管理したprovidersを提供する。
+### app
+アプリケーション全体のファサードクラスを含むディレクトリです。ファサードは複数のユースケースを一つのインターフェースで提供します。
 
-<h3>entities</h3>
+- `facade`: ファサードクラスを定義します。
 
-- デバイスのプラットフォームに適切な命令を実行するための機能を提供する。
+### data
+データ層のロジックを管理するディレクトリです。データの取得、保存、変換を行います。
 
-<h3>models</h3>
+- `interface`: データ層のインターフェースを定義します。
+- `mapper`: データモデルとドメインモデル間の変換ロジックを含みます。
+- `model`: データモデルを定義します。
+- `repository`: リポジトリクラスを定義します。リポジトリはデータソース（API、データベースなど）とのやり取りを管理します。
+  - `auth`: 認証関連のリポジトリを定義します。
+  - `database`: データベース関連のリポジトリを定義します。
+  - `storage`: ストレージ関連のリポジトリを定義します。
 
-- アプリケーションで使用するデータ構造やクラスを定義。ここではデータ操作やビジネスロジックが組み込まれている。
+### device
+デバイス固有の機能（センサー、ローカルストレージなど）を扱うディレクトリです。
 
-<h3>services</h3>
+### domain
+ドメイン層のロジックを管理するディレクトリです。エンティティ、リポジトリインターフェース、ビジネスロジックを含みます。
 
-- 外部APIの呼び出し、データベース操作、ファイルシステムの操作など、アプリケーションの外部とのインターフェースを管理。サービス層は、データソースや外部ライブラリとの間にある抽象層を提供し、コントローラーやビューモデルが直接これらのリソースに依存しないようにする。
+- `entity`: ドメインエンティティを定義します。
+- `interface`: ドメイン層のインターフェースを定義します。
+- `model`: ドメインモデルを定義します。
+- `usecase`: ユースケースを定義します。ビジネスロジックの実装を行います。
 
-<h3>utils</h3>
+### presentation
+プレゼンテーション層のロジックを管理するディレクトリです。UIコンポーネント、状態管理、ページを含みます。
 
-- 汎用的なヘルパー関数やユーティリティクラスを提供。これには、日付のフォーマット、数値の変換、文字列操作など、様々な場所で再利用可能な小さな関数が含まれる。
+- `components`: 共通コンポーネントや特定の機能のコンポーネントを定義します。
+  - `common`: 共通して使用されるコンポーネントを含みます。
+  - `components`: 特定の機能に関連するコンポーネントを含みます。
+- `controllers`: コントローラークラスを定義します。ビジネスロジックを呼び出し、UIにデータを提供します。
+- `handlers`: イベントハンドラやアクションハンドラを定義します。
+- `navigations`: ナビゲーションロジックを管理します。
+- `notifiers`: 状態管理のためのNotifierクラスを定義します。
+- `pages`: アプリケーションの各ページを定義します。
+  - `group`: グループ関連のページを含みます。
+  - `login`: ログイン関連のページを含みます。
+  - `schedule`: スケジュール関連のページを含みます。
+  - `signup`: サインアップ関連のページを含みます。
+  - `start`: スタートアップ関連のページを含みます。
+  - `user`: ユーザー関連のページを含みます。
+- `providers`: プロバイダーを定義します。UIコンポーネントとして使用されるデータを含みます。
+- `states`: 状態管理のための状態クラスを定義します。
 
-<h3>views</h3>
+### utils
+ユーティリティクラスやヘルパー関数を含むディレクトリです。
 
-- UIのメイン部分を構成するウィジェットやスクリーン。このフォルダには、アプリケーションの各画面を定義するファイルが含まれ、ユーザーに表示されるインターフェースの大部分がここで管理される。
+## test
+テストコードを含むディレクトリです。ユニットテスト、ウィジェットテスト、統合テストをここに配置します。
+
+## validation
+バリデーションロジックを管理するディレクトリです。
+
+- `validator`: バリデータクラスを定義します。
+  - `validation`: バリデーションロジックを実装します。
+
 
 
 ```
 lib
-├── firebase_options.dart
-├── main.dart
+├── exceptions
+│   ├── group
+│   └── user
 ├── routes
 ├── src
-│   ├── common
-│   │   ├── back_to_page_button.dart
-│   │   ├── custom_image
-│   │   ├── custom_text.dart
-│   │   ├── error_messages.dart
-│   │   ├── group_image_view.dart
-│   │   ├── loading_progress.dart
-│   │   ├── photo_button.dart
-│   │   ├── progress_indicator.dart
-│   │   ├── red_error_message.dart
-│   │   └── schedule_color_palette.dart
-│   ├── components
-│   │   ├── accouunt_id_setting
-│   │   ├── app_logo_and_title
-│   │   ├── auth_button
-│   │   ├── bottom_gradation
-│   │   ├── email_setting
-│   │   ├── group
-│   │   ├── joined_group_tile
-│   │   ├── navigation_bar
-│   │   ├── password_setting
-│   │   ├── popup
-│   │   ├── progress
-│   │   ├── schedule_card_list
-│   │   ├── schedule_creation_button
-│   │   ├── slide
-│   │   ├── start_button
-│   │   ├── text_field
-│   │   ├── user
-│   │   └── user_setting
-│   ├── controllers
+│   ├── app
+│   │   └── facade
+│   ├── data
+│   │   ├── interface
+│   │   ├── mapper
+│   │   ├── model
+│   │   └── repository
+│   │       ├── auth
+│   │       ├── database
+│   │       └── storage
+│   ├── device
+│   ├── domain
+│   │   ├── entity
+│   │   ├── interface
+│   │   ├── model
+│   │   └── usecase
+
+│   ├── presentation
+│   │   ├── components
+│   │   │   ├── common
+│   │   │   └── components
 │   │   ├── controllers
-│   │   │   ├── auth
+│   │   ├── handlers
+│   │   ├── navigations
+│   │   ├── notifiers
+│   │   ├── pages
 │   │   │   ├── group
 │   │   │   ├── login
-│   │   │   ├── tab
+│   │   │   ├── schedule
+│   │   │   ├── signup
+│   │   │   ├── start
 │   │   │   └── user
 │   │   ├── providers
-│   │   │   ├── error
-│   │   │   ├── group
-│   │   │   ├── text_field
-│   │   │   ├── user
-│   │   │   └── utils
-│   │   └── validation
-│   ├── entities
-│   │   └── device
-│   ├── models
-│   │   ├── auth
-│   │   ├── custom
-│   │   └── database
-│   ├── services
-│   │   ├── auth
-│   │   ├── database
-│   │   └── storage
-│   ├── utils
-│   │   ├── clipboard
-│   │   ├── color
-│   │   ├── schedule
-│   │   └── time
-│   └── views
-│       ├── group
-│       ├── login
-│       ├── schedule
-│       ├── signup
-│       ├── start
-│       └── user
+│   │   └── states
+│   └── utils
 ├── test
 └── validation
+    └── validator
+        └── validation
 
-183 directories, 255 files
+194 directories, 491 files

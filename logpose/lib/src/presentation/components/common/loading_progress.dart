@@ -7,9 +7,13 @@ final loadingProgressProvider = StateProvider.autoDispose<bool>((ref) => false);
 final loadingErrorMessageProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
+final loadingProgressControllerProvider = Provider<LoadingProgressController>(
+  LoadingProgressController.new,
+);
+
 class LoadingProgressController {
   LoadingProgressController(this.ref);
-  final WidgetRef ref;
+  final Ref ref;
 
   set loadingProgress(bool loading) {
     ref.read(loadingProgressProvider.notifier).state = loading;

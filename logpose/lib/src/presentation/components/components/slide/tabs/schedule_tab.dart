@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../../../../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
 
 class ScheduleTab extends ConsumerStatefulWidget {
   const ScheduleTab({super.key});
@@ -12,30 +11,23 @@ class ScheduleTab extends ConsumerStatefulWidget {
 }
 
 class _ScheduleTabState extends ConsumerState<ScheduleTab> {
-  Future<void> _onTap() async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const ScheduleListAndJoinedGroupTabSlider(),
-      ),
-      (_) => false,
-    );
+  Future<void> _handleToTap() async {
+    final navigator = ToScheduleListAndJoinedGroupTabSliderNavigator(context);
+    await navigator.moveToPage();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap,
+      onTap: _handleToTap,
       child: Container(
         width: 180,
         height: 55,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: CupertinoColors.white,
           borderRadius: BorderRadius.circular(999),
         ),
-        padding: const EdgeInsets.only(
-          left: 10,
-        ),
+        padding: const EdgeInsets.only(left: 10),
         child: Row(
           children: [
             Container(
@@ -46,9 +38,7 @@ class _ScheduleTabState extends ConsumerState<ScheduleTab> {
                 borderRadius: BorderRadius.circular(33),
               ),
               child: const Center(
-                child: Icon(
-                  Icons.home,
-                ),
+                child: Icon(CupertinoIcons.home),
               ),
             ),
             const Text(

@@ -4,12 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
 
-
-import '../../../../../../../domain/providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
-
-
-import '../../../schedule_join_member/schedule_join_member.dart';
-import 'components/async_group_member.dart';
+import '../../../../../../navigations/modals/to_join_schedule_view_navigator.dart';
+import 'components/join_schedule_group_member_image_list.dart';
 
 class ResponsedMembers extends ConsumerStatefulWidget {
   const ResponsedMembers({
@@ -22,39 +18,25 @@ class ResponsedMembers extends ConsumerStatefulWidget {
   final GroupProfile groupProfile;
   final String scheduleId;
   final GroupSchedule groupSchedule;
+
   @override
   ConsumerState createState() => _ResponsedMembersState();
 }
 
 class _ResponsedMembersState extends ConsumerState<ResponsedMembers> {
-  Future<void> _onTap() async {
-    final scheduleId = widget.scheduleId;
-    final asyncGroupMember = ref.watch(
-      listenGroupMemberProfileNotAbsenceListProvider(scheduleId),
-    );
-    await showCupertinoModalPopup<ScheduleJoinMember>(
-      context: context,
-      builder: (BuildContext context) {
-        return asyncGroupMember.when(
-          data: (membershipProfileList) {
-            return ScheduleJoinMember(
-              groupProfile: widget.groupProfile,
-              memberProfiles: membershipProfileList,
-              scheduleId: scheduleId,
-              groupSchedule: widget.groupSchedule,
-            );
-          },
-          loading: () => const SizedBox.shrink(),
-          error: (error, stack) => Text('$error'),
-        );
-      },
+  Future<void> _handleToTap() async {
+    final navigator = ToJoinScheduleViewNavigator(context, ref);
+    await navigator.showModal(
+      scheduleId: widget.scheduleId,
+      groupProfile: widget.groupProfile,
+      groupSchedule: widget.groupSchedule,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap,
+      onTap: _handleToTap,
       child: Container(
         margin: const EdgeInsets.only(top: 15),
         child: Row(
@@ -68,12 +50,10 @@ class _ResponsedMembersState extends ConsumerState<ResponsedMembers> {
               margin: const EdgeInsets.only(left: 8),
               child: const Text(
                 '参加メンバー |',
-                style: TextStyle(
-                  color: CupertinoColors.systemGrey,
-                ),
+                style: TextStyle(color: CupertinoColors.systemGrey),
               ),
             ),
-            AsyncGroupMember(scheduleId: widget.scheduleId),
+            JoinScheduleGroupMemberImageList(scheduleId: widget.scheduleId),
           ],
         ),
       ),
