@@ -4,17 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../domain/entity/group_profile.dart';
 import '../../../../../domain/entity/group_schedule.dart';
 
+import '../../../common/background.dart';
+import '../../../common/custom_image/custom_image.dart';
+import '../../../common/popup_header_color.dart';
+import '../../../common/response_icon_and_text.dart';
+import '../../../common/schedule_time_view.dart';
+import '../../../common/schedule_title_view.dart';
 
-import '../components/background/background.dart';
-import '../components/header/header.dart';
-import '../components/schedule_time_view/schedule_time_view.dart';
-
-import 'components/detail/detail.dart';
-import 'components/group_image/group_image.dart';
 import 'components/member/responsed_members.dart';
-import 'components/place/place.dart';
-import 'components/response_icon_and_text.dart/response_icon_and_text.dart';
-import 'components/title/schedule_title.dart';
+import 'components/schedule_detail_view.dart';
+import 'components/schedule_place_view.dart';
 
 class ScheduleDetailConfirm extends ConsumerStatefulWidget {
   const ScheduleDetailConfirm({
@@ -25,6 +24,7 @@ class ScheduleDetailConfirm extends ConsumerStatefulWidget {
     required this.scheduleId,
     required this.schedule,
   });
+
   final Icon? responseIcon;
   final Text? responseText;
   final GroupProfile group;
@@ -60,27 +60,48 @@ class _ScheduleDetailConfirmState extends ConsumerState<ScheduleDetailConfirm> {
               height: deviceHeight * 0.55,
               child: Stack(
                 children: [
-                  const Background(),
-                  Header(color: groupSchedule.color),
-                  GroupImage(imagePath: group.image),
-                  ResponseIconAndText(
-                    responseIcon: responseIcon,
-                    responseText: responseText,
+                  const PopupBackground(),
+                  PopupHeaderColor(color: groupSchedule.color),
+                  Positioned(
+                    top: 70,
+                    left: 30,
+                    child: CustomImage(
+                      imagePath: group.image,
+                      width: 60,
+                      height: 60,
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: ResponseIconAndText(
+                      responseIcon: responseIcon,
+                      responseText: responseText,
+                      width: deviceWidth * 0.2,
+                      height: deviceHeight * 0.093,
+                      marginTop: 105,
+                      marginLeft: 20,
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 30, top: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ScheduleTitle(title: groupSchedule.title),
+                        ScheduleTitleView(
+                          title: groupSchedule.title,
+                          width: deviceWidth * 0.5,
+                          marginTop: 120,
+                          fontSize: 26,
+                        ),
                         ScheduleTimeView(groupSchedule: groupSchedule),
                         ResponsedMembers(
                           groupProfile: group,
                           scheduleId: groupScheduleId,
                           groupSchedule: groupSchedule,
                         ),
-                        Place(place: groupSchedule.place),
-                        Detail(detail: groupSchedule.detail),
+                        SchedulePlaceView(place: groupSchedule.place),
+                        ScheduleDetailView(detail: groupSchedule.detail),
                       ],
                     ),
                   ),

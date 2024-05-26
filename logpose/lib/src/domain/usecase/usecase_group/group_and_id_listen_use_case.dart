@@ -1,33 +1,30 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/interface/i_group_repository.dart';
+
 import '../../../data/repository/database/group_repository.dart';
 
 import '../../entity/group_profile.dart';
-import '../../interface/i_group_repository.dart';
+
+import '../../interface/group/i_group_and_id_listen_use_case.dart';
+
 import '../../model/group_and_id_model.dart';
 
-import 'group_and_id_use_case.dart';
-
 final groupAndIdListenUseCaseProvider =
-    Provider<GroupAndIdListenUseCase>((ref) {
-  final groupAndIdUseCase = ref.read(groupAndIdUseCaseProvider);
+    Provider<IGroupAndIdListenUseCase>((ref) {
   final groupRepository = ref.read(groupRepositoryProvider);
 
   return GroupAndIdListenUseCase(
-    groupAndIdUseCase: groupAndIdUseCase,
     groupRepository: groupRepository,
   );
 });
 
-class GroupAndIdListenUseCase {
-  const GroupAndIdListenUseCase({
-    required this.groupAndIdUseCase,
-    required this.groupRepository,
-  });
+class GroupAndIdListenUseCase implements IGroupAndIdListenUseCase {
+  const GroupAndIdListenUseCase({required this.groupRepository});
 
-  final GroupAndIdUseCase groupAndIdUseCase;
   final IGroupRepository groupRepository;
 
+  @override
   Stream<GroupAndId?> listenGroupAndId(String groupId) {
     try {
       return _listenGroup(groupId).map((groupProfile) {

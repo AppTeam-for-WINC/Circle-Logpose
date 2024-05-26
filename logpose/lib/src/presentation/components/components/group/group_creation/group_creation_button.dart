@@ -1,20 +1,7 @@
-// ignore_for_file: use_setters_to_change_properties
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/model/group_creator_params_model.dart';
-
-import '../../../../../domain/providers/image_provider.dart';
-import '../../../../../domain/providers/text_field/name_field_provider.dart';
-
-import '../../../../../domain/usecase/facade/group_facade.dart';
-
-import '../../../../notifiers/set_group_member_list_notifier.dart';
-
-import '../../../common/loading_progress.dart';
-
-import '../../slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../../../../handlers/group_creation_handler.dart';
 
 class GroupCreationButton extends ConsumerStatefulWidget {
   const GroupCreationButton({super.key});
@@ -23,56 +10,9 @@ class GroupCreationButton extends ConsumerStatefulWidget {
 }
 
 class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
-  void _loadingProgress(bool loading) {
-    LoadingProgressController(ref).loadingProgress = loading;
-  }
-
-  Future<String?> _createGroup() async {
-    try {
-      final groupFacade = ref.read(groupFacadeProvider);
-      return groupFacade.createGroup(
-        GroupCreatorParams(
-          groupName: ref.read(nameFieldProvider('')).text,
-          image: ref.read(imageControllerProvider),
-          description: null,
-          memberList: ref.read(setGroupMemberListNotifierProvider),
-        ),
-      );
-    } on Exception catch (e) {
-      return 'Error: failed to create group. $e';
-    }
-  }
-
-  Future<void> _pushAndRemoveUntil() async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) {
-          return const ScheduleListAndJoinedGroupTabSlider();
-        },
-      ),
-      (_) => false,
-    );
-  }
-
-  Future<void> onPressed() async {
-    if (ref.watch(loadingProgressProvider)) {
-      return;
-    }
-
-    _loadingProgress(true);
-    final errorMessage = await _createGroup();
-    _loadingProgress(false);
-
-    if (errorMessage != null) {
-      LoadingProgressController(ref).loadingErrorMessage = errorMessage;
-      return;
-    }
-
-    if (!mounted) {
-      return;
-    }
-    await _pushAndRemoveUntil();
+  Future<void> handleToCreate() async {
+    final handler = GroupCreationHandler(context, ref);
+    await handler.handleToCreate();
   }
 
   @override
@@ -94,7 +34,7 @@ class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
         ],
       ),
       child: CupertinoButton(
-        onPressed: onPressed,
+        onPressed: handleToCreate,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

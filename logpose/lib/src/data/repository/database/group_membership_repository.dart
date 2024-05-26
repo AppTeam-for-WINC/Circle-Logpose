@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entity/group_membership.dart';
 import '../../../domain/entity/user_profile.dart';
 
-import '../../../domain/interface/i_group_membership_repository.dart';
+import '../../interface/i_group_membership_repository.dart';
 
 import '../../mapper/group_membership_mapper.dart';
 

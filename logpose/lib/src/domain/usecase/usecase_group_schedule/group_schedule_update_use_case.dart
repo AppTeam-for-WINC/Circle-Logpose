@@ -4,17 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_group_schedule_repository.dart';
+
 import '../../../data/repository/database/group_schedule_repository.dart';
 
 import '../../../utils/color/color_exchanger.dart';
 
-import '../../interface/i_group_schedule_repository.dart';
-
+import '../../interface/group_schedule/i_group_schedule_update_use_case.dart';
 import '../../model/schedule_params_model.dart';
 import '../../model/schedule_validation_params.dart';
 
 final groupScheduleUpdateUseCaseProvider =
-    Provider<GroupScheduleUpdateUseCase>((ref) {
+    Provider<IGroupScheduleUpdateUseCase>((ref) {
   final groupScheduleRepository = ref.read(groupScheduleRepositoryProvider);
   final validator = ref.read(validatorControllerProvider);
 
@@ -24,17 +25,20 @@ final groupScheduleUpdateUseCaseProvider =
   );
 });
 
-class GroupScheduleUpdateUseCase {
+class GroupScheduleUpdateUseCase implements IGroupScheduleUpdateUseCase {
   const GroupScheduleUpdateUseCase({
     required this.groupScheduleRepository,
     required this.validator,
   });
 
   final IGroupScheduleRepository groupScheduleRepository;
-
   final ValidatorController validator;
 
-  Future<String?> update(String docId, ScheduleParams scheduleParams) async {
+  @override
+  Future<String?> updateSchedule(
+    String docId,
+    ScheduleParams scheduleParams,
+  ) async {
     try {
       return await _attemptToUpdate(docId, scheduleParams);
     } on Exception catch (e) {
@@ -73,22 +77,22 @@ class GroupScheduleUpdateUseCase {
     ScheduleParams scheduleParams,
   ) async {
     final colorToString = _colorToHex(scheduleParams.color);
-    await _updateSchedule(docId, colorToString, scheduleParams);
+    await _update(docId, colorToString, scheduleParams);
   }
 
   String _colorToHex(Color color) {
     return colorToHex(color);
   }
 
-  Future<void> _updateSchedule(
+  Future<void> _update(
     String docId,
     String color,
     ScheduleParams scheduleParams,
   ) async {
     try {
-      await groupScheduleRepository.update(
+      await groupScheduleRepository.updateSchedule(
         docId: docId,
-        groupId: scheduleParams.groupId,
+        groupId: scheduleParams.groupId!,
         title: scheduleParams.title,
         color: color,
         place: scheduleParams.place,

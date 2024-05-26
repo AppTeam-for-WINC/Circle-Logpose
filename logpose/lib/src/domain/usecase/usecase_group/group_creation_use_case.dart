@@ -3,45 +3,50 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../validation/validator/validator_controller.dart';
 
+import '../../../data/interface/i_group_repository.dart';
+
 import '../../../data/repository/database/group_repository.dart';
 
 import '../../entity/user_profile.dart';
 
-import '../../interface/i_group_repository.dart';
+import '../../interface/auth/i_auth_user_id_use_case.dart';
+import '../../interface/group/i_group_creation_use_case.dart';
+import '../../interface/group_membership/i_group_member_creation_use_case.dart';
 
 import '../../model/group_creator_params_model.dart';
 
+import '../usecase_auth/user_id_use_case.dart';
 import '../usecase_group_membership/group_member_creation_use_case.dart';
-import '../usecase_user/user_id_use_case.dart';
 
-final groupCreationUseCaseProvider = Provider<GroupCreationUseCase>((ref) {
-  final userIdUseCase = ref.read(userIdUseCaseProvider);
+final groupCreationUseCaseProvider = Provider<IGroupCreationUseCase>((ref) {
+  final authIdUseCase = ref.read(authUserIdUseCaseProvider);
   final groupMemberCreationUseCase =
       ref.read(groupMemberCreationUseCaseProvider);
   final groupRepository = ref.read(groupRepositoryProvider);
   final validator = ref.read(validatorControllerProvider);
 
   return GroupCreationUseCase(
-    userIdUseCase: userIdUseCase,
+    authIdUseCase: authIdUseCase,
     groupMemberCreationUseCase: groupMemberCreationUseCase,
     groupRepository: groupRepository,
     validator: validator,
   );
 });
 
-class GroupCreationUseCase {
+class GroupCreationUseCase implements IGroupCreationUseCase {
   const GroupCreationUseCase({
-    required this.userIdUseCase,
+    required this.authIdUseCase,
     required this.groupMemberCreationUseCase,
     required this.groupRepository,
     required this.validator,
   });
 
-  final UserIdUseCase userIdUseCase;
-  final GroupMemberCreationUseCase groupMemberCreationUseCase;
+  final IAuthUserIdUseCase authIdUseCase;
+  final IGroupMemberCreationUseCase groupMemberCreationUseCase;
   final IGroupRepository groupRepository;
   final ValidatorController validator;
 
+  @override
   Future<String?> createGroup(GroupCreatorParams groupData) async {
     try {
       return await _attemptToCreateGroup(groupData);
@@ -70,7 +75,7 @@ class GroupCreationUseCase {
   }
 
   Future<String> _fetchUserDocId() async {
-    return userIdUseCase.fetchCurrentUserId();
+    return authIdUseCase.fetchCurrentUserId();
   }
 
   Future<String> _createGroup(GroupCreatorParams groupData) async {

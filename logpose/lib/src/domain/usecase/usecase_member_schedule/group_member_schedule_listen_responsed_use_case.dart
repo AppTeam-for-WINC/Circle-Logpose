@@ -3,12 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../entity/group_member_schedule.dart';
 
+import '../../interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_listen_reponsed_use_case.dart';
+import '../../interface/group_member_schedule/i_group_member_schedule_use_case.dart';
+import '../../interface/user/i_user_id_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
 import 'group_member_schedule_id_use_case.dart';
 import 'group_member_schedule_use_case.dart';
 
 final groupMemberScheduleListenResponsedUseCaseProvider =
-    Provider<GroupMemberScheduleListenResponsedUseCase>((ref) {
+    Provider<IGroupMemberScheduleListenResponsedUseCase>((ref) {
   final userIdUseCase = ref.read(userIdUseCaseProvider);
   final memberScheduleIdUseCase =
       ref.read(groupMemberScheduleIdUseCaseProvider);
@@ -22,7 +26,8 @@ final groupMemberScheduleListenResponsedUseCaseProvider =
   );
 });
 
-class GroupMemberScheduleListenResponsedUseCase {
+class GroupMemberScheduleListenResponsedUseCase
+    implements IGroupMemberScheduleListenResponsedUseCase {
   const GroupMemberScheduleListenResponsedUseCase({
     required this.ref,
     required this.userIdUseCase,
@@ -31,10 +36,11 @@ class GroupMemberScheduleListenResponsedUseCase {
   });
 
   final Ref ref;
-  final UserIdUseCase userIdUseCase;
-  final GroupMemberScheduleIdUseCase memberScheduleIdUseCase;
-  final GroupMemberScheduleUseCase memberScheduleUseCase;
+  final IUserIdUseCase userIdUseCase;
+  final IGroupMemberScheduleIdUseCase memberScheduleIdUseCase;
+  final IGroupMemberScheduleUseCase memberScheduleUseCase;
 
+  @override
   Stream<GroupMemberSchedule?> listenResponsedGroupMemberSchedule(
     String scheduleId,
     String accountId,

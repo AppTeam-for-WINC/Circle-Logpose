@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../domain/providers/text_field/schedule_place_controller_provider.dart';
+import '../../../../../providers/text_field/schedule_place_controller_provider.dart';
+import '../../../../common/custom_text_field/custom_schedule_text_field.dart';
 
 class PlaceTextField extends ConsumerStatefulWidget {
   const PlaceTextField({super.key});
@@ -12,28 +13,9 @@ class PlaceTextField extends ConsumerStatefulWidget {
 class _PlaceTextFieldState extends ConsumerState<PlaceTextField> {
   @override
   Widget build(BuildContext context) {
-    void onChanged(String text) {
-      ref.read(schedulePlaceControllerProvider.notifier).state.text = text;
-    }
-
-    return CupertinoTextField(
-      controller: ref.watch(schedulePlaceControllerProvider.notifier).state,
+    return CustomScheduleTextField(
+      textController: ref.watch(schedulePlaceControllerProvider.notifier).state,
       placeholder: '場所を追加',
-      placeholderStyle: const TextStyle(
-        color: CupertinoColors.systemGrey,
-      ),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            style: BorderStyle.none,
-          ),
-        ),
-      ),
-      style: const TextStyle(
-        fontSize: 16,
-        color: CupertinoColors.black,
-      ),
-      onChanged: onChanged,
     );
   }
 }

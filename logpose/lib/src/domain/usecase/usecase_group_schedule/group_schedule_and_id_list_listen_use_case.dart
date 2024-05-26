@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../interface/group_schedule/i_group_schedule_and_id_list_listen_use_case.dart';
+import '../../interface/group_schedule/i_group_schedule_and_id_use_case.dart';
+
+import '../../interface/group_schedule/i_group_schedule_listen_id_use_case.dart';
 import '../../model/group_schedule_and_id_model.dart';
 
 import 'group_schedule_and_id_use_case.dart';
 import 'group_schedule_listen_id_use_case.dart';
 
 final groupScheduleAndIdListListenUseCaseProvider =
-    Provider<GroupScheduleAndIdListListenUseCase>((ref) {
+    Provider<IGroupScheduleAndIdListListenUseCase>((ref) {
   final groupScheduleAndIdUseCase = ref.read(groupScheduleAndIdUseCaseProvider);
   final groupScheduleListenIdUseCase =
       ref.read(groupScheduleListenIdUseCaseProvider);
@@ -18,15 +22,17 @@ final groupScheduleAndIdListListenUseCaseProvider =
   );
 });
 
-class GroupScheduleAndIdListListenUseCase {
+class GroupScheduleAndIdListListenUseCase
+    implements IGroupScheduleAndIdListListenUseCase {
   const GroupScheduleAndIdListListenUseCase({
     required this.groupScheduleAndIdUseCase,
     required this.groupScheduleListenIdUseCase,
   });
 
-  final GroupScheduleAndIdUseCase groupScheduleAndIdUseCase;
-  final GroupScheduleListenIdUseCase groupScheduleListenIdUseCase;
+  final IGroupScheduleAndIdUseCase groupScheduleAndIdUseCase;
+  final IGroupScheduleListenIdUseCase groupScheduleListenIdUseCase;
 
+  @override
   Stream<List<GroupScheduleAndId?>> listenAllGroupScheduleAndIdList(
     String groupId,
   ) async* {

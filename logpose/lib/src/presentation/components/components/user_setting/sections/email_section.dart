@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/email_setting_page.dart';
+import '../../../../navigations/to_email_setting_page_navigator.dart';
 
 class EmailSection extends ConsumerStatefulWidget {
   const EmailSection({super.key});
@@ -10,14 +10,9 @@ class EmailSection extends ConsumerStatefulWidget {
 }
 
 class _EmailSectionState extends ConsumerState<EmailSection> {
-  Future<void> _onPressed() async {
-    await Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const EmailSettingPage(),
-      ),
-      (_) => false,
-    );
+  Future<void> _handleToTap() async {
+    final navigator = ToEmailSettingPageNavigator(context);
+    await navigator.moveToPage();
   }
 
   @override
@@ -41,13 +36,11 @@ class _EmailSectionState extends ConsumerState<EmailSection> {
         ],
         color: CupertinoColors.white,
         borderRadius: const BorderRadius.all(Radius.circular(60)),
-        border: Border.all(
-          color: const Color(0xFFD9D9D9),
-        ),
+        border: Border.all(color: const Color(0xFFD9D9D9)),
       ),
       child: CupertinoButton(
         padding: EdgeInsets.zero,
-        onPressed: _onPressed,
+        onPressed: _handleToTap,
         child: const Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Row(
@@ -63,9 +56,7 @@ class _EmailSectionState extends ConsumerState<EmailSection> {
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       'メールアドレス',
-                      style: TextStyle(
-                        color: CupertinoColors.black,
-                      ),
+                      style: TextStyle(color: CupertinoColors.black),
                     ),
                   ),
                 ],

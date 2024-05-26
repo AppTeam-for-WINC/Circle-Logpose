@@ -24,7 +24,7 @@ class GroupScheduleModel {
     final startAt = _convertTimestampToDateTime(data['start_at']);
     final endAt = _convertTimestampToDateTime(data['end_at']);
     final updatedAt = data['updated_at'] as Timestamp?;
-    final createdAt = data['created_at'] as Timestamp;
+    final createdAt = data['created_at'] as Timestamp?;
 
     return GroupScheduleModel(
       groupId: groupId,
@@ -56,7 +56,7 @@ class GroupScheduleModel {
 
   final Timestamp? updatedAt;
 
-  final Timestamp createdAt;
+  final Timestamp? createdAt;
 }
 
 DateTime? _convertTimestampToDateTime(dynamic timestamp) {
