@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../utils/responsive_util.dart';
+
 import '../../../../notifiers/group_profile_list_notifier.dart';
 
 class GridGroupList extends ConsumerStatefulWidget {
   const GridGroupList({super.key});
 
   @override
-  ConsumerState createState() => _GridGroupListState();
+  ConsumerState<GridGroupList> createState() => _GridGroupListState();
 }
 
 class _GridGroupListState extends ConsumerState<GridGroupList> {
@@ -32,7 +34,17 @@ class _GridGroupListState extends ConsumerState<GridGroupList> {
               crossAxisCount: 2,
               children: groupList,
             ),
-            const SizedBox(height: 200),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (ResponsiveUtil.isMobile(context)) {
+                  return const SizedBox(height: 200);
+                } else if (ResponsiveUtil.isTablet(context)) {
+                  return const SizedBox(height: 400);
+                } else {
+                  return const SizedBox(height: 600);
+                }
+              },
+            ),
           ],
         ),
       ),

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
-import '../../../../../../../../../utils/schedule/schedule_response.dart';
+import '../../../../../../../../utils/schedule_response.dart';
 
-import '../../../../../../../../handlers/leave_early_button_handler.dart';
-import '../response_button.dart';
+import '../../../../../../../handlers/leave_early_button_handler.dart';
+import '../../../../../../common/response_button.dart';
 
 class LeaveEarlyButton extends ConsumerWidget {
   const LeaveEarlyButton({

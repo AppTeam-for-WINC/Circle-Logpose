@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
+import '../../../../../utils/responsive_util.dart';
+
 import '../../../../notifiers/group_member_schedule_notifier.dart';
 
 import '../../../common/custom_image/custom_image.dart';
@@ -13,7 +15,9 @@ import 'components/response_buttons/response_buttons.dart';
 
 class ScheduleCard extends ConsumerStatefulWidget {
   const ScheduleCard({super.key, required this.groupData});
+
   final GroupProfileAndScheduleAndId groupData;
+
   @override
   ConsumerState<ScheduleCard> createState() {
     return _GroupScheduleCardState();
@@ -24,7 +28,69 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth);
+        } else {
+          return _buildDesktopLayout(deviceWidth);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      containerHeight: deviceWidth * 0.42,
+      containerMarginTop: deviceWidth * 0.02,
+      dateLabelPositionTop: 0,
+      dateLabelPositionLeft: 15,
+      customImagePositionRight: 35,
+      customImageWidth: 42,
+      customImageHeight: 42,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      containerHeight: deviceWidth * 0.3,
+      containerMarginTop: deviceWidth * 0.04,
+      dateLabelPositionTop: 5,
+      dateLabelPositionLeft: 15,
+      customImagePositionRight: 35,
+      customImageWidth: 42,
+      customImageHeight: 42,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      containerHeight: deviceWidth * 0.25,
+      containerMarginTop: deviceWidth * 0.04,
+      dateLabelPositionTop: deviceWidth * 0.02,
+      dateLabelPositionLeft: 15,
+      customImagePositionRight: 35,
+      customImageWidth: 42,
+      customImageHeight: 42,
+    );
+  }
+
+  Widget _buildLayout({
+    required double deviceWidth,
+    required double containerHeight,
+    required double containerMarginTop,
+    required double dateLabelPositionTop,
+    required double dateLabelPositionLeft,
+    required double customImagePositionRight,
+    required double customImageWidth,
+    required double customImageHeight,
+  }) {
     final groupProfileAndScheduleAndId = widget.groupData;
     final groupProfile = widget.groupData.groupProfile;
     final groupImage = widget.groupData.groupProfile.image;
@@ -39,13 +105,13 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
 
     return Container(
       width: deviceWidth * 0.88,
-      height: deviceHeight * 0.215,
+      height: containerHeight,
       margin: const EdgeInsets.only(top: 20),
       child: Stack(
         children: [
           Center(
             child: Container(
-              margin: const EdgeInsets.only(top: 19),
+              margin: EdgeInsets.only(top: containerMarginTop),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: CupertinoColors.white,
@@ -79,13 +145,20 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
             ),
           ),
           Positioned(
-            left: 15,
-            top: 5,
-            child: DateLabel(groupSchedule: groupSchedule),
+            top: dateLabelPositionTop,
+            left: dateLabelPositionLeft,
+            child: DateLabel(
+              groupSchedule: groupSchedule,
+              deviceWidth: deviceWidth,
+            ),
           ),
           Positioned(
-            right: 35,
-            child: CustomImage(imagePath: groupImage, width: 42, height: 42),
+            right: customImagePositionRight,
+            child: CustomImage(
+              imagePath: groupImage,
+              width: customImageWidth,
+              height: customImageHeight,
+            ),
           ),
         ],
       ),

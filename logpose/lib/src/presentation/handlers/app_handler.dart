@@ -2,7 +2,7 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../components/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../components/components/slide/slider/schedule_list_and_joined_group/schedule_list_and_joined_group_tab_slider.dart';
 
 import '../controllers/auth/auth_management_controller.dart';
 

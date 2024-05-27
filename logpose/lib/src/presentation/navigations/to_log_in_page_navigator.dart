@@ -4,16 +4,15 @@ import '../pages/login/log_in_page.dart';
 
 class ToLogInPageNavigator {
   ToLogInPageNavigator(this.context);
-  
+
   final BuildContext context;
 
   Future<void> moveToPage() async {
-    await Navigator.pushAndRemoveUntil(
+    await Navigator.push(
       context,
       CupertinoPageRoute<CupertinoPageRoute<LogInPage>>(
         builder: (context) => const LogInPage(),
       ),
-      (_) => false,
     );
   }
 }

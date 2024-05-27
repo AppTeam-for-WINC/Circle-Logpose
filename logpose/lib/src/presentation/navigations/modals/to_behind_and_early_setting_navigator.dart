@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
-import '../../../utils/schedule/schedule_response.dart';
+import '../../../utils/schedule_response.dart';
 
 import '../../components/components/popup/behind_and_early_setting/behind_and_early_setting.dart';
 
@@ -27,8 +27,8 @@ class ToBehindAndEarlySettingNavigator {
         builder: (BuildContext context) {
           return BehindAndEarlySetting(
             groupProfileAndScheduleAndId: groupProfileAndScheduleAndId,
-            responseIcon: ScheduleResponse.getIcon(responseType),
-            responseText: ScheduleResponse.getText(responseType),
+            responseIcon: ScheduleResponse.getIcon(responseType, 25),
+            responseText: ScheduleResponse.getText(responseType, 18),
           );
         },
       );

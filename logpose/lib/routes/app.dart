@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../src/presentation/components/components/slide/slider/group_creation_and_list_tab_slider.dart';
-import '../src/presentation/components/components/slide/slider/schedule_list_and_joined_group_tab_slider.dart';
+import '../src/presentation/components/components/slide/slider/group_creation_and_list/group_creation_and_list_tab_slider.dart';
+import '../src/presentation/components/components/slide/slider/schedule_list_and_joined_group/schedule_list_and_joined_group_tab_slider.dart';
 import '../src/presentation/handlers/app_handler.dart';
 import '../src/presentation/pages/login/log_in_page.dart';
 import '../src/presentation/pages/signup/sign_up_page.dart';

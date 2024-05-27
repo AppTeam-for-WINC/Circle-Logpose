@@ -24,9 +24,7 @@ class _MoveToSignUpButtonState extends ConsumerState<MoveToSignUpButton> {
       child: Container(
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: CupertinoColors.white,
-          ),
+          border: Border.all(color: CupertinoColors.white),
           borderRadius: BorderRadius.circular(30),
         ),
         child: CupertinoButton(

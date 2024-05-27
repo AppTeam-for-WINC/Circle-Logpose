@@ -8,7 +8,7 @@ import '../../../data/interface/i_group_schedule_repository.dart';
 
 import '../../../data/repository/database/group_schedule_repository.dart';
 
-import '../../../utils/color/color_exchanger.dart';
+import '../../../utils/color_exchanger.dart';
 
 import '../../interface/group_member_schedule/i_group_member_schedule_creation_use_case.dart';
 import '../../interface/group_schedule/i_group_schedule_creation_use_case.dart';

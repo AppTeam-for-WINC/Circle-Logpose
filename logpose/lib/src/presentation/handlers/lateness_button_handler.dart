@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/model/group_profile_and_schedule_and_id_model.dart';
 import '../../domain/model/schedule_response_params_model.dart';
 
-import '../../utils/schedule/schedule_response.dart';
+import '../../utils/schedule_response.dart';
 
 import '../controllers/group_member_schedule/group_member_schedule_creation_and_update_controller.dart';
 import '../navigations/modals/to_behind_and_early_setting_navigator.dart';

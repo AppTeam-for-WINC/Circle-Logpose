@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/color/color_exchanger.dart';
+import '../../../utils/color_exchanger.dart';
 
 class PopupHeaderColor extends ConsumerWidget {
   const PopupHeaderColor({super.key, required this.color});

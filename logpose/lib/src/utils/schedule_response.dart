@@ -5,45 +5,45 @@ enum ResponseType { attendance, leaveEarly, lateness, absence }
 class ScheduleResponse {
   const ScheduleResponse();
 
-  static Icon getIcon(ResponseType type) {
+  static Icon getIcon(ResponseType type, double iconSize) {
     switch (type) {
       case ResponseType.attendance:
-        return const Icon(
+        return Icon(
           Icons.sentiment_very_satisfied,
-          size: 25,
+          size: iconSize,
           color: Colors.black,
         );
       case ResponseType.leaveEarly:
-        return const Icon(
+        return Icon(
           Icons.sentiment_dissatisfied,
-          size: 25,
+          size: iconSize,
           color: Colors.black,
         );
       case ResponseType.lateness:
-        return const Icon(
+        return Icon(
           Icons.sentiment_dissatisfied,
-          size: 25,
+          size: iconSize,
           color: Colors.black,
         );
       case ResponseType.absence:
-        return const Icon(
+        return Icon(
           Icons.sentiment_very_dissatisfied,
-          size: 25,
+          size: iconSize,
           color: Colors.black,
         );
     }
   }
 
-  static Text getText(ResponseType type) {
+  static Text getText(ResponseType type, double textSize) {
     switch (type) {
       case ResponseType.attendance:
-        return const Text('出席', style: TextStyle(fontSize: 18));
+        return Text('出席', style: TextStyle(fontSize: textSize));
       case ResponseType.leaveEarly:
-        return const Text('早退', style: TextStyle(fontSize: 18));
+        return Text('早退', style: TextStyle(fontSize: textSize));
       case ResponseType.lateness:
-        return const Text('遅刻', style: TextStyle(fontSize: 18));
+        return Text('遅刻', style: TextStyle(fontSize: textSize));
       case ResponseType.absence:
-        return const Text('欠席', style: TextStyle(fontSize: 18));
+        return Text('欠席', style: TextStyle(fontSize: textSize));
     }
   }
 }
