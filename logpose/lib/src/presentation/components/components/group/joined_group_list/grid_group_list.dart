@@ -15,8 +15,63 @@ class GridGroupList extends ConsumerStatefulWidget {
 class _GridGroupListState extends ConsumerState<GridGroupList> {
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth, deviceHeight);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth, deviceHeight);
+        } else {
+          return _buildDesktopLayout(deviceWidth, deviceHeight);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      deviceHeight: deviceHeight,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      childAspectRatio: 1,
+      crossAxisCount: 2,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      deviceHeight: deviceHeight,
+      crossAxisSpacing: 16,
+      mainAxisSpacing: 16,
+      childAspectRatio: 6,
+      crossAxisCount: 1,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      deviceHeight: deviceHeight,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      childAspectRatio: 8,
+      crossAxisCount: 1,
+    );
+  }
+
+  Widget _buildLayout({
+    required double deviceWidth,
+    required double deviceHeight,
+    required double crossAxisSpacing,
+    required double mainAxisSpacing,
+    required double childAspectRatio,
+    required int crossAxisCount,
+  }) {
     final groupList = ref.watch(groupProfileListNotifierProvider);
 
     return SizedBox(
@@ -29,9 +84,10 @@ class _GridGroupListState extends ConsumerState<GridGroupList> {
               primary: false,
               shrinkWrap: true,
               padding: const EdgeInsets.all(24),
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-              crossAxisCount: 2,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: mainAxisSpacing,
+              childAspectRatio: childAspectRatio,
+              crossAxisCount: crossAxisCount,
               children: groupList,
             ),
             LayoutBuilder(

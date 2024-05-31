@@ -10,10 +10,6 @@ class TitleTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    void onChanged(String text) {
-      ref.read(scheduleTitleControllerProvider.notifier).state.text = text;
-    }
-
     return Center(
       child: SizedBox(
         width: deviceWidth * 0.7,
@@ -23,7 +19,6 @@ class TitleTextField extends ConsumerWidget {
           placeholderStyle: const TextStyle(color: CupertinoColors.systemGrey),
           decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
           style: const TextStyle(fontSize: 16, color: CupertinoColors.black),
-          onChanged: onChanged,
         ),
       ),
     );

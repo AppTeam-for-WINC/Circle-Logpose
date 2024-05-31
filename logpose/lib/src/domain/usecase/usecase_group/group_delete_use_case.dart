@@ -65,10 +65,8 @@ class GroupDeleteUseCase implements IGroupDeleteUseCase {
     if (groupScheduleId != null) {
       await _deleteSchedule(groupMemberList, groupScheduleId);
     }
-
     final membershipIdList = await _fetchAllMembershipIdList(groupId);
     await _deleteMemberList(membershipIdList);
-
     await _deleteGroup(groupId);
   }
 

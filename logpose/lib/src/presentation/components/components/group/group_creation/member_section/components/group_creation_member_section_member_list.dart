@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../notifiers/member_section_admin_members_notiifer.dart';
 import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
@@ -19,13 +21,55 @@ class _GroupCreationMemberSectionMemberListState
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceHeight);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceHeight);
+        } else {
+          return _buildDesktopLayout(deviceHeight);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceHeight) {
+    return _buildLayout(
+      sizedBoxHeight: deviceHeight * 0.34,
+      mainAxisSpacing: 8,
+      childAspectRatio: 6.5,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceHeight) {
+    return _buildLayout(
+      sizedBoxHeight: deviceHeight * 0.34,
+      mainAxisSpacing: 8,
+      childAspectRatio: 12,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceHeight) {
+    return _buildLayout(
+      sizedBoxHeight: deviceHeight * 0.34,
+      mainAxisSpacing: 8,
+      childAspectRatio: 12,
+    );
+  }
+
+  Widget _buildLayout({
+    required double sizedBoxHeight,
+    required double mainAxisSpacing,
+    required double childAspectRatio,
+  }) {
     return SingleChildScrollView(
       child: Center(
         child: SizedBox(
-          height: deviceHeight * 0.3,
+          height: sizedBoxHeight,
           child: GridView.count(
-            mainAxisSpacing: 8,
-            childAspectRatio: 5.5,
+            mainAxisSpacing: mainAxisSpacing,
+            childAspectRatio: childAspectRatio,
             crossAxisCount: 1,
             shrinkWrap: true,
             padding: const EdgeInsets.all(10),

@@ -47,6 +47,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       deviceWidth: deviceWidth,
       containerHeight: deviceWidth * 0.42,
       containerMarginTop: deviceWidth * 0.02,
+      borderCircular: 35,
       dateLabelPositionTop: 0,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
@@ -60,6 +61,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       deviceWidth: deviceWidth,
       containerHeight: deviceWidth * 0.3,
       containerMarginTop: deviceWidth * 0.04,
+      borderCircular: 55,
       dateLabelPositionTop: 5,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
@@ -73,6 +75,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       deviceWidth: deviceWidth,
       containerHeight: deviceWidth * 0.25,
       containerMarginTop: deviceWidth * 0.04,
+      borderCircular: 55,
       dateLabelPositionTop: deviceWidth * 0.02,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
@@ -85,6 +88,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
     required double deviceWidth,
     required double containerHeight,
     required double containerMarginTop,
+    required double borderCircular,
     required double dateLabelPositionTop,
     required double dateLabelPositionLeft,
     required double customImagePositionRight,
@@ -113,7 +117,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
             child: Container(
               margin: EdgeInsets.only(top: containerMarginTop),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(borderCircular),
                 color: CupertinoColors.white,
                 boxShadow: const [
                   BoxShadow(

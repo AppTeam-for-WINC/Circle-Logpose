@@ -5,8 +5,8 @@ import '../../../notifiers/user_email_notifier.dart';
 
 import '../../../providers/text_field/email_field_provider.dart';
 
-import 'components/current_email_field_section.dart';
-import 'components/email_field_section.dart';
+import 'components/current_email/current_email_field_section.dart';
+import 'components/new_email/new_email_field_section.dart';
 
 class EmailSettingNextSection extends ConsumerWidget {
   const EmailSettingNextSection({super.key});
@@ -23,7 +23,8 @@ class EmailSettingNextSection extends ConsumerWidget {
       child: Column(
         children: [
           CurrentEmailFieldSection(currentEmail: userEmailNotifier),
-          EmailFieldSection(newEmailController: newEmailController),
+          const SizedBox(height: 40),
+          NewEmailFieldSection(newEmailController: newEmailController),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controllers/group_membership/group_membership_deletion_controller.dart';
+import '../notifiers/search_user_notifier_provider.dart';
 import '../notifiers/set_group_member_list_notifier.dart';
 
 class MemberDeleteHandler {
@@ -35,5 +36,6 @@ class MemberDeleteHandler {
     ref
         .watch(setGroupMemberListNotifierProvider.notifier)
         .removeMember(accountId);
+    ref.watch(searchUserNotifierProvider(groupId).notifier).removeMemberState();
   }
 }

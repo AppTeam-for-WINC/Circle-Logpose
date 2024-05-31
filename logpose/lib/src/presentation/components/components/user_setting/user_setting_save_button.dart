@@ -5,6 +5,7 @@ import '../../../handlers/user_setting_save_button_handler.dart';
 
 class UserSettingSaveButton extends ConsumerStatefulWidget {
   const UserSettingSaveButton({super.key, required this.name});
+
   final String name;
 
   @override
@@ -39,12 +40,15 @@ class _UserSettingSaveButtonState extends ConsumerState<UserSettingSaveButton> {
                   color: const Color.fromARGB(0, 0, 0, 0),
                 ),
                 child: const Icon(
-                  CupertinoIcons.arrow_down_doc,
+                  CupertinoIcons.check_mark,
                   color: CupertinoColors.white,
                 ),
               ),
               const SizedBox(width: 10),
-              const Text('変更を保存'),
+              const Text(
+                '変更を保存',
+                style: TextStyle(color: CupertinoColors.white),
+              ),
             ],
           ),
         ),

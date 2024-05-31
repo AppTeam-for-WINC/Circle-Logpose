@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../common/segment/joined_group_segment.dart';
+
 import '../../../src/slide_segmented_tab_control.dart';
+
+import 'components/group_creation_segment.dart';
 
 class GroupCreationAndListSegmentView extends StatefulWidget {
   const GroupCreationAndListSegmentView({super.key});
@@ -46,59 +50,8 @@ class _GroupCreationAndListSegmentViewState
               selectedTabTextColor: Colors.white,
               height: deviceHeight * 0.063,
               tabs: [
-                const SegmentTab(
-                  name: '団体作成',
-                  textColor: Color.fromRGBO(0, 0, 0, 1),
-                  label: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 35),
-                        child: Text(
-                          '団体作成',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.expand_more,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  color: Color(0xFF7B61FF),
-                ),
-                SegmentTab(
-                  name: '団体',
-                  label: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.group,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                          left: 5,
-                        ),
-                        child: const Text(
-                          '団体',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  selectedTextColor: Colors.white,
-                  textColor: Colors.black,
-                  color: const Color(0xFF7B61FF),
-                ),
+                const GroupCreationSegment().buildLeftSegment(deviceWidth),
+                const JoinedGroupSegment().buildRightSegment(deviceWidth),
               ],
             ),
           ),

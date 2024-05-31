@@ -22,6 +22,11 @@ Logpose is designed for managing club activities. It primarily features AI-power
 
 ## Architecture
 <p align="center">
+    <img src="logpose/assets/architecture/logpose_architecture.png" width="80%" />
+</p>
+
+## Infrastructure
+<p align="center">
     <img src="logpose/assets/architecture/circle_logpose_architecture.png" width="80%" />
 </p>
 

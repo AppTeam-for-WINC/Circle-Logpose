@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../common/segment/joined_group_segment.dart';
+
 import '../../../src/slide_segmented_tab_control.dart';
 
-import 'components/joined_group_segment.dart';
 import 'components/schedule_list_segment.dart';
 
 class ScheduleListAndJoinedGroupSegmentView extends StatefulWidget {

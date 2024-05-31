@@ -20,7 +20,8 @@ class EmailSettingSection extends ConsumerWidget {
       child: Column(
         children: [
           const CustomTextFieldLabel(label: 'パスワードを入力して下さい'),
-          CustomTextField(textController: passwordController),
+          const SizedBox(height: 40),
+          CustomTextField(textController: passwordController, obscure: true),
         ],
       ),
     );

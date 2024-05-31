@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../navigations/to_password_setting_page_navigator.dart';
+import '../../../common/user_section_label.dart';
 
 class PasswordSection extends ConsumerStatefulWidget {
   const PasswordSection({super.key});
@@ -41,32 +42,9 @@ class _PasswordSectionState extends ConsumerState<PasswordSection> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _handleToTap,
-        child: const Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.lock_circle,
-                    color: CupertinoColors.black,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'パスワード',
-                      style: TextStyle(color: CupertinoColors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Icon(
-                CupertinoIcons.forward,
-                color: CupertinoColors.black,
-              ),
-            ],
-          ),
+        child: const UserSectionLabel(
+          leftIcon: CupertinoIcons.lock_circle,
+          text: 'パスワード',
         ),
       ),
     );

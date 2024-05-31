@@ -13,13 +13,13 @@ class UserProfileButtonHandler {
   });
 
   final WidgetRef ref;
-  final String groupId;
+  final String? groupId;
   final UserProfile userProfile;
 
   void handleToAddMember() {
-    ref.read(searchUserNotifierProvider(groupId).notifier).setMemberState();
+    ref.watch(searchUserNotifierProvider(groupId).notifier).setMemberState();
     ref
-        .read(setGroupMemberListNotifierProvider.notifier)
+        .watch(setGroupMemberListNotifierProvider.notifier)
         .addMember(userProfile);
   }
 }

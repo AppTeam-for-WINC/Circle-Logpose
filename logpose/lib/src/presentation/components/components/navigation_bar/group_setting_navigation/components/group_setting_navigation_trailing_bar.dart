@@ -1,35 +1,26 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../navigations/modals/to_group_setting_navigation_trailing_bar_dialog_navigator.dart';
 
-class GroupSettingNavigationTrailingBar extends ConsumerStatefulWidget {
+import '../../../../common/navigation_trailing_bar.dart';
+
+class GroupSettingNavigationTrailingBar extends StatelessWidget {
   const GroupSettingNavigationTrailingBar({super.key, required this.groupId});
 
   final String groupId;
 
   @override
-  ConsumerState<GroupSettingNavigationTrailingBar> createState() =>
-      _GroupSettingNavigationTrailingBarState();
-}
-
-class _GroupSettingNavigationTrailingBarState
-    extends ConsumerState<GroupSettingNavigationTrailingBar> {
-  @override
   Widget build(BuildContext context) {
-    Future<void> showModal() async {
+    Future<void> handleToTap() async {
       final navigator =
           ToGroupSettingNavigationTrailingBarDialogNavigator(context);
-      await navigator.showModal(widget.groupId);
+      await navigator.showModal(groupId);
     }
 
-    return CupertinoButton(
-      onPressed: showModal,
-      child: const Icon(
-        CupertinoIcons.delete,
-        color: Color(0xFF7B61FF),
-        size: 25,
-      ),
+    return NavigationTrailingBar(
+      iconColor: const Color(0xFF7B61FF),
+      icon: CupertinoIcons.delete,
+      onPressed: handleToTap,
     );
   }
 }
