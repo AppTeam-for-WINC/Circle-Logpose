@@ -29,7 +29,7 @@ class _MoveToLogInButtonState extends ConsumerState<MoveToLogInButton> {
           borderRadius: BorderRadius.circular(30),
           onPressed: _handleToTap,
           child: const Text(
-            'Login',
+            'Log In',
             style: TextStyle(
               color: Color.fromRGBO(80, 49, 238, 1),
               fontSize: 18,

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../components/components/user_setting/sections/group_section/user_joined_group_tile.dart';
+import '../components/components/user_setting/sections/group_section/components/components/user_joined_group_tile.dart';
 
 import '../providers/group/group/listen_joined_group_profile_provider.dart';
 

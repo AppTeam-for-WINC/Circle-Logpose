@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../components/components/slide/slider/group_creation_and_list_tab_slider.dart';
+import '../components/components/slide/slider/group_creation_and_list/group_creation_and_list_tab_slider.dart';
 
 class ToGroupCreationAndListTabSliderNavigator {
   ToGroupCreationAndListTabSliderNavigator(this.context);

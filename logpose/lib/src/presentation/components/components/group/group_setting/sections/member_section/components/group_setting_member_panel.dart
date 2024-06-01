@@ -17,35 +17,34 @@ class _GroupSettingMemberPanelState
     extends ConsumerState<GroupSettingMemberPanel> {
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     final groupId = widget.groupId;
 
-    return Container(
-      width: deviceWidth * 0.85,
-      height: deviceHeight * 0.08,
-      margin: const EdgeInsets.only(top: 10, left: 6),
-      padding: const EdgeInsets.only(top: 5),
-      decoration: BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(40),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-            offset: Offset(0, 3),
-            blurRadius: 3,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
+    return Center(
       child: Container(
-        margin: const EdgeInsets.only(left: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const GroupSettingMemberPanelLabel(),
-            GroupSettingMemberPanelMemberList(groupId: groupId),
+        width: deviceWidth * 0.85,
+        margin: const EdgeInsets.only(top: 10, left: 6, bottom: 5),
+        decoration: BoxDecoration(
+          color: CupertinoColors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.25),
+              offset: Offset(0, 3),
+              blurRadius: 3,
+              spreadRadius: 1,
+            ),
           ],
+        ),
+        child: Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const GroupSettingMemberPanelLabel(),
+              GroupSettingMemberPanelMemberList(groupId: groupId),
+            ],
+          ),
         ),
       ),
     );

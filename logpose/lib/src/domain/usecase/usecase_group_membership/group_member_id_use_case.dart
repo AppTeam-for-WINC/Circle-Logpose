@@ -52,7 +52,7 @@ class GroupMemberIdUseCase implements IGroupMemberIdUseCase {
   @override
   Future<List<String>> fetchAllMembershipIdList(String groupId) async {
     try {
-      return await memberRepository.listenAllMembershipIdList(groupId).first;
+      return await memberRepository.fetchAllMembershipIdList(groupId);
     } on FirebaseException catch (e) {
       throw Exception(
         'Error: failed to fetch all member ID list. ${e.message}',

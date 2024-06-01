@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../notifiers/group_section_notifier.dart';
+import '../../../../../../utils/responsive_util.dart';
+import 'components/group_section_joined_group_tile_label.dart';
+import 'components/group_section_joined_group_tile_list.dart';
 
 class GroupSection extends ConsumerStatefulWidget {
   const GroupSection({super.key});
@@ -14,11 +16,48 @@ class _GroupSectionState extends ConsumerState<GroupSection> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final joinedGroupList = ref.watch(joinedGroupListNotifierProvider);
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth, deviceHeight);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth, deviceHeight);
+        } else {
+          return _buildDesktopLayout(deviceWidth, deviceHeight);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.88,
+      containerHeight: deviceHeight * 0.26,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.88,
+      containerHeight: deviceHeight * 0.36,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.88,
+      containerHeight: deviceHeight * 0.46,
+    );
+  }
+
+  Widget _buildLayout({
+    required double containerWidth,
+    required double containerHeight,
+  }) {
     return Container(
-      width: deviceWidth * 0.88,
-      height: deviceHeight * 0.24,
+      width: containerWidth,
+      height: containerHeight,
       margin: const EdgeInsets.only(top: 10),
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -33,34 +72,11 @@ class _GroupSectionState extends ConsumerState<GroupSection> {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 15, top: 15),
-              child: Row(children: [Text('所属団体')]),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                width: deviceWidth * 0.86,
-                height: deviceHeight * 0.19,
-                padding: const EdgeInsets.only(
-                  top: 5,
-                  right: 5,
-                  left: 5,
-                  bottom: 5,
-                ),
-                child: GridView.count(
-                  padding: EdgeInsets.zero,
-                  primary: false,
-                  shrinkWrap: true,
-                  crossAxisCount: 1,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 5.5,
-                  children: joinedGroupList,
-                ),
-              ),
-            ),
+            GroupSectionJoinedGroupTileLabel(),
+            GroupSectionJoinedGroupTileList(),
           ],
         ),
       ),

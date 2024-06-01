@@ -43,7 +43,7 @@ class _GroupScheduleCreationState extends ConsumerState<GroupScheduleCreation> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const BackToPageButton(),
+              const BackToPageButton(iconColor: Color(0xFF7B61FF),),
               ColorButton(color: schedule.color),
               const TitleTextField(),
               GroupScheduleCreationContainer(

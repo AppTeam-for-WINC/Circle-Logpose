@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../navigations/to_email_setting_page_navigator.dart';
+import '../../../common/user_section_label.dart';
 
 class EmailSection extends ConsumerStatefulWidget {
   const EmailSection({super.key});
@@ -41,32 +42,9 @@ class _EmailSectionState extends ConsumerState<EmailSection> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _handleToTap,
-        child: const Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.mail,
-                    color: CupertinoColors.black,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'メールアドレス',
-                      style: TextStyle(color: CupertinoColors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Icon(
-                CupertinoIcons.forward,
-                color: CupertinoColors.black,
-              ),
-            ],
-          ),
+        child: const UserSectionLabel(
+          leftIcon: CupertinoIcons.mail,
+          text: 'メールアドレス',
         ),
       ),
     );

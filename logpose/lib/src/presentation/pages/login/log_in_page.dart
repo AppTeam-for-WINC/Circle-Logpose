@@ -6,21 +6,13 @@ import '../../components/common/loading_progress.dart';
 import '../../components/components/auth/log_in/log_in_section.dart';
 import '../../components/components/navigation_bar/auth_navigation/auth_navigation_bar.dart';
 
-class LogInPage extends ConsumerWidget {
+class LogInPage extends ConsumerStatefulWidget {
   const LogInPage({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const LogInScreen();
-  }
+  ConsumerState<LogInPage> createState() => _LogInPageState();
 }
 
-class LogInScreen extends ConsumerStatefulWidget {
-  const LogInScreen({super.key});
-  @override
-  ConsumerState<LogInScreen> createState() => _LogInScreenState();
-}
-
-class _LogInScreenState extends ConsumerState<LogInScreen> {
+class _LogInPageState extends ConsumerState<LogInPage> {
   @override
   Widget build(BuildContext context) {
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);

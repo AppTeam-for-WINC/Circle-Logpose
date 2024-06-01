@@ -1,34 +1,22 @@
-//Firebaseをインポート
 import 'package:firebase_core/firebase_core.dart';
-
-//Cupertinoデザインをインポート
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-//Riverpodをインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 import 'routes/app.dart';
-
 // import 'test/test.dart';
 
 void main() async {
-  // Flutterアプリを初期化
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Firebaseを初期化
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  // To-do activate ChatGPT.
   // const question = 'ichiroはイチローなのか';
   // await postChatGPT(question);
 
-  //Riverpodの適用範囲を設定
   const app = LogposeApp();
   const scope = ProviderScope(child: app);
 
-  // アプリのウィジェットツリーを生成し、実行
   runApp(scope);
 }

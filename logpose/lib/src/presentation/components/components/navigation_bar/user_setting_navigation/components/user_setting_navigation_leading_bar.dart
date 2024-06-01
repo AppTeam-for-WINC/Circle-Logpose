@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
 
+import '../../../../common/back_to_page_button.dart';
+
 class UserSettingNavigationLeadingBar extends StatelessWidget {
   const UserSettingNavigationLeadingBar({super.key});
 
@@ -12,12 +14,9 @@ class UserSettingNavigationLeadingBar extends StatelessWidget {
       await navigator.moveToPage();
     }
 
-    return CupertinoButton(
+    return BackToPageButton(
+      iconColor: const Color(0xFF7B61FF),
       onPressed: handleToTap,
-      child: const Icon(
-        CupertinoIcons.back,
-        color: Color(0xFF7B61FF),
-      ),
     );
   }
 }

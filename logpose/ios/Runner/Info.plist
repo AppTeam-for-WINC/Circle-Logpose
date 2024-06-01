@@ -30,6 +30,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+  <key>NSUserTrackingUsageDescription</key>
+  <string>アプリのパフォーマンス向上、パーソナライズされたコンテンツの提供、およびユーザーエクスペリエンスの向上を目的に使用します。</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used image picker plugin</string>
 	<key>NSPhotoLibraryUsageDescription</key>
