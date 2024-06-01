@@ -6,22 +6,14 @@ import '../../components/common/loading_progress.dart';
 import '../../components/components/auth/sign_up/sign_up_section.dart';
 import '../../components/components/navigation_bar/auth_navigation/auth_navigation_bar.dart';
 
-class SignUpPage extends ConsumerWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const SignUpScreen();
-  }
-}
-
-class SignUpScreen extends ConsumerStatefulWidget {
-  const SignUpScreen({super.key});
 
   @override
-  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);

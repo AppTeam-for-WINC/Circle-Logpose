@@ -50,7 +50,7 @@ class _GroupSettingSaveButtonState
               ),
             ),
             const SizedBox(width: 10),
-            const Text('変更を保存'),
+            const Text('変更を保存', style: TextStyle(color: CupertinoColors.white)),
           ],
         ),
       ),

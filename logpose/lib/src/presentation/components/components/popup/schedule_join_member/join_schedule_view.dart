@@ -54,7 +54,7 @@ class _JoinScheduleViewState extends ConsumerState<JoinScheduleView> {
               child: Stack(
                 children: [
                   const PopupBackground(),
-                  const BackToPageButton(),
+                  const BackToPageButton(iconColor: Color(0xFF7B61FF),),
                   Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
                     child: Column(

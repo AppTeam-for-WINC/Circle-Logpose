@@ -29,15 +29,19 @@ class PasswordSettingSection extends ConsumerWidget {
       child: Column(
         children: [
           const CustomTextFieldLabel(label: '現在のパスワード'),
-          CustomTextField(textController: passwordController),
-          Container(
-            margin: const EdgeInsets.only(top: 30),
-            child: Column(
-              children: [
-                const CustomTextFieldLabel(label: '新しいパスワード'),
-                CustomTextField(textController: newPasswordController),
-              ],
-            ),
+          CustomTextField(
+            textController: passwordController,
+            obscure: true,
+          ),
+          const SizedBox(height: 40),
+          Column(
+            children: [
+              const CustomTextFieldLabel(label: '新しいパスワード'),
+              CustomTextField(
+                textController: newPasswordController,
+                obscure: true,
+              ),
+            ],
           ),
         ],
       ),

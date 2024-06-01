@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../utils/responsive_util.dart';
+
 import '../../components/common/bottom_gradation.dart';
 
 import '../../components/components/schedule_list/schedule_card_list.dart';
@@ -11,6 +13,7 @@ import '../../providers/group/group/listen_is_joined_group_exist_provider.dart';
 
 class ScheduleListPage extends ConsumerStatefulWidget {
   const ScheduleListPage({super.key});
+
   @override
   ConsumerState createState() => _ScheduleListState();
 }
@@ -20,42 +23,89 @@ class _ScheduleListState extends ConsumerState<ScheduleListPage> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final isJoinedGroupExist = ref.watch(listenIsJoinedGroupExistProvider);
 
     return Container(
       width: double.infinity,
       height: double.infinity,
       color: const Color(0xFFF5F3FE),
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Positioned(
-            top: deviceHeight * 0.13,
-            right: deviceWidth * 0.1,
-            child: const ScheduleSortButton(),
-          ),
-          Positioned(
-            top: deviceHeight * 0.173,
-            child: const ScheduleCardList(),
-          ),
-          const Positioned(
-            bottom: 0,
-            child: BottomGradation(),
-          ),
-          if (isJoinedGroupExist is AsyncLoading)
-            const Center(child: CupertinoActivityIndicator()),
-          if (isJoinedGroupExist is AsyncError)
-            Center(child: Text('Error: ${isJoinedGroupExist.error}')),
-
-          // グループが存在する場合のみボタンを表示
-          if (isJoinedGroupExist is AsyncData &&
-              isJoinedGroupExist.value == true)
-            Positioned(
-              top: deviceHeight * 0.875,
-              child: const ScheduleCreationButton(),
-            ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (ResponsiveUtil.isMobile(context)) {
+            return _buildMobileLayout(deviceWidth, deviceHeight);
+          } else if (ResponsiveUtil.isTablet(context)) {
+            return _buildTabletLayout(deviceWidth, deviceHeight);
+          } else {
+            return _buildDesktopLayout(deviceWidth, deviceHeight);
+          }
+        },
       ),
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      sortButtonPositionTop: deviceHeight * 0.14,
+      sortButtonPositionRight: deviceWidth * 0.1,
+      scheduleCradPositionTop: deviceHeight * 0.19,
+      creationButtonPositionTop: deviceHeight * 0.875,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      sortButtonPositionTop: deviceHeight * 0.15,
+      sortButtonPositionRight: deviceWidth * 0.1,
+      scheduleCradPositionTop: deviceHeight * 0.2,
+      creationButtonPositionTop: deviceHeight * 0.875,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      sortButtonPositionTop: deviceHeight * 0.16,
+      sortButtonPositionRight: deviceWidth * 0.1,
+      scheduleCradPositionTop: deviceHeight * 0.22,
+      creationButtonPositionTop: deviceHeight * 0.875,
+    );
+  }
+
+  Widget _buildLayout({
+    required double deviceWidth,
+    required double sortButtonPositionTop,
+    required double sortButtonPositionRight,
+    required double scheduleCradPositionTop,
+    required double creationButtonPositionTop,
+  }) {
+    final isJoinedGroupExist = ref.watch(listenIsJoinedGroupExistProvider);
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Positioned(
+          top: sortButtonPositionTop,
+          right: sortButtonPositionRight,
+          child: ScheduleSortButton(deviceWidth: deviceWidth),
+        ),
+        Positioned(
+          top: scheduleCradPositionTop,
+          child: const ScheduleCardList(),
+        ),
+        const Positioned(
+          bottom: 0,
+          child: BottomGradation(),
+        ),
+        if (isJoinedGroupExist is AsyncLoading)
+          const Center(child: CupertinoActivityIndicator()),
+        if (isJoinedGroupExist is AsyncError)
+          Center(child: Text('Error: ${isJoinedGroupExist.error}')),
+        if (isJoinedGroupExist is AsyncData && isJoinedGroupExist.value == true)
+          Positioned(
+            top: creationButtonPositionTop,
+            child: const ScheduleCreationButton(),
+          ),
+      ],
     );
   }
 }

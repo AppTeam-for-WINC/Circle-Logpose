@@ -22,6 +22,11 @@ Logpose is designed for managing club activities. It primarily features AI-power
 
 ## Architecture
 <p align="center">
+    <img src="logpose/assets/architecture/logpose_architecture.png" width="80%" />
+</p>
+
+## Infrastructure
+<p align="center">
     <img src="logpose/assets/architecture/circle_logpose_architecture.png" width="80%" />
 </p>
 
@@ -34,10 +39,10 @@ Logpose is designed for managing club activities. It primarily features AI-power
 - ✨ スケジュール機能
 
 ## Installation & Getting Started
-- git clone後、pubspec.yaml📄が存在するパスで、flutter run　を実行すると起動できます。
+- `git clone` 後、`pubspec.yaml📄` が存在するパスで、`flutter run`　を実行すると起動できます。
 - 詳しくは、Notionのドキュメントを参照して下さい。
 
-## OSサポート
+## OS Support
 <table>
     <tr>
         <td><img width="10%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Android_logo_2019_%28stacked%29.svg/2346px-Android_logo_2019_%28stacked%29.svg.png" /></td>
@@ -126,36 +131,47 @@ Logpose is designed for managing club activities. It primarily features AI-power
   </tbody>
 </table>
 
-# License
+## License
 Reusing the design of the application without permission is prohibited.
 
-# ライセンス
+## ライセンス
 アプリ上のDesignを許可なく転用することを禁止します。
 
-# Linter & Formatter
+## Linter & Formatter
 Used: pedantic_mono
 
-# Composition of Files, Folders.
-
-# ディレクトリ構成
+## Composition of Files, Folders.
+The directory structure of this project is as follows. The role of each directory is described below.
 
 このプロジェクトのディレクトリ構成は以下の通りです。各ディレクトリの役割について説明します。
 
-## exceptions
+### exceptions
+This directory defines errors and exceptions. Organize specific errors and exceptions that occur in your project.
+
 エラーや例外を定義するディレクトリです。プロジェクト内で発生する特定のエラーや例外を整理します。
 
-## routes
+### routes
+This directory manages the routing of the application. It defines the route to each screen or page.
+
 アプリケーションのルーティングを管理するディレクトリです。各画面やページへのルートを定義します。
 
-## src
+### src
+A directory containing the main part of the source code.
+
 ソースコードの主要部分を含むディレクトリです。
 
 ### app
+A directory containing facade classes for the entire application. Facades provide multiple use cases in a single interface.
+
 アプリケーション全体のファサードクラスを含むディレクトリです。ファサードは複数のユースケースを一つのインターフェースで提供します。
 
 - `facade`: ファサードクラスを定義します。
 
+<br>
+
 ### data
+This directory manages the logic of the data layer. It retrieves, stores, and transforms data.
+
 データ層のロジックを管理するディレクトリです。データの取得、保存、変換を行います。
 
 - `interface`: データ層のインターフェースを定義します。
@@ -166,10 +182,18 @@ Used: pedantic_mono
   - `database`: データベース関連のリポジトリを定義します。
   - `storage`: ストレージ関連のリポジトリを定義します。
 
+<br>
+
 ### device
+This directory handles device-specific functions (sensors, local storage, etc.).
+
 デバイス固有の機能（センサー、ローカルストレージなど）を扱うディレクトリです。
 
+<br>
+
 ### domain
+This directory manages the domain layer logic. It contains entities, repository interfaces, and business logic.
+
 ドメイン層のロジックを管理するディレクトリです。エンティティ、リポジトリインターフェース、ビジネスロジックを含みます。
 
 - `entity`: ドメインエンティティを定義します。
@@ -177,10 +201,14 @@ Used: pedantic_mono
 - `model`: ドメインモデルを定義します。
 - `usecase`: ユースケースを定義します。ビジネスロジックの実装を行います。
 
+<br>
+
 ### presentation
+A directory that manages the presentation layer logic, including UI components, state management, and pages.
+
 プレゼンテーション層のロジックを管理するディレクトリです。UIコンポーネント、状態管理、ページを含みます。
 
-- `components`: 共通コンポーネントや特定の機能のコンポーネントを定義します。
+  - `components`: 共通コンポーネントや特定の機能のコンポーネントを定義します。
   - `common`: 共通して使用されるコンポーネントを含みます。
   - `components`: 特定の機能に関連するコンポーネントを含みます。
 - `controllers`: コントローラークラスを定義します。ビジネスロジックを呼び出し、UIにデータを提供します。
@@ -197,19 +225,33 @@ Used: pedantic_mono
 - `providers`: プロバイダーを定義します。UIコンポーネントとして使用されるデータを含みます。
 - `states`: 状態管理のための状態クラスを定義します。
 
+<br>
+
 ### utils
+A directory containing utility classes and helper functions.
+
 ユーティリティクラスやヘルパー関数を含むディレクトリです。
 
-## test
+<br>
+
+### test
+This directory contains test code. Unit tests, widget tests, and integration tests are placed here.
+
 テストコードを含むディレクトリです。ユニットテスト、ウィジェットテスト、統合テストをここに配置します。
 
-## validation
+<br>
+
+### validation
+This directory manages the validation logic.
+
 バリデーションロジックを管理するディレクトリです。
 
 - `validator`: バリデータクラスを定義します。
   - `validation`: バリデーションロジックを実装します。
 
-
+<br>
+<br>
+<br>
 
 ```
 lib
@@ -234,7 +276,6 @@ lib
 │   │   ├── interface
 │   │   ├── model
 │   │   └── usecase
-
 │   ├── presentation
 │   │   ├── components
 │   │   │   ├── common
@@ -254,8 +295,9 @@ lib
 │   │   └── states
 │   └── utils
 ├── test
-└── validation
-    └── validator
-        └── validation
+├── validation
+│   └── validator
+│       └── validation
+└── main.dart 
 
 194 directories, 491 files

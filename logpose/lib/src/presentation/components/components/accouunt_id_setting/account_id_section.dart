@@ -21,7 +21,7 @@ class AccountIdSection extends ConsumerWidget {
     final accountIdErrorMessage = ref.watch(accountIdErrorMessageProvider);
 
     return Container(
-      width: deviceWidth * 0.85,
+      width: deviceWidth * 0.8,
       margin: const EdgeInsets.only(top: 100),
       child: Column(
         children: [
@@ -31,6 +31,7 @@ class AccountIdSection extends ConsumerWidget {
             ),
             child: CurrentAccountIdSection(accountId: accountId),
           ),
+          const SizedBox(height: 40),
           NewAccountIdSection(accountIdController: accountIdController),
           if (accountIdErrorMessage != null)
             RedErrorMessage(errorMessage: accountIdErrorMessage, fontSize: 14),

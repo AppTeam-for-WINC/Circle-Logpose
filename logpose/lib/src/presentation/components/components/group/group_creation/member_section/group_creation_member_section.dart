@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../utils/responsive_util.dart';
+
 import 'components/group_creation_member_section_label.dart';
 import 'components/group_creation_member_section_member_list.dart';
 
@@ -18,9 +20,47 @@ class _GroupCreationMemberSectionState
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth, deviceHeight);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth, deviceHeight);
+        } else {
+          return _buildDesktopLayout(deviceWidth, deviceHeight);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.85,
+      containerHeight: deviceHeight * 0.41,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.85,
+      containerHeight: deviceHeight * 0.41,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      containerWidth: deviceWidth * 0.85,
+      containerHeight: deviceHeight * 0.41,
+    );
+  }
+
+  Widget _buildLayout({
+    required double containerWidth,
+    required double containerHeight,
+  }) {
     return Container(
-      width: deviceWidth * 0.85,
-      height: deviceHeight * 0.41,
+      width: containerWidth,
+      height: containerHeight,
       margin: const EdgeInsets.only(top: 50),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),

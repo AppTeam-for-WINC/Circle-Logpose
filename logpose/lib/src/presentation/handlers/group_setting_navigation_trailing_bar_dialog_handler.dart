@@ -13,7 +13,6 @@ import '../navigations/group_setting_navigation_trailing_bar_dialog_navigator.da
 import '../providers/group/members/listen_group_member_profile_list.dart';
 import '../providers/group/schedule/listen_all_group_schedule_and_id_list_provider.dart';
 
-
 class GroupSettingNavigationTrailingBarDialogHandler {
   GroupSettingNavigationTrailingBarDialogHandler(
     this.context,
@@ -64,16 +63,15 @@ class GroupSettingNavigationTrailingBarDialogHandler {
   ) async {
     if (groupScheduleList.isEmpty) {
       await _deleteGroup(groupId, null, memberList);
-      return;
+    } else {
+      await Future.wait(
+        groupScheduleList.map((data) async {
+          if (data != null) {
+            await _deleteGroup(groupId, data.groupScheduleId, memberList);
+          }
+        }),
+      );
     }
-
-    await Future.wait(
-      groupScheduleList.map((data) async {
-        if (data != null) {
-          await _deleteGroup(groupId, data.groupScheduleId, memberList);
-        }
-      }),
-    );
   }
 
   Future<void> _deleteGroup(

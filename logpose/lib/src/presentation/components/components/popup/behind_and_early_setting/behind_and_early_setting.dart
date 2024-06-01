@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
 import '../../../common/popup_header_color.dart';
-
 import '../../../common/response_icon_and_text.dart';
 import '../../../common/schedule_time_view.dart';
-import '../components/schedule_title.dart';
+
 import 'components/join_time.dart';
+import 'components/schedule_title.dart';
 
 class BehindAndEarlySetting extends ConsumerStatefulWidget {
   const BehindAndEarlySetting({

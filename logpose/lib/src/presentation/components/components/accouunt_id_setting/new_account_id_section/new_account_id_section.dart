@@ -14,7 +14,7 @@ class NewAccountIdSection extends StatelessWidget {
     return Column(
       children: [
         const CustomTextFieldLabel(label: '新しいアカウントID'),
-        CustomTextField(textController: accountIdController),
+        CustomTextField(textController: accountIdController, obscure: false),
       ],
     );
   }

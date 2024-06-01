@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entity/group_schedule.dart';
-import '../../../utils/time/time_utils.dart';
+import '../../../utils/time_utils.dart';
 
 class ScheduleTimeView extends StatelessWidget {
   const ScheduleTimeView({super.key, required this.groupSchedule});

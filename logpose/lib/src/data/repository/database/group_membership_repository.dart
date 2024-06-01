@@ -52,6 +52,22 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   }
 
   @override
+  Future<List<String>> fetchAllMembershipIdList(String groupId) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('group_id', isEqualTo: groupId)
+          .get();
+
+      return _fetchMembershipIdList(snapshot);
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Error: failed to fetch all member ID list. ${e.message}',
+      );
+    }
+  }
+
+  @override
   Stream<List<String>> listenAllMembershipIdList(String groupId) async* {
     try {
       final stream = db
@@ -70,7 +86,11 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   static List<String> _fetchMembershipIdList(
     QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
-    return snapshot.docs.map((doc) => doc.id).toList();
+    try {
+      return snapshot.docs.map((doc) => doc.id).toList();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch membership ID. ${e.message}');
+    }
   }
 
   @override

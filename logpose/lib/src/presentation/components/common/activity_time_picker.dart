@@ -17,7 +17,7 @@ class ActivityTimePicker extends ConsumerStatefulWidget {
   final void Function(DateTime newDateTime) onDateTimeChanged;
 
   @override
-  ConsumerState createState() => _ActivityTimePickerState();
+  ConsumerState<ActivityTimePicker> createState() => _ActivityTimePickerState();
 }
 
 class _ActivityTimePickerState extends ConsumerState<ActivityTimePicker> {

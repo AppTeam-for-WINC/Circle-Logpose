@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../navigations/to_account_id_setting_page_navigator.dart';
 
+import '../../../common/user_section_label.dart';
+
 class AccountIdSection extends ConsumerStatefulWidget {
   const AccountIdSection({super.key});
   @override
@@ -11,8 +13,8 @@ class AccountIdSection extends ConsumerStatefulWidget {
 
 class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
   Future<void> _handleToTap() async {
-   final navigator = ToAccountIdSettingPageNavigator(context);
-   await navigator.moveToPage();
+    final navigator = ToAccountIdSettingPageNavigator(context);
+    await navigator.moveToPage();
   }
 
   @override
@@ -43,29 +45,9 @@ class _AccountIdSectionState extends ConsumerState<AccountIdSection> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _handleToTap,
-        child: const Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  Icon(
-                    CupertinoIcons.info,
-                    color: CupertinoColors.black,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'Account ID',
-                      style: TextStyle(color: CupertinoColors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Icon(CupertinoIcons.forward, color: CupertinoColors.black),
-            ],
-          ),
+        child: const UserSectionLabel(
+          leftIcon: CupertinoIcons.info,
+          text: 'アカウント ID',
         ),
       ),
     );

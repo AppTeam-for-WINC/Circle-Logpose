@@ -8,6 +8,8 @@ abstract class IGroupMembershipRepository {
     String groupId,
   );
 
+  Future<List<String>> fetchAllMembershipIdList(String groupId);
+
   Stream<List<String>> listenAllMembershipIdList(String groupId);
 
   Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId);
