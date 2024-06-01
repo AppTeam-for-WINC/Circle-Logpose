@@ -5,9 +5,12 @@ class GroupSettingNavigationMiddleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
-      margin: const EdgeInsets.only(top: 10),
+      width: deviceWidth * 0.4,
+      margin: EdgeInsets.only(top: deviceHeight * 0.015),
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
@@ -23,10 +26,7 @@ class GroupSettingNavigationMiddleBar extends StatelessWidget {
       child: const Center(
         child: Text(
           '団体編集',
-          style: TextStyle(
-            color: CupertinoColors.white,
-            fontSize: 20,
-          ),
+          style: TextStyle(color: CupertinoColors.white),
         ),
       ),
     );

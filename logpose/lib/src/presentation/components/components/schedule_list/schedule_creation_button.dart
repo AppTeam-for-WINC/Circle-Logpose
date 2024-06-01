@@ -42,8 +42,9 @@ class _ScheduleCreationButtonState
             Container(
               width: 30,
               height: 30,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(60)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(60),
+              ),
               child: const Icon(
                 CupertinoIcons.add,
                 size: 25,

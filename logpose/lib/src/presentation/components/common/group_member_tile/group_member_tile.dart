@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/entity/user_profile.dart';
 
+import '../../../../utils/responsive_util.dart';
 import '../../../providers/group/mode/group_member_delete_mode_provider.dart';
 
 import 'components/member_delete_button.dart';
@@ -27,44 +28,63 @@ class GroupMemberTile extends ConsumerStatefulWidget {
 }
 
 class _GroupMemberTileState extends ConsumerState<GroupMemberTile> {
+  Widget buildAdminProfileList() {
+    return MemberNameAndImageView(memberProfile: widget.memberProfile);
+  }
+
+  Widget buildMembershipProfileList(double memberDeletionButtonPosition) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: MemberNameAndImageView(memberProfile: widget.memberProfile),
+        ),
+        if (ref.watch(groupMemberDeleteModeProvider))
+          Positioned(
+            top: memberDeletionButtonPosition,
+            right: memberDeletionButtonPosition,
+            child: MemberDeleteButton(
+              accountId: widget.memberProfile.accountId,
+              groupId: widget.groupId,
+            ),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final memberProfile = widget.memberProfile;
+    final deviceWidth = MediaQuery.of(context).size.width;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth);
+        } else {
+          return _buildDesktopLayout(deviceWidth);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth) {
+    return _buildLayout(0);
+  }
+
+  Widget _buildTabletLayout(double deviceWidth) {
+    return _buildLayout(0);
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth) {
+    return _buildLayout(5);
+  }
+
+  Widget _buildLayout(double memberDeletionButtonPosition) {
     final groupRoleType = widget.groupRoleType;
 
-    Widget buildAdminProfileList() {
-      return MemberNameAndImageView(memberProfile: memberProfile);
-    }
-
-    Widget buildMembershipProfileList() {
-      return SizedBox(
-        height: deviceHeight * 0.06,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: MemberNameAndImageView(memberProfile: memberProfile),
-            ),
-            if (ref.watch(groupMemberDeleteModeProvider))
-              Positioned(
-                top: 0,
-                right: 0,
-                child: MemberDeleteButton(
-                  accountId: memberProfile.accountId,
-                  groupId: widget.groupId,
-                ),
-              ),
-          ],
-        ),
-      );
-    }
-
-    if (groupRoleType == GroupRoleType.admin) {
-      return buildAdminProfileList();
-    } else if (groupRoleType == GroupRoleType.membership) {
-      return buildMembershipProfileList();
-    } else {
-      return const SizedBox.shrink();
-    }
+    return groupRoleType == GroupRoleType.admin
+        ? buildAdminProfileList()
+        : buildMembershipProfileList(memberDeletionButtonPosition);
   }
 }

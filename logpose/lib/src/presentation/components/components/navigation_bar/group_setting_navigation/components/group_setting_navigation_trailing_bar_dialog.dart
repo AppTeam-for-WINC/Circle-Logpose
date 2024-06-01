@@ -21,7 +21,7 @@ class _GroupSettingNavigationTrailingBarDialogState
     extends ConsumerState<GroupSettingNavigationTrailingBarDialog> {
   @override
   Widget build(BuildContext context) {
-    Future<void> delete() async {
+    Future<void> handleTodelete() async {
       final handler = GroupSettingNavigationTrailingBarDialogHandler(
         context,
         ref,
@@ -41,7 +41,7 @@ class _GroupSettingNavigationTrailingBarDialogState
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
           isDefaultAction: true,
-          onPressed: delete,
+          onPressed: handleTodelete,
           child: const Text('Yes'),
         ),
         CupertinoDialogAction(

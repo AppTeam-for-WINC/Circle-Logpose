@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'group_setting_schedule_section_panel_label.dart';
-import 'group_setting_schedule_section_tile_list.dart';
+import 'components/group_setting_schedule_section_panel_label.dart';
+import 'components/group_setting_schedule_section_tile_list.dart';
 
 class GroupSettingScheduleSectionPanel extends ConsumerStatefulWidget {
   const GroupSettingScheduleSectionPanel({
@@ -10,6 +10,7 @@ class GroupSettingScheduleSectionPanel extends ConsumerStatefulWidget {
     required this.groupId,
     required this.groupName,
   });
+  
   final String groupId;
   final String groupName;
 
@@ -23,12 +24,10 @@ class _GroupSettingScheduleSectionPanelState
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
 
     return Center(
       child: Container(
         width: deviceWidth * 0.85,
-        height: deviceHeight * 0.36,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color: CupertinoColors.white,

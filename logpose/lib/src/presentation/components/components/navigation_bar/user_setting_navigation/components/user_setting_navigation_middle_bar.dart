@@ -5,10 +5,12 @@ class UserSettingNavigationMiddleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      width: 178,
-      height: 38,
-      margin: const EdgeInsets.only(top: 10),
+      width: deviceWidth * 0.4,
+      margin: EdgeInsets.only(top: deviceHeight * 0.015),
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(

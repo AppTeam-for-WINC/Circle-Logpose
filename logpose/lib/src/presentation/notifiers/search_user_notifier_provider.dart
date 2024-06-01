@@ -9,8 +9,8 @@ import '../controllers/auth/auth_management_controller.dart';
 import '../controllers/group_membership/group_membership_management_controller.dart';
 import '../controllers/user/user_management_controller.dart';
 
-final searchUserNotifierProvider = StateNotifierProvider.family
-    .autoDispose<_SearchUserNotifier, UserProfile?, String?>(
+final searchUserNotifierProvider =
+    StateNotifierProvider.family<_SearchUserNotifier, UserProfile?, String?>(
   _SearchUserNotifier.new,
 );
 
@@ -42,6 +42,13 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   void setMemberState() {
     final accountId = accountIdController.text;
     addedMemberIds.add(accountId);
+    accountIdController.clear();
+  }
+
+  void removeMemberState() {
+    final accountId = accountIdController.text;
+    addedMemberIds.remove(accountId);
+    accountIdController.clear();
   }
 
   void _init() {
@@ -86,7 +93,6 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     // 既にGroup memberの場合は何も返さない。
     if (groupId != null) {
       await _noReturnIfUserIsMember(accountId);
-      return;
     }
 
     // 既に追加済みのメンバーの場合は何も返さない。

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../pages/user/user_setting_page.dart';
+import '../../../../navigations/to_user_setting_page_navigator.dart';
+import '../../../common/slide_tab.dart';
 
 class UserSettingTab extends ConsumerStatefulWidget {
   const UserSettingTab({super.key});
@@ -12,61 +12,19 @@ class UserSettingTab extends ConsumerStatefulWidget {
 }
 
 class UserSettingTabState extends ConsumerState<UserSettingTab> {
-  Future<void> _onTap() async {
-    await Navigator.push(
-      context,
-      CupertinoPageRoute<CupertinoPageRoute<dynamic>>(
-        builder: (context) => const UserSettingPage(),
-      ),
-      // (route) => route.settings.name == '/home',
-    );
+  Future<void> _handleToTap() async {
+    final navigator = ToUserSettingPageNavigator(context);
+    await navigator.moveToPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _onTap,
-      child: Container(
-        width: 180,
-        height: 55,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(999),
-        ),
-        padding: const EdgeInsets.only(
-          left: 10,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 33,
-              height: 33,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(210, 239, 207, 255),
-                borderRadius: BorderRadius.circular(33),
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.manage_accounts,
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(
-                left: 5,
-              ),
-              child: const Text(
-                'ユーザー設定',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF7B61FF),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SlideTab(
+      label: 'ユーザー設定',
+      decorationColor: const Color.fromARGB(210, 239, 207, 255),
+      textColor: const Color(0xFF7B61FF),
+      icon: CupertinoIcons.settings,
+      onTap: _handleToTap,
     );
   }
 }

@@ -7,6 +7,7 @@ environment:
 
 
 dependencies:
+  app_tracking_transparency: ^2.0.5
   cached_network_image: ^3.3.1
   cloud_firestore: ^4.13.5
   cloud_functions: ^4.6.0

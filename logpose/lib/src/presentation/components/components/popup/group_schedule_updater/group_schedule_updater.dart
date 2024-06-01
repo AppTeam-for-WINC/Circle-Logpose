@@ -45,7 +45,7 @@ class _GroupScheduleUpdaterState extends ConsumerState<GroupScheduleUpdater> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const BackToPageButton(),
+              const BackToPageButton(iconColor: Color(0xFF7B61FF),),
               ColorButton(
                 groupScheduleId: groupScheduleId,
                 color: schedule.color,

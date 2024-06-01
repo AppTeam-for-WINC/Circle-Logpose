@@ -36,7 +36,7 @@ class _UserProfileButtonState extends ConsumerState<UserProfileButton> {
     void handlAddMember() {
       UserProfileButtonHandler(
         ref: ref,
-        groupId: groupId!,
+        groupId: groupId,
         userProfile: userProfile,
       ).handleToAddMember();
     }

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../utils/responsive_util.dart';
+
 import '../../components/common/group_name_and_image_section.dart';
 import '../../components/common/loading_progress.dart';
-import '../../components/common/member_switch/delete_member_switch.dart';
 import '../../components/common/member_switch/member_addition_switch.dart';
+import '../../components/common/member_switch/member_deletion_switch.dart';
 import '../../components/common/progress_indicator.dart';
 
 import '../../components/components/group/group_creation/group_creation_button.dart';
@@ -21,6 +23,69 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (ResponsiveUtil.isMobile(context)) {
+          return _buildMobileLayout(deviceWidth, deviceHeight);
+        } else if (ResponsiveUtil.isTablet(context)) {
+          return _buildTabletLayout(deviceWidth, deviceHeight);
+        } else {
+          return _buildDesktopLayout(deviceWidth, deviceHeight);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      groupNameAndImageSectionPositionTop: deviceHeight * 0.176,
+      groupCreationMemberSectionTop: deviceHeight * 0.38,
+      creationButtonPositionTop: deviceHeight * 0.86,
+      additionSwitchPositionTop: deviceHeight * 0.45,
+      additionSwitchPositionLeft: deviceWidth * 0.84,
+      deletionSwitchPositionTop: deviceHeight * 0.51,
+      deletionSwitchPositionLeft: deviceWidth * 0.84,
+    );
+  }
+
+  Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      groupNameAndImageSectionPositionTop: deviceHeight * 0.176,
+      groupCreationMemberSectionTop: deviceHeight * 0.38,
+      creationButtonPositionTop: deviceHeight * 0.86,
+      additionSwitchPositionTop: deviceHeight * 0.45,
+      additionSwitchPositionLeft: deviceWidth * 0.88,
+      deletionSwitchPositionTop: deviceHeight * 0.505,
+      deletionSwitchPositionLeft: deviceWidth * 0.88,
+    );
+  }
+
+  Widget _buildDesktopLayout(double deviceWidth, double deviceHeight) {
+    return _buildLayout(
+      deviceWidth: deviceWidth,
+      groupNameAndImageSectionPositionTop: deviceHeight * 0.176,
+      groupCreationMemberSectionTop: deviceHeight * 0.38,
+      creationButtonPositionTop: deviceHeight * 0.86,
+      additionSwitchPositionTop: deviceHeight * 0.45,
+      additionSwitchPositionLeft: deviceWidth * 0.89,
+      deletionSwitchPositionTop: deviceHeight * 0.505,
+      deletionSwitchPositionLeft: deviceWidth * 0.89,
+    );
+  }
+
+  Widget _buildLayout({
+    required double deviceWidth,
+    required double groupNameAndImageSectionPositionTop,
+    required double groupCreationMemberSectionTop,
+    required double creationButtonPositionTop,
+    required double additionSwitchPositionTop,
+    required double additionSwitchPositionLeft,
+    required double deletionSwitchPositionTop,
+    required double deletionSwitchPositionLeft,
+  }) {
     final loadingErrorMessage = ref.watch(loadingErrorMessageProvider);
 
     return CupertinoPageScaffold(
@@ -30,29 +95,30 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
           alignment: AlignmentDirectional.center,
           children: [
             Positioned(
-              top: deviceHeight * 0.176,
+              top: groupNameAndImageSectionPositionTop,
               child: GroupNameAndImageSection(
                 loadingErrorMessage: loadingErrorMessage,
               ),
             ),
             Positioned(
-              top: deviceHeight * 0.38,
+              top: groupCreationMemberSectionTop,
               child: const GroupCreationMemberSection(),
             ),
             Positioned(
-              top: deviceHeight * 0.86,
-              left: deviceWidth * 0.26,
+              top: creationButtonPositionTop,
               child: const GroupCreationButton(),
             ),
             Positioned(
-              top: deviceHeight * 0.45,
-              left: deviceWidth * 0.84,
+              top: additionSwitchPositionTop,
+              left: additionSwitchPositionLeft,
               child: const MemberAdditionSwitch(),
             ),
             Positioned(
-              top: deviceHeight * 0.505,
-              left: deviceWidth * 0.84,
-              child: const MemberDeleteSwitch(mode: 'create'),
+              top: deletionSwitchPositionTop,
+              left: deletionSwitchPositionLeft,
+              child: const MemberDeletionSwitch(
+                type: GroupManagementType.create,
+              ),
             ),
             const PageProgressIndicator(),
           ],

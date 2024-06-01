@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../utils/time/time_utils.dart';
+import '../../../../../utils/time_utils.dart';
 
 import '../../../../navigations/modals/activity_time_picker_navigator.dart';
 import '../../../../notifiers/group_schedule_notifier.dart';

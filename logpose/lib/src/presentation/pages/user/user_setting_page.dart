@@ -37,12 +37,14 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFFF5F3FE),
       navigationBar: const UserSettingNavigationBar(),
-      child: Center(
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Container(
+          alignment: AlignmentDirectional.center,
+          margin: EdgeInsets.only(top: deviceHeight * 0.05),
           child: Column(
             children: [
               Container(
-                width: deviceWidth * 0.85,
+                width: deviceWidth * 0.89,
                 height: deviceHeight * 0.215,
                 decoration: BoxDecoration(
                   boxShadow: const [
