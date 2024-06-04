@@ -40,7 +40,6 @@ Logpose is designed for managing club activities. It primarily features AI-power
 
 ## Installation & Getting Started
 - `git clone` 後、`pubspec.yaml📄` が存在するパスで、`flutter run`　を実行すると起動できます。
-- 詳しくは、Notionのドキュメントを参照して下さい。
 
 ## OS Support
 <table>
@@ -255,6 +254,7 @@ This directory manages the validation logic.
 
 ```
 lib
+├── device
 ├── exceptions
 │   ├── group
 │   └── user
@@ -267,37 +267,24 @@ lib
 │   │   ├── mapper
 │   │   ├── model
 │   │   └── repository
-│   │       ├── auth
-│   │       ├── database
-│   │       └── storage
-│   ├── device
 │   ├── domain
 │   │   ├── entity
 │   │   ├── interface
 │   │   ├── model
 │   │   └── usecase
-│   ├── presentation
-│   │   ├── components
-│   │   │   ├── common
-│   │   │   └── components
-│   │   ├── controllers
-│   │   ├── handlers
-│   │   ├── navigations
-│   │   ├── notifiers
-│   │   ├── pages
-│   │   │   ├── group
-│   │   │   ├── login
-│   │   │   ├── schedule
-│   │   │   ├── signup
-│   │   │   ├── start
-│   │   │   └── user
-│   │   ├── providers
-│   │   └── states
-│   └── utils
+│   └── presentation
+│       ├── components
+│       │   ├── common
+│       │   └── components
+│       ├── controllers
+│       ├── handlers
+│       ├── navigations
+│       ├── notifiers
+│       ├── pages
+│       ├── providers
+│       └── states
 ├── test
-├── validation
-│   └── validator
-│       └── validation
-└── main.dart 
+├── utils
+└── validation
 
-194 directories, 491 files
+201 directories directories, 502 files

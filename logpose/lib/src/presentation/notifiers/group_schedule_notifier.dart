@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entity/group_schedule.dart';
+import '../../../utils/color_exchanger.dart';
 
-import '../../utils/color_exchanger.dart';
+import '../../domain/entity/group_schedule.dart';
 
 import '../controllers/group_schedule/group_schedule_management_controller.dart';
 

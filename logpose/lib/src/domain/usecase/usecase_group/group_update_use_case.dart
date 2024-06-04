@@ -136,7 +136,7 @@ class GroupUpdateUseCase implements IGroupUpdateUseCase{
 
   Future<void> _executeToAddMember(UserProfile member, String groupId) async {
     try {
-      final memberDocId = await _fetchUserDocId(member.accountId);
+      final memberDocId = await _fetchUserDocIdWithAccountId(member.accountId);
       await _createMembership(memberDocId, groupId);
       await _assignNewMemberSchedule(memberDocId, groupId);
     } on Exception catch (e) {
@@ -144,7 +144,7 @@ class GroupUpdateUseCase implements IGroupUpdateUseCase{
     }
   }
 
-  Future<String> _fetchUserDocId(String accountId) async {
+  Future<String> _fetchUserDocIdWithAccountId(String accountId) async {
     return userIdUseCase.fetchUserDocIdWithAccountId(accountId);
   }
 

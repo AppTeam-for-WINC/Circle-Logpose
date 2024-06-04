@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../domain/entity/user_profile.dart';
+import '../../../../../../utils/responsive_util.dart';
 
-import '../../../../../utils/responsive_util.dart';
+import '../../../../../domain/entity/user_profile.dart';
 
 import '../../custom_image/custom_cached_network_image.dart';
 

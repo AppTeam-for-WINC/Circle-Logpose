@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../utils/responsive_util.dart';
+import '../../../../../../../utils/responsive_util.dart';
 import 'components/group_section_joined_group_tile_label.dart';
 import 'components/group_section_joined_group_tile_list.dart';
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../utils/time_utils.dart';
+import '../../../utils/time_utils.dart';
 
 class GroupScheduleModel {
   const GroupScheduleModel({

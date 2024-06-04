@@ -17,6 +17,7 @@ class GroupScheduleCreation extends ConsumerStatefulWidget {
   const GroupScheduleCreation({super.key, this.groupId});
 
   final String? groupId;
+
   @override
   ConsumerState createState() => _GroupScheduleCreationState();
 }
@@ -39,20 +40,24 @@ class _GroupScheduleCreationState extends ConsumerState<GroupScheduleCreation> {
         child: Container(
           color: CupertinoColors.white,
           width: deviceWidth * 0.88,
-          height: deviceHeight * 0.55,
+          height: deviceHeight * 0.56,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const BackToPageButton(iconColor: Color(0xFF7B61FF),),
+              const BackToPageButton(iconColor: Color(0xFF7B61FF)),
               ColorButton(color: schedule.color),
               const TitleTextField(),
               GroupScheduleCreationContainer(
                 scheduleErrorMessage: scheduleErrorMessage,
               ),
-              ScheduleFooter(
-                defaultGroupId: widget.groupId,
-                actionType: ActionType.create,
+              const Spacer(),
+              Center(
+                child: ScheduleFooter(
+                  defaultGroupId: widget.groupId,
+                  actionType: ActionType.create,
+                ),
               ),
+              const Spacer(),
             ],
           ),
         ),

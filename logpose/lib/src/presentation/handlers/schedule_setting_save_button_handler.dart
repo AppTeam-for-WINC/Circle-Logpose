@@ -39,6 +39,10 @@ class ScheduleSettingSaveButtonHandler {
   final DateTime endAt;
 
   Future<void> handleToCreateSchedule() async {
+    if (groupId == null && defaultGroupId == null) {
+      _setErrorMessage('No selected group.');
+      return;
+    }
     _checkSelectedGroup();
     final errorMessage = await _createSchedule();
     if (errorMessage != null) {
@@ -50,7 +54,12 @@ class ScheduleSettingSaveButtonHandler {
   }
 
   Future<void> handleToUpdateSchedule() async {
+    if (groupId == null && defaultGroupId == null) {
+      _setErrorMessage('No selected group.');
+      return;
+    }
     _checkSelectedGroup();
+
     final errorMessage = await _updateSchedule();
     if (errorMessage != null) {
       _setErrorMessage(errorMessage);
@@ -61,10 +70,10 @@ class ScheduleSettingSaveButtonHandler {
   }
 
   void _checkSelectedGroup() {
-    if (groupId == null && defaultGroupId == null) {
-      _setErrorMessage('No selected group.');
+    if (groupId != null) {
+      _setGroupId(groupId!);
     } else {
-      _setGroupId();
+      _setGroupId(defaultGroupId!);
     }
   }
 
@@ -72,10 +81,10 @@ class ScheduleSettingSaveButtonHandler {
     ref.watch(scheduleErrorMessageProvider.notifier).state = errorMessage;
   }
 
-  void _setGroupId() {
+  void _setGroupId(String id) {
     ref
         .watch(groupScheduleNotifierProvider(groupScheduleId).notifier)
-        .setGroupId(defaultGroupId!);
+        .setGroupId(id);
   }
 
   Future<String?> _createSchedule() async {

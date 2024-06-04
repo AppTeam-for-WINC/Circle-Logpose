@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../../../../../../domain/entity/user_profile.dart';
 
 import '../../../../../../../../../../../domain/model/group_schedule_and_id_model.dart';
 
-import '../../../../../../../../../../../utils/responsive_util.dart';
 import '../../../../../../../../../../handlers/group_schedule_tile_handler.dart';
 
 import '../../../../../../../../../../providers/group/mode/schedule_delete_mode_provider.dart';

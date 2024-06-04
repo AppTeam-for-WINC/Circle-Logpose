@@ -57,5 +57,5 @@ class GroupMemberSchedule {
 
   final Timestamp? updatedAt;
 
-  final Timestamp createdAt;
+  final Timestamp? createdAt;
 }

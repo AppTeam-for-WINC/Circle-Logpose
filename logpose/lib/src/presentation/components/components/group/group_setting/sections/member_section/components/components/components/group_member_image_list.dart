@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../../notifiers/group_member_image_list_notifier.dart';
+import '../../../../../../../../common/group_member_tile/group_member_tile.dart';
 
 class GroupMemberImageList extends ConsumerWidget {
   const GroupMemberImageList({
@@ -10,7 +11,7 @@ class GroupMemberImageList extends ConsumerWidget {
     required this.groupId,
   });
 
-  final String role;
+  final GroupRoleType role;
   final String groupId;
 
   @override
@@ -20,8 +21,6 @@ class GroupMemberImageList extends ConsumerWidget {
 
     return imageList.isEmpty
         ? const SizedBox.shrink()
-        : Row(
-            children: imageList,
-          );
+        : Row(children: imageList);
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../../domain/entity/group_schedule.dart';
-
-import '../../../../../../../../utils/responsive_util.dart';
 
 import '../../../../../../../navigations/modals/to_schedule_detail_confirm_navigator.dart';
 

@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../components/common/name_and_image_setting_section.dart';
+
 import '../../components/components/navigation_bar/user_setting_navigation/user_setting_navigation_bar.dart';
 import '../../components/components/user_setting/sections/account_id_section.dart';
 import '../../components/components/user_setting/sections/email_section.dart';
 import '../../components/components/user_setting/sections/group_section/group_section.dart';
 import '../../components/components/user_setting/sections/password_section.dart';
-import '../../components/components/user_setting/sections/user_setting_image_and_name_section/user_setting_image_and_name_section.dart';
 import '../../components/components/user_setting/user_setting_save_button.dart';
 
 import '../../notifiers/user_profile_notifier.dart';
@@ -59,10 +60,11 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
                   borderRadius: const BorderRadius.all(Radius.circular(60)),
                   border: Border.all(color: const Color(0xFFD9D9D9)),
                 ),
-                child: UserSettingImageAndNameSection(
+                child: NameAndImageSettingSection(
                   imagePath: userProfile.image,
                   name: userProfile.name,
-                  errorMessage: errorMessage,
+                  loadingErrorMessage: errorMessage,
+                  placeholder: 'username',
                 ),
               ),
               const AccountIdSection(),

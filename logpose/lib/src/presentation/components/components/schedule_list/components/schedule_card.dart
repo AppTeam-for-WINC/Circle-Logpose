@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../../../utils/responsive_util.dart';
 
-import '../../../../../utils/responsive_util.dart';
+import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
 import '../../../../notifiers/group_member_schedule_notifier.dart';
 
@@ -51,8 +51,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       dateLabelPositionTop: 0,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
-      customImageWidth: 42,
-      customImageHeight: 42,
+      customImageSize: deviceWidth * 0.08,
     );
   }
 
@@ -65,8 +64,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       dateLabelPositionTop: 5,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
-      customImageWidth: 42,
-      customImageHeight: 42,
+      customImageSize: deviceWidth * 0.06,
     );
   }
 
@@ -79,8 +77,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
       dateLabelPositionTop: deviceWidth * 0.02,
       dateLabelPositionLeft: 15,
       customImagePositionRight: 35,
-      customImageWidth: 42,
-      customImageHeight: 42,
+      customImageSize: deviceWidth * 0.05,
     );
   }
 
@@ -92,8 +89,7 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
     required double dateLabelPositionTop,
     required double dateLabelPositionLeft,
     required double customImagePositionRight,
-    required double customImageWidth,
-    required double customImageHeight,
+    required double customImageSize,
   }) {
     final groupProfileAndScheduleAndId = widget.groupData;
     final groupProfile = widget.groupData.groupProfile;
@@ -160,8 +156,8 @@ class _GroupScheduleCardState extends ConsumerState<ScheduleCard> {
             right: customImagePositionRight,
             child: CustomImage(
               imagePath: groupImage,
-              width: customImageWidth,
-              height: customImageHeight,
+              width: customImageSize,
+              height: customImageSize,
             ),
           ),
         ],

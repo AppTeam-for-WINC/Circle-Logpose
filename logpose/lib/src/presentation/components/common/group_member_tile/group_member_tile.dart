@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../utils/responsive_util.dart';
+
 import '../../../../domain/entity/user_profile.dart';
 
-import '../../../../utils/responsive_util.dart';
 import '../../../providers/group/mode/group_member_delete_mode_provider.dart';
 
-import 'components/member_delete_button.dart';
+import 'components/member_deletion_button.dart';
 import 'components/member_name_and_image_view.dart';
 
 enum GroupRoleType { admin, membership }
@@ -28,29 +29,6 @@ class GroupMemberTile extends ConsumerStatefulWidget {
 }
 
 class _GroupMemberTileState extends ConsumerState<GroupMemberTile> {
-  Widget buildAdminProfileList() {
-    return MemberNameAndImageView(memberProfile: widget.memberProfile);
-  }
-
-  Widget buildMembershipProfileList(double memberDeletionButtonPosition) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: MemberNameAndImageView(memberProfile: widget.memberProfile),
-        ),
-        if (ref.watch(groupMemberDeleteModeProvider))
-          Positioned(
-            top: memberDeletionButtonPosition,
-            right: memberDeletionButtonPosition,
-            child: MemberDeleteButton(
-              accountId: widget.memberProfile.accountId,
-              groupId: widget.groupId,
-            ),
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -81,10 +59,31 @@ class _GroupMemberTileState extends ConsumerState<GroupMemberTile> {
   }
 
   Widget _buildLayout(double memberDeletionButtonPosition) {
-    final groupRoleType = widget.groupRoleType;
+    return widget.groupRoleType == GroupRoleType.admin
+        ? _buildAdminProfileList()
+        : _buildMembershipProfileList(memberDeletionButtonPosition);
+  }
 
-    return groupRoleType == GroupRoleType.admin
-        ? buildAdminProfileList()
-        : buildMembershipProfileList(memberDeletionButtonPosition);
+  Widget _buildAdminProfileList() {
+    return MemberNameAndImageView(memberProfile: widget.memberProfile);
+  }
+
+  Widget _buildMembershipProfileList(double memberDeletionButtonPosition) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: MemberNameAndImageView(memberProfile: widget.memberProfile),
+        ),
+        if (ref.watch(groupMemberDeleteModeProvider))
+          Positioned(
+            top: memberDeletionButtonPosition,
+            right: memberDeletionButtonPosition,
+            child: MemberDeletionButton(
+              accountId: widget.memberProfile.accountId,
+              groupId: widget.groupId,
+            ),
+          ),
+      ],
+    );
   }
 }

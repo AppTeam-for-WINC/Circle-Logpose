@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../utils/copy_to_clipboard.dart';
+import '../../../utils/copy_to_clipboard.dart';
 
 import '../controllers/group_invitation/group_invitation_management_controller.dart';
 

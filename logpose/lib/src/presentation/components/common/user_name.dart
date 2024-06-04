@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 class Username extends StatelessWidget {
-  const Username({super.key, required this.name});
+  const Username({super.key, required this.name, required this.textSize});
 
   final String name;
-  
+  final double textSize;
+
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -15,7 +16,7 @@ class Username extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: deviceWidth * 0.25),
         child: Text(
           name,
-          style: const TextStyle(color: CupertinoColors.black),
+          style: TextStyle(color: CupertinoColors.black, fontSize: textSize),
           overflow: TextOverflow.ellipsis,
         ),
       ),

@@ -36,7 +36,7 @@ abstract class IGroupMembershipRepository {
 
   Future<String> fetchUserIdWithMembershipId(String docId);
 
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndUserId(
     String groupId,
     String userId,
   );
