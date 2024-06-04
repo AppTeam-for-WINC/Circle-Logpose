@@ -254,6 +254,7 @@ This directory manages the validation logic.
 
 ```
 lib
+├── device
 ├── exceptions
 │   ├── group
 │   └── user
@@ -266,37 +267,24 @@ lib
 │   │   ├── mapper
 │   │   ├── model
 │   │   └── repository
-│   │       ├── auth
-│   │       ├── database
-│   │       └── storage
-│   ├── device
 │   ├── domain
 │   │   ├── entity
 │   │   ├── interface
 │   │   ├── model
 │   │   └── usecase
-│   ├── presentation
-│   │   ├── components
-│   │   │   ├── common
-│   │   │   └── components
-│   │   ├── controllers
-│   │   ├── handlers
-│   │   ├── navigations
-│   │   ├── notifiers
-│   │   ├── pages
-│   │   │   ├── group
-│   │   │   ├── login
-│   │   │   ├── schedule
-│   │   │   ├── signup
-│   │   │   ├── start
-│   │   │   └── user
-│   │   ├── providers
-│   │   └── states
-│   └── utils
+│   └── presentation
+│       ├── components
+│       │   ├── common
+│       │   └── components
+│       ├── controllers
+│       ├── handlers
+│       ├── navigations
+│       ├── notifiers
+│       ├── pages
+│       ├── providers
+│       └── states
 ├── test
-├── validation
-│   └── validator
-│       └── validation
-└── main.dart 
+├── utils
+└── validation
 
-201 directories directories, 501 files
+201 directories directories, 502 files

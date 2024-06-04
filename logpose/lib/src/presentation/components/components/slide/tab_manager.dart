@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../utils/responsive_util.dart';
+import '../../../../../utils/responsive_util.dart';
 
 import 'src/segment_tab.dart';
 import 'tabs/group_creation_tab.dart';

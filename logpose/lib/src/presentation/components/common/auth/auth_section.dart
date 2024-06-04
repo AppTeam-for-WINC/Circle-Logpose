@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../utils/responsive_util.dart';
+import '../../../../../utils/responsive_util.dart';
 import '../app_logo_and_title.dart';
 import '../progress_indicator.dart';
 import '../red_error_message.dart';

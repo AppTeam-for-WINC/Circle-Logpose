@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../../../utils/schedule_response.dart';
 
-import '../../../../../utils/schedule_response.dart';
+import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
 import '../../../common/popup_header_color.dart';
 import '../../../common/response_icon_and_text.dart';

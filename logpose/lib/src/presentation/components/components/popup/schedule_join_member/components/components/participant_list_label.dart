@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../utils/responsive_util.dart';
 
 class ParticipantListLabel extends StatelessWidget {
   const ParticipantListLabel({super.key});

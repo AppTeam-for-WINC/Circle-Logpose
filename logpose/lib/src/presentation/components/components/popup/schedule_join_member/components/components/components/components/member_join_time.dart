@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../domain/entity/group_member_schedule.dart';
+import '../../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../../utils/time_utils.dart';
 
-import '../../../../../../../../../utils/responsive_util.dart';
-import '../../../../../../../../../utils/time_utils.dart';
+import '../../../../../../../../../domain/entity/group_member_schedule.dart';
 
 import '../../../../../../../../providers/group/schedule/listen_responesd_group_member_schedule_provider.dart';
 

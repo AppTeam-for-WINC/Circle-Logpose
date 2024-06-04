@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../../../utils/schedule_response.dart';
+
 import '../../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
-import '../../../../../../../../utils/schedule_response.dart';
-
 import '../../../../../../../handlers/lateness_button_handler.dart';
+
 import '../../../../../../common/response_button.dart';
 
 class LatenessButton extends ConsumerWidget {

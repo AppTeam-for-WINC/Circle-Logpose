@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/responsive_util.dart';
-import '../../../utils/schedule_response.dart';
+import '../../../../utils/responsive_util.dart';
+import '../../../../utils/schedule_response.dart';
 
 class ResponseButton extends ConsumerWidget {
   const ResponseButton({

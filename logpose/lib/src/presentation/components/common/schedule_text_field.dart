@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
 import 'schedule_section/schedule_field/detail_text_field.dart';
 import 'schedule_section/schedule_field/place_text_field.dart';

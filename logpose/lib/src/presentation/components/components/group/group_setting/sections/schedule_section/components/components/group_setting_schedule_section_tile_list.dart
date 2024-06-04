@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../../utils/responsive_util.dart';
 
 import 'components/group_schedule_tile_list_builder.dart';
 

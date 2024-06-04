@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../utils/time_utils.dart';
+import '../../../utils/time_utils.dart';
 
 class GroupMemberScheduleModel {
   const GroupMemberScheduleModel({
@@ -29,7 +29,7 @@ class GroupMemberScheduleModel {
       startAt: convertTimestampToDateTime(data['start_at']),
       endAt: convertTimestampToDateTime(data['end_at']),
       updatedAt: data['updated_at'] as Timestamp?,
-      createdAt: data['created_at'] as Timestamp,
+      createdAt: data['created_at'] as Timestamp?,
     );
   }
 
@@ -51,5 +51,5 @@ class GroupMemberScheduleModel {
 
   final Timestamp? updatedAt;
 
-  final Timestamp createdAt;
+  final Timestamp? createdAt;
 }

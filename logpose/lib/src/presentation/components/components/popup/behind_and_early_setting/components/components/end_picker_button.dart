@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/entity/group_schedule.dart';
+import '../../../../../../../../utils/time_utils.dart';
 
-import '../../../../../../../utils/time_utils.dart';
+import '../../../../../../../domain/entity/group_schedule.dart';
 
 import '../../../../../../handlers/end_picker_button_handler.dart';
 import '../../../../../../navigations/modals/to_date_picker_setting_dialog_navigator.dart';

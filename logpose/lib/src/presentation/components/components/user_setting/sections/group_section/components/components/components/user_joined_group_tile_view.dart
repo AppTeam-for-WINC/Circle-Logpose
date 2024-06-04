@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../../utils/responsive_util.dart';
 
 import '../../../../../../../common/custom_image/custom_cached_network_image.dart';
 

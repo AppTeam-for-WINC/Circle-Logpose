@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../domain/entity/user_profile.dart';
+import '../../../../../../../utils/responsive_util.dart';
 
-import '../../../../../../utils/responsive_util.dart';
+import '../../../../../../domain/entity/user_profile.dart';
 
 import 'components/member_and_attendance_tile.dart';
 import 'components/participant_list_label.dart';

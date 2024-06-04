@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
 import '../../components/common/loading_progress.dart';
 import '../../components/common/member_switch/member_addition_switch.dart';

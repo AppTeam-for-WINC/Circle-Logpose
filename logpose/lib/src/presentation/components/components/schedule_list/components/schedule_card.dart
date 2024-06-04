@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
+import '../../../../../../utils/responsive_util.dart';
 
-import '../../../../../utils/responsive_util.dart';
+import '../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
 
 import '../../../../notifiers/group_member_schedule_notifier.dart';
 

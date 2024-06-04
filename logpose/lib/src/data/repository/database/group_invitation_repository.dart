@@ -3,9 +3,9 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../domain/entity/group_invitation.dart';
+import '../../../../utils/time_utils.dart';
 
-import '../../../utils/time_utils.dart';
+import '../../../domain/entity/group_invitation.dart';
 
 import '../../interface/i_group_invitation_repository.dart';
 

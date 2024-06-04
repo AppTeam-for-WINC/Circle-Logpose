@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-import '../../../device/device_manager.dart';
+import '../../../../device/device_manager.dart';
 
 class ToDeviceManagerNavigator {
   ToDeviceManagerNavigator(this.context);

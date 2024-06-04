@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../utils/responsive_util.dart';
+import '../../../../../../../utils/responsive_util.dart';
 import '../../../../../navigations/modals/to_group_picker_navigator.dart';
 
 import '../../../../../providers/group/group/selected_group_name_provider.dart';

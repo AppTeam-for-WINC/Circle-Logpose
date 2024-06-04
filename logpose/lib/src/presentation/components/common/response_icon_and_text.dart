@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../utils/responsive_util.dart';
-import '../../../utils/schedule_response.dart';
+import '../../../../utils/responsive_util.dart';
+import '../../../../utils/schedule_response.dart';
 
 class ResponseIconAndText extends StatelessWidget {
   const ResponseIconAndText({super.key, required this.responseType});

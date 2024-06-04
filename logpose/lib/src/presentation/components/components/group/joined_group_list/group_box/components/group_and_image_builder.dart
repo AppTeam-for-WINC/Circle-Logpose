@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../../domain/model/group_and_id_model.dart';
-import '../../../../../../../utils/responsive_util.dart';
 import '../../../../../../providers/group/group/listen_group_and_id_provider.dart';
 
 import '../../../../../common/custom_image/custom_image.dart';

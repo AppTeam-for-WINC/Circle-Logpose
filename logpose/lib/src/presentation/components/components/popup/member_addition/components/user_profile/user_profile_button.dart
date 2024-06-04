@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/entity/user_profile.dart';
+import '../../../../../../../../utils/responsive_util.dart';
 
-import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../domain/entity/user_profile.dart';
 
 import '../../../../../../handlers/user_profile_button_handler.dart';
 

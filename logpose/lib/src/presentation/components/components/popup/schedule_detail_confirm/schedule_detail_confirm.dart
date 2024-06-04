@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../utils/responsive_util.dart';
+import '../../../../../../utils/schedule_response.dart';
+
 import '../../../../../domain/entity/group_profile.dart';
 import '../../../../../domain/entity/group_schedule.dart';
-
-import '../../../../../utils/responsive_util.dart';
-import '../../../../../utils/schedule_response.dart';
 
 import '../../../common/custom_image/custom_image.dart';
 import '../../../common/popup_background.dart';

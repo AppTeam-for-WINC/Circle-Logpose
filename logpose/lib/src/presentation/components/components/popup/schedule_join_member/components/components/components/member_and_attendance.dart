@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../../domain/entity/user_profile.dart';
+import '../../../../../../../../../utils/responsive_util.dart';
 
-import '../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../domain/entity/user_profile.dart';
 
 import '../../../../../../common/custom_image/custom_image.dart';
 import '../../../../../../common/user_name.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../utils/responsive_util.dart';
+import '../../../../../utils/responsive_util.dart';
 import '../../../navigations/dialogs/to_palette_dialog_navigator.dart';
 
 class ColorButton extends StatefulWidget {

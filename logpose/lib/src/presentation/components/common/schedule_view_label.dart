@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
 class ScheduleViewLabel extends StatelessWidget {
   const ScheduleViewLabel({super.key, required this.icon, required this.label});

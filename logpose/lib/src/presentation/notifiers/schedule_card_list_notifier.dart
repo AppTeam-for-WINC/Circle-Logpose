@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../utils/responsive_util.dart';
+import '../../../utils/responsive_util.dart';
 
 import '../components/components/schedule_list/components/schedule_card.dart';
 
@@ -19,15 +19,21 @@ class _ScheduleCardListNotifier extends StateNotifier<List<Widget>> {
 
   final Ref ref;
 
-  Future<void> _initScheduleCardList() async {
-    final data = await ref.watch(sortedGroupAndScheduleAndIdProvider.future);
-    final scheduleCardList = Column(
-      children: [
-        ...data.map((groupData) {
-          return ScheduleCard(groupData: groupData);
-        }),
-        _buildSizedBox(),
-      ],
+  void _initScheduleCardList() {
+    final asyncData = ref.watch(sortedGroupAndScheduleAndIdProvider);
+    final scheduleCardList = asyncData.when(
+      data: (dataList) {
+        return Column(
+          children: [
+            ...dataList.map((data) {
+              return ScheduleCard(groupData: data);
+            }),
+            _buildSizedBox(),
+          ],
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (error, stack) => Text('$error'),
     );
 
     state = [scheduleCardList];

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../domain/entity/group_schedule.dart';
+import '../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../utils/time_utils.dart';
 
-import '../../../../../../../../utils/responsive_util.dart';
-import '../../../../../../../../utils/time_utils.dart';
+import '../../../../../../../../domain/entity/group_schedule.dart';
 
 class ScheduleCardTimeView extends ConsumerWidget {
   const ScheduleCardTimeView({super.key, required this.groupSchedule});

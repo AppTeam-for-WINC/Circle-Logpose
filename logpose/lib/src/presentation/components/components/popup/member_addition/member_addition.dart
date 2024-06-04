@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../utils/responsive_util.dart';
+import '../../../../../../utils/responsive_util.dart';
 
 import 'components/invitation_link/copy_invitation_link_button.dart';
 import 'components/search_field_section/user_search_field_section.dart';
