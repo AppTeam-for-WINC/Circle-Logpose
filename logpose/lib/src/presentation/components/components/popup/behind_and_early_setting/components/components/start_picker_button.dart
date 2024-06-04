@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../domain/entity/group_schedule.dart';
+import '../../../../../../../../utils/time_utils.dart';
 
-import '../../../../../../../utils/time_utils.dart';
+import '../../../../../../../domain/entity/group_schedule.dart';
 
 import '../../../../../../handlers/start_picker_button_handler.dart';
 import '../../../../../../navigations/modals/to_date_picker_setting_dialog_navigator.dart';
@@ -14,10 +14,12 @@ class StartPickerButton extends ConsumerStatefulWidget {
     super.key,
     required this.groupScheduleId,
     required this.groupSchedule,
+    required this.textSize,
   });
 
   final String groupScheduleId;
   final GroupSchedule groupSchedule;
+  final double textSize;
 
   @override
   ConsumerState createState() => _StartPickerButtonState();
@@ -82,6 +84,9 @@ class _StartPickerButtonState extends ConsumerState<StartPickerButton> {
         builder: (context, watch, child) {
           return Text(
             _formatDateTimeExcYear(memberScheduleController.startAt!),
+            style: TextStyle(
+              fontSize: widget.textSize,
+            ),
           );
         },
       ),

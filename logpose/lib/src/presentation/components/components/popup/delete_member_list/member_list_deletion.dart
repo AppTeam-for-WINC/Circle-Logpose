@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'components/member_list_delete_section.dart';
+import 'components/member_list_deletion_section.dart';
 
-class MemberListDelete extends ConsumerStatefulWidget {
-  const MemberListDelete({super.key, required this.groupId});
+class MemberListDeletion extends ConsumerStatefulWidget {
+  const MemberListDeletion({super.key, required this.groupId});
+
   final String groupId;
 
   @override
-  ConsumerState<MemberListDelete> createState() => _MemberListDeleteState();
+  ConsumerState<MemberListDeletion> createState() => _MemberListDeletionState();
 }
 
-class _MemberListDeleteState extends ConsumerState<MemberListDelete> {
+class _MemberListDeletionState extends ConsumerState<MemberListDeletion> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final groupId = widget.groupId;
 
     return Stack(
       children: [
@@ -32,7 +32,7 @@ class _MemberListDeleteState extends ConsumerState<MemberListDelete> {
                 color: const Color(0xFFF5F3FE),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
-                  child: MemberListDeleteSection(groupId: groupId),
+                  child: MemberListDeletionSection(groupId: widget.groupId),
                 ),
               ),
             ),

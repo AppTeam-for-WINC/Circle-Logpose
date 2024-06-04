@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controllers/group_membership/group_membership_deletion_controller.dart';
-import '../notifiers/search_user_notifier_provider.dart';
-import '../notifiers/set_group_member_list_notifier.dart';
+
+import '../controllers/group_membership/group_membership_management_controller.dart';
+import '../notifiers/group_member_list_setter_notifier.dart';
+import '../notifiers/search_user_notifier.dart';
 
 class MemberDeleteHandler {
   MemberDeleteHandler({
@@ -24,18 +26,41 @@ class MemberDeleteHandler {
   }
 
   Future<void> _deleteMember() async {
-    final memberController =
-        ref.read(groupMembershipDeletionControllerProvider);
-    await memberController.deleteMemberWithGroupIdAndAccountId(
+    final membershipId = await _fetchMembershipId();
+    if (membershipId == null) {
+      _removeMember();
+      return;
+    }
+
+    _removeMemberState();
+    await _deleteMemberWithMembershipId(membershipId);
+  }
+
+  Future<String?> _fetchMembershipId() async {
+    final membershipController =
+        ref.read(groupMembershipManagementControllerProvider);
+    return membershipController.fetchMembershipIdWithGroupIdAndAccountId(
       groupId!,
       accountId,
     );
   }
 
+  Future<void> _deleteMemberWithMembershipId(String membershipId) async {
+    final membershipDeletionController =
+        ref.read(groupMembershipDeletionControllerProvider);
+    await membershipDeletionController.deleteMember(membershipId);
+  }
+
   void _removeMember() {
     ref
-        .watch(setGroupMemberListNotifierProvider.notifier)
+        .read(groupMemberListSetterNotifierProvider.notifier)
         .removeMember(accountId);
-    ref.watch(searchUserNotifierProvider(groupId).notifier).removeMemberState();
+    _removeMemberState();
+  }
+
+  void _removeMemberState() {
+    ref
+        .read(searchUserNotifierProvider(groupId).notifier)
+        .removeMemberState(accountId);
   }
 }

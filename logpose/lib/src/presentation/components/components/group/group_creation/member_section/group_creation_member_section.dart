@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../utils/responsive_util.dart';
+import '../../../../../../../utils/responsive_util.dart';
 
 import 'components/group_creation_member_section_label.dart';
 import 'components/group_creation_member_section_member_list.dart';

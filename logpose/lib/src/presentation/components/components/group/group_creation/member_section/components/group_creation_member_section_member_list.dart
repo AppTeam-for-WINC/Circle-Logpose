@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../utils/responsive_util.dart';
 
+import '../../../../../../notifiers/group_member_list_setter_notifier.dart';
 import '../../../../../../notifiers/member_section_admin_members_notiifer.dart';
-import '../../../../../../notifiers/set_group_member_list_notifier.dart';
 
 import '../../../../../common/group_member_tile/group_member_tile.dart';
 
@@ -75,7 +75,7 @@ class _GroupCreationMemberSectionMemberListState
             padding: const EdgeInsets.all(10),
             children: <Widget>[
               ...ref.watch(memberSectionAdminMembersNotifierProvider),
-              ...ref.watch(setGroupMemberListNotifierProvider).map(
+              ...ref.watch(groupMemberListSetterNotifierProvider).map(
                     (membershipUserProfile) => GroupMemberTile(
                       memberProfile: membershipUserProfile,
                       groupRoleType: GroupRoleType.membership,

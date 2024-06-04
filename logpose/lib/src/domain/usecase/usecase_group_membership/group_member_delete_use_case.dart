@@ -53,18 +53,21 @@ class GroupMemberDeleteUseCase implements IGroupMemberDeleteUseCase {
   }
 
   Future<void> _attemptToDeleteMember(String groupId, String accountId) async {
-    final membershipDocId = await _fetchMembershipIdWithGroupIdAndUserId(
+    final membershipDocId = await _fetchMembershipIdWithGroupIdAndAccountId(
       groupId,
       accountId,
     );
+    if (membershipDocId == null) {
+      return;
+    }
     await deleteMember(membershipDocId);
   }
 
-  Future<String> _fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> _fetchMembershipIdWithGroupIdAndAccountId(
     String groupId,
     String accountId,
   ) async {
-    return groupMemberIdUseCase.fetchMembershipIdWithGroupIdAndUserId(
+    return groupMemberIdUseCase.fetchMembershipIdWithGroupIdAndAccountId(
       groupId,
       accountId,
     );

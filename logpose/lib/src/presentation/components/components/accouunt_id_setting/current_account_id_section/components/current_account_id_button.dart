@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../utils/copy_to_clipboard.dart';
+import '../../../../../../../utils/copy_to_clipboard.dart';
 
 class CurrentAccountIdButton extends StatelessWidget {
   const CurrentAccountIdButton({super.key, required this.accountId});

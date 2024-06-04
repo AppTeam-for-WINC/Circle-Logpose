@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../utils/responsive_util.dart';
 import '../../../../../common/custom_text.dart';
 
 class GroupCreationMemberSectionLabel extends StatelessWidget {

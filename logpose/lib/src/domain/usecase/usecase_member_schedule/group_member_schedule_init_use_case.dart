@@ -58,15 +58,11 @@ class GroupMemberScheduleInitUseCase
   Future<GroupMemberSchedule> _attemptToInitSchedule(
     String groupScheduleId,
   ) async {
-    final groupSchedule = await groupScheduleUseCase.fetchGroupSchedule(
-      groupScheduleId,
-    );
+    final groupSchedule =
+        await groupScheduleUseCase.fetchGroupSchedule(groupScheduleId);
     final userDocId = await authIdUseCase.fetchCurrentUserId();
-    final memberScheduleId =
-        await memberScheduleIdUseCase.fetchMemberScheduleId(
-      groupScheduleId,
-      userDocId,
-    );
+    final memberScheduleId = await memberScheduleIdUseCase
+        .fetchMemberScheduleId(groupScheduleId, userDocId);
     if (memberScheduleId == null) {
       throw Exception('Error: failed to fetch member schedule ID.');
     }

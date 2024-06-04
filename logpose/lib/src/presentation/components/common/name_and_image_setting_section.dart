@@ -1,30 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
-import 'group_image_view.dart';
+import 'image_view.dart';
 import 'name_field.dart';
 import 'photo_button.dart';
 import 'red_error_message.dart';
 
-class GroupNameAndImageSection extends ConsumerStatefulWidget {
-  const GroupNameAndImageSection({
+class NameAndImageSettingSection extends ConsumerStatefulWidget {
+  const NameAndImageSettingSection({
     super.key,
     required this.loadingErrorMessage,
     this.imagePath,
-    this.groupName,
+    this.name,
+    required this.placeholder,
   });
 
   final String? loadingErrorMessage;
   final String? imagePath;
-  final String? groupName;
+  final String? name;
+  final String placeholder;
+
   @override
-  ConsumerState createState() => _GroupNameAndImageSectionState();
+  ConsumerState createState() => _NameAndImageSettingSectionState();
 }
 
-class _GroupNameAndImageSectionState
-    extends ConsumerState<GroupNameAndImageSection> {
+class _NameAndImageSettingSectionState
+    extends ConsumerState<NameAndImageSettingSection> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -98,7 +101,10 @@ class _GroupNameAndImageSectionState
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   const SizedBox(width: 20),
-                  GroupImageView(imagePath: widget.imagePath),
+                  ImageView(
+                    imagePath: widget.imagePath,
+                    imageViewType: ImageViewType.group,
+                  ),
                   Icon(
                     CupertinoIcons.arrow_right_arrow_left,
                     size: arrowIconSize,
@@ -110,9 +116,10 @@ class _GroupNameAndImageSectionState
               ),
             ),
           ),
+          const SizedBox(height: 20),
           if (loadingErrorMessage != null)
             RedErrorMessage(errorMessage: loadingErrorMessage, fontSize: 14),
-          NameField(placeholder: '団体名', name: widget.groupName),
+          NameField(placeholder: widget.placeholder, name: widget.name),
         ],
       ),
     );

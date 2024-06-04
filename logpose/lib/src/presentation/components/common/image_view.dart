@@ -1,21 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
-import '../../notifiers/image_provider.dart';
+import '../../notifiers/image_path_set_notifier.dart';
 
 import 'custom_image/custom_image.dart';
 
-class GroupImageView extends ConsumerStatefulWidget {
-  const GroupImageView({super.key, this.imagePath});
+enum ImageViewType { user, group }
+
+class ImageView extends ConsumerStatefulWidget {
+  const ImageView({super.key, this.imagePath, required this.imageViewType});
+
   final String? imagePath;
+  final ImageViewType imageViewType;
 
   @override
-  ConsumerState<GroupImageView> createState() => _GroupImageViewState();
+  ConsumerState<ImageView> createState() => _ImageViewState();
 }
 
-class _GroupImageViewState extends ConsumerState<GroupImageView> {
+class _ImageViewState extends ConsumerState<ImageView> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -35,45 +39,55 @@ class _GroupImageViewState extends ConsumerState<GroupImageView> {
 
   Widget _buildMobileLayout(double deviceWidth) {
     return _buildLayout(
-      groupIconSize: deviceWidth * 0.17,
+      iconSize: deviceWidth * 0.17,
       imageSize: deviceWidth * 0.14,
     );
   }
 
   Widget _buildTabletLayout(double deviceWidth) {
     return _buildLayout(
-      groupIconSize: deviceWidth * 0.14,
+      iconSize: deviceWidth * 0.14,
       imageSize: deviceWidth * 0.11,
     );
   }
 
   Widget _buildDesktopLayout(double deviceWidth) {
     return _buildLayout(
-      groupIconSize: deviceWidth * 0.1,
+      iconSize: deviceWidth * 0.1,
       imageSize: deviceWidth * 0.08,
     );
   }
 
   Widget _buildLayout({
-    required double groupIconSize,
+    required double iconSize,
     required double imageSize,
   }) {
-    final imageNotifier = ref.watch(imageControllerProvider);
+    final imageNotifier = ref.watch(imagePathSetNotifierProvider);
 
     final imagePath = imageNotifier.path == '' && widget.imagePath != null
         ? widget.imagePath!
         : imageNotifier.path;
 
-    return imagePath == ''
-        ? Icon(
-            CupertinoIcons.group_solid,
-            size: groupIconSize,
-            color: CupertinoColors.systemGrey,
-          )
-        : CustomImage(
-            imagePath: imagePath,
-            width: imageSize,
-            height: imageSize,
-          );
+    if (imagePath != '') {
+      return CustomImage(
+        imagePath: imagePath,
+        width: imageSize,
+        height: imageSize,
+      );
+    } else if (widget.imageViewType == ImageViewType.user) {
+      return Icon(
+        CupertinoIcons.person,
+        size: iconSize,
+        color: CupertinoColors.systemGrey,
+      );
+    } else if (widget.imageViewType == ImageViewType.group) {
+      return Icon(
+        CupertinoIcons.group_solid,
+        size: iconSize,
+        color: CupertinoColors.systemGrey,
+      );
+    } else {
+      throw Exception('Error: unexpected error occoured.');
+    }
   }
 }

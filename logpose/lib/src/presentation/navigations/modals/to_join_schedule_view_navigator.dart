@@ -5,7 +5,7 @@ import '../../../domain/entity/group_profile.dart';
 import '../../../domain/entity/group_schedule.dart';
 import '../../../domain/entity/user_profile.dart';
 
-import '../../components/components/popup/schedule_join_member/join_schedule_view.dart';
+import '../../components/components/popup/schedule_join_member/schedule_participants_view.dart';
 
 import '../../providers/group/members/listen_group_member_profile_not_absence_list_provider.dart';
 
@@ -22,7 +22,7 @@ class ToJoinScheduleViewNavigator {
   }) async {
     final asyncGroupMember =
         ref.watch(listenGroupMemberProfileNotAbsenceListProvider(scheduleId));
-    await showCupertinoModalPopup<JoinScheduleView>(
+    await showCupertinoModalPopup<ScheduleParticipantsView>(
       context: context,
       builder: (BuildContext context) {
         return asyncGroupMember.when(
@@ -47,7 +47,7 @@ class ToJoinScheduleViewNavigator {
     required GroupSchedule groupSchedule,
     required List<UserProfile?> memberProfiles,
   }) {
-    return JoinScheduleView(
+    return ScheduleParticipantsView(
       groupProfile: groupProfile,
       memberProfiles: memberProfiles,
       scheduleId: scheduleId,

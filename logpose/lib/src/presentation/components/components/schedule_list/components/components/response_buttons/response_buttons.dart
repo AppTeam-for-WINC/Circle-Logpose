@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../../domain/entity/group_profile.dart';
 
 import '../../../../../../../domain/model/group_profile_and_schedule_and_id_model.dart';
-
-import '../../../../../../../utils/responsive_util.dart';
 
 import 'components/absence_button.dart';
 import 'components/attendance_button.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../notifiers/search_user_notifier_provider.dart';
+import '../../../../../../notifiers/search_user_notifier.dart';
 import 'components/user_search_field.dart';
 
 class UserSearchFieldSection extends ConsumerStatefulWidget {

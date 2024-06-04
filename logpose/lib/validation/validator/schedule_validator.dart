@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../src/domain/model/schedule_validation_params.dart';
-import '../../src/utils/time_utils.dart';
+import '../../utils/time_utils.dart';
 import 'validation/schedule_validation.dart';
 
 final scheduleValidatorProvider = Provider<ScheduleValidator>(

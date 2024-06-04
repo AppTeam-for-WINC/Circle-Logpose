@@ -6,14 +6,14 @@ import '../../../../../domain/entity/group_schedule.dart';
 import '../../../../../domain/entity/user_profile.dart';
 
 import '../../../common/back_to_page_button.dart';
-import '../../../common/background.dart';
+import '../../../common/popup_background.dart';
 import '../../../common/schedule_time_view.dart';
 import '../../../common/schedule_title_view.dart';
 
-import 'components/join_member_list.dart';
+import 'components/participant_list.dart';
 
-class JoinScheduleView extends ConsumerStatefulWidget {
-  const JoinScheduleView({
+class ScheduleParticipantsView extends ConsumerStatefulWidget {
+  const ScheduleParticipantsView({
     super.key,
     required this.groupProfile,
     required this.memberProfiles,
@@ -27,10 +27,12 @@ class JoinScheduleView extends ConsumerStatefulWidget {
   final GroupSchedule groupSchedule;
 
   @override
-  ConsumerState<JoinScheduleView> createState() => _JoinScheduleViewState();
+  ConsumerState<ScheduleParticipantsView> createState() =>
+      _ScheduleParticipantsViewState();
 }
 
-class _JoinScheduleViewState extends ConsumerState<JoinScheduleView> {
+class _ScheduleParticipantsViewState
+    extends ConsumerState<ScheduleParticipantsView> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -54,19 +56,18 @@ class _JoinScheduleViewState extends ConsumerState<JoinScheduleView> {
               child: Stack(
                 children: [
                   const PopupBackground(),
-                  const BackToPageButton(iconColor: Color(0xFF7B61FF),),
+                  const BackToPageButton(iconColor: Color(0xFF7B61FF)),
                   Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    margin: const EdgeInsets.only(left: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ScheduleTitleView(
-                          title: groupSchedule.title,
-                          marginTop: 60,
-                          fontSize: 30,
+                        ScheduleTitleView(title: groupSchedule.title),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: ScheduleTimeView(groupSchedule: groupSchedule),
                         ),
-                        ScheduleTimeView(groupSchedule: groupSchedule),
-                        JoinMemberList(
+                        ParticipantList(
                           memberProfileList: memberProfiles,
                           scheduleId: scheduleId,
                         ),

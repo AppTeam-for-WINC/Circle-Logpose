@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../utils/schedule_response.dart';
+import '../../../../../../../../../utils/schedule_response.dart';
 
 import '../../../../../../../handlers/absence_button_handler.dart';
 import '../../../../../../common/response_button.dart';

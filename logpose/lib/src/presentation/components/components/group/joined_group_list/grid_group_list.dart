@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../utils/responsive_util.dart';
+import '../../../../../../utils/responsive_util.dart';
 
 import '../../../../notifiers/group_profile_list_notifier.dart';
 

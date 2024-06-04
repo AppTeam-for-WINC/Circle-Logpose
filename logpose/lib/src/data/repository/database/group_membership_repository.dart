@@ -292,7 +292,7 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   }
 
   @override
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndUserId(
     String groupId,
     String userId,
   ) async {
@@ -306,7 +306,8 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs.first.id;
       } else {
-        throw Exception('No document found for the specified user and group.');
+        debugPrint('No document found for the specified user and group.');
+        return null;
       }
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to watch user profile list. ${e.message}');

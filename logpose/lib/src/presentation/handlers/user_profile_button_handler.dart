@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entity/user_profile.dart';
 
-import '../notifiers/search_user_notifier_provider.dart';
-import '../notifiers/set_group_member_list_notifier.dart';
+import '../notifiers/group_member_list_setter_notifier.dart';
+import '../notifiers/search_user_notifier.dart';
 
 class UserProfileButtonHandler {
   UserProfileButtonHandler({
@@ -19,7 +19,7 @@ class UserProfileButtonHandler {
   void handleToAddMember() {
     ref.watch(searchUserNotifierProvider(groupId).notifier).setMemberState();
     ref
-        .watch(setGroupMemberListNotifierProvider.notifier)
+        .watch(groupMemberListSetterNotifierProvider.notifier)
         .addMember(userProfile);
   }
 }

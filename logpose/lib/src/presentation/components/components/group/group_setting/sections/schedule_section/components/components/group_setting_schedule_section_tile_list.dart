@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../../utils/responsive_util.dart';
 
 import 'components/group_schedule_tile_list_builder.dart';
 
@@ -66,15 +66,13 @@ class _GroupSettingScheduleSectionTileListState
     required double containerWidth,
     required double containerHeight,
   }) {
-    return SingleChildScrollView(
-      child: Container(
-        width: containerWidth,
-        height: containerHeight,
-        padding: const EdgeInsets.only(bottom: 5),
-        child: GroupScheduleTileListBuilder(
-          groupId: widget.groupId,
-          groupName: widget.groupName,
-        ),
+    return Container(
+      width: containerWidth,
+      height: containerHeight,
+      padding: const EdgeInsets.only(bottom: 5),
+      child: GroupScheduleTileListBuilder(
+        groupId: widget.groupId,
+        groupName: widget.groupName,
       ),
     );
   }

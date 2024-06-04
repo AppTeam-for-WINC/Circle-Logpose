@@ -5,7 +5,7 @@ abstract class IGroupMemberIdUseCase {
 
   Future<List<String>> fetchAllMembershipIdList(String groupId);
 
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndAccountId(
     String groupId,
     String accountId,
   );

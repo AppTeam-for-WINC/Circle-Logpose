@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../utils/responsive_util.dart';
 
 import 'components/group_setting_schedule_section_panel.dart';
 import 'components/switch/schedule_addition_switch.dart';

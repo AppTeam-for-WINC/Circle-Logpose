@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../utils/responsive_util.dart';
 
-import '../../components/common/group_name_and_image_section.dart';
 import '../../components/common/loading_progress.dart';
 import '../../components/common/member_switch/member_addition_switch.dart';
 import '../../components/common/member_switch/member_deletion_switch.dart';
+import '../../components/common/name_and_image_setting_section.dart';
 import '../../components/common/progress_indicator.dart';
 
 import '../../components/components/group/group_creation/group_creation_button.dart';
@@ -96,8 +96,9 @@ class _GroupCreationPageState extends ConsumerState<GroupCreationPage> {
           children: [
             Positioned(
               top: groupNameAndImageSectionPositionTop,
-              child: GroupNameAndImageSection(
+              child: NameAndImageSettingSection(
                 loadingErrorMessage: loadingErrorMessage,
+                placeholder: 'group name',
               ),
             ),
             Positioned(
