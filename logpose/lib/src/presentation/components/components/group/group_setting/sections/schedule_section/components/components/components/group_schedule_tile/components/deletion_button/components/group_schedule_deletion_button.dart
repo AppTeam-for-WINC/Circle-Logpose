@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../../../../../../../../../utils/responsive_util.dart';
 
 class GroupScheduleDeletionButtonIcon extends ConsumerWidget {
   const GroupScheduleDeletionButtonIcon({super.key});

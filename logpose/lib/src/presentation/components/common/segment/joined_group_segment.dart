@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../utils/responsive_util.dart';
+import '../../../../../utils/responsive_util.dart';
 
 import '../../components/slide/src/segment_tab.dart';
 

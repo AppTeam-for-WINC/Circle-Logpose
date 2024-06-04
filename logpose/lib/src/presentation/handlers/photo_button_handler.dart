@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../navigations/dialogs/to_device_manager_navigator.dart';
-import '../notifiers/image_provider.dart';
+import '../notifiers/image_path_set_notifier.dart';
 
 class PhotoButtonHandler {
   const PhotoButtonHandler({required this.context, required this.ref});
@@ -43,7 +43,7 @@ class PhotoButtonHandler {
   }
 
   void _setImagePath(File imageFile) {
-    ref.watch(imageControllerProvider.notifier).setImagePath(imageFile);
+    ref.watch(imagePathSetNotifierProvider.notifier).setImagePath(imageFile);
   }
 
   Future<void> _showPhotoAccessDeniedDialog(BuildContext context) async {

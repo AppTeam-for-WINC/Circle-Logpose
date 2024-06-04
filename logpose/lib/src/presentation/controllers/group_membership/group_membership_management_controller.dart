@@ -25,12 +25,12 @@ class GroupMembershipManagementController {
     return groupMembershipFacade.fetchAllUserDocIdWithGroupId(groupId);
   }
 
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndAccountId(
     String groupId,
     String accountId,
   ) async {
     final groupMembershipFacade = ref.read(groupMembershipFacadeProvider);
-    return groupMembershipFacade.fetchMembershipIdWithGroupIdAndUserId(
+    return groupMembershipFacade.fetchMembershipIdWithGroupIdAndAccountId(
       groupId,
       accountId,
     );

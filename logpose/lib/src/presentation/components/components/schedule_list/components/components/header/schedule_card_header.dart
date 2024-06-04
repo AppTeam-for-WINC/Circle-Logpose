@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../../../../../utils/responsive_util.dart';
+
 import '../../../../../../../domain/entity/group_profile.dart';
 import '../../../../../../../domain/entity/group_schedule.dart';
-
-import '../../../../../../../utils/responsive_util.dart';
 
 import 'components/schdule_card_time_view.dart';
 import 'components/schedule_detail_confirmation_button.dart';

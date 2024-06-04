@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../utils/color_exchanger.dart';
+
 import '../../../../validation/validator/validator_controller.dart';
 
 import '../../../data/interface/i_group_schedule_repository.dart';
 
 import '../../../data/repository/database/group_schedule_repository.dart';
-
-import '../../../utils/color_exchanger.dart';
 
 import '../../interface/group_schedule/i_group_schedule_update_use_case.dart';
 import '../../model/schedule_params_model.dart';

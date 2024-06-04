@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/red_error_message.dart';
-
-import '../../../../common/schedule_section/detail_section.dart';
-import '../../../../common/schedule_section/place_section.dart';
 import '../../../../common/schedule_section/schedule_group_selector/group_selector.dart';
 import '../../../../common/schedule_section/schedule_time/schedule_activity_time.dart';
+import '../../../../common/schedule_text_field.dart';
 
 class GroupScheduleCreationContainer extends ConsumerStatefulWidget {
   const GroupScheduleCreationContainer({super.key, this.scheduleErrorMessage});
@@ -34,8 +32,14 @@ class _GroupScheduleCreationContainerState
               children: [
                 GroupSelector(),
                 ScheduleActivityTime(),
-                PlaceSection(),
-                DetailSection(),
+                ScheduleTextField(
+                  icon: CupertinoIcons.placemark,
+                  scheduleTextFieldType: ScheduleTextFieldType.place,
+                ),
+                ScheduleTextField(
+                  icon: CupertinoIcons.text_justify,
+                  scheduleTextFieldType: ScheduleTextFieldType.detail,
+                ),
               ],
             ),
           ),

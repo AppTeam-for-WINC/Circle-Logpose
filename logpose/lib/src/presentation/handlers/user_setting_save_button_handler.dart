@@ -9,7 +9,7 @@ import '../components/common/loading_progress.dart';
 
 import '../controllers/user/user_update_controller.dart';
 import '../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
-import '../notifiers/image_provider.dart';
+import '../notifiers/image_path_set_notifier.dart';
 
 import '../providers/text_field/name_field_provider.dart';
 
@@ -38,7 +38,7 @@ class UserSettingSaveButtonHandler {
   }
 
   Future<String?> _update() async {
-    final imageNotifier = ref.read(imageControllerProvider);
+    final imageNotifier = ref.read(imagePathSetNotifierProvider);
     final userSettingParams = UserSettingParams(
       name: ref.watch(nameFieldProvider(name)).text,
       image: imageNotifier,

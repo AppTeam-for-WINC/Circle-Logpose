@@ -16,11 +16,13 @@ class ScheduleSettingSaveButton extends ConsumerStatefulWidget {
     this.defaultGroupId,
     this.groupScheduleId,
     required this.actionType,
+    required this.textSize,
   });
 
   final String? defaultGroupId;
   final String? groupScheduleId;
   final ActionType actionType;
+  final double textSize;
 
   @override
   ConsumerState createState() => _ScheduleSettingSaveButtonState();
@@ -71,9 +73,12 @@ class _ScheduleSettingSaveButtonState
       onPressed: widget.actionType == ActionType.create
           ? handleToCreateSchedule
           : handleToUpdateSchedule,
-      child: const Text(
+      child: Text(
         '保存',
-        style: TextStyle(color: CupertinoColors.white, fontSize: 16),
+        style: TextStyle(
+          color: CupertinoColors.white,
+          fontSize: widget.textSize,
+        ),
       ),
     );
   }

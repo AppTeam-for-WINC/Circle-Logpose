@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../domain/entity/group_schedule.dart';
+import '../../../../../../../utils/color_exchanger.dart';
+import '../../../../../../../utils/responsive_util.dart';
+import '../../../../../../../utils/time_utils.dart';
 
-import '../../../../../../utils/color_exchanger.dart';
-import '../../../../../../utils/responsive_util.dart';
-import '../../../../../../utils/time_utils.dart';
+import '../../../../../../domain/entity/group_schedule.dart';
 
 class DateLabel extends StatelessWidget {
   const DateLabel({
