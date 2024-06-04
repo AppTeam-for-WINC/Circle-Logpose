@@ -61,15 +61,15 @@ class GroupMemberIdUseCase implements IGroupMemberIdUseCase {
   }
 
   @override
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndAccountId(
     String groupId,
     String accountId,
   ) async {
     try {
-      final userDocId = await _fetchUserDocIdWithAccountId(accountId);
+      final userId = await _fetchUserDocIdWithAccountId(accountId);
       return await memberRepository.fetchMembershipIdWithGroupIdAndUserId(
         groupId,
-        userDocId,
+        userId,
       );
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch membership ID. ${e.message}');

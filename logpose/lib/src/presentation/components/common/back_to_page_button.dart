@@ -42,7 +42,7 @@ class BackToPageButton extends StatelessWidget {
   }
 
   Widget _buildDesktopLayout(double deviceWidth) {
-    return _buildLayout(backIconSize: deviceWidth * 0.02);
+    return _buildLayout(backIconSize: deviceWidth * 0.03);
   }
 
   Widget _buildLayout({required double backIconSize}) {

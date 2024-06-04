@@ -9,6 +9,7 @@ class GroupSettingSaveButton extends ConsumerStatefulWidget {
     required this.groupId,
     required this.groupName,
   });
+  
   final String groupId;
   final String groupName;
 

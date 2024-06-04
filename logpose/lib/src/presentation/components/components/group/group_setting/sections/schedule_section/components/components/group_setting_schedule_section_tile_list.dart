@@ -66,15 +66,13 @@ class _GroupSettingScheduleSectionTileListState
     required double containerWidth,
     required double containerHeight,
   }) {
-    return SingleChildScrollView(
-      child: Container(
-        width: containerWidth,
-        height: containerHeight,
-        padding: const EdgeInsets.only(bottom: 5),
-        child: GroupScheduleTileListBuilder(
-          groupId: widget.groupId,
-          groupName: widget.groupName,
-        ),
+    return Container(
+      width: containerWidth,
+      height: containerHeight,
+      padding: const EdgeInsets.only(bottom: 5),
+      child: GroupScheduleTileListBuilder(
+        groupId: widget.groupId,
+        groupName: widget.groupName,
       ),
     );
   }

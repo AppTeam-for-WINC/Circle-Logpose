@@ -5,17 +5,22 @@ import '../../../../../utils/responsive_util.dart';
 
 import '../../../../handlers/member_delete_handler.dart';
 
-class MemberDeleteButton extends ConsumerStatefulWidget {
-  const MemberDeleteButton({super.key, required this.accountId, this.groupId});
+class MemberDeletionButton extends ConsumerStatefulWidget {
+  const MemberDeletionButton({
+    super.key,
+    required this.accountId,
+    this.groupId,
+  });
 
   final String accountId;
   final String? groupId;
 
   @override
-  ConsumerState<MemberDeleteButton> createState() => _MemberDeleteButtonState();
+  ConsumerState<MemberDeletionButton> createState() =>
+      _MemberDeletionButtonState();
 }
 
-class _MemberDeleteButtonState extends ConsumerState<MemberDeleteButton> {
+class _MemberDeletionButtonState extends ConsumerState<MemberDeletionButton> {
   Future<void> handleToTap() async {
     final handler = MemberDeleteHandler(
       ref: ref,

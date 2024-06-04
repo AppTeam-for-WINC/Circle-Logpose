@@ -14,10 +14,12 @@ class EndPickerButton extends ConsumerStatefulWidget {
     super.key,
     required this.groupScheduleId,
     required this.groupSchedule,
+    required this.textSize,
   });
 
   final String groupScheduleId;
   final GroupSchedule groupSchedule;
+  final double textSize;
 
   @override
   ConsumerState createState() => _EndPickerButtonState();
@@ -80,7 +82,12 @@ class _EndPickerButtonState extends ConsumerState<EndPickerButton> {
       padding: EdgeInsets.zero,
       child: Consumer(
         builder: (context, watch, child) {
-          return Text(_formatDateTimeExcYear(memberScheduleController.endAt!));
+          return Text(
+            _formatDateTimeExcYear(memberScheduleController.endAt!),
+            style: TextStyle(
+              fontSize: widget.textSize,
+            ),
+          );
         },
       ),
     );

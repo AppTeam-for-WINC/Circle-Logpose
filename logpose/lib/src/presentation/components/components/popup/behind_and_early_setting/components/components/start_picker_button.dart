@@ -14,10 +14,12 @@ class StartPickerButton extends ConsumerStatefulWidget {
     super.key,
     required this.groupScheduleId,
     required this.groupSchedule,
+    required this.textSize,
   });
 
   final String groupScheduleId;
   final GroupSchedule groupSchedule;
+  final double textSize;
 
   @override
   ConsumerState createState() => _StartPickerButtonState();
@@ -82,6 +84,9 @@ class _StartPickerButtonState extends ConsumerState<StartPickerButton> {
         builder: (context, watch, child) {
           return Text(
             _formatDateTimeExcYear(memberScheduleController.startAt!),
+            style: TextStyle(
+              fontSize: widget.textSize,
+            ),
           );
         },
       ),

@@ -27,8 +27,7 @@ class ToBehindAndEarlySettingNavigator {
         builder: (BuildContext context) {
           return BehindAndEarlySetting(
             groupProfileAndScheduleAndId: groupProfileAndScheduleAndId,
-            responseIcon: ScheduleResponse.getIcon(responseType, 25),
-            responseText: ScheduleResponse.getText(responseType, 18),
+            responseType: responseType,
           );
         },
       );

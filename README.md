@@ -40,7 +40,6 @@ Logpose is designed for managing club activities. It primarily features AI-power
 
 ## Installation & Getting Started
 - `git clone` 後、`pubspec.yaml📄` が存在するパスで、`flutter run`　を実行すると起動できます。
-- 詳しくは、Notionのドキュメントを参照して下さい。
 
 ## OS Support
 <table>
@@ -300,4 +299,4 @@ lib
 │       └── validation
 └── main.dart 
 
-194 directories, 491 files
+201 directories directories, 501 files

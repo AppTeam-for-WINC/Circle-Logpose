@@ -30,7 +30,6 @@ class _CopyInvitationLinkButtonState
     return Container(
       width: 190,
       height: 30,
-      margin: const EdgeInsets.only(top: 30),
       decoration: BoxDecoration(
         color: const Color(0xFF7B61FF),
         borderRadius: BorderRadius.circular(80),

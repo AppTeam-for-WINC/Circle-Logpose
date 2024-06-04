@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/responsive_util.dart';
 
-import '../../../handlers/member_delete_switch.dart';
+import '../../../handlers/member_delete_switch_handler.dart';
 
 enum GroupManagementType { create, setting }
 
@@ -19,7 +19,7 @@ class MemberDeletionSwitch extends ConsumerStatefulWidget {
 }
 
 class _MemberDeletionSwitchState extends ConsumerState<MemberDeletionSwitch> {
-  Future<void> handleToTap() async {
+  Future<void> _handleToTap() async {
     widget.type == GroupManagementType.create
         ? await _handleDeleteSwitchOfCreation()
         : await _handleDeleteSwitchOfSetting();
@@ -86,7 +86,7 @@ class _MemberDeletionSwitchState extends ConsumerState<MemberDeletionSwitch> {
     required double addIconSize,
   }) {
     return CupertinoButton(
-      onPressed: handleToTap,
+      onPressed: _handleToTap,
       child: Container(
         width: containerSize,
         height: containerSize,

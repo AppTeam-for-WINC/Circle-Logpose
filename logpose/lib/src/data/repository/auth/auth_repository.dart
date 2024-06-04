@@ -113,7 +113,6 @@ class AuthRepository implements IAuthRepository {
   }
 
   /// to-do modifled.
-  /// Update email.
   @override
   Future<bool> updateUserEmail(
     String oldEmail,
@@ -134,7 +133,6 @@ class AuthRepository implements IAuthRepository {
       } else if (user.email == oldEmail && user.email != email) {
         await user.reauthenticateWithCredential(credential);
         await user.verifyBeforeUpdateEmail(email);
-        await user.updateEmail(email);
         return true;
       } else {
         debugPrint('Error updating email');

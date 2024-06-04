@@ -86,11 +86,11 @@ class GroupMembershipFacade {
     return _groupMemberIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
   }
 
-  Future<String> fetchMembershipIdWithGroupIdAndUserId(
+  Future<String?> fetchMembershipIdWithGroupIdAndAccountId(
     String groupId,
     String accountId,
   ) async {
-    return _groupMemberIdUseCase.fetchMembershipIdWithGroupIdAndUserId(
+    return _groupMemberIdUseCase.fetchMembershipIdWithGroupIdAndAccountId(
       groupId,
       accountId,
     );

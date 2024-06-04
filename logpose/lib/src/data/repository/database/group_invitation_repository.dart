@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,6 +17,7 @@ final groupInvitationRepositoryProvider = Provider<IGroupInvitationRepository>(
   (ref) => GroupInvitationRepository.instance,
 );
 
+/// After 2025/08~ Not supported.
 class GroupInvitationRepository implements IGroupInvitationRepository {
   GroupInvitationRepository._internal();
   static final GroupInvitationRepository _instance =
@@ -25,44 +27,78 @@ class GroupInvitationRepository implements IGroupInvitationRepository {
   static final db = FirebaseFirestore.instance;
   static const collectionPath = 'group_invitations';
 
-  // To-do modified link.
+  // To-do modified invitation correct link.
   @override
   Future<GroupInvitation> create(String groupId) async {
     try {
       final groupInvitationDoc = db.collection(collectionPath).doc();
-      const baseURL = 'https://ama.com/invite';
-      String link;
-
-      while (true) {
-        link = const Uuid().v4();
-        final linkSnapshot = await db
-            .collection(collectionPath)
-            .where('invitation_link', isEqualTo: link)
-            .get();
-        if (linkSnapshot.docs.isEmpty) {
-          break;
-        }
-      }
-
-      /// Create invitation link.
-      final invitationLink = '$baseURL?code=$link';
-
-      /// Set Expires limit.
-      final expiresAt = convertTimestampToTimestamp(
-        DateTime.now().add(const Duration(days: 7)),
-      );
+      final linkCode = await _getLinkCode();
+      final parameters = _setDynamicLinkParams(linkCode);
+      final unguessableInvitationLink = await _buildInvitationLink(parameters);
+      final expiresAt = _setExpireLimit();
+      final linkPath = unguessableInvitationLink.shortUrl.toString();
 
       await groupInvitationDoc.set({
         'group_id': groupId,
-        'invitation_link': invitationLink,
+        'invitation_link': linkPath,
         'expires_at': expiresAt,
         'created_at': FieldValue.serverTimestamp(),
       });
 
-      return fetch(groupInvitationDoc.id);
+      return await fetch(groupInvitationDoc.id);
     } on FirebaseException catch (e) {
       throw Exception('Error: Failed to create invitation link. ${e.message}');
     }
+  }
+
+  // To-do No needed to use.
+  Future<String> _getLinkCode() async {
+    String linkCode;
+    while (true) {
+      linkCode = const Uuid().v4();
+      final linkSnapshot = await db
+          .collection(collectionPath)
+          .where('invitation_link', isEqualTo: linkCode)
+          .get();
+      if (linkSnapshot.docs.isEmpty) {
+        return linkCode;
+      }
+    }
+  }
+
+  // To-do No need to use linkCode params.
+  DynamicLinkParameters _setDynamicLinkParams(String linkCode) {
+    return DynamicLinkParameters(
+      uriPrefix: 'https://logpose.page.link',
+      link: Uri.parse('https://logpose.com/invite?code=$linkCode'),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.logpose.app',
+        minimumVersion: 1,
+      ),
+      iosParameters: const IOSParameters(
+        bundleId: 'com.example.logpose',
+        minimumVersion: '1.0.0',
+      ),
+    );
+  }
+
+  Future<ShortDynamicLink> _buildInvitationLink(
+    DynamicLinkParameters parameters,
+  ) async {
+    try {
+      return await FirebaseDynamicLinks.instance.buildShortLink(
+        parameters,
+        shortLinkType: ShortDynamicLinkType.unguessable,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to build invitation link. ${e.message}');
+    }
+  }
+
+  Timestamp _setExpireLimit() {
+    return convertTimestampToTimestamp(
+      DateTime.now().add(const Duration(days: 7)),
+    );
   }
 
   @override
@@ -75,7 +111,6 @@ class GroupInvitationRepository implements IGroupInvitationRepository {
       }
 
       final model = GroupInvitationModel.fromMap(data);
-
       return GroupInvitationMapper.toEntity(model);
     } on FirebaseException catch (e) {
       throw Exception(

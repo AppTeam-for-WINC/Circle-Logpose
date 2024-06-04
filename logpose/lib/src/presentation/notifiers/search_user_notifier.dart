@@ -33,10 +33,7 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   final ValidatorController _validator;
 
   final TextEditingController accountIdController = TextEditingController();
-  UserProfile? user;
-  String? username;
-  String? userImage;
-  String? userDescription;
+  UserProfile? _user;
   Set<String> addedMemberIds = {};
 
   void setMemberState() {
@@ -45,25 +42,23 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     accountIdController.clear();
   }
 
-  void removeMemberState() {
-    final accountId = accountIdController.text;
+  void removeMemberState(String accountId) {
     addedMemberIds.remove(accountId);
     accountIdController.clear();
   }
 
-  void _init() {
-    accountIdController.addListener(() {
-      _onAccountIdChanged(groupId);
-    });
+  Future<void> _init() async {
+    accountIdController.addListener(_onAccountIdChanged);
   }
 
-  Future<void> _onAccountIdChanged(String? groupId) async {
+  Future<void> _onAccountIdChanged() async {
     final validationError = _validateAccountId();
     if (validationError != null) {
       state = null;
+      return;
     }
 
-    await _memberAddController(groupId);
+    await _memberAddController();
   }
 
   String? _validateAccountId() {
@@ -71,21 +66,21 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
     return _validator.validateAccountId(accountId);
   }
 
-  Future<void> _memberAddController(String? groupId) async {
+  Future<void> _memberAddController() async {
     final userId = await _authController.fetchCurrentUserId();
     final myAccount = await _userManagementController.fetchUserProfile(userId);
     final accountId = accountIdController.text;
-    user = await _userManagementController
+    _user = await _userManagementController
         .fetchUserProfileWithAccountId(accountId);
 
     // アカウントIDが見つからない場合は、nullを返す。
-    if (user == null) {
+    if (_user == null) {
       state = null;
       return;
     }
 
     // 自分のアカウントを検索した場合は、何も返さない。
-    if (myAccount == null || myAccount.accountId == user!.accountId) {
+    if (myAccount == null || myAccount.accountId == _user!.accountId) {
       state = null;
       return;
     }
@@ -116,10 +111,6 @@ class _SearchUserNotifier extends StateNotifier<UserProfile?> {
   }
 
   void _setUserProfile() {
-    username = user!.name;
-    userImage = user!.image;
-    userDescription = user!.description;
-    state = user;
-    return;
+    state = _user;
   }
 }

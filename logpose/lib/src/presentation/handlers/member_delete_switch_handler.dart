@@ -36,6 +36,6 @@ class MemberDeleteSwitchHandler {
 
   Future<void> _showModal() async {
     final navigator = ToMemberListDeleteNavigator(context);
-    await navigator.showModal(groupId);
+    await navigator.showModal(groupId!);
   }
 }

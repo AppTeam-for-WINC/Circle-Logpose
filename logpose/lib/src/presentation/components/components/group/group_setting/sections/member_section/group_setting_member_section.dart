@@ -49,7 +49,7 @@ class _GroupSettingMemberSectionState
   Widget _buildTabletLayout(double deviceWidth, double deviceHeight) {
     return _buildLayout(
       sizedBoxWidth: deviceWidth * 0.89,
-      sizedBoxHeight: deviceHeight * 0.2,
+      sizedBoxHeight: deviceHeight * 0.18,
       additionSwitchPositionTop: deviceHeight * -0.01,
       deletionSwitchPositionTop: deviceHeight * 0.04,
     );
@@ -87,8 +87,8 @@ class _GroupSettingMemberSectionState
             top: deletionSwitchPositionTop,
             right: -15,
             child: MemberDeletionSwitch(
-              groupId: groupId,
               type: GroupManagementType.setting,
+              groupId: widget.groupId,
             ),
           ),
         ],

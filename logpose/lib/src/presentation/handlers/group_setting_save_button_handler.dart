@@ -10,8 +10,9 @@ import '../components/common/loading_progress.dart';
 import '../controllers/group/group_creation_and_update_controller.dart';
 
 import '../navigations/to_schedule_list_and_joined_group_tab_slider.dart';
-import '../notifiers/image_provider.dart';
-import '../notifiers/set_group_member_list_notifier.dart';
+
+import '../notifiers/group_member_list_setter_notifier.dart';
+import '../notifiers/image_path_set_notifier.dart';
 
 import '../providers/text_field/name_field_provider.dart';
 
@@ -45,9 +46,9 @@ class GroupSettingSaveButtonHandler {
     final groupData = GroupSettingParams(
       groupId: groupId,
       groupName: ref.read(nameFieldProvider(groupName)).text,
-      image: ref.read(imageControllerProvider),
+      image: ref.read(imagePathSetNotifierProvider),
       description: null,
-      memberList: ref.read(setGroupMemberListNotifierProvider),
+      memberList: ref.read(groupMemberListSetterNotifierProvider),
     );
     final groupController = ref.read(groupCreationAndUpdateControllerProvider);
 

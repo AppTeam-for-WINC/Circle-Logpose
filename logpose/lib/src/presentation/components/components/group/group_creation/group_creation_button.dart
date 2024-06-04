@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../handlers/group_creation_handler.dart';
+import '../../../../handlers/group_creation_save_button_handler.dart';
 
 class GroupCreationButton extends ConsumerStatefulWidget {
   const GroupCreationButton({super.key});
@@ -11,7 +11,7 @@ class GroupCreationButton extends ConsumerStatefulWidget {
 
 class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
   Future<void> handleToCreate() async {
-    final handler = GroupCreationHandler(context, ref);
+    final handler = GroupCreationSaveButtonHandler(context, ref);
     await handler.handleToCreate();
   }
 
@@ -23,7 +23,7 @@ class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
       height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(70),
-        color: const Color.fromARGB(255, 107, 88, 252),
+        color: const Color(0xFF7B61FF),
         boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(225, 127, 145, 145),
@@ -54,13 +54,7 @@ class _GroupCreationButtonState extends ConsumerState<GroupCreationButton> {
               ),
             ),
             const SizedBox(width: 20),
-            const Text(
-              '団体を作成',
-              style: TextStyle(
-                fontSize: 18,
-                color: CupertinoColors.white,
-              ),
-            ),
+            const Text('団体を作成', style: TextStyle(color: CupertinoColors.white)),
           ],
         ),
       ),

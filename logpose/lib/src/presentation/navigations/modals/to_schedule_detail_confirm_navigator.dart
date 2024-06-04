@@ -33,40 +33,35 @@ class ToScheduleDetailConfirmNavigator {
 
         if (schedule.attendance) {
           return ScheduleDetailConfirm(
-            responseIcon: ScheduleResponse.getIcon(ResponseType.attendance, 25),
-            responseText: ScheduleResponse.getText(ResponseType.attendance, 18),
+            responseType: ResponseType.attendance,
             group: groupProfile,
             scheduleId: groupScheduleId,
             schedule: groupSchedule,
           );
         } else if (schedule.leaveEarly) {
           return ScheduleDetailConfirm(
-            responseIcon: ScheduleResponse.getIcon(ResponseType.leaveEarly, 25),
-            responseText: ScheduleResponse.getText(ResponseType.leaveEarly, 18),
+            responseType: ResponseType.leaveEarly,
             group: groupProfile,
             scheduleId: groupScheduleId,
             schedule: groupSchedule,
           );
         } else if (schedule.lateness) {
           return ScheduleDetailConfirm(
-            responseIcon: ScheduleResponse.getIcon(ResponseType.lateness, 25),
-            responseText: ScheduleResponse.getText(ResponseType.lateness, 18),
+            responseType: ResponseType.lateness,
             group: groupProfile,
             scheduleId: groupScheduleId,
             schedule: groupSchedule,
           );
         } else if (schedule.absence) {
           return ScheduleDetailConfirm(
-            responseIcon: ScheduleResponse.getIcon(ResponseType.absence, 25),
-            responseText: ScheduleResponse.getText(ResponseType.absence, 18),
+            responseType: ResponseType.absence,
             group: groupProfile,
             scheduleId: groupScheduleId,
             schedule: groupSchedule,
           );
         } else {
           return ScheduleDetailConfirm(
-            responseIcon: null,
-            responseText: null,
+            responseType: null,
             group: groupProfile,
             scheduleId: groupScheduleId,
             schedule: groupSchedule,

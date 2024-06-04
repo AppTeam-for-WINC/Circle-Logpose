@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../utils/responsive_util.dart';
+import '../../../../../../../utils/responsive_util.dart';
 
-class ScheduleViewLabel extends StatelessWidget {
-  const ScheduleViewLabel({super.key, required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
+class ParticipantListLabel extends StatelessWidget {
+  const ParticipantListLabel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +27,7 @@ class ScheduleViewLabel extends StatelessWidget {
     return _buildLayout(
       iconSize: deviceWidth * 0.032,
       textSize: deviceWidth * 0.03,
+      marginTop: deviceHeight * 0.04,
     );
   }
 
@@ -37,6 +35,7 @@ class ScheduleViewLabel extends StatelessWidget {
     return _buildLayout(
       iconSize: deviceWidth * 0.022,
       textSize: deviceWidth * 0.02,
+      marginTop: deviceHeight * 0.04,
     );
   }
 
@@ -44,27 +43,30 @@ class ScheduleViewLabel extends StatelessWidget {
     return _buildLayout(
       iconSize: deviceWidth * 0.018,
       textSize: deviceWidth * 0.015,
+      marginTop: deviceHeight * 0.04,
     );
   }
 
   Widget _buildLayout({
     required double iconSize,
     required double textSize,
+    required double marginTop,
   }) {
-    return Row(
-      children: [
-        Icon(icon, size: iconSize, color: CupertinoColors.systemGrey),
-        Container(
-          margin: const EdgeInsets.only(left: 8),
-          child: Text(
-            label,
+    return Container(
+      margin: EdgeInsets.only(top: marginTop),
+      child: Row(
+        children: [
+          Icon(CupertinoIcons.group, size: iconSize),
+          const SizedBox(width: 15),
+          Text(
+            '参加メンバー',
             style: TextStyle(
-              color: CupertinoColors.systemGrey,
+              color: CupertinoColors.black,
               fontSize: textSize,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
