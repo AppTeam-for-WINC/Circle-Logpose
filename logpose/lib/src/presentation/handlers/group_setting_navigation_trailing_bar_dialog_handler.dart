@@ -6,7 +6,7 @@ import '../../domain/entity/user_profile.dart';
 import '../../domain/model/group_id_and_schedule_id_and_member_list_model.dart';
 import '../../domain/model/group_schedule_and_id_model.dart';
 
-import '../controllers/group/group_delete_controller.dart';
+import '../controllers/group/group_deletion_controller.dart';
 
 import '../navigations/group_setting_navigation_trailing_bar_dialog_navigator.dart';
 

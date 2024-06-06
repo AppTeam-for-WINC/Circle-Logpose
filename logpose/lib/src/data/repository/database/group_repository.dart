@@ -163,8 +163,14 @@ class GroupRepository implements IGroupRepository {
   Future<void> delete(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
+      await _deleteGroupStorage(docId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to delete group. ${e.message}');
     }
+  }
+
+  Future<void> _deleteGroupStorage(String groupId) async {
+    final storageRepository = ref.read(storageRepositoryProvider);
+    await storageRepository.deleteGroupStorage(groupId);
   }
 }

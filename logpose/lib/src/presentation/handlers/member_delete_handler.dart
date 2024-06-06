@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../controllers/group_member_schedule/group_member_schedule_deletion_controller.dart';
 import '../controllers/group_membership/group_membership_deletion_controller.dart';
-
 import '../controllers/group_membership/group_membership_management_controller.dart';
+
 import '../notifiers/group_member_list_setter_notifier.dart';
 import '../notifiers/search_user_notifier.dart';
 
@@ -33,6 +34,8 @@ class MemberDeleteHandler {
     }
 
     _removeMemberState();
+
+    await _deleteSchedulesForMemberInGroup(membershipId);
     await _deleteMemberWithMembershipId(membershipId);
   }
 
@@ -43,6 +46,13 @@ class MemberDeleteHandler {
       groupId!,
       accountId,
     );
+  }
+
+  Future<void> _deleteSchedulesForMemberInGroup(String membershipId) async {
+    final memberScheduleDeletionController =
+        ref.read(groupMemberScheduleDeletionControllerProvider);
+    await memberScheduleDeletionController
+        .deleteSchedulesForMemberInGroup(membershipId);
   }
 
   Future<void> _deleteMemberWithMembershipId(String membershipId) async {

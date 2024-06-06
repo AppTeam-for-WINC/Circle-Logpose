@@ -2,18 +2,18 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final storageRepositoryProvider = Provider<StorageRepository>(
+import '../../interface/i_storage_repository.dart';
+
+final storageRepositoryProvider = Provider<IStorageRepository>(
   (ref) => const StorageRepository(),
 );
 
-class StorageRepository {
+class StorageRepository implements IStorageRepository {
   const StorageRepository();
-  static final storage = FirebaseStorage.instance.ref();
+  static final storageRef = FirebaseStorage.instance.ref();
 
-  Future<String> uploadUserImageToStorage(
-    String userId,
-    String image,
-  ) async {
+  @override
+  Future<String> uploadUserImageToStorage(String userId, String image) async {
     try {
       final metadata = SettableMetadata(contentType: 'image/*');
       final imageFile = File(image);
@@ -27,10 +27,8 @@ class StorageRepository {
     }
   }
 
-  Future<String> uploadGroupImageToStorage(
-    String groupId,
-    String image,
-  ) async {
+  @override
+  Future<String> uploadGroupImageToStorage(String groupId, String image) async {
     try {
       final metadata = SettableMetadata(contentType: 'image/*');
       final imageFile = File(image);
@@ -51,7 +49,7 @@ class StorageRepository {
     String path,
   ) {
     try {
-      return storage.child('images/$folder/$docId/$path');
+      return storageRef.child('images/$folder/$docId/$path');
     } on FirebaseStorage catch (e) {
       throw Exception('Error: failed to set image of reference. $e');
     }
@@ -85,6 +83,7 @@ class StorageRepository {
     }
   }
 
+  @override
   Future<String> downloadGroupDefaultImageToStorage() async {
     try {
       final gsReference = FirebaseStorage.instance.refFromURL(
@@ -96,6 +95,7 @@ class StorageRepository {
     }
   }
 
+  @override
   Future<String> downloadUserDefaultImageToStorage() async {
     try {
       final gsReference = FirebaseStorage.instance.refFromURL(
@@ -104,6 +104,26 @@ class StorageRepository {
       return await gsReference.getDownloadURL();
     } on FirebaseException catch (e) {
       throw Exception('Error: Failed to upload image file. ${e.message}');
+    }
+  }
+
+  @override
+  Future<void> deleteGroupStorage(String groupId) async {
+    try {
+      final desertRef = storageRef.child('images/groups/$groupId');
+      await desertRef.delete();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete group image. ${e.message}');
+    }
+  }
+
+  @override
+  Future<void> deleteUserStorage(String userId) async {
+    try {
+      final desertRef = storageRef.child('images/users/$userId');
+      await desertRef.delete();
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete user image. ${e.message}');
     }
   }
 }

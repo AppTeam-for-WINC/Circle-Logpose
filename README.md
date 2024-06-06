@@ -256,12 +256,9 @@ This directory manages the validation logic.
 lib
 ├── device
 ├── exceptions
-│   ├── group
-│   └── user
 ├── routes
 ├── src
 │   ├── app
-│   │   └── facade
 │   ├── data
 │   │   ├── interface
 │   │   ├── mapper
@@ -281,10 +278,17 @@ lib
 │       ├── navigations
 │       ├── notifiers
 │       ├── pages
+│       │   ├── group
+│       │   ├── login
+│       │   ├── schedule
+│       │   ├── signup
+│       │   ├── start
+│       │   └── user
 │       ├── providers
 │       └── states
 ├── test
 ├── utils
 └── validation
 
-201 directories directories, 502 files
+206 directories directories, 517 files
+```

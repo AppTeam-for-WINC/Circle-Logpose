@@ -73,6 +73,24 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   }
 
   @override
+  Future<List<String>?> fetchMemberScheduleIdListWithUserId(String userId) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+
+      return _fetchMemberScheduleIdList(snapshot);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to fetch member schedule. ${e.message}');
+    }
+  }
+
+  @override
   Future<String?> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
@@ -80,14 +98,8 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
     try {
       final snapshot = await db
           .collection(collectionPath)
-          .where(
-            'schedule_id',
-            isEqualTo: scheduleId,
-          )
-          .where(
-            'user_id',
-            isEqualTo: userDocId,
-          )
+          .where('schedule_id', isEqualTo: scheduleId)
+          .where('user_id', isEqualTo: userDocId)
           .get();
 
       return _fetchMemberScheduleId(snapshot);
@@ -115,6 +127,23 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
     }
   }
 
+  static List<String>? _fetchMemberScheduleIdList(
+    QuerySnapshot<Map<String, dynamic>>? snapshot,
+  ) {
+    try {
+      if (snapshot == null) {
+        return null;
+      }
+      return snapshot.docs.map((doc) => doc.id).toList();
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Error: failed to fetch member schedule ID. ${e.message}',
+      );
+    } on Exception catch (e) {
+      throw Exception('Member schedule ID does not exist. $e');
+    }
+  }
+
   @override
   Future<GroupMemberSchedule?> fetchMemberScheduleWithUserIdAndScheduleId({
     required String userDocId,
@@ -123,14 +152,8 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
     try {
       final snapshot = await db
           .collection(collectionPath)
-          .where(
-            'schedule_id',
-            isEqualTo: scheduleId,
-          )
-          .where(
-            'user_id',
-            isEqualTo: userDocId,
-          )
+          .where('schedule_id', isEqualTo: scheduleId)
+          .where('user_id', isEqualTo: userDocId)
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -358,7 +381,7 @@ class GroupMemberScheduleRepository implements IGroupMemberScheduleRepository {
   }
 
   @override
-  Future<void> delete(String docId) async {
+  Future<void> deleteMemberSchedule(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
