@@ -10,6 +10,8 @@ abstract class IGroupMembershipRepository {
 
   Future<List<String>> fetchAllMembershipIdList(String groupId);
 
+  Future<List<String>?> fetchMembershipIdListWithUserId(String userId);
+
   Stream<List<String>> listenAllMembershipIdList(String groupId);
 
   Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId);
@@ -50,5 +52,5 @@ abstract class IGroupMembershipRepository {
     required String groupId,
   });
 
-  Future<void> delete(String docId);
+  Future<void> deleteMember(String docId);
 }

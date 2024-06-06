@@ -365,6 +365,7 @@ class _SegmentedTabControlState extends State<_SegmentedTabControl>
 
     final backgroundColor = currentTab.backgroundColor ??
         widget.backgroundColor ??
+        // ignore: deprecated_member_use
         Theme.of(context).colorScheme.background;
 
     final backgroundGradient =

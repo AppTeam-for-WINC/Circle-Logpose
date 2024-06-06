@@ -22,6 +22,8 @@ abstract class IAuthRepository {
   Future<String?> fetchCurrentUserId();
 
   Future<String?> getUserIdToken();
-  
+
   Future<void> logOut();
+
+  Future<void> deleteAccount(String email, String password);
 }

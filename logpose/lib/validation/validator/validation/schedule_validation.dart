@@ -1,5 +1,5 @@
-import '../../max_length_validation.dart';
-import '../../required_validation.dart';
+import '../../rules/max_length_validation.dart';
+import '../../rules/required_validation.dart';
 
 /// Validation of schedule.
 class ScheduleValidation {

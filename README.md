@@ -4,8 +4,8 @@
 <h1 align="center">Logpose（ログポーズ）✨</h1>
 <h3 align="center">Circle/Team Management Application</h3>
 <p align="center">
-    <img src="https://img.shields.io/badge/3.17.0-Flutter-02569B.svg?logo=flutter&style=flat-square">　
-    <img src="https://img.shields.io/badge/3.3.0-Dart-00C7F2.svg?logo=deezer&style=flat-square">
+    <img src="https://img.shields.io/badge/3.23.0-Flutter-02569B.svg?logo=flutter&style=flat-square">　
+    <img src="https://img.shields.io/badge/3.5.0-Dart-00C7F2.svg?logo=deezer&style=flat-square">
 </p>
 
 <p align="center">
@@ -256,12 +256,9 @@ This directory manages the validation logic.
 lib
 ├── device
 ├── exceptions
-│   ├── group
-│   └── user
 ├── routes
 ├── src
 │   ├── app
-│   │   └── facade
 │   ├── data
 │   │   ├── interface
 │   │   ├── mapper
@@ -281,10 +278,17 @@ lib
 │       ├── navigations
 │       ├── notifiers
 │       ├── pages
+│       │   ├── group
+│       │   ├── login
+│       │   ├── schedule
+│       │   ├── signup
+│       │   ├── start
+│       │   └── user
 │       ├── providers
 │       └── states
 ├── test
 ├── utils
 └── validation
 
-201 directories directories, 502 files
+206 directories directories, 517 files
+```

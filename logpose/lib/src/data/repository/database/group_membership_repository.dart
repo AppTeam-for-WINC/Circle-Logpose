@@ -277,6 +277,25 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   }
 
   @override
+  Future<List<String>?> fetchMembershipIdListWithUserId(String userId) async {
+    try {
+      final snapshot = await db
+          .collection(collectionPath)
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return _fetchMembershipIdList(snapshot);
+      } else {
+        debugPrint('No document found for the specified user.');
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. ${e.message}');
+    }
+  }
+
+  @override
   Future<String> fetchUserIdWithMembershipId(String docId) async {
     try {
       final memberDoc = await db.collection(collectionPath).doc(docId).get();
@@ -341,7 +360,7 @@ class GroupMembershipRepository implements IGroupMembershipRepository {
   }
 
   @override
-  Future<void> delete(String docId) async {
+  Future<void> deleteMember(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
     } on FirebaseException catch (e) {
