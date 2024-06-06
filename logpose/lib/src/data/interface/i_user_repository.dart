@@ -25,4 +25,6 @@ abstract class IUserRepository {
   );
 
   Future<bool> updateAccountId(String docId, String accountId);
+
+  Future<void> deleteUser(String docId);
 }

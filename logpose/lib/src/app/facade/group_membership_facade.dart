@@ -82,6 +82,10 @@ class GroupMembershipFacade {
     return _groupMemberIdUseCase.fetchUserIdWithMembershipId(membershipId);
   }
 
+  Future<List<String>?> fetchMembershipIdListWithUserId(String userId) async {
+    return _groupMemberIdUseCase.fetchMembershipIdListWithUserId(userId);
+  }
+
   Future<List<String>> fetchAllUserDocIdWithGroupId(String groupId) async {
     return _groupMemberIdUseCase.fetchAllUserDocIdWithGroupId(groupId);
   }

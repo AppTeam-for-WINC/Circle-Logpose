@@ -79,6 +79,13 @@ class GroupMemberScheduleFacade {
     );
   }
 
+  Future<List<String>?> fetchMemberScheduleIdListWithUserId(
+    String userId,
+  ) async {
+    return _groupMemberScheduleIdUseCase
+        .fetchMemberScheduleIdListWithUserId(userId);
+  }
+
   Future<GroupMemberSchedule> fetchMemberSchedule(
     String memberScheduleId,
   ) async {
@@ -122,6 +129,16 @@ class GroupMemberScheduleFacade {
       groupMemberList,
       groupScheduleId,
     );
+  }
+
+  Future<void> deleteMemberSchedule(String memberScheduleId) async {
+    await _groupMemberScheduleDeleteUseCase
+        .deleteMemberSchedule(memberScheduleId);
+  }
+
+  Future<void> deleteSchedulesForMemberInGroup(String membershipId) async {
+    await _groupMemberScheduleDeleteUseCase
+        .deleteSchedulesForMemberInGroup(membershipId);
   }
 
   Future<GroupMemberSchedule?> initMemberSchedule(

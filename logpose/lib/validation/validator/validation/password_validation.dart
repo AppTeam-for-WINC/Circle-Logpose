@@ -1,5 +1,5 @@
-import '../../max_length_validation.dart';
-import '../../min_length_validation.dart';
+import '../../rules/max_length_validation.dart';
+import '../../rules/min_length_validation.dart';
 
 class PasswordValidation {
   PasswordValidation._internal();

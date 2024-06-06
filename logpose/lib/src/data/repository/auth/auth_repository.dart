@@ -4,10 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../interface/i_auth_repository.dart';
-import '../database/user_repository.dart';
 
-///How to manage email.
-///https://www.notion.so/Email-c2a0c4f50a064bd09df0ce93b5b5ae61?pvs=4
+import '../database/user_repository.dart';
 
 final authRepositoryProvider = Provider<IAuthRepository>(
   (ref) => AuthRepository(ref: ref),
@@ -70,13 +68,12 @@ class AuthRepository implements IAuthRepository {
 
       debugPrint('Success: Login to account.');
       return true;
-    } on FirebaseAuthException catch (error) {
-      debugPrint('Error: Failed to login. $error');
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error: Failed to login. ${e.message}');
       return false;
     }
   }
 
-  /// True is signed in. False is signed out.
   @override
   Stream<bool> userLoginState(String docId) async* {
     await for (final doc in auth.authStateChanges()) {
@@ -121,7 +118,7 @@ class AuthRepository implements IAuthRepository {
   ) async {
     try {
       final user = auth.currentUser;
-      final credential = await _checkSignInWithCredential(oldEmail, password);
+      final credential = await _retrieveCredential(oldEmail, password);
       if (user == null) {
         debugPrint('User not log in.');
         return false;
@@ -131,8 +128,8 @@ class AuthRepository implements IAuthRepository {
         debugPrint('確認メールを再送しました。');
         return false;
       } else if (user.email == oldEmail && user.email != email) {
-        await user.reauthenticateWithCredential(credential);
-        await user.verifyBeforeUpdateEmail(email);
+        await _reAuthenticateWithCredential(user, credential);
+        await _verifyBeforeUpdateEmail(user, email);
         return true;
       } else {
         debugPrint('Error updating email');
@@ -159,8 +156,8 @@ class AuthRepository implements IAuthRepository {
       } else {
         return await _sendEmailVerification();
       }
-    } on FirebaseAuthException catch (error) {
-      debugPrint('Error sending confirmation email: $error');
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error sending confirmation email: ${e.message}');
       return false;
     }
   }
@@ -175,7 +172,7 @@ class AuthRepository implements IAuthRepository {
       debugPrint('Confirmation email sent.');
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint('Error: failed to send email. $e');
+      debugPrint('Error: failed to send email. ${e.message}');
       return false;
     }
   }
@@ -186,8 +183,8 @@ class AuthRepository implements IAuthRepository {
       await auth.sendPasswordResetEmail(email: email);
       debugPrint('Password reset email sent successfully.');
       return true;
-    } on FirebaseAuthException catch (error) {
-      debugPrint('Error sending password reset email: $error');
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error sending password reset email: ${e.message}');
       return false;
     }
   }
@@ -204,7 +201,7 @@ class AuthRepository implements IAuthRepository {
         return 'User is not currently signed in.';
       }
 
-      final credential = await _checkSignInWithCredential(email, password);
+      final credential = await _retrieveCredential(email, password);
       await _reAuthenticateWithCredential(user, credential);
       await _updatePassword(user, newPassword);
 
@@ -215,7 +212,7 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
-  static Future<AuthCredential> _checkSignInWithCredential(
+  static Future<AuthCredential> _retrieveCredential(
     String email,
     String password,
   ) async {
@@ -226,11 +223,29 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
+  static Future<UserCredential> _signInWithCredential(
+    AuthCredential credential,
+  ) async {
+    try {
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(
+          'Error: failed to sign in witch credential. ${e.message}');
+    }
+  }
+
   static Future<void> _reAuthenticateWithCredential(
     User user,
     AuthCredential credential,
   ) async {
     await user.reauthenticateWithCredential(credential);
+  }
+
+  static Future<void> _verifyBeforeUpdateEmail(
+    User user,
+    String newEmail,
+  ) async {
+    await user.verifyBeforeUpdateEmail(newEmail);
   }
 
   static Future<void> _updatePassword(User user, String newPassword) async {
@@ -262,6 +277,34 @@ class AuthRepository implements IAuthRepository {
     } on FirebaseException catch (e) {
       throw Exception('Failed to log out: ${e.message}');
     }
+  }
+
+  @override
+  Future<void> deleteAccount(String email, String password) async {
+    try {
+      await _attemptToDelete(email, password);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('FirebaseAuthException: ${e.message}');
+      throw Exception('Failed to delete account: ${e.message}');
+    } catch (e) {
+      debugPrint('Exception: $e');
+      throw Exception('Failed to delete account: $e');
+    }
+  }
+
+  static Future<void> _attemptToDelete(String email, String password) async {
+    final credential = await _retrieveCredential(email, password);
+    final userCredential = await _signInWithCredential(credential);
+    final user = userCredential.user;
+
+    if (user == null) {
+      debugPrint('User is not logged in.');
+      return;
+    }
+
+    await _reAuthenticateWithCredential(user, credential);
+    await user.delete();
+    debugPrint('Account successfully deleted.');
   }
 
   // static Future<String>getUpHello() async {

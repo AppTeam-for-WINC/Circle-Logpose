@@ -14,6 +14,8 @@ abstract class IGroupMemberScheduleRepository {
 
   Future<GroupMemberSchedule?> fetchMemberSchedule(String docId);
 
+  Future<List<String>?> fetchMemberScheduleIdListWithUserId(String userId);
+
   Future<String?> fetchDocIdWithScheduleIdAndUserId({
     required String scheduleId,
     required String userDocId,
@@ -49,5 +51,5 @@ abstract class IGroupMemberScheduleRepository {
     DateTime? endAt,
   });
 
-  Future<void> delete(String docId);
+  Future<void> deleteMemberSchedule(String docId);
 }

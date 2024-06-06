@@ -9,13 +9,16 @@ import '../../entity/user_profile.dart';
 
 import '../../interface/group_member_schedule/i_group_member_schedule_delete_use_case.dart';
 import '../../interface/group_member_schedule/i_group_member_schedule_id_use_case.dart';
+import '../../interface/group_membership/i_group_member_id_use_case.dart';
 import '../../interface/user/i_user_id_use_case.dart';
+import '../usecase_group_membership/group_member_id_use_case.dart';
 import '../usecase_user/user_id_use_case.dart';
 import 'group_member_schedule_id_use_case.dart';
 
 final groupMemberScheduleDeleteUseCaseProvider =
     Provider<IGroupMemberScheduleDeleteUseCase>((ref) {
   final userIdUseCase = ref.read(userIdUseCaseProvider);
+  final groupMemberIdUseCase = ref.read(groupMemberIdUseCaseProvider);
   final memberScheduleIdUseCase =
       ref.read(groupMemberScheduleIdUseCaseProvider);
   final memberScheduleRepository =
@@ -24,6 +27,7 @@ final groupMemberScheduleDeleteUseCaseProvider =
   return GroupMemberScheduleDeleteUseCase(
     ref: ref,
     userIdUseCase: userIdUseCase,
+    groupMemberIdUseCase: groupMemberIdUseCase,
     memberScheduleIdUseCase: memberScheduleIdUseCase,
     memberScheduleRepository: memberScheduleRepository,
   );
@@ -34,12 +38,14 @@ class GroupMemberScheduleDeleteUseCase
   const GroupMemberScheduleDeleteUseCase({
     required this.ref,
     required this.userIdUseCase,
+    required this.groupMemberIdUseCase,
     required this.memberScheduleIdUseCase,
     required this.memberScheduleRepository,
   });
 
   final Ref ref;
   final IUserIdUseCase userIdUseCase;
+  final IGroupMemberIdUseCase groupMemberIdUseCase;
   final IGroupMemberScheduleIdUseCase memberScheduleIdUseCase;
   final IGroupMemberScheduleRepository memberScheduleRepository;
 
@@ -58,6 +64,15 @@ class GroupMemberScheduleDeleteUseCase
     );
   }
 
+  @override
+  Future<void> deleteMemberSchedule(String memberScheduleId) async {
+    try {
+      await memberScheduleRepository.deleteMemberSchedule(memberScheduleId);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to delete member schedule. ${e.message}');
+    }
+  }
+
   Future<void> _attemptToDeleteAllMemberSchedule(
     UserProfile? member,
     String groupScheduleId,
@@ -74,8 +89,8 @@ class GroupMemberScheduleDeleteUseCase
     if (memberScheduleId == null) {
       return;
     }
-    
-    await _deleteMemberSchedule(memberScheduleId);
+
+    await deleteMemberSchedule(memberScheduleId);
   }
 
   Future<String?> _executeToFetchMemberScheduleId(
@@ -93,14 +108,14 @@ class GroupMemberScheduleDeleteUseCase
     String accountId,
     String groupScheduleId,
   ) async {
-    final userDocId = await _fetchUserDocId(accountId);
+    final userDocId = await fetchUserDocIdWithAccountId(accountId);
     return _fetchMemberScheduleId(
       groupScheduleId,
       userDocId,
     );
   }
 
-  Future<String> _fetchUserDocId(String accountId) async {
+  Future<String> fetchUserDocIdWithAccountId(String accountId) async {
     return userIdUseCase.fetchUserDocIdWithAccountId(accountId);
   }
 
@@ -114,11 +129,31 @@ class GroupMemberScheduleDeleteUseCase
     );
   }
 
-  Future<void> _deleteMemberSchedule(String memberScheduleId) async {
-    try {
-      await memberScheduleRepository.delete(memberScheduleId);
-    } on FirebaseException catch (e) {
-      throw Exception('Error: failed to delete member schedule. ${e.message}');
+  @override
+  Future<void> deleteSchedulesForMemberInGroup(String membershipId) async {
+    final userId = await _fetchUserIdWithMembershipId(membershipId);
+    await _deleteMemberScheduleList(userId);
+  }
+
+  Future<String> _fetchUserIdWithMembershipId(String membershipId) async {
+    return groupMemberIdUseCase.fetchUserIdWithMembershipId(membershipId);
+  }
+
+  Future<void> _deleteMemberScheduleList(String userId) async {
+    final memberScheduleIdList =
+        await _fetchMemberScheduleIdListWithUserId(userId);
+
+    if (memberScheduleIdList == null) {
+      return;
     }
+
+    await memberScheduleIdList.map(deleteMemberSchedule);
+  }
+
+  Future<List<String>?> _fetchMemberScheduleIdListWithUserId(
+    String userId,
+  ) async {
+    return await memberScheduleIdUseCase
+        .fetchMemberScheduleIdListWithUserId(userId);
   }
 }
