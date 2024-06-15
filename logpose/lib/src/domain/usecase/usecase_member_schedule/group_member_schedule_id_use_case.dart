@@ -43,6 +43,20 @@ class GroupMemberScheduleIdUseCase implements IGroupMemberScheduleIdUseCase {
   }
 
   @override
+  Future<List<String>?> fetchMemberScheduleIdListWithUserId(
+    String userId,
+  ) async {
+    try {
+      return await memberScheduleRepository
+          .fetchMemberScheduleIdListWithUserId(userId);
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Error: failed to fetch member schedule ID. ${e.message}',
+      );
+    }
+  }
+
+  @override
   Future<String?> fetchUserIdWithScheduleIdAndUserIdByTerm(
     String scheduleId,
     String userId,

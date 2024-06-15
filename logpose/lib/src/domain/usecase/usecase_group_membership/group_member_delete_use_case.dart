@@ -34,7 +34,7 @@ class GroupMemberDeleteUseCase implements IGroupMemberDeleteUseCase {
   @override
   Future<void> deleteMember(String membershipDocId) async {
     try {
-      await memberRepository.delete(membershipDocId);
+      await memberRepository.deleteMember(membershipDocId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to delete member. ${e.message}');
     }

@@ -236,15 +236,20 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  /// To-do update.
-  /// テーブルはこの関数で削除できるが、authenticationには反映されない。
-  Future<void> delete(String docId) async {
+  @override
+  Future<void> deleteUser(String docId) async {
     try {
       await db.collection(collectionPath).doc(docId).delete();
+      await _deleteUserStorage(docId);
     } on FirebaseException catch (e) {
       throw Exception(
         'Error: failed to delete user profile table. ${e.message}',
       );
     }
+  }
+
+  Future<void> _deleteUserStorage(String userId) async {
+    final storageRepository = ref.read(storageRepositoryProvider);
+    await storageRepository.deleteUserStorage(userId);
   }
 }

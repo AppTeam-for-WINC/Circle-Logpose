@@ -31,11 +31,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
   <key>NSUserTrackingUsageDescription</key>
-  <string>アプリのパフォーマンス向上、パーソナライズされたコンテンツの提供、およびユーザーエクスペリエンスの向上を目的に使用します。</string>
+  <string>このアプリは、パーソナライズされた広告の提供およびアプリのパフォーマンス向上のために、ユーザーのトラッキング許可を求めます。</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Used image picker plugin</string>
+	<string>このアプリは、写真を撮影し、共有するためにカメラへのアクセスが必要です。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used image picker plugin</string>
+	<string>このアプリは、写真やビデオの保存および共有を行うためにフォトライブラリへのアクセスが必要です。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

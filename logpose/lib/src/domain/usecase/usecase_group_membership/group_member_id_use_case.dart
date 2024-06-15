@@ -7,6 +7,7 @@ import '../../../data/repository/database/group_membership_repository.dart';
 
 import '../../interface/group_membership/i_group_member_id_use_case.dart';
 import '../../interface/user/i_user_id_use_case.dart';
+
 import '../usecase_user/user_id_use_case.dart';
 
 final groupMemberIdUseCaseProvider = Provider<IGroupMemberIdUseCase>((ref) {
@@ -37,6 +38,15 @@ class GroupMemberIdUseCase implements IGroupMemberIdUseCase {
       return await memberRepository.fetchUserIdWithMembershipId(membershipId);
     } on FirebaseException catch (e) {
       throw Exception('Error: failed to fetch membership ID. ${e.message}');
+    }
+  }
+
+  @override
+  Future<List<String>?> fetchMembershipIdListWithUserId(String userId) async {
+    try {
+      return memberRepository.fetchMembershipIdListWithUserId(userId);
+    } on FirebaseException catch (e) {
+      throw Exception('Error: failed to watch user profile list. ${e.message}');
     }
   }
 

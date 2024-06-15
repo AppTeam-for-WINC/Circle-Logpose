@@ -8,6 +8,7 @@ import '../../components/components/user_setting/sections/account_id_section.dar
 import '../../components/components/user_setting/sections/email_section.dart';
 import '../../components/components/user_setting/sections/group_section/group_section.dart';
 import '../../components/components/user_setting/sections/password_section.dart';
+import '../../components/components/user_setting/deletion_button/user_setting_account_deletion_button.dart';
 import '../../components/components/user_setting/user_setting_save_button.dart';
 
 import '../../notifiers/user_profile_notifier.dart';
@@ -41,7 +42,7 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
       child: SingleChildScrollView(
         child: Container(
           alignment: AlignmentDirectional.center,
-          margin: EdgeInsets.only(top: deviceHeight * 0.05),
+          margin: EdgeInsets.only(top: deviceHeight * 0.03),
           child: Column(
             children: [
               Container(
@@ -71,7 +72,20 @@ class _UserSettingPageState extends ConsumerState<UserSettingPage> {
               const EmailSection(),
               const PasswordSection(),
               const GroupSection(),
-              UserSettingSaveButton(name: userProfile.name),
+              Padding(
+                padding: const EdgeInsets.only(top: 18),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: UserSettingSaveButton(name: userProfile.name),
+                    ),
+                    Positioned(
+                      right: 25,
+                      child: UserSettingAccountDeletionButton(),
+                    ),
+                  ],
+                ),
+              ),
               // const PageProgressIndicator(),
             ],
           ),

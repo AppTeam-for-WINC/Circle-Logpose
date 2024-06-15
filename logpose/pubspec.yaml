@@ -1,7 +1,7 @@
 name: logpose
 description: Logpose is designed for managing club activities. It primarily features AI-powered chat functionality, attendance management, visualization of attendance rates through charts, user profile capabilities, and the ability to form small teams within the club.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.1.9+1
+version: 1.1.11+2
 environment:
   sdk: '>=3.0.6 <4.0.0'
 
@@ -24,7 +24,7 @@ dependencies:
   flutter_riverpod: ^2.4.3
   http: ^1.1.2
   image_picker: ^1.0.4
-  intl: ^0.18.0
+  intl: ^0.19.0
   json_annotation: ^4.8.1
   responsive_builder: ^0.7.0
   rxdart: ^0.27.7

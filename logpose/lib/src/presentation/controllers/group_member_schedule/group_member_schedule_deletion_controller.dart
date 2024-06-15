@@ -25,4 +25,11 @@ class GroupMemberScheduleDeletionController {
       groupScheduleId,
     );
   }
+
+  Future<void> deleteSchedulesForMemberInGroup(String membershipId) async {
+    final groupMemberScheduleFacade =
+        ref.read(groupMemberScheduleFacadeProvider);
+    await groupMemberScheduleFacade
+        .deleteSchedulesForMemberInGroup(membershipId);
+  }
 }

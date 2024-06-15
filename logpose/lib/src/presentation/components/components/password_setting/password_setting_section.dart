@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../notifiers/user_profile_notifier.dart';
-
 import '../../../providers/text_field/new_password_field_provider.dart';
 import '../../../providers/text_field/password_field_provider.dart';
 
@@ -17,11 +15,6 @@ class PasswordSettingSection extends ConsumerWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final passwordController = ref.watch(passwordFieldProvider(''));
     final newPasswordController = ref.watch(newPasswordFieldProvider);
-
-    final userProfile = ref.watch(userProfileNotifierProvider);
-    if (userProfile == null) {
-      return const SizedBox.shrink();
-    }
 
     return Container(
       width: deviceWidth * 0.8,
